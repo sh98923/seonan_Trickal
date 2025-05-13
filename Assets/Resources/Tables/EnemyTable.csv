@@ -1,0 +1,10 @@
+Key,Name,SpawnStage,Hp,Atk,CriRate,Range,Count
+101,SkeltonMinion,1,50,5,30,2,7
+102,SkeltonArcher,1,30,7,30,6,5
+103,SkeltonDefender,1,70,3,30,2,3
+104,SkeltonWarrior,1,300,10,30,2,1
+105,SkeltonDestroyer,2,150,15,30,2,5
+106,SkeltonShaman,2,100,7,30,6,2
+107,SkeltonAssasin,2,80,25,30,2,3
+108,SkeltonMage,2,250,35,30,8,1
+109,SkeltonKnight,3,500,50,30,4,1

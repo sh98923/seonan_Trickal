@@ -1,0 +1,10 @@
+Key,Name,PositionX,Hp,Atk,CriRate,Range
+1,Paladin,2,130,5,30,2
+2,Knight,2,120,6,30,2
+3,Destroyer,2,110,7,30,2
+4,Bishop,1,100,8,0,6
+5,RuneBlade,1,90,9,50,6
+6,Mage,1,80,10,50,8
+7,Assasin,0,70,11,70,2
+8,Archer,0,60,12,60,6
+9,Hunter,0,50,13,60,8
