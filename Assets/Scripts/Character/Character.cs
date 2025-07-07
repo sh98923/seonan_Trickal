@@ -12,7 +12,7 @@ public class Character : MonoBehaviour
 
     private void Awake() 
     { 
-        _animator = GetComponent<Animator>(); 
+        _animator = GetComponent<Animator>();
     }
 
     private void Update()
