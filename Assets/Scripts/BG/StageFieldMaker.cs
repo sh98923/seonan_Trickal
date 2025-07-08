@@ -39,7 +39,7 @@ public class BG : MonoBehaviour
         worldScreenLeft = Camera.main.ScreenToWorldPoint(Vector2.zero);
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         for (int i = 0; i < _bgObjects.Count; i++)
         {
