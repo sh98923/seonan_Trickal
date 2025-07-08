@@ -1,0 +1,10 @@
+Key,Name,SpawnLine,Hp,Atk,Mp,CriRate,Range,Coefficient,LimitLevel,BaseSkill,Ultimate
+21,DevilVanguard,Front,130,5,100,30,2,1.2,5,None,None
+22,DevilBreaker,Front,120,6,100,30,2,1.2,5,None,None
+23,DevilPrivate,Front,110,7,100,30,2,1.2,5,None,None
+24,DevilWitch,Middle,100,8,100,0,6,1.2,5,None,None
+25,DevilWizard,Middle,90,9,100,50,6,1.2,5,None,None
+26,DevilDarkpriest,Middle,80,10,100,50,8,1.2,5,None,None
+27,DevilRogue,Back,70,11,100,70,2,1.2,5,None,None
+28,DevilSniper,Back,60,12,100,60,6,1.2,5,None,None
+29,DevilSorcerer,Back,50,13,100,60,8,1.2,5,None,None

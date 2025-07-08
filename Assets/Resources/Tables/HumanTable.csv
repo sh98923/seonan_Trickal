@@ -1,0 +1,10 @@
+Key,Name,SpawnLine,Hp,Atk,Mp,CriRate,Range,Coefficient,LimitLevel,BaseSkill,Ultimate
+11,HumanWarlord,Front,130,5,100,30,2,1.2,5,None,None
+12,HumanLancelot,Front,120,6,100,30,2,1.2,5,None,None
+13,HumanGladiator,Front,110,7,100,30,2,1.2,5,None,None
+14,HumanBerserker,Middle,100,8,100,0,6,1.2,5,None,None
+15,HumanDarkknight,Middle,90,9,100,50,6,1.2,5,None,None
+16,HumanSoldier,Middle,80,10,100,50,8,1.2,5,None,None
+17,HumanMarkman,Back,70,11,100,70,2,1.2,5,None,None
+18,HumanHealer,Back,60,12,100,60,6,1.2,5,None,None
+19,HumanSorceress,Back,50,13,100,60,8,1.2,5,None,None
