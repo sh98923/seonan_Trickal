@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 4d7e11845437a10449166e1fd86e197e
+guid: 6cdfac24b4084654091203e39833bdb8
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 489285498695626640
-    second: RerollBtn_0
+      213: -6267816142481771963
+    second: "\uB9AC\uB864\uC0AC\uC9C4_0"
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,7 +46,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: RerollBtn_0
+      name: "\uB9AC\uB864\uC0AC\uC9C4_0"
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 120
-        height: 144
+        x: 69
+        y: 67
+        width: 216
+        height: 216
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 09fa087919a4ac600800000000000000
-      internalID: 489285498695626640
+      spriteID: 5423aed3d6e3409a0800000000000000
+      internalID: -6267816142481771963
       vertices: []
       indices: 
       edges: []
@@ -151,7 +151,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      RerollBtn_0: 489285498695626640
+      "\uB9AC\uB864\uC0AC\uC9C4_0": -6267816142481771963
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
