@@ -15,6 +15,19 @@ public class SpawnManager : MonoBehaviour
     private Dictionary<int, SpawnPosData> _spawnPlayerDatas = new Dictionary<int, SpawnPosData>();
     private Dictionary<int, SpawnPosData> _spawnMonsterDatas = new Dictionary<int, SpawnPosData>();
 
+    private readonly int _firstPlayerSpawnKey = 1;
+
+    private int _startPlayerSpawnKey;
+    public int StartPlayerSpawnKey
+    {
+        get { return _startPlayerSpawnKey; }
+    }
+    private int _startMonsterSpawnKey;
+    public int StartMonsterSpawnKey
+    {
+        get { return _startMonsterSpawnKey; }
+    }
+    
     private void Awake()
     {
         Instance = this;
@@ -37,7 +50,7 @@ public class SpawnManager : MonoBehaviour
 
         string[] rowData = textAsset.text.Split("\r\n");
 
-        float DataHalfSize = rowData.Length * 0.5f;
+        float firstMonsterSpawnKey = rowData.Length * 0.5f;
 
         for (int i = 1; i < rowData.Length; i++)
         {
@@ -52,12 +65,20 @@ public class SpawnManager : MonoBehaviour
             data.Ratio.y = float.Parse(colData[2]);
             data.Layer = colData[3];
 
-            if (DataHalfSize > i)
+            if (firstMonsterSpawnKey > i)
             { 
+                if(i == _firstPlayerSpawnKey)
+                {
+                    _startPlayerSpawnKey = data.Key;
+                }
                 _spawnPlayerDatas.Add(data.Key, data); 
             }
             else
             {
+                if (i == firstMonsterSpawnKey)
+                {
+                    _startMonsterSpawnKey = data.Key;
+                }
                 _spawnMonsterDatas.Add(data.Key, data);
             }
         }
