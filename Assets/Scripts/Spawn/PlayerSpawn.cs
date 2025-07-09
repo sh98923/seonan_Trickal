@@ -2,11 +2,13 @@ using UnityEngine;
 
 public class PlayerSpawn : MonoBehaviour
 {
-    private readonly int _spawnPosCount = 9;
     private SpawnPosData _playerData;
+    private readonly int _spawnPosCount = 9;
+    private int _startSpawnKey;
 
     private void Start()
     {
+        _startSpawnKey = SpawnManager.Instance.StartPlayerSpawnKey;
         SpawnPlayer();
     }
 
@@ -19,8 +21,10 @@ public class PlayerSpawn : MonoBehaviour
         for(int i = 0; i < _spawnPosCount; i++)
         {
             GameObject player = Instantiate(playerPrefab, parent);
+            _playerData = SpawnManager.Instance.GetPlayerData(_startSpawnKey + i);
 
-            _playerData = SpawnManager.Instance.GetPlayerData(i);
+            player.name += ("_" + i);
+            player.layer = LayerMask.NameToLayer(_playerData.Layer);
 
             Vector3 newPos = new Vector3(originPos.x * _playerData.Ratio.x, originPos.y * _playerData.Ratio.y, 0.0f);
 
