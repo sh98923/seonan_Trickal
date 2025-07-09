@@ -4,7 +4,7 @@ public class MapBG : MonoBehaviour
 {
     private enum BG
     {
-        sky, ground
+        leftSky, rightSky, ground
     }
 
     private SpriteRenderer[] _BGSprites;
@@ -38,11 +38,14 @@ public class MapBG : MonoBehaviour
 
         string skyPath = _BGData.SkyPath;
         string groundPath = _BGData.GroundPath;
+        bool isFlip = _BGData.Flip;
 
         Sprite skySprite = Resources.Load<Sprite>(skyPath);
         Sprite groundSprite = Resources.Load<Sprite>(groundPath);
 
-        _BGSprites[(int)BG.sky].sprite = skySprite;
+        _BGSprites[(int)BG.leftSky].sprite = skySprite;
+        _BGSprites[(int)BG.rightSky].sprite = skySprite;
+        _BGSprites[(int)BG.rightSky].flipX = isFlip;
         _BGSprites[(int)BG.ground].sprite = groundSprite;
     }
 }

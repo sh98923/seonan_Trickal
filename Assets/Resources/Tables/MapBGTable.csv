@@ -1,4 +1,4 @@
-Key,SkySpritePath,GroundSpritePath
-500,BG/Sky/Sky1,BG/Field/Sprite/Ground1
-501,BG/Sky/Sky2,BG/Field/Sprite/Ground2
-502,BG/Sky/Sky3,BG/Field/Sprite/Ground3
+Key,SkySpritePath,GroundSpritePath,Flip
+500,BG/Sky/Sky1,BG/Field/Sprite/Ground1,FALSE
+501,BG/Sky/Sky2,BG/Field/Sprite/Ground2,FALSE
+502,BG/Sky/Sky3,BG/Field/Sprite/Ground3,TRUE
