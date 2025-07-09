@@ -1,4 +1,4 @@
 Key,SkySpritePath,GroundSpritePath
-500,Prefabs/BG/Sky/Sunny,Prefabs/BG/Field/Sprite/Map1
-501,Prefabs/BG/Sky/Evening,Prefabs/BG/Field/Sprite/Map2
-502,Prefabs/BG/Sky/Night,Prefabs/BG/Field/Sprite/Map3
+500,BG/Sky/Sky1,BG/Field/Sprite/Ground1
+501,BG/Sky/Sky2,BG/Field/Sprite/Ground2
+502,BG/Sky/Sky3,BG/Field/Sprite/Ground3
