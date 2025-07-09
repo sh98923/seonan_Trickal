@@ -22,7 +22,7 @@ public class BattleStart : MonoBehaviour
 
     private void Update()
     {
-        if (isDeckMode && Input.GetKeyDown(KeyCode.Alpha1))
+        if (isDeckMode && Input.GetKeyDown(KeyCode.Alpha4))
         {
             _selectCardPanel.SetActive(false);
             _rerollImage.SetActive(false);
