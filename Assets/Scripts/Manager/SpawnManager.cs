@@ -41,7 +41,7 @@ public class SpawnManager : MonoBehaviour
 
     public SpawnPosData GetMonsterData(int key)
     {
-        return _spawnPlayerDatas[key];
+        return _spawnMonsterDatas[key];
     }
 
     private void LoadSpawnPosData()
