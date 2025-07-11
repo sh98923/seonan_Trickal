@@ -1,8 +1,7 @@
-using System.Security.Cryptography.X509Certificates;
-using UnityEngine;
+/*using UnityEngine;
 using System.Collections.Generic;
 
-public struct PlayerData
+*//*public struct PlayerData
 {
     public int Key;
     public string Name;
@@ -11,7 +10,7 @@ public struct PlayerData
     public int Atk;
     public float CriRate;
     public float Range;
-}
+}*//*
 
 public struct EnemyData
 {
@@ -143,4 +142,4 @@ public class DataManager : SingletonData<DataManager>
 
         return stageEnemies;
     }
-}
+}*/

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PoolingManager : SingletonScript<PoolingManager>
+public class PoolingManager : Singleton<PoolingManager>
 {
     private Dictionary<string, List<GameObject>> _totalObject = new Dictionary<string, List<GameObject>>();
 
