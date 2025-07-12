@@ -793,7 +793,7 @@ SortingGroup:
   m_Enabled: 1
   m_SortingLayerID: 2107782463
   m_SortingLayer: 2
-  m_SortingOrder: 5
+  m_SortingOrder: 0
   m_SortAtRoot: 0
 --- !u!95 &703495053508658534
 Animator:

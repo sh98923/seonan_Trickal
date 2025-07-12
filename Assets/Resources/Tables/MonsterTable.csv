@@ -5,7 +5,7 @@ Key,Name,PrefabPath,Layer,SpawnLine,Hp,Atk,Mp,CriRate,Range
 103,SkeltonWarrior,Prefabs/Skelton/SkeltonWarrior,Middle,1,300,10,100,0.15,2
 104,SkeltonDestroyer,Prefabs/Skelton/SkeltonDestroyer,Front,0,150,15,100,0.15,2
 105,SkeltonShaman,Prefabs/Skelton/SkeltonShaman,Middle,1,100,7,100,0.15,6
-106,SkeltonAssassin,Prefabs/Skelton/SkeltonAssasin,Back,2,80,25,100,0.15,2
+106,SkeltonAssassin,Prefabs/Skelton/SkeltonAssassin,Back,2,80,25,100,0.15,2
 107,SkeltonMage,Prefabs/Skelton/SkeltonMage,Back,2,250,35,100,0.15,8
 108,SkeltonKnight,Prefabs/Skelton/SkeltonKnight,Front,0,500,50,100,0.15,4
 109,DevilVanguard,Prefabs/Devil/DevilVanguard,Front,0,130,5,100,0.15,2

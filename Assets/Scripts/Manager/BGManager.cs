@@ -9,10 +9,8 @@ public struct BGData
     public bool Flip;
 }
 
-public class BGManager : MonoBehaviour
+public class BGManager : Singleton<BGManager>
 {
-    public static BGManager Instance;
-
     private Dictionary<int, BGData> _BGDatas = new Dictionary<int, BGData>();
     
     private readonly int _firstBGKey = 1;
@@ -24,8 +22,6 @@ public class BGManager : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
-
         LoadBGData();
     }
 

@@ -9,10 +9,8 @@ public struct SpawnPosData
     public int SpawnLine;
 }
 
-public class SpawnManager : MonoBehaviour
+public class SpawnManager : Singleton<SpawnManager>
 {
-    public static SpawnManager Instance;
-
     private Dictionary<int, SpawnPosData> _spawnPlayerDatas = new Dictionary<int, SpawnPosData>();
     private Dictionary<int, SpawnPosData> _spawnMonsterDatas = new Dictionary<int, SpawnPosData>();
 
@@ -30,9 +28,7 @@ public class SpawnManager : MonoBehaviour
     }
     
     private void Awake()
-    {
-        Instance = this;
-
+    { 
         LoadSpawnPosData();
     }
 

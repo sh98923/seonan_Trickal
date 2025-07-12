@@ -1,13 +1,13 @@
 using UnityEngine;
 
-public class BattleStart : MonoBehaviour
+public class BattleBtn : MonoBehaviour
 {
     [SerializeField] private GameObject _deckPanel;
     [SerializeField] private GameObject _selectCardPanel;
     [SerializeField] private GameObject _rerollImage;
     [SerializeField] private GameObject _startBtn;
 
-    private bool isDeckMode = false;
+    private bool _isDeckMode = false;
 
     public void OnClickStart()
     {
@@ -17,12 +17,13 @@ public class BattleStart : MonoBehaviour
         _selectCardPanel.SetActive(true);
         _rerollImage.SetActive(true);
 
-        isDeckMode = true;
+        _isDeckMode = true;
+        BattleStateManager.Instance.IsBattleStart = true;
     }
 
     private void Update()
     {
-        if (isDeckMode && Input.GetKeyDown(KeyCode.Alpha4))
+        if (_isDeckMode && Input.GetKeyDown(KeyCode.Alpha4))
         {
             _selectCardPanel.SetActive(false);
             _rerollImage.SetActive(false);
@@ -30,7 +31,8 @@ public class BattleStart : MonoBehaviour
             _deckPanel.SetActive(true);
             _startBtn.SetActive(true);
 
-            isDeckMode = false;
+            _isDeckMode = false;
+            BattleStateManager.Instance.IsBattleStart = false;
         }
     }
 }

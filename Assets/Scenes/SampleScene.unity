@@ -1799,6 +1799,9 @@ GameObject:
   - component: {fileID: 1360557686}
   - component: {fileID: 1360557685}
   - component: {fileID: 1360557687}
+  - component: {fileID: 1360557688}
+  - component: {fileID: 1360557689}
+  - component: {fileID: 1360557690}
   m_Layer: 0
   m_Name: InGameManager
   m_TagString: Untagged
@@ -1855,6 +1858,42 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4682deeaf93326d41be4058ffafd66d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1360557688
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1360557682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d18f75501ef9a454d9704d8dba240a9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1360557689
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1360557682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d35e16f34d0cf1141a271a75dfa5f9e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1360557690
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1360557682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9eef9912d7bf6df4b870b8e3f925c44d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1450991929
@@ -1928,6 +1967,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1549342636}
+  - component: {fileID: 1549342637}
   m_Layer: 0
   m_Name: SpawnMonster
   m_TagString: Untagged
@@ -1959,6 +1999,18 @@ Transform:
   - {fileID: 135256461}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1549342637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1549342635}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d707f0637e6fcb4a921cfcda2716167, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1549467295
 GameObject:
   m_ObjectHideFlags: 0
@@ -2333,7 +2385,7 @@ GameObject:
   - component: {fileID: 2015534866}
   m_Layer: 5
   m_Name: StartBtn
-  m_TagString: Untagged
+  m_TagString: BattleBtn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
