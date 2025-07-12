@@ -7,7 +7,7 @@ public struct PlayerData
     public string Name;
     public string PrefabPath;
     public string SpritePath;
-    public string SpawnLine;
+    public int SpawnLine;
     public float Hp;
     public float Atk;
     public float Mp;
@@ -24,7 +24,7 @@ public struct MonsterData
     public int Key;
     public string Name;
     public string PrefabPath;
-    public string SpawnLine;
+    public int SpawnLine;
     public float Hp;
     public float Atk;
     public float Mp;
@@ -96,7 +96,7 @@ public class CharacterManager : Singleton<CharacterManager>
             data.Name = colData[1];
             data.PrefabPath = colData[2];
             data.SpritePath = colData[3];
-            data.SpawnLine = colData[4];
+            data.SpawnLine = int.Parse(colData[4]);
             data.Hp = float.Parse(colData[5]);
             data.Atk = float.Parse(colData[6]);
             data.Mp = float.Parse(colData[7]);
@@ -133,7 +133,7 @@ public class CharacterManager : Singleton<CharacterManager>
             data.Key = int.Parse(colData[0]);
             data.Name = colData[1];
             data.PrefabPath = colData[2];
-            data.SpawnLine = colData[3];
+            data.SpawnLine = int.Parse(colData[3]);
             data.Hp = float.Parse(colData[4]);
             data.Atk = float.Parse(colData[5]);
             data.Mp = float.Parse(colData[6]);
