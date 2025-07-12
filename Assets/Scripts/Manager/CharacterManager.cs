@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public struct PlayerData
 {
@@ -7,6 +8,7 @@ public struct PlayerData
     public string Name;
     public string PrefabPath;
     public string SpritePath;
+    public string Layer;
     public int SpawnLine;
     public float Hp;
     public float Atk;
@@ -24,6 +26,7 @@ public struct MonsterData
     public int Key;
     public string Name;
     public string PrefabPath;
+    public string Layer;
     public int SpawnLine;
     public float Hp;
     public float Atk;
@@ -96,16 +99,17 @@ public class CharacterManager : Singleton<CharacterManager>
             data.Name = colData[1];
             data.PrefabPath = colData[2];
             data.SpritePath = colData[3];
-            data.SpawnLine = int.Parse(colData[4]);
-            data.Hp = float.Parse(colData[5]);
-            data.Atk = float.Parse(colData[6]);
-            data.Mp = float.Parse(colData[7]);
-            data.CriRate = float.Parse(colData[8]);
-            data.Range = float.Parse(colData[9]);
-            data.Coefficient = float.Parse(colData[10]);
-            data.LimitLevel = float.Parse(colData[11]);
-            data.BaseSkill = float.Parse(colData[12]);
-            data.Ultimate = float.Parse(colData[13]);
+            data.Layer = colData[4];
+            data.SpawnLine = int.Parse(colData[5]);
+            data.Hp = float.Parse(colData[6]);
+            data.Atk = float.Parse(colData[7]);
+            data.Mp = float.Parse(colData[8]);
+            data.CriRate = float.Parse(colData[9]);
+            data.Range = float.Parse(colData[10]);
+            data.Coefficient = float.Parse(colData[11]);
+            data.LimitLevel = float.Parse(colData[12]);
+            data.BaseSkill = float.Parse(colData[13]);
+            data.Ultimate = float.Parse(colData[14]);
             
             if (_firstPlayerKey == i)
             {
@@ -133,12 +137,13 @@ public class CharacterManager : Singleton<CharacterManager>
             data.Key = int.Parse(colData[0]);
             data.Name = colData[1];
             data.PrefabPath = colData[2];
-            data.SpawnLine = int.Parse(colData[3]);
-            data.Hp = float.Parse(colData[4]);
-            data.Atk = float.Parse(colData[5]);
-            data.Mp = float.Parse(colData[6]);
-            data.CriRate = float.Parse(colData[7]);
-            data.Range = float.Parse(colData[8]);
+            data.Layer = colData[3];
+            data.SpawnLine = int.Parse(colData[4]);
+            data.Hp = float.Parse(colData[5]);
+            data.Atk = float.Parse(colData[6]);
+            data.Mp = float.Parse(colData[7]);
+            data.CriRate = float.Parse(colData[8]);
+            data.Range = float.Parse(colData[9]);
 
             if (_firstMonsterKey == i)
             {

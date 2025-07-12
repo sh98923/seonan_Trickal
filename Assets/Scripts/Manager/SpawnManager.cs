@@ -5,6 +5,7 @@ public struct SpawnPosData
 {
     public int Key;
     public Vector2 Ratio;
+    public string Layer;
     public int SpawnLine;
 }
 
@@ -34,6 +35,7 @@ public class SpawnManager : MonoBehaviour
 
         LoadSpawnPosData();
     }
+
     public SpawnPosData GetPlayerData(int key)
     {
         return _spawnPlayerDatas[key];
@@ -63,7 +65,8 @@ public class SpawnManager : MonoBehaviour
             data.Key = int.Parse(colData[0]);
             data.Ratio.x = float.Parse(colData[1]);
             data.Ratio.y = float.Parse(colData[2]);
-            data.SpawnLine = int.Parse(colData[3]);
+            data.Layer = colData[3];
+            data.SpawnLine = int.Parse(colData[4]);
 
             if (firstMonsterSpawnKey > i)
             { 
