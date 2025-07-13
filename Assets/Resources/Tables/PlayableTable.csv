@@ -1,19 +1,19 @@
-ï»¿Key,Name,PrefabPath,SpritePath,Layer,SpawnLine,Hp,Atk,Mp,CriRate,Range,Coefficient,LimitLevel,BaseSkill,Ultimate
-0,ë””ì•„ë‚˜,Prefabs/Elf/ElfPaladin,Sprites/CardImage/ElfPaladin,Front,0,130,5,100,0.15,2,1.2,5,1.25,1.5
-1,ê·¸ìœˆ,Prefabs/Elf/ElfKnight,Sprites/CardImage/ElfKnight,Front,0,120,6,100,0.15,2,1.2,5,1.25,1.5
-2,ì•Œë ˆíŠ¸,Prefabs/Elf/ElfDestroyer,Sprites/CardImage/ElfDestroyer,Front,0,110,7,100,0.15,2,1.2,5,1.25,1.5
-3,ì´ë“œ,Prefabs/Elf/ElfBishop,Sprites/CardImage/ElfBishop,Middle,1,100,8,100,0,6,1.2,5,1.25,1.5
-4,ë¡œë‚œ,Prefabs/Elf/ElfRuneBlade,Sprites/CardImage/ElfRuneBlade,Middle,1,90,9,100,0.25,6,1.2,5,1.25,1.5
-5,ì œì´ë“œ,Prefabs/Elf/ElfMage,Sprites/CardImage/ElfMage,Middle,1,80,10,100,0.25,8,1.2,5,1.25,1.5
-6,ë ˆë¹„,Prefabs/Elf/ElfAssassin,Sprites/CardImage/ElfAssassin,Back,2,70,11,100,0.35,2,1.2,5,1.25,1.5
-7,ì—ë¥´ë”˜,Prefabs/Elf/ElfArcher,Sprites/CardImage/ElfArcher,Back,2,60,12,100,0.3,6,1.2,5,1.25,1.5
-8,ì‹¤ë¼,Prefabs/Elf/ElfHunter,Sprites/CardImage/ElfHunter,Back,2,50,13,100,0.3,8,1.2,5,1.25,1.5
-9,ì•Œë ˆíŠ¸,Prefabs/Human/HumanWarlord,Sprites/CardImage/ElfHunter,Front,0,130,5,100,0.15,2,1.2,5,1.25,1.5
-10,ë£¨í¬,Prefabs/Human/HumanLancelot,Sprites/CardImage/ElfHunter,Front,0,120,6,100,0.15,2,1.2,5,1.25,1.5
-11,ë¦¬ì‹œíƒ€,Prefabs/Human/HumanGladiator,Sprites/CardImage/ElfHunter,Front,0,110,7,100,0.15,2,1.2,5,1.25,1.5
-12,ì•„ì´ì  ,Prefabs/Human/HumanBerserker,Sprites/CardImage/ElfHunter,Middle,1,100,8,100,0,6,1.2,5,1.25,1.5
-13,ìì¸,Prefabs/Human/HumanDarkknight,Sprites/CardImage/ElfHunter,Middle,1,90,9,100,0.25,6,1.2,5,1.25,1.5
-14,í¬ë¦¬ìŠ¤,Prefabs/Human/HumanSoldier,Sprites/CardImage/ElfHunter,Middle,1,80,10,100,0.25,8,1.2,5,1.25,1.5
-15,ì‹¤í”¼,Prefabs/Human/HumanMarkman,Sprites/CardImage/ElfHunter,Back,2,70,11,100,0.35,2,1.2,5,1.25,1.5
-16,íë°,Prefabs/Human/HumanHealer,Sprites/CardImage/ElfHunter,Back,2,60,12,100,0.3,6,1.2,5,1.25,1.5
-17,ì—˜ë ˆë‚˜,Prefabs/Human/HumanSorceress,Sprites/CardImage/ElfHunter,Back,2,50,13,100,0.3,8,1.2,5,1.25,1.5
+Key,Name,EngName,PrefabPath,SpritePath,Layer,SpawnLine,Hp,Atk,Mp,CriRate,Range,Coefficient,LimitLevel,BaseSkill,Ultimate
+0,µğ¾Æ³ª,Diana,Prefabs/Elf/ElfPaladin,Sprites/CardImage/ElfPaladin,Front,0,130,5,100,0.15,2,1.2,5,1.25,1.5
+1,±×À©,Gwin,Prefabs/Elf/ElfKnight,Sprites/CardImage/ElfKnight,Front,0,120,6,100,0.15,2,1.2,5,1.25,1.5
+2,¾Ë·¹Æ®,Alette,Prefabs/Elf/ElfDestroyer,Sprites/CardImage/ElfDestroyer,Front,0,110,7,100,0.15,2,1.2,5,1.25,1.5
+3,ÀÌµå,Ed,Prefabs/Elf/ElfBishop,Sprites/CardImage/ElfBishop,Middle,1,100,8,100,0,6,1.2,5,1.25,1.5
+4,·Î³­,Lonan,Prefabs/Elf/ElfRuneBlade,Sprites/CardImage/ElfRuneBlade,Middle,1,90,9,100,0.25,6,1.2,5,1.25,1.5
+5,Á¦ÀÌµå,Jade,Prefabs/Elf/ElfMage,Sprites/CardImage/ElfMage,Middle,1,80,10,100,0.25,8,1.2,5,1.25,1.5
+6,·¹ºñ,Levi,Prefabs/Elf/ElfAssassin,Sprites/CardImage/ElfAssassin,Back,2,70,11,100,0.35,2,1.2,5,1.25,1.5
+7,¿¡¸£µò,Erdin,Prefabs/Elf/ElfArcher,Sprites/CardImage/ElfArcher,Back,2,60,12,100,0.3,6,1.2,5,1.25,1.5
+8,½Ç¶ó,Sylla,Prefabs/Elf/ElfHunter,Sprites/CardImage/ElfHunter,Back,2,50,13,100,0.3,8,1.2,5,1.25,1.5
+9,¿À¸¥,Ornn,Prefabs/Human/HumanWarlord,Sprites/CardImage/ElfHunter,Front,0,130,5,100,0.15,2,1.2,5,1.25,1.5
+10,·çÅ©,Luke,Prefabs/Human/HumanLancelot,Sprites/CardImage/ElfHunter,Front,0,120,6,100,0.15,2,1.2,5,1.25,1.5
+11,¸®½ÃÅ¸,Lethita,Prefabs/Human/HumanGladiator,Sprites/CardImage/ElfHunter,Front,0,110,7,100,0.15,2,1.2,5,1.25,1.5
+12,¾ÆÀÌÁ¨,Eisen,Prefabs/Human/HumanBerserker,Sprites/CardImage/ElfHunter,Middle,1,100,8,100,0,6,1.2,5,1.25,1.5
+13,ÀÚÀÎ,Sein,Prefabs/Human/HumanDarkknight,Sprites/CardImage/ElfHunter,Middle,1,90,9,100,0.25,6,1.2,5,1.25,1.5
+14,Å©¸®½º,Chris,Prefabs/Human/HumanSoldier,Sprites/CardImage/ElfHunter,Middle,1,80,10,100,0.25,8,1.2,5,1.25,1.5
+15,½ÇÇÇ,Silphi,Prefabs/Human/HumanMarkman,Sprites/CardImage/ElfHunter,Back,2,70,11,100,0.35,2,1.2,5,1.25,1.5
+16,Èúµ¥,Hilde,Prefabs/Human/HumanHealer,Sprites/CardImage/ElfHunter,Back,2,60,12,100,0.3,6,1.2,5,1.25,1.5
+17,¿¤·¹³ª,Elena,Prefabs/Human/HumanSorceress,Sprites/CardImage/ElfHunter,Back,2,50,13,100,0.3,8,1.2,5,1.25,1.5
