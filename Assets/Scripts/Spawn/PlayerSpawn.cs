@@ -1,38 +1,66 @@
+using System.Collections.Generic;
 using UnityEngine;
+
+public struct FormationSlot
+{
+    public Vector3 Position;
+    public bool IsOccupied;
+}
 
 public class PlayerSpawn : MonoBehaviour
 {
-    private SpawnPosData _playerData;
-    private readonly int _spawnPosCount = 9;
-    private int _startSpawnKey;
-
-    private void Start()
+    private enum FormationLayer
     {
-        _startSpawnKey = SpawnManager.Instance.StartPlayerSpawnKey;
-        SpawnPlayer();
+        Front, Middle, Back
     }
 
-    private void SpawnPlayer()
+    private Dictionary<FormationLayer, FormationSlot[]> _formationPositions = new Dictionary<FormationLayer, FormationSlot[]>
     {
-        Vector3 originPos = new Vector3(Screen.width * 0.5f, Screen.height * 0.5f, 0.0f);
-        Transform parent = GameObject.Find("SpawnPlayer").transform;
-        GameObject playerPrefab = Resources.Load<GameObject>("Prefabs/Elf/ElfArcher");
-        
-        for(int i = 0; i < _spawnPosCount; i++)
+        { FormationLayer.Front, new FormationSlot[3] },
+        { FormationLayer.Middle, new FormationSlot[3] },
+        { FormationLayer.Back, new FormationSlot[3] }
+    };
+
+    private int _startPlayerIndex;
+    
+    private void Start()
+    {
+        _startPlayerIndex = SpawnManager.Instance.StartPlayerSpawnKey;
+        LoadPlayerPos();
+    }
+
+    private void LoadPlayerPos()
+    {
+        int index = 0;
+        Vector3 origin = new Vector3(Screen.width * 0.5f, Screen.height * 0.5f, 0.0f);
+
+        foreach (FormationSlot[] positions in _formationPositions.Values)
         {
-            GameObject player = Instantiate(playerPrefab, parent);
-            _playerData = SpawnManager.Instance.GetPlayerData(_startSpawnKey + i);
+            for (int i = 0; i < positions.Length; i++)
+            {
+                SpawnPosData spawnData = SpawnManager.Instance.GetPlayerData(_startPlayerIndex + index);
+                Vector3 newPos = new Vector3(origin.x * spawnData.Ratio.x, origin.y * spawnData.Ratio.y, 0.0f);
 
-            player.name += ("_" + i);
-            player.layer = LayerMask.NameToLayer(_playerData.Layer);
-
-            Vector3 newPos = new Vector3(originPos.x * _playerData.Ratio.x, originPos.y * _playerData.Ratio.y, 0.0f);
-
-            player.transform.position = Camera.main.ScreenToWorldPoint(newPos);
-            Vector3 pos = player.transform.position;
-            pos.z = 0.0f;
-
-            player.transform.position = pos;
+                positions[i].Position = Camera.main.ScreenToWorldPoint(newPos);
+                positions[i].IsOccupied = false;
+                index++;
+            }
         }
+    }
+
+    public Vector3 SetPlayerPos(PlayerData data)
+    {
+        FormationLayer spawnLine = (FormationLayer)data.SpawnLine;
+        FormationSlot[] slots = _formationPositions[spawnLine];
+
+        for (int i = 0; i < slots.Length; i++)
+        {
+            if (slots[i].IsOccupied) continue;
+
+            slots[i].IsOccupied = true;
+            return slots[i].Position;
+        }
+
+        return Vector3.zero;
     }
 }
