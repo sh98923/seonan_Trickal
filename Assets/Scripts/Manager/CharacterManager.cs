@@ -6,6 +6,7 @@ public struct PlayerData
 {
     public int Key;
     public string Name;
+    public string EngName;
     public string PrefabPath;
     public string SpritePath;
     public string Layer;
@@ -54,7 +55,6 @@ public class CharacterManager : Singleton<CharacterManager>
         get { return _monsterStartKey; }
     }
 
-
     private void Awake()
     {
         LoadPlayerData();
@@ -97,19 +97,20 @@ public class CharacterManager : Singleton<CharacterManager>
             PlayerData data;
             data.Key = int.Parse(colData[0]);
             data.Name = colData[1];
-            data.PrefabPath = colData[2];
-            data.SpritePath = colData[3];
-            data.Layer = colData[4];
-            data.SpawnLine = int.Parse(colData[5]);
-            data.Hp = float.Parse(colData[6]);
-            data.Atk = float.Parse(colData[7]);
-            data.Mp = float.Parse(colData[8]);
-            data.CriRate = float.Parse(colData[9]);
-            data.Range = float.Parse(colData[10]);
-            data.Coefficient = float.Parse(colData[11]);
-            data.LimitLevel = float.Parse(colData[12]);
-            data.BaseSkill = float.Parse(colData[13]);
-            data.Ultimate = float.Parse(colData[14]);
+            data.EngName = colData[2];
+            data.PrefabPath = colData[3];
+            data.SpritePath = colData[4];
+            data.Layer = colData[5];
+            data.SpawnLine = int.Parse(colData[6]);
+            data.Hp = float.Parse(colData[7]);
+            data.Atk = float.Parse(colData[8]);
+            data.Mp = float.Parse(colData[9]);
+            data.CriRate = float.Parse(colData[10]);
+            data.Range = float.Parse(colData[11]);
+            data.Coefficient = float.Parse(colData[12]);
+            data.LimitLevel = float.Parse(colData[13]);
+            data.BaseSkill = float.Parse(colData[14]);
+            data.Ultimate = float.Parse(colData[15]);
             
             if (_firstPlayerKey == i)
             {

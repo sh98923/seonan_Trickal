@@ -41,7 +41,7 @@ public class CardDeployBtn : MonoBehaviour
 
         GameObject playerPrefab = Resources.Load<GameObject>(_playerData.PrefabPath);
         GameObject player = Instantiate(playerPrefab, _spawnParent);
-        player.name = _playerData.Name;
+        player.name = _playerData.EngName;
         player.layer = LayerMask.NameToLayer(_playerData.Layer);
         spawnPos.z = 0.0f;
         player.transform.position = spawnPos;
