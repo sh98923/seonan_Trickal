@@ -1,42 +1,35 @@
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class DeckCard : MonoBehaviour
 {
+    private Transform _spawnParent;
+    private CardDeployBtn _deployBtn;
+
     private int _startPlayerKey;
 
     private void Start()
     {
-        _startPlayerKey = CharacterManager.Instance.PlayerStartKey;
-        SetDeckCard(_startPlayerKey);
+        _spawnParent = GameObject.Find("SpawnPlayer").transform;
+
+        SetDeckCard();
     }
 
-    private void SetDeckCard(int startPlayerKey)
+    private void SetDeckCard()
     {
-        for(int i = startPlayerKey; i < CharacterManager.Instance.GetPlayerDataCount(); i++)
-        {
-            GameObject UIprefab = Resources.Load<GameObject>("Prefabs/UI/CardPanel");
+        _startPlayerKey = CharacterManager.Instance.PlayerStartKey;
 
-            GameObject obj = Instantiate(UIprefab, gameObject.transform);
+        GameObject UIprefab = Resources.Load<GameObject>("Prefabs/UI/CardPanel");
+
+        for (int i = _startPlayerKey; i < CharacterManager.Instance.GetPlayerDataCount(); i++)
+        {
+            GameObject obj = Instantiate(UIprefab, transform);
             obj.name += ("_" + i);
 
             Transform buttonTransform = obj.transform.Find("Button");
-            Transform[] buttonChildren = new Transform[buttonTransform.childCount];
 
-            for (int j = 0; j < buttonTransform.childCount; j++)
-            {
-                buttonChildren[j] = buttonTransform.GetChild(j);
-            }
-
-            PlayerData data = CharacterManager.Instance.GetPlayerData(startPlayerKey + i);
-
-            Image image = buttonChildren[0].GetComponent<Image>();
-            image.sprite = Resources.Load<Sprite>(data.SpritePath);
-            image.SetNativeSize();
-
-            TextMeshProUGUI tmpText = buttonChildren[1].GetComponent<TextMeshProUGUI>();
-            tmpText.text = data.Name;
+            _deployBtn = buttonTransform.GetComponent<CardDeployBtn>();
+            _deployBtn.SetPlayerUnit(_startPlayerKey + i);
+            _deployBtn.SetSpawnParent(_spawnParent);
         }
     }
 }
