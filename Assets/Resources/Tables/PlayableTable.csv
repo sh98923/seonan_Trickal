@@ -1,4 +1,4 @@
-Key,Name,EngName,PrefabPath,SpritePath,Layer,SpawnLine,Hp,Atk,Mp,CriRate,Range,Coefficient,LimitLevel,BaseSkill,Ultimate
+﻿Key,Name,EngName,PrefabPath,SpritePath,Layer,SpawnLine,Hp,Atk,Mp,CriRate,Range,Coefficient,LimitLevel,BaseSkill,Ultimate
 0,디아나,Diana,Prefabs/Elf/ElfPaladin,Sprites/CardImage/ElfPaladin,Front,0,130,5,100,0.15,2,1.2,5,1.25,1.5
 1,그윈,Gwin,Prefabs/Elf/ElfKnight,Sprites/CardImage/ElfKnight,Front,0,120,6,100,0.15,2,1.2,5,1.25,1.5
 2,알레트,Alette,Prefabs/Elf/ElfDestroyer,Sprites/CardImage/ElfDestroyer,Front,0,110,7,100,0.15,2,1.2,5,1.25,1.5

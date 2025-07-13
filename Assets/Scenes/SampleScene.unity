@@ -2435,7 +2435,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1943922580}
-        m_TargetAssemblyTypeName: BattleStart, Assembly-CSharp
+        m_TargetAssemblyTypeName: BattleBtn, Assembly-CSharp
         m_MethodName: OnClickStart
         m_Mode: 1
         m_Arguments:
