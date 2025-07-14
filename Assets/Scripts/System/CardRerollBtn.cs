@@ -6,6 +6,6 @@ public class CardReroll : MonoBehaviour
 
     public void OnClickReroll()
     {
-        _selectCardAnimator.Play("CardRoll", 0, 0f); // Áï½Ã cardroll ¾Ö´Ï¸ÞÀÌ¼Ç Àç»ý
+        _selectCardAnimator.Play("CardRoll", 0, 0f); // ï¿½ï¿½ï¿½ cardroll ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ ï¿½ï¿½ï¿½
     }
 }

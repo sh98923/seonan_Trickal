@@ -3,14 +3,17 @@ using UnityEngine;
 public class DeckCard : MonoBehaviour
 {
     private Transform _spawnParent;
+    public Transform SpawnParent
+    {
+        get { return _spawnParent; }
+        set { _spawnParent = value; }
+    }
     private CardDeployBtn _deployBtn;
 
     private int _startPlayerKey;
 
     private void Start()
     {
-        _spawnParent = GameObject.Find("SpawnPlayer").transform;
-
         SetDeckCard();
     }
 
