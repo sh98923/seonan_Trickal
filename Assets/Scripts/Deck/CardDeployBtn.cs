@@ -20,6 +20,7 @@ public class CardDeployBtn : MonoBehaviour
 
     private void Start()
     {
+        _spawnParent = InGameUIPanelManager.Instance.SpawnParent;
         GetComponent<Button>().onClick.AddListener(OnClickMyDeckCard);
     }
 
@@ -55,11 +56,6 @@ public class CardDeployBtn : MonoBehaviour
         {
             _buttonChildren[i] = transform.GetChild(i);
         }
-    }
-
-    public void SetSpawnParent(Transform spawnParent)
-    {
-        _spawnParent = spawnParent;
     }
 
     public void SetPlayerUnit(int key)

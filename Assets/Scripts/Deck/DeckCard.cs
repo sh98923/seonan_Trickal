@@ -2,12 +2,6 @@ using UnityEngine;
 
 public class DeckCard : MonoBehaviour
 {
-    private Transform _spawnParent;
-    public Transform SpawnParent
-    {
-        get { return _spawnParent; }
-        set { _spawnParent = value; }
-    }
     private CardDeployBtn _deployBtn;
 
     private int _startPlayerKey;
@@ -32,7 +26,6 @@ public class DeckCard : MonoBehaviour
 
             _deployBtn = buttonTransform.GetComponent<CardDeployBtn>();
             _deployBtn.SetPlayerUnit(_startPlayerKey + i);
-            _deployBtn.SetSpawnParent(_spawnParent);
         }
     }
 }
