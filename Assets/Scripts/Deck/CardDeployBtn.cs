@@ -26,7 +26,14 @@ public class CardDeployBtn : MonoBehaviour
 
     private void OnClickMyDeckCard()
     {
-        SpawnPlayer();
+        if(BattleStateManager.Instance.IsBattleStart)
+        {
+            UpgradePlayer();
+        }
+        else
+        {
+            SpawnPlayer();
+        }
     }
 
     private void SpawnPlayer()
@@ -46,6 +53,13 @@ public class CardDeployBtn : MonoBehaviour
         player.layer = LayerMask.NameToLayer(_playerData.Layer);
         spawnPos.z = 0.0f;
         player.transform.position = spawnPos;
+
+        BattleUnitManager.Instance.RegisterUnit(_playerData, player);
+    }
+
+    private void UpgradePlayer()
+    {
+        BattleUnitManager.Instance.UpgradeUnit(_playerData.Key);  
     }
 
     private void SetButtonElement()
@@ -64,7 +78,6 @@ public class CardDeployBtn : MonoBehaviour
 
         Image image = _buttonChildren[(int)CardUIElement.Image].GetComponent<Image>();
         image.sprite = Resources.Load<Sprite>(_playerData.SpritePath);
-        image.SetNativeSize();
 
         TextMeshProUGUI tmpText = _buttonChildren[(int)CardUIElement.NameText].GetComponent<TextMeshProUGUI>();
         tmpText.text = _playerData.Name;

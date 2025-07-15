@@ -57,18 +57,5 @@ public class InGameUIPanelManager : Singleton<InGameUIPanelManager>
         List<PlayerData> deployedPlayers = playerSpawn.DeployedDatas;
 
         return deployedPlayers;
-        /*bool isBattleStarted = BattleStateManager.Instance.IsBattleStart;
-
-        if (!isBattleStarted || _isCardSetupComplete)
-            return;
-
-        _isCardSetupComplete = true;
-
-        // 리롤 버튼에서 CardReroll 컴포넌트 참조
-        bool isReroll = _inGameUIs[(int)InGameUIElement.RerollBtn]
-            .GetComponent<CardReroll>().IsReroll;
-
-        // 리롤 후보 세팅
-        reroll.SetRerollCandidates(deployedPlayers);*/
     }
 }

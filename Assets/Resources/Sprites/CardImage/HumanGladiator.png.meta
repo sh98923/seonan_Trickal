@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: d0d3c2b2aa260124ab2e6d2d9c8cbf52
+guid: 7d491f14356f0d844ae8296104faead2
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4398612126033153518
-    second: ElfAssassin_0
+      213: 2549455996824802357
+    second: HumanGladiator_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: ElfAssassin_0
+      name: HumanGladiator_0
       rect:
         serializedVersion: 2
-        x: 85
-        y: 113
-        width: 363
-        height: 324
+        x: 51
+        y: 110
+        width: 448
+        height: 329
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: eed8eec7c620b0d30800000000000000
-      internalID: 4398612126033153518
+      spriteID: 5345b35b8bc716320800000000000000
+      internalID: 2549455996824802357
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      ElfAssassin_0: 4398612126033153518
+      HumanGladiator_0: 2549455996824802357
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
