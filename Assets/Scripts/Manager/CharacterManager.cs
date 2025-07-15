@@ -5,21 +5,13 @@ using static UnityEditor.Experimental.GraphView.GraphView;
 public struct PlayerData
 {
     public int Key;
+    public int StatKey;
     public string Name;
     public string EngName;
     public string PrefabPath;
     public string SpritePath;
     public string Layer;
     public int SpawnLine;
-    public float Hp;
-    public float Atk;
-    public float Mp;
-    public float CriRate;
-    public float Range;
-    public float Coefficient;
-    public float LimitLevel;
-    public float BaseSkill;
-    public float Ultimate;
 }
 
 public struct MonsterData
@@ -96,21 +88,13 @@ public class CharacterManager : Singleton<CharacterManager>
 
             PlayerData data;
             data.Key = int.Parse(colData[0]);
-            data.Name = colData[1];
-            data.EngName = colData[2];
-            data.PrefabPath = colData[3];
-            data.SpritePath = colData[4];
-            data.Layer = colData[5];
-            data.SpawnLine = int.Parse(colData[6]);
-            data.Hp = float.Parse(colData[7]);
-            data.Atk = float.Parse(colData[8]);
-            data.Mp = float.Parse(colData[9]);
-            data.CriRate = float.Parse(colData[10]);
-            data.Range = float.Parse(colData[11]);
-            data.Coefficient = float.Parse(colData[12]);
-            data.LimitLevel = float.Parse(colData[13]);
-            data.BaseSkill = float.Parse(colData[14]);
-            data.Ultimate = float.Parse(colData[15]);
+            data.StatKey = int.Parse(colData[1]);
+            data.Name = colData[2];
+            data.EngName = colData[3];
+            data.PrefabPath = colData[4];
+            data.SpritePath = colData[5];
+            data.Layer = colData[6];
+            data.SpawnLine = int.Parse(colData[7]);
             
             if (_firstPlayerKey == i)
             {
