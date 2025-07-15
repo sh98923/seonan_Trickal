@@ -37,16 +37,19 @@ public class Character : MonoBehaviour
         switch (_curState)
         {
             case State.Idle:
+                _animator.SetBool("IsDead", false);
                 _animator.SetFloat("Speed", 0);
                 break;
             case State.Move:
+                _animator.SetBool("IsDead", false);
                 _animator.SetFloat("Speed", 1.0f);
                 break;
             case State.Attack:
+                _animator.SetBool("IsDead", false);
                 _animator.SetTrigger("Attack");
                 break;
             case State.Dead:
-                _animator.SetTrigger("Dead");
+                _animator.SetBool("IsDead", true);
                 break;
         }
     }
