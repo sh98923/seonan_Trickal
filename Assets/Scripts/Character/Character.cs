@@ -7,6 +7,12 @@ public class Character : MonoBehaviour
         Idle, Move, Attack, Dead
     }
 
+    protected float _hp = 0.0f;
+    protected float _atk = 0.0f;
+    protected float _criRate = 0.0f;
+    protected float _range = 0.0f;
+    protected float _atkCoolTime = 0.0f;
+
     private Animator _animator;
     private State _curState = State.Idle;
 
