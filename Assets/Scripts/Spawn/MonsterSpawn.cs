@@ -42,10 +42,10 @@ public class MonsterSpawn : MonoBehaviour
         if (!_spawned && BattleStateManager.Instance.IsBattleStart)
         {
             int waveKey = StageManager.Instance.StageStartKey + a;
-
+            StageData wave = StageManager.Instance.GetStageData(waveKey);
             Dictionary<int, WaveData> waveMonsters = WaveManager.Instance.GetWaveMonster(waveKey);
 
-            SpawnWaveMonsters(waveMonsters);
+            SpawnWaveMonsters(waveMonsters, wave.Wave);
 
             _spawned = true;
         }
@@ -79,7 +79,7 @@ public class MonsterSpawn : MonoBehaviour
         }
     }
 
-    private void SpawnWaveMonsters(Dictionary<int, WaveData> waveMonsters)
+    private void SpawnWaveMonsters(Dictionary<int, WaveData> waveMonsters, int wave)
     {
         foreach (WaveData data in waveMonsters.Values)
         {
@@ -89,8 +89,9 @@ public class MonsterSpawn : MonoBehaviour
             for (int i = 0; i < data.Count && i < linePositions.Length; i++)
             {
                 GameObject monsterObj = PoolingManager.Instance.Pop(monsterData.Name);
-                monsterObj.transform.position = linePositions[i];
+                monsterObj.GetComponent<Monster>().SetMonsterStat(monsterData, wave);
 
+                monsterObj.transform.position = linePositions[i];
                 Vector3 finalPos = monsterObj.transform.position;
                 finalPos.z = 0.0f;
                 monsterObj.transform.localPosition = finalPos;

@@ -2280,6 +2280,7 @@ GameObject:
   - component: {fileID: 2368045663788370919}
   - component: {fileID: 6607732047690385730}
   - component: {fileID: 464141872976304137}
+  - component: {fileID: -3609653432174002558}
   m_Layer: 0
   m_Name: DevilRogue
   m_TagString: Untagged
@@ -2338,6 +2339,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-3609653432174002558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4395409844309778043}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c518956222b73a4f866151a5cf412be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4489965726675128120
 GameObject:
   m_ObjectHideFlags: 0

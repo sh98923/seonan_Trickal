@@ -3808,6 +3808,7 @@ GameObject:
   - component: {fileID: 6260302321978531010}
   - component: {fileID: 1737700963842926874}
   - component: {fileID: 4465316765206201792}
+  - component: {fileID: 7770433800470687941}
   m_Layer: 7
   m_Name: SkeltonShaman
   m_TagString: Enemy
@@ -3867,6 +3868,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &7770433800470687941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8367268969096744767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c518956222b73a4f866151a5cf412be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8419618076102220071
 GameObject:
   m_ObjectHideFlags: 0

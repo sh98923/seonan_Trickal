@@ -3253,6 +3253,7 @@ GameObject:
   - component: {fileID: 8214775202236879568}
   - component: {fileID: 5798476481912421900}
   - component: {fileID: 710394206696538877}
+  - component: {fileID: -5673632685165174011}
   m_Layer: 0
   m_Name: DevilVanguard
   m_TagString: Untagged
@@ -3311,6 +3312,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-5673632685165174011
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6501152118257230281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c518956222b73a4f866151a5cf412be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6715316468151848024
 GameObject:
   m_ObjectHideFlags: 0

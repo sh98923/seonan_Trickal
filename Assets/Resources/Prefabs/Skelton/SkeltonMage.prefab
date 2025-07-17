@@ -4268,6 +4268,7 @@ GameObject:
   - component: {fileID: 2740132119626579061}
   - component: {fileID: 867976992889558492}
   - component: {fileID: 9173335986549780146}
+  - component: {fileID: 6500149532511272506}
   m_Layer: 7
   m_Name: SkeltonMage
   m_TagString: Enemy
@@ -4327,3 +4328,15 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &6500149532511272506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8596251588449234241}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c518956222b73a4f866151a5cf412be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

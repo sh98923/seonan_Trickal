@@ -3624,6 +3624,7 @@ GameObject:
   - component: {fileID: 1227247619526886476}
   - component: {fileID: 1793437393612748826}
   - component: {fileID: 7246423941701921428}
+  - component: {fileID: 7652968278390003018}
   m_Layer: 7
   m_Name: SkeltonArcher
   m_TagString: Enemy
@@ -3683,6 +3684,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &7652968278390003018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7798869750781486092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c518956222b73a4f866151a5cf412be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7812298233483762025
 GameObject:
   m_ObjectHideFlags: 0

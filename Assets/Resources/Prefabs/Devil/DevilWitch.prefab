@@ -1712,6 +1712,7 @@ GameObject:
   - component: {fileID: 4193208169553579878}
   - component: {fileID: 1426781134554575789}
   - component: {fileID: 6448899269395745025}
+  - component: {fileID: 7582566654208992344}
   m_Layer: 0
   m_Name: DevilWitch
   m_TagString: Untagged
@@ -1770,6 +1771,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &7582566654208992344
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3163186660834342025}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c518956222b73a4f866151a5cf412be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3304075462920347626
 GameObject:
   m_ObjectHideFlags: 0
