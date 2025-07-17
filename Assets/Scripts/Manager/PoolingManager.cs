@@ -28,6 +28,20 @@ public class PoolingManager : Singleton<PoolingManager>
         _totalObject.Add(key, objects);
     }
 
+    public void InActiveAll()
+    {
+        foreach(KeyValuePair<string, List<GameObject>> _objects in _totalObject)
+        {
+            for(int i = 0; i < _objects.Value.Count; i++)
+            {
+                if (_objects.Value[i].activeSelf)
+                {
+                    _objects.Value[i].gameObject.SetActive(false);
+                }
+            }
+        }
+    }
+
     public GameObject Pop(string key)
     {
         foreach (GameObject obj in _totalObject[key])

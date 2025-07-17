@@ -15,13 +15,17 @@ public class MonsterSpawn : MonoBehaviour
         { FormationLayer.Back, new Vector3[3] }
     };
 
+    private readonly int _poolSize = 3;
+
     private int _startMonsterIndex;
     private int a = 0;
+
     private bool _spawned = false;
 
     private void Start()
     {
         _startMonsterIndex = SpawnManager.Instance.StartMonsterSpawnKey;
+        LoadMonsterPool();
         LoadMonsterPos();
     }
 
@@ -31,6 +35,7 @@ public class MonsterSpawn : MonoBehaviour
         {
             _spawned = false;
             BattleStateManager.Instance.IsBattleStart = true;
+            PoolingManager.Instance.InActiveAll();
             a++;
         }
 
@@ -64,6 +69,16 @@ public class MonsterSpawn : MonoBehaviour
         }
     }
 
+    private void LoadMonsterPool()
+    {
+        //몬스터 종류마다 한 번씩만 등록
+        foreach (MonsterData monsterData in CharacterManager.Instance.AllMonsterDatas)
+        {
+            GameObject prefab = Resources.Load<GameObject>(monsterData.PrefabPath);
+            PoolingManager.Instance.Add(monsterData.Name, _poolSize, prefab, transform);
+        }
+    }
+
     private void SpawnWaveMonsters(Dictionary<int, WaveData> waveMonsters)
     {
         foreach (WaveData data in waveMonsters.Values)
@@ -73,13 +88,12 @@ public class MonsterSpawn : MonoBehaviour
 
             for (int i = 0; i < data.Count && i < linePositions.Length; i++)
             {
-                GameObject prefab = Resources.Load<GameObject>(monsterData.PrefabPath);
-                GameObject monster = Instantiate(prefab, transform);
-                monster.transform.position = linePositions[i];
+                GameObject monsterObj = PoolingManager.Instance.Pop(monsterData.Name);
+                monsterObj.transform.position = linePositions[i];
 
-                Vector3 finalPos = monster.transform.position;
+                Vector3 finalPos = monsterObj.transform.position;
                 finalPos.z = 0.0f;
-                monster.transform.localPosition = finalPos;
+                monsterObj.transform.localPosition = finalPos;
             }
         }
     }

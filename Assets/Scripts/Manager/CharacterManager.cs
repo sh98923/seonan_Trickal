@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using static UnityEditor.Experimental.GraphView.GraphView;
 
 public struct PlayerData
@@ -22,8 +23,12 @@ public struct MonsterData
     public string Layer;
     public int SpawnLine;
     public float Hp;
+    public float HpPerWave;
+    public float HpGrowthRate;
     public float Atk;
-    public float Mp;
+    public float AtkPerWave;
+    public float AtkGrowthRate;
+    public float AtkCoolTime;
     public float CriRate;
     public float Range;
 }
@@ -32,6 +37,10 @@ public class CharacterManager : Singleton<CharacterManager>
 {
     private Dictionary<int, PlayerData> _playerDatas = new Dictionary<int, PlayerData>();
     private Dictionary<int, MonsterData> _monsterDatas = new Dictionary<int, MonsterData>();
+    public IEnumerable<MonsterData> AllMonsterDatas
+    {
+        get { return _monsterDatas.Values; }
+    }
 
     private readonly int _firstPlayerKey = 1;
     private int _playerStartKey;
@@ -125,10 +134,14 @@ public class CharacterManager : Singleton<CharacterManager>
             data.Layer = colData[3];
             data.SpawnLine = int.Parse(colData[4]);
             data.Hp = float.Parse(colData[5]);
-            data.Atk = float.Parse(colData[6]);
-            data.Mp = float.Parse(colData[7]);
-            data.CriRate = float.Parse(colData[8]);
-            data.Range = float.Parse(colData[9]);
+            data.HpPerWave = float.Parse(colData[6]);
+            data.HpGrowthRate = float.Parse(colData[7]);
+            data.Atk = float.Parse(colData[8]);
+            data.AtkPerWave = float.Parse(colData[9]);
+            data.AtkGrowthRate = float.Parse(colData[10]);
+            data.AtkCoolTime = float.Parse(colData[11]);
+            data.CriRate = float.Parse(colData[12]);
+            data.Range = float.Parse(colData[13]);
 
             if (_firstMonsterKey == i)
             {
