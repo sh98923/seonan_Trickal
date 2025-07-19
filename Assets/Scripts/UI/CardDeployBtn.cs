@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,8 +11,9 @@ public class CardDeployBtn : MonoBehaviour
         Image, NameText
     }
 
+    private InGameUIPanel _inGameUIPanel;
     private Transform[] _buttonChildren;
-    private Transform _spawnParent;
+    private PlayerSpawn _spawnParent;
     private PlayerData _playerData;
 
     private void Awake()
@@ -20,7 +23,8 @@ public class CardDeployBtn : MonoBehaviour
 
     private void Start()
     {
-        _spawnParent = InGameUIPanelManager.Instance.SpawnParent;
+        _inGameUIPanel = GetComponentInParent<InGameUIPanel>();
+        _spawnParent = _inGameUIPanel.SpawnParent.GetComponent<PlayerSpawn>();
         GetComponent<Button>().onClick.AddListener(OnClickMyDeckCard);
     }
 
@@ -38,7 +42,10 @@ public class CardDeployBtn : MonoBehaviour
 
     private void SpawnPlayer()
     {
-        Vector3 spawnPos = _spawnParent.GetComponent<PlayerSpawn>().SetPlayerPos(_playerData);
+        if (_spawnParent.IsDataDeployed(_playerData)) 
+            return;
+
+        Vector3 spawnPos = _spawnParent.SetPlayerPos(_playerData);
 
         // 위치 못 찾으면 생성을 안 함
         if (spawnPos == Vector3.zero)
@@ -48,7 +55,7 @@ public class CardDeployBtn : MonoBehaviour
         }
 
         GameObject playerPrefab = Resources.Load<GameObject>(_playerData.PrefabPath);
-        GameObject player = Instantiate(playerPrefab, _spawnParent);
+        GameObject player = Instantiate(playerPrefab, _spawnParent.transform);
         player.name = _playerData.EngName;
         player.layer = LayerMask.NameToLayer(_playerData.Layer);
         spawnPos.z = 0.0f;

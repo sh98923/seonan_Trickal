@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.LightingExplorerTableColumn;
 
 public struct FormationSlot
 {
@@ -52,6 +53,16 @@ public class PlayerSpawn : MonoBehaviour
                 index++;
             }
         }
+    }
+
+    public bool IsDataDeployed(PlayerData data)
+    {
+        for(int i = 0; i < _deployedDatas.Count; i++)
+        {
+            if (_deployedDatas[i].Key == data.Key)
+                return true;
+        }
+        return false;
     }
 
     public Vector3 SetPlayerPos(PlayerData data)
