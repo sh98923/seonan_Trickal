@@ -13,51 +13,44 @@ public class CardRerollPanel : MonoBehaviour
 
     private List<PlayerData> _rerollCandidates = new List<PlayerData>();
     private InGameUIPanel _inGameUIPanel;
-    private Animator _cardRerollAnimator;
+    private Animator _CardRerollPanelAnimator;
     private Button[] _cardBtns;
+
+    private int _cardCount = (int)CardRerollPanelButton.CardCount;
 
     private void Awake()
     {
         _cardBtns = GetComponentsInChildren<Button>();
         _inGameUIPanel = GetComponentInParent<InGameUIPanel>();
-        _cardRerollAnimator = GetComponent<Animator>();
-    }
-
-    private void OnEnable()
-    {
-        BattleStateManager.Instance.OnBattleStartChanged += HandleBattleStartChanged;
-    }
-
-    private void OnDisable()
-    {
-        BattleStateManager.Instance.OnBattleStartChanged -= HandleBattleStartChanged;
+        _CardRerollPanelAnimator = GetComponent<Animator>();
     }
 
     private void Start()
     {
+        _rerollCandidates = _inGameUIPanel.SetRerollCandidates();
+
+        for (int i = 0; i < _cardCount; i++)
+        {
+            int index = i;
+            _cardBtns[i].onClick.AddListener(() => OnClickCard(index));
+        }
+
         _cardBtns[(int)CardRerollPanelButton.Reroll].onClick.AddListener(OnClickReroll);
     }
 
     private void OnClickReroll()
     {
-        SetRandomCard();
-        _cardRerollAnimator.Play("CardRoll", 0, 0f);
+        _CardRerollPanelAnimator.Play("CardRoll", 0, 0f);
     }
 
-    private void HandleBattleStartChanged(bool isBattleStart)
+    private void OnClickCard(int index)
     {
-        if (isBattleStart)
-        {
-            _rerollCandidates = _inGameUIPanel.SetRerollCandidates();
-            SetRandomCard();
-        }
+        _CardRerollPanelAnimator.SetTrigger("SelectedCard" + index);
     }
 
-    private void SetRandomCard()
+    private void OnCardDataRamdomSet()
     {
-        int cardCount = (int)CardRerollPanelButton.CardCount;
-
-        for (int i = 0; i < cardCount; i++)
+        for (int i = 0; i < _cardCount; i++)
         {
             int randomIndex = Random.Range(0, _rerollCandidates.Count);
             _cardBtns[i].GetComponent<CardDeployBtn>().SetPlayerUnit(_rerollCandidates[randomIndex].Key);

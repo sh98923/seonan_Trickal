@@ -42,8 +42,12 @@ public class CardDeployBtn : MonoBehaviour
 
     private void SpawnPlayer()
     {
-        if (_spawnParent.IsDataDeployed(_playerData)) 
+        if (_spawnParent.IsDataDeployed(_playerData))
+        {
+            Debug.LogWarning(_playerData.Name + "이(가) 이미 배치되어 있습니다.");
             return;
+        }
+
 
         Vector3 spawnPos = _spawnParent.SetPlayerPos(_playerData);
 
