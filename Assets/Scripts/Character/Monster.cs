@@ -1,9 +1,26 @@
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class Monster : Character
 {
     private float _finalHp;
     private float _finalAtk;
+
+    [SerializeField] private float _searchRadius = 5f;
+    [SerializeField] private float _moveSpeed = 2f;
+
+    private Transform _target;
+
+    private void Update()
+    {
+        FindPlayer();
+
+        if (_target != null)
+        {
+            Vector2 dir = (_target.position - transform.position).normalized;
+            transform.position += (Vector3)(dir * _moveSpeed * Time.deltaTime);
+        }
+    }
 
     public void SetMonsterStat(MonsterData data, int wave)
     {
@@ -26,5 +43,34 @@ public class Monster : Character
         _finalAtk = Mathf.Round(_finalAtk * 10f) * 0.1f;
 
         print(data.Name + " : " + _finalHp.ToString("F1") + ", " + _finalAtk.ToString("F1"));
+    }
+
+    private void FindPlayer()
+    {
+        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, _searchRadius);
+
+        float closestDistance = float.MaxValue;
+        Transform closestPlayer = null;
+
+        foreach (Collider2D hit in hits)
+        {
+            if (hit.CompareTag("Player"))
+            {
+                float dist = Vector2.Distance(transform.position, hit.transform.position);
+                if (dist < closestDistance)
+                {
+                    closestDistance = dist;
+                    closestPlayer = hit.transform;
+                }
+            }
+        }
+
+        _target = closestPlayer;
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, _searchRadius);
     }
 }

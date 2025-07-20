@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class Character : MonoBehaviour
 {
@@ -13,12 +14,14 @@ public class Character : MonoBehaviour
     protected float _range = 0.0f;
     protected float _atkCoolTime = 0.0f;
 
+    private SortingGroup _sortingGroup;
     private Animator _animator;
     private State _curState = State.Idle;
 
     private void Awake() 
     { 
         _animator = GetComponent<Animator>();
+        _sortingGroup = GetComponent<SortingGroup>();
     }
 
     private void Update()
@@ -58,5 +61,7 @@ public class Character : MonoBehaviour
                 _animator.SetBool("IsDead", true);
                 break;
         }
+
+        _sortingGroup.sortingOrder = Mathf.RoundToInt(-transform.position.y * 100);
     }
 }
