@@ -1,29 +1,95 @@
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 public class Monster : Character
 {
     private float _finalHp;
     private float _finalAtk;
 
-    [SerializeField] private float _searchRadius = 5f;
-    [SerializeField] private float _moveSpeed = 2f;
-
-    private Transform _target;
+    private void Awake()
+    {
+        base.Awake();
+        _moveDir = Vector2.left;
+    }
 
     private void Update()
     {
-        FindPlayer();
+        base.Update();
+        _target = FindPlayer();
+    }
 
-        if (_target != null)
+    protected override void IdleStateAction()
+    {
+        base.IdleStateAction();
+
+        if (BattleStateManager.Instance.IsBattleStart)
         {
-            Vector2 dir = (_target.position - transform.position).normalized;
-            transform.position += (Vector3)(dir * _moveSpeed * Time.deltaTime);
+            _curState = State.Move;
         }
+    }
+
+    protected override void MoveStateAction()
+    {
+        base.MoveStateAction();
+
+        if(_target == null)
+        {
+            transform.Translate(_moveDir * _moveSpeed * Time.deltaTime);
+        }
+        else
+        {
+            if (_type == "Melee" &&
+                Mathf.Abs(_target.transform.position.y - transform.position.y) > 0.75f)
+            {
+                Vector2 dir = _target.transform.position - transform.position;
+                transform.Translate(dir.normalized * _moveSpeed * Time.deltaTime);
+            }
+            else
+            {
+                _curState = State.Attack;
+            }
+        }
+    }
+
+    protected override void AttackStateAction()
+    {
+        base.AttackStateAction();
+
+        if(_target == null)
+        {
+            _curState = State.Move;
+        }
+    }
+
+    private Transform FindPlayer()
+    {
+        Vector3 pos = transform.position;
+        pos.y += _colliderOffset;
+
+        Collider2D[] hits = Physics2D.OverlapCircleAll(pos, _range);
+
+        float closestDistance = float.MaxValue;
+        Transform closestPlayer = null;
+
+        foreach (Collider2D hit in hits)
+        {
+            if (hit.CompareTag("Player"))
+            {
+                float dist = Vector2.Distance(transform.position, hit.transform.position);
+                if (dist < closestDistance)
+                {
+                    closestDistance = dist;
+                    closestPlayer = hit.transform;
+                }
+            }
+        }
+
+        return closestPlayer;
     }
 
     public void SetMonsterStat(MonsterData data, int wave)
     {
+        _type = data.Type;
+
         _criRate = data.CriRate;
         _range = data.Range;
         _atkCoolTime = data.AtkCoolTime;
@@ -43,34 +109,5 @@ public class Monster : Character
         _finalAtk = Mathf.Round(_finalAtk * 10f) * 0.1f;
 
         print(data.Name + " : " + _finalHp.ToString("F1") + ", " + _finalAtk.ToString("F1"));
-    }
-
-    private void FindPlayer()
-    {
-        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, _searchRadius);
-
-        float closestDistance = float.MaxValue;
-        Transform closestPlayer = null;
-
-        foreach (Collider2D hit in hits)
-        {
-            if (hit.CompareTag("Player"))
-            {
-                float dist = Vector2.Distance(transform.position, hit.transform.position);
-                if (dist < closestDistance)
-                {
-                    closestDistance = dist;
-                    closestPlayer = hit.transform;
-                }
-            }
-        }
-
-        _target = closestPlayer;
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, _searchRadius);
     }
 }

@@ -31,6 +31,7 @@ public struct MonsterData
     public float AtkCoolTime;
     public float CriRate;
     public float Range;
+    public string Type;
 }
 
 public class CharacterManager : Singleton<CharacterManager>
@@ -142,6 +143,7 @@ public class CharacterManager : Singleton<CharacterManager>
             data.AtkCoolTime = float.Parse(colData[11]);
             data.CriRate = float.Parse(colData[12]);
             data.Range = float.Parse(colData[13]);
+            data.Type = colData[14];
 
             if (_firstMonsterKey == i)
             {
