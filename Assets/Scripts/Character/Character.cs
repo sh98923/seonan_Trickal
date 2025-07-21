@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -11,17 +10,18 @@ public class Character : MonoBehaviour
 
     private SortingGroup _sortingGroup;
     private Animator _animator;
-    protected Transform _target;
+    protected Collider2D _target;
 
     protected Vector2 _moveDir;
     protected State _curState = State.Idle;
 
     protected string _type = "";
     protected readonly float _colliderOffset = 0.5f;
+    protected readonly float _findTargetRange = 5.0f;
     protected float _hp = 0.0f;
     protected float _atk = 0.0f;
     protected float _criRate = 0.0f;
-    protected float _range = 0.0f;
+    protected float _attackRange = 0.0f;
     protected float _atkCoolTime = 0.0f;
     protected float _moveSpeed = 2.0f;
     private float _attackCoolTimer = 0.0f;
@@ -37,23 +37,6 @@ public class Character : MonoBehaviour
 
     protected void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            _curState = State.Idle;
-        }
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            _curState = State.Move;
-        }
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            _curState = State.Attack;
-        }
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            _curState = State.Dead;
-        }
-
         switch (_curState)
         {
             case State.Idle:
@@ -109,9 +92,43 @@ public class Character : MonoBehaviour
         }
     }
 
+    protected Collider2D FindTarget(string target, float range)
+    {
+        Vector3 pos = transform.position;
+        pos.y += _colliderOffset;
+
+        Collider2D[] hits = Physics2D.OverlapCircleAll(pos, range);
+
+        float closestDistance = float.MaxValue;
+        Collider2D closestTarget = null;
+
+        foreach (Collider2D hit in hits)
+        {
+            if (hit.CompareTag(target))
+            {
+                float dist = Vector2.Distance(pos, hit.transform.position);
+                if (dist < closestDistance)
+                {
+                    closestDistance = dist;
+                    closestTarget = hit;
+                }
+            }
+        }
+
+        return closestTarget;
+    }
+
     protected virtual void DeadStateAction()
     {
         _animator.SetTrigger("Dead");
+    }
+
+    public virtual void SetCharacterStat(MonsterData data, int wave)
+    {
+        _type = data.Type;
+        _criRate = data.CriRate;
+        _attackRange = data.Range;
+        _atkCoolTime = data.AtkCoolTime;
     }
 
     private void OnDrawGizmosSelected()
@@ -121,6 +138,10 @@ public class Character : MonoBehaviour
         Vector3 pos = transform.position;
         pos.y += _colliderOffset;
 
-        Gizmos.DrawWireSphere(pos, _range);
+        Gizmos.DrawWireSphere(pos, _attackRange);
+
+
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(pos, _findTargetRange);
     }
 }

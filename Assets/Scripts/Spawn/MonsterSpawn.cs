@@ -89,7 +89,7 @@ public class MonsterSpawn : MonoBehaviour
             for (int i = 0; i < data.Count && i < linePositions.Length; i++)
             {
                 GameObject monsterObj = PoolingManager.Instance.Pop(monsterData.Name);
-                monsterObj.GetComponent<Monster>().SetMonsterStat(monsterData, wave);
+                monsterObj.GetComponent<Monster>().SetCharacterStat(monsterData, wave);
 
                 monsterObj.transform.position = linePositions[i];
                 Vector3 finalPos = monsterObj.transform.position;

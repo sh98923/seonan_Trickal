@@ -2,9 +2,6 @@ using UnityEngine;
 
 public class Monster : Character
 {
-    private float _finalHp;
-    private float _finalAtk;
-
     private void Awake()
     {
         base.Awake();
@@ -14,7 +11,7 @@ public class Monster : Character
     private void Update()
     {
         base.Update();
-        _target = FindPlayer();
+        _target = FindTarget("Player", _findTargetRange);
     }
 
     protected override void IdleStateAction()
@@ -37,8 +34,7 @@ public class Monster : Character
         }
         else
         {
-            if (_type == "Melee" &&
-                Mathf.Abs(_target.transform.position.y - transform.position.y) > 0.75f)
+            if (FindTarget("Player", _attackRange) == null)
             {
                 Vector2 dir = _target.transform.position - transform.position;
                 transform.Translate(dir.normalized * _moveSpeed * Time.deltaTime);
@@ -60,54 +56,24 @@ public class Monster : Character
         }
     }
 
-    private Transform FindPlayer()
+    public override void SetCharacterStat(MonsterData data, int wave)
     {
-        Vector3 pos = transform.position;
-        pos.y += _colliderOffset;
-
-        Collider2D[] hits = Physics2D.OverlapCircleAll(pos, _range);
-
-        float closestDistance = float.MaxValue;
-        Transform closestPlayer = null;
-
-        foreach (Collider2D hit in hits)
-        {
-            if (hit.CompareTag("Player"))
-            {
-                float dist = Vector2.Distance(transform.position, hit.transform.position);
-                if (dist < closestDistance)
-                {
-                    closestDistance = dist;
-                    closestPlayer = hit.transform;
-                }
-            }
-        }
-
-        return closestPlayer;
-    }
-
-    public void SetMonsterStat(MonsterData data, int wave)
-    {
-        _type = data.Type;
-
-        _criRate = data.CriRate;
-        _range = data.Range;
-        _atkCoolTime = data.AtkCoolTime;
+        base.SetCharacterStat(data, wave);
 
         float hpLinear = data.Hp + data.HpPerWave * wave;
         float hpExp = data.Hp * Mathf.Pow(data.HpGrowthRate, wave);
 
         // 두 가지의 공식을 평균 낸 값 (선형, 지수)
-        _finalHp = (hpLinear + hpExp) * 0.5f;
+        _hp = (hpLinear + hpExp) * 0.5f;
         // Round가 정수로만 반올림 하기 떄문에
         // 소수점 첫째자리까지 나오게 하기위한 수식
-        _finalHp = Mathf.Round(_finalHp * 10f) * 0.1f;
+        _hp = Mathf.Round(_hp * 10f) * 0.1f;
 
         float atkLinear = data.Atk + data.AtkPerWave * wave;
         float atkExp = data.Atk * Mathf.Pow(data.AtkGrowthRate, wave);
-        _finalAtk = (atkLinear + atkExp) * 0.5f;
-        _finalAtk = Mathf.Round(_finalAtk * 10f) * 0.1f;
+        _atk = (atkLinear + atkExp) * 0.5f;
+        _atk = Mathf.Round(_atk * 10f) * 0.1f;
 
-        print(data.Name + " : " + _finalHp.ToString("F1") + ", " + _finalAtk.ToString("F1"));
+        print(data.Name + " : " + _hp.ToString("F1") + ", " + _atk.ToString("F1"));
     }
 }
