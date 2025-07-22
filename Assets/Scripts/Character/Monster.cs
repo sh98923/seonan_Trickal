@@ -56,6 +56,24 @@ public class Monster : Character
         }
     }
 
+    public void OnAttackHit()
+    {
+        Collider2D[] hitTargets = Physics2D.OverlapCircleAll(_attackPoint.position, _attackRange);
+
+        foreach (Collider2D hitTarget in hitTargets)
+        {
+            if (hitTarget.CompareTag("Player"))
+            {
+                Character player = hitTarget.GetComponent<Character>();
+                if (player != null)
+                {
+                    player.TakeDamage(_atk);
+                }
+            }
+        }
+    }
+
+
     public override void SetCharacterStat(MonsterData data, int wave)
     {
         base.SetCharacterStat(data, wave);

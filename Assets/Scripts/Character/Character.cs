@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -10,7 +11,9 @@ public class Character : MonoBehaviour
 
     private SortingGroup _sortingGroup;
     private Animator _animator;
+    private SpriteRenderer[] _spriteRenderers;
     protected Collider2D _target;
+    [SerializeField] protected Transform _attackPoint;
 
     protected Vector2 _moveDir;
     protected State _curState = State.Idle;
@@ -28,15 +31,24 @@ public class Character : MonoBehaviour
     private float _animLength = 0.0f;
 
     private bool _isAttacking = false;
+    private bool _isDead = false;
+    private float _fadeDuration = 3.0f;
 
     protected void Awake() 
     { 
         _animator = GetComponent<Animator>();
         _sortingGroup = GetComponent<SortingGroup>();
+        _spriteRenderers = GetComponentsInChildren<SpriteRenderer>(true);
     }
 
     protected void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            _hp -= 30f;
+            Debug.Log($"{gameObject.name} HP: {_hp}");
+        }
+
         switch (_curState)
         {
             case State.Idle:
@@ -76,6 +88,17 @@ public class Character : MonoBehaviour
         _animator.SetTrigger("Attack");
 
         _animLength = _animator.GetCurrentAnimatorStateInfo(0).length;
+    }
+
+    public void TakeDamage(float damage)
+    {
+        _hp -= damage;
+        Debug.Log($"현재 체력: {_hp}");
+
+        if (_hp <= 0 && !_isDead)
+        {
+            _curState = State.Dead;
+        }
     }
 
     private void AttackCoolTime()
@@ -120,7 +143,37 @@ public class Character : MonoBehaviour
 
     protected virtual void DeadStateAction()
     {
+        if (_isDead) 
+            return;
+
+        _isDead = true;
         _animator.SetTrigger("Dead");
+        GetComponent<Collider2D>().enabled = false;
+
+        StartCoroutine(FadeOutAndInactive());
+    }
+
+    private IEnumerator FadeOutAndInactive()
+    {
+        yield return new WaitForSeconds(3.0f);
+
+        float timer = 0;
+
+        while (timer < _fadeDuration)
+        {
+            timer += Time.deltaTime;
+            float alpha = Mathf.Lerp(1.0f, 0, timer / _fadeDuration);
+
+            for (int i = 0; i < _spriteRenderers.Length; i++)
+            {
+                var color = _spriteRenderers[i].color;
+                _spriteRenderers[i].color = new Color(color.r, color.g, color.b, alpha);
+            }
+
+            yield return null;
+        }
+
+        gameObject.SetActive(false);
     }
 
     public virtual void SetCharacterStat(MonsterData data, int wave)
@@ -129,6 +182,11 @@ public class Character : MonoBehaviour
         _criRate = data.CriRate;
         _attackRange = data.Range;
         _atkCoolTime = data.AtkCoolTime;
+    }
+
+    public void SetPlayerStat(PlayerStatData data)
+    {
+        _hp = data.Hp;
     }
 
     private void OnDrawGizmosSelected()

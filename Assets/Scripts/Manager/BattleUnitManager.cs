@@ -21,7 +21,7 @@ public class BattleUnitManager : Singleton<BattleUnitManager>
 
 public class PlayerUnit
 {
-    private GameObject _playerUnitObj;
+    private Character _playerUnitObj;
 
     private PlayerStatData[] _playerStats;
 
@@ -32,7 +32,8 @@ public class PlayerUnit
         _playerStats = PlayerStatManager.Instance.GetPlayerStatData(data.StatKey);
 
         // 여기서 이제 캐릭터 스크립트에 스탯 설정하는 함수 있으면 스탯 세팅 해주면 댐
-        _playerUnitObj = unit;
+        _playerUnitObj = unit.GetComponent<Character>();
+        _playerUnitObj.SetPlayerStat(_playerStats[_level]);
     }
 
     public void LevelUp()
@@ -42,7 +43,7 @@ public class PlayerUnit
         if (_level >= _playerStats.Length) return;
 
         Debug.Log(_playerUnitObj.name + " " + _playerStats[_level].Hp + " " + _playerStats[_level].Mp + " " + _playerStats[_level].Atk);
-        Character curUnit = _playerUnitObj.GetComponent<Character>();
+        _playerUnitObj.SetPlayerStat(_playerStats[_level]);
         //curUnit.(_playerStat[levelUp]);
     }
 }
