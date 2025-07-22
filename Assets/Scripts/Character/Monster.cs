@@ -18,7 +18,7 @@ public class Monster : Character
     {
         base.IdleStateAction();
 
-        if (BattleStateManager.Instance.IsBattleStart)
+        if (BattleStateManager.Instance.IsBattle)
         {
             _curState = State.Move;
         }

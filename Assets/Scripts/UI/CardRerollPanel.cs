@@ -1,28 +1,29 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
-using JetBrains.Annotations;
 
 public class CardRerollPanel : MonoBehaviour
 {
-    private enum CardRerollPanelButton
+    private enum CardRerollUIElement
     {
-        LeftCard, CenterCard, RightCard, Reroll,
+        LeftCardPanel, CenterCardPanel, RightCardPanel, RerollBtn,
         CardCount = 3
     }
 
     private List<PlayerData> _rerollCandidates = new List<PlayerData>();
     private InGameUIPanel _inGameUIPanel;
-    private Animator _CardRerollPanelAnimator;
+    private Animator _rerollAnimator;
+    private Transform[] _rerollChildren;
     private Button[] _cardBtns;
 
-    private int _cardCount = (int)CardRerollPanelButton.CardCount;
+    private int _cardCount = (int)CardRerollUIElement.CardCount;
 
     private void Awake()
     {
-        _cardBtns = GetComponentsInChildren<Button>();
+        _rerollAnimator = GetComponent<Animator>();
         _inGameUIPanel = GetComponentInParent<InGameUIPanel>();
-        _CardRerollPanelAnimator = GetComponent<Animator>();
+        
+        InitRerollUI();
     }
 
     private void Start()
@@ -35,17 +36,31 @@ public class CardRerollPanel : MonoBehaviour
             _cardBtns[i].onClick.AddListener(() => OnClickCard(index));
         }
 
-        _cardBtns[(int)CardRerollPanelButton.Reroll].onClick.AddListener(OnClickReroll);
+        _cardBtns[(int)CardRerollUIElement.RerollBtn].onClick.AddListener(OnClickReroll);
+    }
+
+    private void InitRerollUI()
+    {
+        int childCount = transform.childCount;
+        _rerollChildren = new Transform[childCount];
+        _cardBtns = new Button[childCount];
+
+        for (int i = 0; i < childCount; i++)
+        {
+            Transform child = transform.GetChild(i);
+            _rerollChildren[i] = child;
+            _cardBtns[i] = child.GetComponentInChildren<Button>();
+        }
     }
 
     private void OnClickReroll()
     {
-        _CardRerollPanelAnimator.Play("CardRoll", 0, 0f);
+        _rerollAnimator.Play("CardRoll", 0, 0f);
     }
 
     private void OnClickCard(int index)
     {
-        _CardRerollPanelAnimator.SetTrigger("SelectedCard" + index);
+        _rerollAnimator.SetTrigger("SelectedCard" + index);
     }
 
     private void OnCardDataRamdomSet()
@@ -53,7 +68,8 @@ public class CardRerollPanel : MonoBehaviour
         for (int i = 0; i < _cardCount; i++)
         {
             int randomIndex = Random.Range(0, _rerollCandidates.Count);
-            _cardBtns[i].GetComponent<CardDeployBtn>().SetPlayerUnit(_rerollCandidates[randomIndex].Key);
+            _rerollChildren[i].GetComponent<CardPanel>()
+                .SetPlayerUnit(_rerollCandidates[randomIndex].Key);
         }
     }
 }

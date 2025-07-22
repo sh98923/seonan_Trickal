@@ -1,36 +1,54 @@
-using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CardDeployBtn : MonoBehaviour
+public class CardPanel : MonoBehaviour
 {
     private enum CardUIElement
     {
-        Image, NameText
+        cardBG, DeployButton, CostImage
+    }
+
+    private enum BtnUIElement
+    {
+        CharacterImage, CharacterName
     }
 
     private InGameUIPanel _inGameUIPanel;
-    private Transform[] _buttonChildren;
+    private Transform[] _cardPanelChildren;
     private PlayerSpawn _spawnParent;
     private PlayerData _playerData;
 
     private void Awake()
     {
-        SetButtonElement();
+        InitUIElements();
     }
 
     private void Start()
     {
         _inGameUIPanel = GetComponentInParent<InGameUIPanel>();
         _spawnParent = _inGameUIPanel.SpawnParent.GetComponent<PlayerSpawn>();
-        GetComponent<Button>().onClick.AddListener(OnClickMyDeckCard);
+
+        _cardPanelChildren[(int)CardUIElement.DeployButton].
+            GetComponent<Button>().onClick.AddListener(OnClickMyDeckCard);
+
+        _cardPanelChildren[(int)CardUIElement.CostImage].gameObject.SetActive(false);  
+    }
+
+    private void Update()
+    {
+        UpdateCostImageVisibility();
+    }
+
+    private void UpdateCostImageVisibility()
+    {
+        bool shouldShow = BattleStateManager.Instance.IsReroll;
+        _cardPanelChildren[(int)CardUIElement.CostImage].gameObject.SetActive(shouldShow);
     }
 
     private void OnClickMyDeckCard()
     {
-        if(BattleStateManager.Instance.IsBattleStart)
+        if(BattleStateManager.Instance.IsReroll)
         {
             UpgradePlayer();
         }
@@ -73,13 +91,13 @@ public class CardDeployBtn : MonoBehaviour
         BattleUnitManager.Instance.UpgradeUnit(_playerData.Key);  
     }
 
-    private void SetButtonElement()
+    private void InitUIElements()
     {
-        _buttonChildren = new Transform[transform.childCount];
+        _cardPanelChildren = new Transform[transform.childCount];
 
-        for (int i = 0; i < _buttonChildren.Length; i++)
+        for (int i = 0; i < _cardPanelChildren.Length; i++)
         {
-            _buttonChildren[i] = transform.GetChild(i);
+            _cardPanelChildren[i] = transform.GetChild(i);
         }
     }
 
@@ -87,10 +105,14 @@ public class CardDeployBtn : MonoBehaviour
     {
         _playerData = CharacterManager.Instance.GetPlayerData(key);
 
-        Image image = _buttonChildren[(int)CardUIElement.Image].GetComponent<Image>();
-        image.sprite = Resources.Load<Sprite>(_playerData.SpritePath);
+        Transform deployBtn = _cardPanelChildren[(int)CardUIElement.DeployButton];
 
-        TextMeshProUGUI tmpText = _buttonChildren[(int)CardUIElement.NameText].GetComponent<TextMeshProUGUI>();
-        tmpText.text = _playerData.Name;
+        Image characterImage = 
+            deployBtn.GetChild((int)BtnUIElement.CharacterImage).GetComponent<Image>();
+        characterImage.sprite = Resources.Load<Sprite>(_playerData.SpritePath);
+
+        TextMeshProUGUI characterName = 
+            deployBtn.GetChild((int)BtnUIElement.CharacterName).GetComponent<TextMeshProUGUI>();
+        characterName.text = _playerData.Name;
     }
 }

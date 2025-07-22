@@ -5,8 +5,9 @@ using UnityEngine.UI;
 public class DeckCardPanel : MonoBehaviour
 {
     private InGameUIPanel _inGameUIPanel;
-    private CardDeployBtn _deployBtn;
+    private CardPanel _deployBtn;
     private GameObject _cardRerollPanel;
+    private GameObject _battleStartPanel;
     private GameObject _deckPanel;
 
     private int _startPlayerKey;
@@ -45,15 +46,17 @@ public class DeckCardPanel : MonoBehaviour
             GameObject obj = Instantiate(UIprefab, deckConent);
             obj.name += ("_" + i);
 
-            Transform buttonTransform = obj.transform.Find("Button");
-
-            _deployBtn = buttonTransform.GetComponent<CardDeployBtn>();
+            _deployBtn = obj.GetComponent<CardPanel>();
             _deployBtn.SetPlayerUnit(_startPlayerKey + i);
         }
     }
 
     private void SetStartBtn()
     {
+        _deckPanel = _inGameUIPanel.GetUIElement(InGameUIElement.DeckPanel);
+        _battleStartPanel = _inGameUIPanel.GetUIElement(InGameUIElement.BattleStartPanel);
+        _cardRerollPanel = _inGameUIPanel.GetUIElement(InGameUIElement.CardRerollPanel);
+
         Button startBtn = _inGameUIPanel.GetUIElement<Button>(InGameUIElement.InGameStartBtn);
         startBtn.onClick.AddListener(OnClickStart);
     }
@@ -63,13 +66,11 @@ public class DeckCardPanel : MonoBehaviour
         /*GameObject deckPanel = _inGameUIPanel.GetUIElement(InGameUIElement.DeckPanel);
         GameObject cardRerollPanel = _inGameUIPanel.GetUIElement(InGameUIElement.CardRerollPanel);*/
         
-        _deckPanel = _inGameUIPanel.GetUIElement(InGameUIElement.DeckPanel);
-        _cardRerollPanel = _inGameUIPanel.GetUIElement(InGameUIElement.CardRerollPanel);
-
         _deckPanel.SetActive(false);
+        _battleStartPanel.SetActive(true);
         _cardRerollPanel.SetActive(true);
 
         _inGameUIPanel.IsDeckMode = true;
-        BattleStateManager.Instance.IsBattleStart = true;
+        BattleStateManager.Instance.SetState(BattleState.Reroll);
     }
 }

@@ -34,12 +34,12 @@ public class MonsterSpawn : MonoBehaviour
         if(Input.GetKeyUp(KeyCode.Escape))
         {
             _spawned = false;
-            BattleStateManager.Instance.IsBattleStart = true;
+            BattleStateManager.Instance.SetState(BattleState.Battle);
             PoolingManager.Instance.InActiveAll();
             a++;
         }
 
-        if (!_spawned && BattleStateManager.Instance.IsBattleStart)
+        if (!_spawned && BattleStateManager.Instance.IsReroll)
         {
             int waveKey = StageManager.Instance.StageStartKey + a;
             StageData wave = StageManager.Instance.GetStageData(waveKey);
@@ -48,6 +48,11 @@ public class MonsterSpawn : MonoBehaviour
             SpawnWaveMonsters(waveMonsters, wave.Wave);
 
             _spawned = true;
+        }
+
+        if(Input.GetKeyDown(KeyCode.A))
+        {
+            BattleStateManager.Instance.SetState(BattleState.Battle);
         }
     }
 
