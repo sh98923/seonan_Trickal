@@ -73,7 +73,7 @@ public class PlayerSpawn : MonoBehaviour
         {
             if (slots[i].IsOccupied) continue;
 
-            if(!BattleStateManager.Instance.IsBattleStart)
+            if(!BattleStateManager.Instance.IsBattle)
                 _deployedDatas.Add(data);
 
             slots[i].IsOccupied = true;

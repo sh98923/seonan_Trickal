@@ -1,12 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum InGameUIElement
 {
     DeckPanel = 1, StageName = 2, InGameStartBtn = 3,
-    DeckContent = 6, CardRerollPanel = 7,
-    LeftCardBtn = 10, CenterCardBtn = 15, RightCardBtn = 20,
-    RerollImage = 23, RerollBtn = 24
+    DeckContent = 6, BattleStartPanel = 7, CardRerollPanel = 11,
+    LeftCardBtn = 14, CenterCardBtn = 21, RightCardBtn = 28,
+    RerollImage = 33, RerollBtn = 34
 }
 
 public class InGameUIPanel : MonoBehaviour
@@ -33,20 +34,35 @@ public class InGameUIPanel : MonoBehaviour
         SetInit();
     }
 
+    private void Start()
+    {
+        Button battleBtn = _inGameUIs[(int)InGameUIElement.BattleStartPanel].GetComponentInChildren<Button>();
+        battleBtn.onClick.AddListener(OnClickBattleStart);
+    }
+
     private void Update()
     {
         if (_isDeckMode && Input.GetKeyDown(KeyCode.Alpha4))
         {
             _inGameUIs[(int)InGameUIElement.DeckPanel].gameObject.SetActive(true);
+            _inGameUIs[(int)InGameUIElement.BattleStartPanel].gameObject.SetActive(false);
             _inGameUIs[(int)InGameUIElement.CardRerollPanel].gameObject.SetActive(false);
 
             _isDeckMode = false;
-            BattleStateManager.Instance.IsBattleStart = false;
+            BattleStateManager.Instance.SetState(BattleState.None);
         }
     }
 
     private void SetInit()
     {
+        _inGameUIs[(int)InGameUIElement.BattleStartPanel].gameObject.SetActive(false);
+        _inGameUIs[(int)InGameUIElement.CardRerollPanel].gameObject.SetActive(false);
+    }
+
+    private void OnClickBattleStart()
+    {
+        BattleStateManager.Instance.SetState(BattleState.Battle);
+        _inGameUIs[(int)InGameUIElement.BattleStartPanel].gameObject.SetActive(false);
         _inGameUIs[(int)InGameUIElement.CardRerollPanel].gameObject.SetActive(false);
     }
 
