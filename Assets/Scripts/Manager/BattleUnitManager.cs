@@ -21,7 +21,7 @@ public class BattleUnitManager : Singleton<BattleUnitManager>
 
 public class PlayerUnit
 {
-    private Character _playerUnitObj;
+    private Player _playerUnitObj;
 
     private PlayerStatData[] _playerStats;
 
@@ -32,7 +32,7 @@ public class PlayerUnit
         _playerStats = PlayerStatManager.Instance.GetPlayerStatData(data.StatKey);
 
         // 여기서 이제 캐릭터 스크립트에 스탯 설정하는 함수 있으면 스탯 세팅 해주면 댐
-        _playerUnitObj = unit.GetComponent<Character>();
+        _playerUnitObj = unit.GetComponent<Player>();
         _playerUnitObj.SetPlayerStat(_playerStats[_level]);
     }
 

@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
+using static Unity.Burst.Intrinsics.X86.Avx;
 
 public class Character : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class Character : MonoBehaviour
     }
 
     private SortingGroup _sortingGroup;
-    private Animator _animator;
+    protected Animator _animator;
     private SpriteRenderer[] _spriteRenderers;
     protected Collider2D _target;
     [SerializeField] protected Transform _attackPoint;
@@ -182,11 +183,6 @@ public class Character : MonoBehaviour
         _criRate = data.CriRate;
         _attackRange = data.Range;
         _atkCoolTime = data.AtkCoolTime;
-    }
-
-    public void SetPlayerStat(PlayerStatData data)
-    {
-        _hp = data.Hp;
     }
 
     private void OnDrawGizmosSelected()
