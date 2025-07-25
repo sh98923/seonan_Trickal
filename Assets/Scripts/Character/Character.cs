@@ -93,7 +93,7 @@ public class Character : MonoBehaviour
     public void TakeDamage(float damage)
     {
         _hp -= damage;
-        Debug.Log($"ÇöÀç Ã¼·Â: {_hp}");
+        Debug.Log($"ï¿½ï¿½ï¿½ï¿½ Ã¼ï¿½ï¿½: {_hp}");
 
         if (_hp <= 0 && !_isDead)
         {

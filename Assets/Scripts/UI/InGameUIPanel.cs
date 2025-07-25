@@ -7,7 +7,7 @@ public enum InGameUIElement
     DeckPanel = 1, StageName = 2, InGameStartBtn = 3,
     DeckContent = 6, BattleStartPanel = 7, CardRerollPanel = 11,
     LeftCardBtn = 14, CenterCardBtn = 21, RightCardBtn = 28,
-    RerollImage = 33, RerollBtn = 34
+    RerollImage = 33, RerollBtn = 34, TimeControlPanel = 38
 }
 
 public class InGameUIPanel : MonoBehaviour
@@ -18,6 +18,8 @@ public class InGameUIPanel : MonoBehaviour
     {
         get { return _spawnParent; }
     }
+
+    private BattleState _prevState = BattleState.None;
 
     private bool _isDeckMode = false;
     public bool IsDeckMode
@@ -34,14 +36,10 @@ public class InGameUIPanel : MonoBehaviour
         SetInit();
     }
 
-    private void Start()
-    {
-        Button battleBtn = _inGameUIs[(int)InGameUIElement.BattleStartPanel].GetComponentInChildren<Button>();
-        battleBtn.onClick.AddListener(OnClickBattleStart);
-    }
-
     private void Update()
     {
+        SetUIState();
+
         if (_isDeckMode && Input.GetKeyDown(KeyCode.Alpha4))
         {
             _inGameUIs[(int)InGameUIElement.DeckPanel].gameObject.SetActive(true);
@@ -53,19 +51,38 @@ public class InGameUIPanel : MonoBehaviour
         }
     }
 
+    private void SetUIState()
+    {
+        BattleState currentState = BattleStateManager.Instance.CurrentState;
+
+        // 상태가 변경되었을 때만 처리
+        if (currentState != _prevState)
+        {
+            switch (currentState)
+            {
+                case BattleState.Reroll:
+                    _inGameUIs[(int)InGameUIElement.BattleStartPanel].gameObject.SetActive(true);
+                    _inGameUIs[(int)InGameUIElement.CardRerollPanel].gameObject.SetActive(true);
+                    _inGameUIs[(int)InGameUIElement.TimeControlPanel].gameObject.SetActive(true);
+                    break;
+
+                case BattleState.Battle:
+                    _inGameUIs[(int)InGameUIElement.CardRerollPanel].gameObject.SetActive(false);
+                    break;
+            }
+
+            _prevState = currentState; // 상태 갱신
+        }
+    }
+
     private void SetInit()
     {
         _inGameUIs[(int)InGameUIElement.BattleStartPanel].gameObject.SetActive(false);
         _inGameUIs[(int)InGameUIElement.CardRerollPanel].gameObject.SetActive(false);
+        _inGameUIs[(int)InGameUIElement.TimeControlPanel].gameObject.SetActive(false);
     }
 
-    private void OnClickBattleStart()
-    {
-        BattleStateManager.Instance.SetState(BattleState.Battle);
-        _inGameUIs[(int)InGameUIElement.BattleStartPanel].gameObject.SetActive(false);
-        _inGameUIs[(int)InGameUIElement.CardRerollPanel].gameObject.SetActive(false);
-    }
-
+    // 나중에 필요 없으면 아래 두개 함수 다 지워
     // 이 함수는 인게임 UI에서 필요한 컴포넌트를 자식 오브젝트에서 접근하는 것
     public T GetUIElement<T>(InGameUIElement element) where T : Component
     {

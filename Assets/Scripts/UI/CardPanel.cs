@@ -17,7 +17,10 @@ public class CardPanel : MonoBehaviour
     private InGameUIPanel _inGameUIPanel;
     private Transform[] _cardPanelChildren;
     private PlayerSpawn _spawnParent;
+
     private PlayerData _playerData;
+
+    private bool _wasRerollActive = false;
 
     private void Awake()
     {
@@ -26,6 +29,11 @@ public class CardPanel : MonoBehaviour
 
     private void Start()
     {
+        Sprite costImage = Resources.Load<Sprite>("Sprites/CardInfo/CostBG");
+        _cardPanelChildren[(int)CardUIElement.CostImage].GetComponent<Image>().sprite = costImage;
+
+        _cardPanelChildren[(int)CardUIElement.CostImage].GetChild(0).GetComponent<TextMeshProUGUI>().text = "5";
+
         _inGameUIPanel = GetComponentInParent<InGameUIPanel>();
         _spawnParent = _inGameUIPanel.SpawnParent.GetComponent<PlayerSpawn>();
 
@@ -42,8 +50,13 @@ public class CardPanel : MonoBehaviour
 
     private void UpdateCostImageVisibility()
     {
-        bool shouldShow = BattleStateManager.Instance.IsReroll;
-        _cardPanelChildren[(int)CardUIElement.CostImage].gameObject.SetActive(shouldShow);
+        bool isRerollActive = BattleStateManager.Instance.IsReroll;
+
+        if (_wasRerollActive != isRerollActive)
+        {
+            _cardPanelChildren[(int)CardUIElement.CostImage].gameObject.SetActive(isRerollActive);
+            _wasRerollActive = isRerollActive;
+        }
     }
 
     private void OnClickMyDeckCard()
