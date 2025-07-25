@@ -3,8 +3,9 @@ using UnityEngine;
 
 public class Player : Character
 {
-    private float _mp = 0.0f;
-    private bool _isUsingSkill = false;
+    private PlayerStatData _data;
+
+    private float _curMp = 0.0f;
 
     private void Awake()
     {
@@ -13,18 +14,13 @@ public class Player : Character
         _moveDir = Vector2.right;
     }
 
-    private void Update()
-    {
-        base.Update();
-        _target = FindTarget("Enemy", _findTargetRange);
-    }
-
     protected override void IdleStateAction()
     {
         base.IdleStateAction();
 
         if (BattleStateManager.Instance.IsBattle)
         {
+            StartCoroutine(RegenerateMp());
             _curState = State.Move;
         }
     }
@@ -33,15 +29,16 @@ public class Player : Character
     {
         base.MoveStateAction();
 
-        if (_target == null)
+        if (_targetCollider == null)
         {
+            _targetCollider = FindTarget("Enemy", _findTargetRange);
             transform.Translate(_moveDir * _moveSpeed * Time.deltaTime);
         }
         else
         {
             if (FindTarget("Enemy", _attackRange) == null)
             {
-                Vector2 dir = _target.transform.position - transform.position;
+                Vector2 dir = _targetCollider.transform.position - transform.position;
                 transform.Translate(dir.normalized * _moveSpeed * Time.deltaTime);
             }
             else
@@ -53,63 +50,60 @@ public class Player : Character
 
     protected override void AttackStateAction()
     {
-        base.AttackStateAction();
-
-        if (_target == null)
+        if (!_targetCollider.enabled)
         {
+            _targetCollider = null;
             _curState = State.Move;
         }
+
+        if (_isAttacking)
+            return;
+
+        _isAttacking = true;
+
+        if (_curMp >= _data.Mp)
+        {
+            _animator.SetTrigger("Skill");
+        }
+        else
+        {
+            _animator.SetTrigger("Attack");
+        }
+
+        _animLength = _animator.GetCurrentAnimatorStateInfo(0).length;
     }
 
     public void OnAttackHit()
     {
-        if (_isUsingSkill) return;
-
-        Collider2D[] hitTargets = Physics2D.OverlapCircleAll(_attackPoint.position, _attackRange);
-
-        foreach (Collider2D hitTarget in hitTargets)
-        {
-            if (hitTarget.CompareTag("Enemy"))
-            {
-                Character enemy = hitTarget.GetComponent<Character>();
-                if (enemy != null)
-                {
-                    enemy.TakeDamage(_atk);
-                }
-                _mp += 20f;
-                if (_mp >= 100f)
-                {
-                    StartCoroutine(CastSkill());
-                }
-            }
-        }
+        _targetCollider.GetComponent<Monster>().TakeDamage(_data.Atk);
     }
 
-    private IEnumerator CastSkill()
+    public void OnSkillHit()
     {
-        if (_isUsingSkill) yield break;
+        float atk = _data.Atk * _data.BaseSkill;
+        _curMp -= _data.Mp;
+        _targetCollider.GetComponent<Monster>().TakeDamage(atk);
+    }
 
-        _isUsingSkill = true;
-        _mp = 0;
-        _animator.SetTrigger("Skill");
+    private IEnumerator RegenerateMp()
+    {
+        while (BattleStateManager.Instance.IsBattle)
+        {
+            if(_curMp >= _data.Mp)
+            {
+                yield return new WaitForSeconds(1.0f);
+                continue;
+            }
 
-        // Skill 애니메이션 반영까지 1 프레임 대기
-        yield return new WaitForEndOfFrame();
-
-        // 실제로 Skill 상태가 시작될 때까지 대기
-        while (!_animator.GetCurrentAnimatorStateInfo(0).IsName("Skill"))
-            yield return null;
-
-        float skillDuration = _animator.GetCurrentAnimatorStateInfo(0).length;
-
-        yield return new WaitForSeconds(skillDuration);
-
-        _isUsingSkill = false;
+            _curMp += 20.0f;
+            yield return new WaitForSeconds(1.0f);
+        }
     }
 
     public void SetPlayerStat(PlayerStatData data)
     {
-        _hp = data.Hp * 10;
-        _mp = 0.0f;
+        _data = data;
+        _curHp = _data.Hp * 10;
+        _attackRange = _data.Range;
     }
 }

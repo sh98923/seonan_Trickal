@@ -5,6 +5,7 @@ public struct PlayerStatData
 {
     public int Key;
     public int StatKey;
+    public string Name;
     public int MaxLevel;
     public float Hp;
     public float Mp;
@@ -58,17 +59,18 @@ public class PlayerStatManager : Singleton<PlayerStatManager>
             PlayerStatData data;
             data.Key = int.Parse(colDatas[0]);
             data.StatKey = int.Parse(colDatas[1]);
-            data.MaxLevel = int.Parse(colDatas[2]);
-            data.Hp = float.Parse(colDatas[3]);
-            data.Mp = float.Parse(colDatas[4]);
-            data.Atk = float.Parse(colDatas[5]);
-            data.BaseSkill = float.Parse(colDatas[6]);
-            data.Ultimate = float.Parse(colDatas[7]);
-            data.CriRate = float.Parse(colDatas[8]);
-            data.Range = float.Parse(colDatas[9]);
-            data.AtkCoolTime = float.Parse(colDatas[10]);
-            data.UltCoolTime = float.Parse(colDatas[11]);
-            data.CanUseUlt = bool.Parse(colDatas[12]);
+            data.Name = colDatas[2];
+            data.MaxLevel = int.Parse(colDatas[3]);
+            data.Hp = float.Parse(colDatas[4]);
+            data.Mp = float.Parse(colDatas[5]);
+            data.Atk = float.Parse(colDatas[6]);
+            data.BaseSkill = float.Parse(colDatas[7]);
+            data.Ultimate = float.Parse(colDatas[8]);
+            data.CriRate = float.Parse(colDatas[9]);
+            data.Range = float.Parse(colDatas[10]);
+            data.AtkCoolTime = float.Parse(colDatas[11]);
+            data.UltCoolTime = float.Parse(colDatas[12]);
+            data.CanUseUlt = bool.Parse(colDatas[13]);
             
             if (_firstStageKey == i)
             {

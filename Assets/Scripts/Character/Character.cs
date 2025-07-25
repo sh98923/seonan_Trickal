@@ -1,7 +1,6 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
-using static Unity.Burst.Intrinsics.X86.Avx;
 
 public class Character : MonoBehaviour
 {
@@ -13,7 +12,7 @@ public class Character : MonoBehaviour
     private SortingGroup _sortingGroup;
     protected Animator _animator;
     private SpriteRenderer[] _spriteRenderers;
-    protected Collider2D _target;
+    protected Collider2D _targetCollider;
     [SerializeField] protected Transform _attackPoint;
 
     protected Vector2 _moveDir;
@@ -22,16 +21,20 @@ public class Character : MonoBehaviour
     protected string _type = "";
     protected readonly float _colliderOffset = 0.5f;
     protected readonly float _findTargetRange = 5.0f;
-    protected float _hp = 0.0f;
+    protected float _curHp = 0.0f;
+    public float CurHp
+    {
+        get { return _curHp; }
+    }
     protected float _atk = 0.0f;
     protected float _criRate = 0.0f;
     protected float _attackRange = 0.0f;
     protected float _atkCoolTime = 0.0f;
     protected float _moveSpeed = 2.0f;
+    protected float _animLength = 0.0f;
     private float _attackCoolTimer = 0.0f;
-    private float _animLength = 0.0f;
 
-    private bool _isAttacking = false;
+    protected bool _isAttacking = false;
     private bool _isDead = false;
     private float _fadeDuration = 3.0f;
 
@@ -46,8 +49,8 @@ public class Character : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            _hp -= 30f;
-            Debug.Log($"{gameObject.name} HP: {_hp}");
+            _curHp -= 30f;
+            Debug.Log($"{gameObject.name} HP: {_curHp}");
         }
 
         switch (_curState)
@@ -93,10 +96,10 @@ public class Character : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        _hp -= damage;
-        Debug.Log($"���� ü��: {_hp}");
+        _curHp -= damage;
+        Debug.Log($"현재 체력: {_curHp}");
 
-        if (_hp <= 0 && !_isDead)
+        if (_curHp <= 0)
         {
             _curState = State.Dead;
         }
@@ -175,14 +178,6 @@ public class Character : MonoBehaviour
         }
 
         gameObject.SetActive(false);
-    }
-
-    public virtual void SetCharacterStat(MonsterData data, int wave)
-    {
-        _type = data.Type;
-        _criRate = data.CriRate;
-        _attackRange = data.Range;
-        _atkCoolTime = data.AtkCoolTime;
     }
 
     private void OnDrawGizmosSelected()
