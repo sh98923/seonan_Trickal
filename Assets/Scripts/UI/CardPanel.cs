@@ -15,7 +15,7 @@ public class CardPanel : MonoBehaviour
     }
 
     private InGameUIPanel _inGameUIPanel;
-    private Transform[] _cardPanelChildren;
+    private Transform[] _cardChildren;
     private PlayerSpawn _spawnParent;
 
     private PlayerData _playerData;
@@ -30,17 +30,17 @@ public class CardPanel : MonoBehaviour
     private void Start()
     {
         Sprite costImage = Resources.Load<Sprite>("Sprites/CardInfo/CostBG");
-        _cardPanelChildren[(int)CardUIElement.CostImage].GetComponent<Image>().sprite = costImage;
+        _cardChildren[(int)CardUIElement.CostImage].GetComponent<Image>().sprite = costImage;
 
-        _cardPanelChildren[(int)CardUIElement.CostImage].GetChild(0).GetComponent<TextMeshProUGUI>().text = "5";
+        _cardChildren[(int)CardUIElement.CostImage].GetChild(0).GetComponent<TextMeshProUGUI>().text = "5";
 
         _inGameUIPanel = GetComponentInParent<InGameUIPanel>();
         _spawnParent = _inGameUIPanel.SpawnParent.GetComponent<PlayerSpawn>();
 
-        _cardPanelChildren[(int)CardUIElement.DeployButton].
+        _cardChildren[(int)CardUIElement.DeployButton].
             GetComponent<Button>().onClick.AddListener(OnClickMyDeckCard);
 
-        _cardPanelChildren[(int)CardUIElement.CostImage].gameObject.SetActive(false);  
+        _cardChildren[(int)CardUIElement.CostImage].gameObject.SetActive(false);  
     }
 
     private void Update()
@@ -54,7 +54,7 @@ public class CardPanel : MonoBehaviour
 
         if (_wasRerollActive != isRerollActive)
         {
-            _cardPanelChildren[(int)CardUIElement.CostImage].gameObject.SetActive(isRerollActive);
+            _cardChildren[(int)CardUIElement.CostImage].gameObject.SetActive(isRerollActive);
             _wasRerollActive = isRerollActive;
         }
     }
@@ -106,11 +106,11 @@ public class CardPanel : MonoBehaviour
 
     private void InitUIElements()
     {
-        _cardPanelChildren = new Transform[transform.childCount];
+        _cardChildren = new Transform[transform.childCount];
 
-        for (int i = 0; i < _cardPanelChildren.Length; i++)
+        for (int i = 0; i < _cardChildren.Length; i++)
         {
-            _cardPanelChildren[i] = transform.GetChild(i);
+            _cardChildren[i] = transform.GetChild(i);
         }
     }
 
@@ -118,7 +118,7 @@ public class CardPanel : MonoBehaviour
     {
         _playerData = CharacterManager.Instance.GetPlayerData(key);
 
-        Transform deployBtn = _cardPanelChildren[(int)CardUIElement.DeployButton];
+        Transform deployBtn = _cardChildren[(int)CardUIElement.DeployButton];
 
         Image characterImage = 
             deployBtn.GetChild((int)BtnUIElement.CharacterImage).GetComponent<Image>();

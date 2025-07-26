@@ -14,17 +14,13 @@ public class BattleStartPanel : MonoBehaviour
 
     private void Start()
     {
+        _animator.SetTrigger("RerollStart");
         _startBtn.onClick.AddListener(OnClickBattleStartAnim);
-    }
-
-    private void OnBattleStartBtnInActive()
-    {
-        gameObject.SetActive(false);
     }
 
     public void OnClickBattleStartAnim()
     {
-        BattleStateManager.Instance.SetState(BattleState.Battle);
         _animator.SetTrigger("BattleStart");
+        BattleStateManager.Instance.SetState(BattleState.Battle);
     }
 }

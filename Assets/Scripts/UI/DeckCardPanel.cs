@@ -9,7 +9,7 @@ public class DeckCardPanel : MonoBehaviour
         StageName = 1, StartBtn = 2, DeckContent = 5
     }
 
-    private Transform[] _deckPanelChildren;
+    private Transform[] _deckChildren;
 
     private CardPanel _deployBtn;
 
@@ -17,7 +17,7 @@ public class DeckCardPanel : MonoBehaviour
 
     private void Awake()
     {
-        _deckPanelChildren = GetComponentsInChildren<Transform>();
+        _deckChildren = GetComponentsInChildren<Transform>();
     }
 
     private void Start()
@@ -29,7 +29,7 @@ public class DeckCardPanel : MonoBehaviour
 
     private void SetStageName()
     {
-        GameObject stageObj = _deckPanelChildren[(int)DeckElement.StageName].gameObject;
+        GameObject stageObj = _deckChildren[(int)DeckElement.StageName].gameObject;
         TextMeshProUGUI stageName = stageObj.GetComponent<TextMeshProUGUI>();
         int key = StageManager.Instance.StageStartKey;
         StageData data = StageManager.Instance.GetStageData(key);
@@ -39,7 +39,7 @@ public class DeckCardPanel : MonoBehaviour
 
     private void SetDeckCard()
     {
-        Transform deckConent = _deckPanelChildren[(int)DeckElement.DeckContent];
+        Transform deckConent = _deckChildren[(int)DeckElement.DeckContent];
 
         _startPlayerKey = CharacterManager.Instance.PlayerStartKey;
 
@@ -57,7 +57,7 @@ public class DeckCardPanel : MonoBehaviour
 
     private void SetStartBtn()
     {
-        Button startBtn = _deckPanelChildren[(int)DeckElement.StartBtn].GetComponent<Button>();
+        Button startBtn = _deckChildren[(int)DeckElement.StartBtn].GetComponent<Button>();
         startBtn.onClick.AddListener(OnClickStart);
     }
 
