@@ -1,133 +1,133 @@
 fileFormatVersion: 2
-guid: 4f14dfd6a36491f4297a8fad2a6dac7a
+guid: 5e9fe1f840451dd45be25c7288d2b31e
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5372846238179106889
-    second: DevilArrow_0
+      213: 6089739381196145782
+    second: ElfArrow_0
   - first:
-      213: -3395089899192952504
-    second: DevilArrow_1
+      213: 1181803740587558336
+    second: ElfArrow_1
   - first:
-      213: -8680591771466670804
-    second: DevilArrow_2
+      213: 5243988109990115672
+    second: ElfArrow_2
   - first:
-      213: 8115695464139218293
-    second: DevilArrow_3
+      213: 8784103957183372541
+    second: ElfArrow_3
   - first:
-      213: -7663328362371359620
-    second: DevilArrow_4
+      213: -1049092413059533379
+    second: ElfArrow_4
   - first:
-      213: 7100632205920246008
-    second: DevilArrow_5
+      213: 108378698616682615
+    second: ElfArrow_5
   - first:
-      213: 6621840738621665263
-    second: DevilArrow_6
+      213: -6806371122386805858
+    second: ElfArrow_6
   - first:
-      213: 5193548213689756179
-    second: DevilArrow_7
+      213: -4668685872239221404
+    second: ElfArrow_7
   - first:
-      213: -2615697392305107018
-    second: DevilArrow_8
+      213: -532091971307942888
+    second: ElfArrow_8
   - first:
-      213: 1864564523220512668
-    second: DevilArrow_9
+      213: -411460091266825029
+    second: ElfArrow_9
   - first:
-      213: 6754998323679411663
-    second: DevilArrow_10
+      213: 955550165721294142
+    second: ElfArrow_10
   - first:
-      213: 8289030140499058493
-    second: DevilArrow_11
+      213: -1993275883046956928
+    second: ElfArrow_11
   - first:
-      213: -3273442852135320543
-    second: DevilArrow_12
+      213: -5824406639310685185
+    second: ElfArrow_12
   - first:
-      213: 4289552166324919127
-    second: DevilArrow_13
+      213: -6373824032246964062
+    second: ElfArrow_13
   - first:
-      213: 8563112630455758202
-    second: DevilArrow_14
+      213: 7594482798124565057
+    second: ElfArrow_14
   - first:
-      213: -2555198282065031636
-    second: DevilArrow_15
+      213: 5417704453678569015
+    second: ElfArrow_15
   - first:
-      213: 8624265918798870933
-    second: DevilArrow_16
+      213: 7888739673467253890
+    second: ElfArrow_16
   - first:
-      213: 8679754455537426189
-    second: DevilArrow_17
+      213: 9075722716553848927
+    second: ElfArrow_17
   - first:
-      213: -1215964242228766678
-    second: DevilArrow_18
+      213: 8258509078951571007
+    second: ElfArrow_18
   - first:
-      213: -1830480349039736898
-    second: DevilArrow_19
+      213: 6226688323553190150
+    second: ElfArrow_19
   - first:
-      213: -6122433246674363847
-    second: DevilArrow_20
+      213: -6700821627866806804
+    second: ElfArrow_20
   - first:
-      213: -7972150026871146869
-    second: DevilArrow_21
+      213: -7698585855415709922
+    second: ElfArrow_21
   - first:
-      213: -7750908207054015028
-    second: DevilArrow_22
+      213: 1529181990578889160
+    second: ElfArrow_22
   - first:
-      213: 2568890458512651451
-    second: DevilArrow_23
+      213: -8932252742010926169
+    second: ElfArrow_23
   - first:
-      213: -3389399355103400113
-    second: DevilArrow_24
+      213: -8750793806985355996
+    second: ElfArrow_24
   - first:
-      213: -371952051242762577
-    second: DevilArrow_25
+      213: -4401317103138957295
+    second: ElfArrow_25
   - first:
-      213: -4128164123911490304
-    second: DevilArrow_26
+      213: 1643055008422754252
+    second: ElfArrow_26
   - first:
-      213: -9088756885902630890
-    second: DevilArrow_27
+      213: 8749292518305086712
+    second: ElfArrow_27
   - first:
-      213: -169084765076115901
-    second: DevilArrow_28
+      213: 8324319673147227569
+    second: ElfArrow_28
   - first:
-      213: -4241797793775280503
-    second: DevilArrow_29
+      213: 5366571788051163345
+    second: ElfArrow_29
   - first:
-      213: 7297734373575892741
-    second: DevilArrow_30
+      213: -2320800479908126841
+    second: ElfArrow_30
   - first:
-      213: -7669233611073983057
-    second: DevilArrow_31
+      213: 3660201556338145565
+    second: ElfArrow_31
   - first:
-      213: -4020969808946164942
-    second: DevilArrow_32
+      213: 541944707032403668
+    second: ElfArrow_32
   - first:
-      213: -1570749309466088839
-    second: DevilArrow_33
+      213: 8580133725765431497
+    second: ElfArrow_33
   - first:
-      213: 7003092621179236084
-    second: DevilArrow_34
+      213: -6134319053603702478
+    second: ElfArrow_34
   - first:
-      213: 4036093110348084652
-    second: DevilArrow_35
+      213: 6927186845399999446
+    second: ElfArrow_35
   - first:
-      213: 4850332788069068535
-    second: DevilArrow_36
+      213: 1452310633535088421
+    second: ElfArrow_36
   - first:
-      213: 699586803116487835
-    second: DevilArrow_37
+      213: -7556984829671555836
+    second: ElfArrow_37
   - first:
-      213: -6015654139640935309
-    second: DevilArrow_38
+      213: 5703546721018494328
+    second: ElfArrow_38
   - first:
-      213: 2456989735356404128
-    second: DevilArrow_39
+      213: 2390726778068610579
+    second: ElfArrow_39
   - first:
-      213: -7421009011761389198
-    second: DevilArrow_40
+      213: -3317211174642648290
+    second: ElfArrow_40
   - first:
-      213: 5607594323036378324
-    second: DevilArrow_41
+      213: 2954659553779930479
+    second: ElfArrow_41
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -236,7 +236,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: DevilArrow_0
+      name: ElfArrow_0
       rect:
         serializedVersion: 2
         x: 0
@@ -251,14 +251,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a49d4221d02f2a54b88bbcc9af3bb29c
-      internalID: 1353119506
+      spriteID: c31c5dab57d180341abbf4a7916bff2b
+      internalID: -719443667
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: DevilArrow_1
+      name: ElfArrow_1
       rect:
         serializedVersion: 2
         x: 102
@@ -273,14 +273,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: dcc37ba6e3f276d429118005beef5376
-      internalID: -752149810
+      spriteID: 7c280ff109d9c204d86a19853a1b3070
+      internalID: 1940778553
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: DevilArrow_2
+      name: ElfArrow_2
       rect:
         serializedVersion: 2
         x: 204
@@ -295,14 +295,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1d54ee15769f77741b17064ef39398c2
-      internalID: 1061263896
+      spriteID: 7b177b7ac37b45e40b4761440343b0ea
+      internalID: -631747633
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: DevilArrow_3
+      name: ElfArrow_3
       rect:
         serializedVersion: 2
         x: 306
@@ -317,14 +317,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 38c198faa84cb3a49999feac807499c6
-      internalID: -896846952
+      spriteID: 86123b0b49b8176439421032afee85a8
+      internalID: 1296768201
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: DevilArrow_4
+      name: ElfArrow_4
       rect:
         serializedVersion: 2
         x: 408
@@ -339,14 +339,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9ee4b092127c26c4f8f07abc6239ab06
-      internalID: 1541221065
+      spriteID: 18ef59419aa62cc478af83a5fee2b686
+      internalID: -1185054248
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: DevilArrow_5
+      name: ElfArrow_5
       rect:
         serializedVersion: 2
         x: 510
@@ -361,14 +361,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f679871d7d93ba045b1f62069b4aa8e3
-      internalID: -204597852
+      spriteID: f1d60d0aef3e4db44a9b5d0b55619766
+      internalID: 1345653660
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: DevilArrow_6
+      name: ElfArrow_6
       rect:
         serializedVersion: 2
         x: 612
@@ -383,14 +383,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fe4cf380c6e89124c8f62eff65e0fbf0
-      internalID: 1736443285
+      spriteID: 8a7cf4d79aad4654e8b04e4bddc4eb0b
+      internalID: -1341660390
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: DevilArrow_7
+      name: ElfArrow_7
       rect:
         serializedVersion: 2
         x: 714
@@ -405,14 +405,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e5cb4c9bde2d0ed4ba86185741716a22
-      internalID: -82061280
+      spriteID: 1427c33040282c74687190d17aa19143
+      internalID: -915015248
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: DevilArrow_8
+      name: ElfArrow_8
       rect:
         serializedVersion: 2
         x: 816
@@ -427,14 +427,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1f82967c0a5da20488c1bd0c95c19f6c
-      internalID: -1757729948
+      spriteID: 0c9e55f414677e3418f8579a9af6d8f5
+      internalID: -7838795
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: DevilArrow_9
+      name: ElfArrow_9
       rect:
         serializedVersion: 2
         x: 918
@@ -449,14 +449,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3acaabce06e4a1f4798ff394d313802b
-      internalID: 369135169
+      spriteID: cd7e27c53bc0ef740b3303ae5494635c
+      internalID: -336389630
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: DevilArrow_10
+      name: ElfArrow_10
       rect:
         serializedVersion: 2
         x: 0
@@ -471,14 +471,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 819348616a8a3bc4cae7a2791010c4ec
-      internalID: 1171465635
+      spriteID: 62336fba5d16ecc45a2ce5e228414a6d
+      internalID: 131486608
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: DevilArrow_11
+      name: ElfArrow_11
       rect:
         serializedVersion: 2
         x: 102
@@ -493,14 +493,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1110dce3a64197b418b784fd2918d6d3
-      internalID: -919411248
+      spriteID: 9353e7da7d9908e4cabcee23433f40fc
+      internalID: 89659226
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: DevilArrow_12
+      name: ElfArrow_12
       rect:
         serializedVersion: 2
         x: 204
@@ -515,14 +515,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 66737f04bd8d8ec45b34255f9cb116c6
-      internalID: -1619528771
+      spriteID: e15ed94235af64a47ae96b84ff5ae7ac
+      internalID: 396999553
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: DevilArrow_13
+      name: ElfArrow_13
       rect:
         serializedVersion: 2
         x: 306
@@ -537,14 +537,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2a41e7360832eae4f8ea318aa8ad067f
-      internalID: 1142872275
+      spriteID: 66c844334925b6541b79a02d35f1e43a
+      internalID: -1438892492
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: DevilArrow_14
+      name: ElfArrow_14
       rect:
         serializedVersion: 2
         x: 408
@@ -559,14 +559,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ddef19ce01a08394caa788145e5ac1b8
-      internalID: -1774231296
+      spriteID: dc91967b89529b842beea9cea3409692
+      internalID: 414635513
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: DevilArrow_15
+      name: ElfArrow_15
       rect:
         serializedVersion: 2
         x: 510
@@ -581,14 +581,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a8d1ac55278ca2e438de7d487b8c6bfb
-      internalID: -863160160
+      spriteID: 7b161df33993c9f4ea29c4f95022b571
+      internalID: -124955429
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: DevilArrow_16
+      name: ElfArrow_16
       rect:
         serializedVersion: 2
         x: 612
@@ -603,14 +603,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0309e7ce538008e4c8651c0b807036d1
-      internalID: -379255135
+      spriteID: cec179320e321a847b6dfe6e44e158a5
+      internalID: 296582363
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: DevilArrow_17
+      name: ElfArrow_17
       rect:
         serializedVersion: 2
         x: 714
@@ -625,14 +625,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3c53a7dc663edab4a98db2061549044b
-      internalID: 1019437306
+      spriteID: 28d3634dae631cb45a32f5dbd60031a1
+      internalID: -300823812
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: DevilArrow_18
+      name: ElfArrow_18
       rect:
         serializedVersion: 2
         x: 816
@@ -647,14 +647,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 89cd582263388f1438d9e433eb2ef3d7
-      internalID: 1620808463
+      spriteID: f5911a3cb6d46cf448278c0872a8714e
+      internalID: -992602741
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: DevilArrow_19
+      name: ElfArrow_19
       rect:
         serializedVersion: 2
         x: 918
@@ -669,14 +669,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b2ead14a33618d84a8bedde3c326f91b
-      internalID: -2088429550
+      spriteID: 82b2bc5e8282d9e46a431823d8b9fe9e
+      internalID: 1388596419
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: DevilArrow_20
+      name: ElfArrow_20
       rect:
         serializedVersion: 2
         x: 0
@@ -691,14 +691,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5779cd7c3fd7da6419e9d67218346710
-      internalID: 959282830
+      spriteID: b78bcd667539cd645bcec92c348dcf60
+      internalID: 98299290
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: DevilArrow_21
+      name: ElfArrow_21
       rect:
         serializedVersion: 2
         x: 102
@@ -713,14 +713,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 46f3f63622187b04184eb4d8a66bd386
-      internalID: -1482039847
+      spriteID: 01ce52b10c2c3664bb345c01fa6e8859
+      internalID: 628863040
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: DevilArrow_22
+      name: ElfArrow_22
       rect:
         serializedVersion: 2
         x: 204
@@ -735,14 +735,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 30cfaeb5f4eb44444af1fbed01fde752
-      internalID: -341180820
+      spriteID: cfd893717f5123f4280723c39ac4330b
+      internalID: -726372880
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: DevilArrow_23
+      name: ElfArrow_23
       rect:
         serializedVersion: 2
         x: 306
@@ -757,14 +757,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1ad261ed5b65c4d478f51ed5ddebf996
-      internalID: -2021320466
+      spriteID: 05a635f7f5430434b96b4dc40f517f8f
+      internalID: 277222088
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: DevilArrow_24
+      name: ElfArrow_24
       rect:
         serializedVersion: 2
         x: 408
@@ -779,14 +779,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7e013691c751ef04f9db605b766e7606
-      internalID: -105393453
+      spriteID: 11e7d9c9e6c7f3b45aa54a7dfe835fba
+      internalID: -74262043
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: DevilArrow_25
+      name: ElfArrow_25
       rect:
         serializedVersion: 2
         x: 510
@@ -801,14 +801,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 68d7dca5b7610a841b8576eb1a2b9a5d
-      internalID: -1230496607
+      spriteID: d823705c1c621c642b5b03070531846b
+      internalID: -146248990
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: DevilArrow_26
+      name: ElfArrow_26
       rect:
         serializedVersion: 2
         x: 612
@@ -823,14 +823,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3f6c4c03e70476d49ac9cd1aff514de2
-      internalID: -1441325453
+      spriteID: b1fdf99b16e830148830ad09dcd6daa7
+      internalID: 1392669595
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: DevilArrow_27
+      name: ElfArrow_27
       rect:
         serializedVersion: 2
         x: 714
@@ -845,14 +845,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f8cd3333f7066714aad2116057bd6e6e
-      internalID: -1918414693
+      spriteID: 768f5912b5a8534458f0a5beda4559cd
+      internalID: 1575646860
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: DevilArrow_28
+      name: ElfArrow_28
       rect:
         serializedVersion: 2
         x: 816
@@ -867,14 +867,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bb84b1f4f2308f849b5edd04dc259617
-      internalID: -991429032
+      spriteID: 8dcb193de570ea44abe0e55ec5d0d1e3
+      internalID: 548495768
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: DevilArrow_29
+      name: ElfArrow_29
       rect:
         serializedVersion: 2
         x: 918
@@ -889,8 +889,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3011fcb63b0932c49b0800536635056b
-      internalID: 515801727
+      spriteID: f17291f745a988f40932eac0f0464866
+      internalID: -1491657856
       vertices: []
       indices: 
       edges: []
@@ -899,7 +899,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 74982c27634c84c49b21fd38ad39b918
+    spriteID: 60764968061b8d641b38b4fc96a664a4
     internalID: 0
     vertices: []
     indices: 
@@ -909,36 +909,36 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      DevilArrow_0: 1353119506
-      DevilArrow_1: -752149810
-      DevilArrow_10: 1171465635
-      DevilArrow_11: -919411248
-      DevilArrow_12: -1619528771
-      DevilArrow_13: 1142872275
-      DevilArrow_14: -1774231296
-      DevilArrow_15: -863160160
-      DevilArrow_16: -379255135
-      DevilArrow_17: 1019437306
-      DevilArrow_18: 1620808463
-      DevilArrow_19: -2088429550
-      DevilArrow_2: 1061263896
-      DevilArrow_20: 959282830
-      DevilArrow_21: -1482039847
-      DevilArrow_22: -341180820
-      DevilArrow_23: -2021320466
-      DevilArrow_24: -105393453
-      DevilArrow_25: -1230496607
-      DevilArrow_26: -1441325453
-      DevilArrow_27: -1918414693
-      DevilArrow_28: -991429032
-      DevilArrow_29: 515801727
-      DevilArrow_3: -896846952
-      DevilArrow_4: 1541221065
-      DevilArrow_5: -204597852
-      DevilArrow_6: 1736443285
-      DevilArrow_7: -82061280
-      DevilArrow_8: -1757729948
-      DevilArrow_9: 369135169
+      ElfArrow_0: -719443667
+      ElfArrow_1: 1940778553
+      ElfArrow_10: 131486608
+      ElfArrow_11: 89659226
+      ElfArrow_12: 396999553
+      ElfArrow_13: -1438892492
+      ElfArrow_14: 414635513
+      ElfArrow_15: -124955429
+      ElfArrow_16: 296582363
+      ElfArrow_17: -300823812
+      ElfArrow_18: -992602741
+      ElfArrow_19: 1388596419
+      ElfArrow_2: -631747633
+      ElfArrow_20: 98299290
+      ElfArrow_21: 628863040
+      ElfArrow_22: -726372880
+      ElfArrow_23: 277222088
+      ElfArrow_24: -74262043
+      ElfArrow_25: -146248990
+      ElfArrow_26: 1392669595
+      ElfArrow_27: 1575646860
+      ElfArrow_28: 548495768
+      ElfArrow_29: -1491657856
+      ElfArrow_3: 1296768201
+      ElfArrow_4: -1185054248
+      ElfArrow_5: 1345653660
+      ElfArrow_6: -1341660390
+      ElfArrow_7: -915015248
+      ElfArrow_8: -7838795
+      ElfArrow_9: -336389630
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
