@@ -2,10 +2,17 @@ using UnityEngine;
 
 public class Monster : Character
 {
+    private ProjectilePool _projectilePool;
+
     private void Awake()
     {
         base.Awake();
         _moveDir = Vector2.left;
+    }
+
+    private void Start()
+    {
+        _projectilePool = FindObjectOfType<ProjectilePool>();
     }
 
     private void Update()
@@ -58,7 +65,21 @@ public class Monster : Character
 
     public void OnAttackHit()
     {
-        _targetCollider.GetComponent<Player>().TakeDamage(_atk);
+        if(_type == "Range")
+        {
+            if (_projectilePool == null || _targetCollider == null)
+                return;
+
+            Vector2 direction = (_targetCollider.transform.position - _attackPoint.position).normalized;
+
+            Projectile proj = _projectilePool.Get(_attackPoint.position, direction, _atk);
+            proj.SetPool(_projectilePool);
+        }
+
+        else
+        {
+            _targetCollider.GetComponent<Player>().TakeDamage(_atk);
+        }
 
         /*Collider2D[] hitTargets = Physics2D.OverlapCircleAll(_attackPoint.position, _attackRange);
 
