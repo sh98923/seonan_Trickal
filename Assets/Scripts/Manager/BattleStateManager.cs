@@ -1,8 +1,16 @@
+using System;
+using static UnityEngine.CullingGroup;
+
 public enum BattleState
 {
     None,
     Reroll,
-    Battle
+    Battle,
+    MonstersDefeated,
+    PlayersDefeated,
+    PlayerWin,
+    PlayerLose,
+    GameOver
 }
 
 public class BattleStateManager : Singleton<BattleStateManager>
@@ -22,6 +30,11 @@ public class BattleStateManager : Singleton<BattleStateManager>
     public bool IsReroll
     {
         get { return _currentState == BattleState.Reroll; }
+    }
+
+    public bool IsGameOver
+    {
+        get { return _currentState == BattleState.GameOver; }
     }
 
     public void SetState(BattleState newState)

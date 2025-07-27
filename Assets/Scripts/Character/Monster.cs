@@ -1,3 +1,4 @@
+using System.IO.Pipes;
 using UnityEngine;
 
 public class Monster : Character
@@ -48,6 +49,7 @@ public class Monster : Character
             }
             else
             {
+                _animator.SetBool("IdleState", true);
                 _curState = State.Attack;
             }
         }
@@ -70,7 +72,10 @@ public class Monster : Character
             if (_projectilePool == null || _targetCollider == null)
                 return;
 
-            Vector2 direction = (_targetCollider.transform.position - _attackPoint.position).normalized;
+            Vector3 pos = _targetCollider.transform.position;
+            pos.y += _colliderOffset;
+
+            Vector2 direction = (pos - _attackPoint.position).normalized;
 
             Projectile proj = _projectilePool.Get(_attackPoint.position, direction, _atk);
             proj.SetPool(_projectilePool);
@@ -107,10 +112,11 @@ public class Monster : Character
         float hpExp = data.Hp * Mathf.Pow(data.HpGrowthRate, wave);
 
         // 두 가지의 공식을 평균 낸 값 (선형, 지수)
-        _curHp = (hpLinear + hpExp) * 0.5f;
+        _maxHp = (hpLinear + hpExp) * 0.5f;
         // Round가 정수로만 반올림 하기 떄문에
         // 소수점 첫째자리까지 나오게 하기위한 수식
-        _curHp = Mathf.Round(_curHp * 10f) * 0.1f;
+        _maxHp = Mathf.Round(_maxHp * 10f) * 0.1f;
+        _curHp = _maxHp;
 
         float atkLinear = data.Atk + data.AtkPerWave * wave;
         float atkExp = data.Atk * Mathf.Pow(data.AtkGrowthRate, wave);

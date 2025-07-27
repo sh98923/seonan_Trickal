@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,6 +18,7 @@ public class MonsterSpawn : MonoBehaviour
 
     private readonly int _poolSize = 3;
 
+    private int _aliveMonsterCount = 0;
     private int _startMonsterIndex;
     private int a = 0;
 
@@ -86,6 +88,8 @@ public class MonsterSpawn : MonoBehaviour
 
     private void SpawnWaveMonsters(Dictionary<int, WaveData> waveMonsters, int wave)
     {
+        _aliveMonsterCount = 0;
+
         foreach (WaveData data in waveMonsters.Values)
         {
             Vector3[] linePositions = _formationPositions[(FormationLayer)data.SpawnLine];
@@ -94,13 +98,37 @@ public class MonsterSpawn : MonoBehaviour
             for (int i = 0; i < data.Count && i < linePositions.Length; i++)
             {
                 GameObject monsterObj = PoolingManager.Instance.Pop(monsterData.Name);
-                monsterObj.GetComponent<Monster>().SetMonsterStat(monsterData, wave);
-
                 monsterObj.transform.position = linePositions[i];
                 Vector3 finalPos = monsterObj.transform.position;
                 finalPos.z = 0.0f;
                 monsterObj.transform.localPosition = finalPos;
+
+                Monster monster = monsterObj.GetComponent<Monster>();
+                monster.SetMonsterStat(monsterData, wave);
+                monster.OnDie -= OnMonsterDie;
+                monster.OnDie += OnMonsterDie;
+
+                _aliveMonsterCount++;
             }
         }
+    }
+
+    private void OnMonsterDie(Character ch)
+    {
+        _aliveMonsterCount--;
+
+        if (_aliveMonsterCount <= 0)
+        {
+            Debug.Log("Wave cleared.");
+            BattleStateManager.Instance.SetState(BattleState.MonstersDefeated);
+            StartCoroutine(MonsterSpawnDelay());
+            a++;
+        }
+    }
+
+    private IEnumerator MonsterSpawnDelay()
+    {
+        yield return new WaitForSeconds(4.0f);
+        _spawned = false;
     }
 }

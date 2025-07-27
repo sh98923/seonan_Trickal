@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -9,12 +10,16 @@ public class Character : MonoBehaviour
         Idle, Move, Attack, Dead
     }
 
-    private SortingGroup _sortingGroup;
+    protected event Action<Character> _onDie;
+    public event Action<Character> OnDie
+    {
+        add { _onDie += value; }
+        remove { _onDie -= value; }
+    }
     protected Animator _animator;
-    private SpriteRenderer[] _spriteRenderers;
     protected Collider2D _targetCollider;
     [SerializeField] protected Transform _attackPoint;
-
+    
     protected Vector2 _moveDir;
     protected State _curState = State.Idle;
 
@@ -22,27 +27,48 @@ public class Character : MonoBehaviour
     protected readonly float _colliderOffset = 0.5f;
     protected readonly float _findTargetRange = 5.0f;
     protected float _curHp = 0.0f;
-    public float CurHp
-    {
-        get { return _curHp; }
-    }
+    protected float _maxHp = 0.0f;
     protected float _atk = 0.0f;
     protected float _criRate = 0.0f;
     protected float _attackRange = 0.0f;
     protected float _atkCoolTime = 0.0f;
     protected float _moveSpeed = 2.0f;
-    protected float _animLength = 0.0f;
-    private float _attackCoolTimer = 0.0f;
 
     protected bool _isAttacking = false;
-    private bool _isDead = false;
+
+    private SortingGroup _sortingGroup;
+    private SpriteRenderer[] _spriteRenderers;
+    private Collider2D _myCollider;
+
     private float _fadeDuration = 3.0f;
+    private float _attackCoolTimer = 0.0f;
+
+    private bool _isDead = false;
 
     protected void Awake() 
     { 
         _animator = GetComponent<Animator>();
+        _myCollider = GetComponent<Collider2D>();
         _sortingGroup = GetComponent<SortingGroup>();
         _spriteRenderers = GetComponentsInChildren<SpriteRenderer>(true);
+    }
+
+    private void OnEnable()
+    {
+        _attackCoolTimer = 0.0f;
+        
+        _curState = State.Idle; 
+        
+        _isAttacking = false;
+        _myCollider.enabled = true;
+        _isDead = false;
+
+        for (int i = 0; i < _spriteRenderers.Length; i++)
+        {
+            Color color = _spriteRenderers[i].color;
+            color.a = 1.0f;
+            _spriteRenderers[i].color = color;
+        }
     }
 
     protected void Update()
@@ -75,12 +101,12 @@ public class Character : MonoBehaviour
 
     protected virtual void IdleStateAction()
     {
-        _animator.SetBool("IsInRanged", true);
+        _animator.SetBool("IdleState", true);
     }
 
     protected virtual void MoveStateAction()
     {
-        _animator.SetBool("IsInRanged", false);
+        _animator.SetBool("IdleState", false);
     }
 
     protected virtual void AttackStateAction()
@@ -88,16 +114,20 @@ public class Character : MonoBehaviour
         if (_isAttacking)
             return;
 
+        if (!_targetCollider.enabled)
+        {
+            _targetCollider = null;
+            _curState = State.Move;
+        }
+
         _isAttacking = true;
         _animator.SetTrigger("Attack");
-
-        _animLength = _animator.GetCurrentAnimatorStateInfo(0).length;
     }
 
     public void TakeDamage(float damage)
     {
         _curHp -= damage;
-        Debug.Log($"현재 체력: {_curHp}");
+        Debug.Log($"{gameObject.name} 현재 체력: {_curHp}");
 
         if (_curHp <= 0)
         {
@@ -111,9 +141,9 @@ public class Character : MonoBehaviour
         {
             _attackCoolTimer += Time.deltaTime;
 
-            if (_attackCoolTimer >= _animLength)
+            if (_attackCoolTimer >= _atkCoolTime)
             {
-                _attackCoolTimer -= _animLength;
+                _attackCoolTimer -= _atkCoolTime;
                 _isAttacking = false;
             }
         }
@@ -151,6 +181,8 @@ public class Character : MonoBehaviour
             return;
 
         _isDead = true;
+        _targetCollider = null;
+        _onDie?.Invoke(this);
         _animator.SetTrigger("Dead");
         GetComponent<Collider2D>().enabled = false;
 
@@ -159,19 +191,20 @@ public class Character : MonoBehaviour
 
     private IEnumerator FadeOutAndInactive()
     {
-        yield return new WaitForSeconds(3.0f);
+        yield return new WaitForSeconds(2.0f);
 
         float timer = 0;
 
         while (timer < _fadeDuration)
         {
             timer += Time.deltaTime;
-            float alpha = Mathf.Lerp(1.0f, 0, timer / _fadeDuration);
+            float curAlpha = Mathf.Lerp(1.0f, 0, timer / _fadeDuration);
 
             for (int i = 0; i < _spriteRenderers.Length; i++)
             {
-                var color = _spriteRenderers[i].color;
-                _spriteRenderers[i].color = new Color(color.r, color.g, color.b, alpha);
+                Color color = _spriteRenderers[i].color;
+                color.a = curAlpha;
+                _spriteRenderers[i].color = color;
             }
 
             yield return null;
@@ -188,7 +221,6 @@ public class Character : MonoBehaviour
         pos.y += _colliderOffset;
 
         Gizmos.DrawWireSphere(pos, _attackRange);
-
 
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(pos, _findTargetRange);

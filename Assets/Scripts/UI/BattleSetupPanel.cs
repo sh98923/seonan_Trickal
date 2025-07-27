@@ -2,17 +2,17 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 
-public class CardRerollPanel : MonoBehaviour
+public class BattleSetupPanel : MonoBehaviour
 {
     private enum CardRerollUIElement
     {
-        LeftCardPanel, CenterCardPanel, RightCardPanel, RerollBtn,
+        LeftCardPanel, CenterCardPanel, RightCardPanel, RerollBtn, BattleBtn,
         CardCount = 3
     }
 
     private List<PlayerData> _rerollCandidates = new List<PlayerData>();
     private InGameUIPanel _inGameUIPanel;
-    private Animator _rerollAnimator;
+    private Animator _setupAnimator;
     private Transform[] _rerollChildren;
     private Button[] _cardBtns;
 
@@ -20,7 +20,7 @@ public class CardRerollPanel : MonoBehaviour
 
     private void Awake()
     {
-        _rerollAnimator = GetComponent<Animator>();
+        _setupAnimator = GetComponent<Animator>();
         _inGameUIPanel = GetComponentInParent<InGameUIPanel>();
         
         InitRerollUI();
@@ -37,6 +37,7 @@ public class CardRerollPanel : MonoBehaviour
         }
 
         _cardBtns[(int)CardRerollUIElement.RerollBtn].onClick.AddListener(OnClickReroll);
+        _cardBtns[(int)CardRerollUIElement.BattleBtn].onClick.AddListener(OnClickBattle);
     }
 
     private void InitRerollUI()
@@ -55,12 +56,17 @@ public class CardRerollPanel : MonoBehaviour
 
     private void OnClickReroll()
     {
-        _rerollAnimator.Play("CardRoll", 0, 0f);
+        _setupAnimator.Play("CardRoll", 0, 0f);
+    }
+
+    private void OnClickBattle()
+    {
+        BattleStateManager.Instance.SetState(BattleState.Battle);
     }
 
     private void OnClickCard(int index)
     {
-        _rerollAnimator.SetTrigger("SelectedCard" + index);
+        _setupAnimator.SetTrigger("SelectedCard" + index);
     }
 
     private void OnCardDataRamdomSet()

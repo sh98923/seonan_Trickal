@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class Player : Character
 {
+    private Vector3 _originPos;
+
     private PlayerStatData _data;
 
     private float _curMp = 0.0f;
@@ -10,7 +12,6 @@ public class Player : Character
     private void Awake()
     {
         base.Awake();
-        
         _moveDir = Vector2.right;
     }
 
@@ -29,21 +30,36 @@ public class Player : Character
     {
         base.MoveStateAction();
 
-        if (_targetCollider == null)
+        if (BattleStateManager.Instance.CurrentState == BattleState.MonstersDefeated)
         {
-            _targetCollider = FindTarget("Enemy", _findTargetRange);
-            transform.Translate(_moveDir * _moveSpeed * Time.deltaTime);
+            Vector3 dir = _originPos - transform.position;
+            transform.Translate(dir.normalized * _moveSpeed * Time.deltaTime);
+
+            if (Vector3.Distance(transform.position, _originPos) < 0.01f)
+            {
+                BattleStateManager.Instance.SetState(BattleState.Reroll);
+                _curState = State.Idle;
+            }
         }
         else
         {
-            if (FindTarget("Enemy", _attackRange) == null)
+            if (_targetCollider == null)
             {
-                Vector2 dir = _targetCollider.transform.position - transform.position;
-                transform.Translate(dir.normalized * _moveSpeed * Time.deltaTime);
+                _targetCollider = FindTarget("Enemy", _findTargetRange);
+                transform.Translate(_moveDir * _moveSpeed * Time.deltaTime);
             }
             else
             {
-                _curState = State.Attack;
+                if (FindTarget("Enemy", _attackRange) == null)
+                {
+                    Vector2 dir = _targetCollider.transform.position - transform.position;
+                    transform.Translate(dir.normalized * _moveSpeed * Time.deltaTime);
+                }
+                else
+                {
+                    _animator.SetBool("IdleState", true);
+                    _curState = State.Attack;
+                }
             }
         }
     }
@@ -54,6 +70,13 @@ public class Player : Character
         {
             _targetCollider = null;
             _curState = State.Move;
+        }
+
+        // 몬스터 전멸
+        if (BattleStateManager.Instance.CurrentState == BattleState.MonstersDefeated)
+        {
+            _curState = State.Move;
+            return;
         }
 
         if (_isAttacking)
@@ -69,8 +92,6 @@ public class Player : Character
         {
             _animator.SetTrigger("Attack");
         }
-
-        _animLength = _animator.GetCurrentAnimatorStateInfo(0).length;
     }
 
     public void OnAttackHit()
@@ -105,5 +126,7 @@ public class Player : Character
         _data = data;
         _curHp = _data.Hp * 10;
         _attackRange = _data.Range;
+        _atkCoolTime = data.AtkCoolTime;
+        _originPos = transform.position;
     }
 }

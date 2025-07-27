@@ -4,9 +4,9 @@ using UnityEngine;
 public enum InGameUIElement
 {
     DeckPanel = 1, StageName = 2, InGameStartBtn = 3,
-    DeckContent = 6, BattleStartBtnPanel = 7, CardRerollPanel = 11,
-    LeftCardBtn = 14, CenterCardBtn = 21, RightCardBtn = 28,
-    RerollImage = 33, RerollBtn = 34, TimeControlPanel = 38, WaveTimerPanel = 41
+    DeckContent = 6, BattleSetUpPanel = 7,
+    LeftCardBtn = 10, CenterCardBtn = 17, RightCardBtn = 24,
+    RerollImage = 29, RerollBtn = 30, TimeControlPanel = 37, WaveTimerPanel = 40
 }
 
 public class InGameUIPanel : MonoBehaviour
@@ -17,7 +17,7 @@ public class InGameUIPanel : MonoBehaviour
     {
         get { return _spawnParent; }
     }
-
+    private Animator _setUpAnim;
     private BattleState _prevState = BattleState.None;
 
     private bool _isDeckMode = false;
@@ -32,6 +32,9 @@ public class InGameUIPanel : MonoBehaviour
         _spawnParent = GameObject.Find("SpawnPlayer").transform;
         _inGameUIs = GetComponentsInChildren<Transform>();
 
+        Transform setUpPanel = _inGameUIs[(int)InGameUIElement.BattleSetUpPanel];
+        _setUpAnim = setUpPanel.GetComponent<Animator>();
+
         SetUIInit();
     }
 
@@ -42,8 +45,7 @@ public class InGameUIPanel : MonoBehaviour
         if (_isDeckMode && Input.GetKeyDown(KeyCode.Alpha4))
         {
             _inGameUIs[(int)InGameUIElement.DeckPanel].gameObject.SetActive(true);
-            _inGameUIs[(int)InGameUIElement.BattleStartBtnPanel].gameObject.SetActive(false);
-            _inGameUIs[(int)InGameUIElement.CardRerollPanel].gameObject.SetActive(false);
+            _inGameUIs[(int)InGameUIElement.BattleSetUpPanel].gameObject.SetActive(false);
 
             _isDeckMode = false;
             BattleStateManager.Instance.SetState(BattleState.None);
@@ -60,11 +62,11 @@ public class InGameUIPanel : MonoBehaviour
             switch (currentState)
             {
                 case BattleState.Reroll:
-                    ApplyRerollUIState(); // 리롤 상태일 때의 UI
+                    ShowRerollUI(); // 리롤 상태일 때의 UI
                     break;
 
                 case BattleState.Battle:
-                    ApplyBattleUIState(); // 배틀 중 불필요한 UI 비활성화
+                    ShowBattleUI(); // 배틀 상태일 때의 UI
                     break;
             }
 
@@ -75,22 +77,21 @@ public class InGameUIPanel : MonoBehaviour
     private void SetUIInit()
     {
         _inGameUIs[(int)InGameUIElement.WaveTimerPanel].gameObject.SetActive(false);
-        _inGameUIs[(int)InGameUIElement.CardRerollPanel].gameObject.SetActive(false);
         _inGameUIs[(int)InGameUIElement.TimeControlPanel].gameObject.SetActive(false);
-        _inGameUIs[(int)InGameUIElement.BattleStartBtnPanel].gameObject.SetActive(false);
+        _inGameUIs[(int)InGameUIElement.BattleSetUpPanel].gameObject.SetActive(false);
     }
 
-    private void ApplyRerollUIState()
+    private void ShowRerollUI()
     {
         _inGameUIs[(int)InGameUIElement.WaveTimerPanel].gameObject.SetActive(true);
-        _inGameUIs[(int)InGameUIElement.CardRerollPanel].gameObject.SetActive(true);
         _inGameUIs[(int)InGameUIElement.TimeControlPanel].gameObject.SetActive(true);
-        _inGameUIs[(int)InGameUIElement.BattleStartBtnPanel].gameObject.SetActive(true);
+        _inGameUIs[(int)InGameUIElement.BattleSetUpPanel].gameObject.SetActive(true);
+        _setUpAnim.SetTrigger("RerollStart");
     }
 
-    private void ApplyBattleUIState()
+    private void ShowBattleUI()
     {
-        _inGameUIs[(int)InGameUIElement.CardRerollPanel].gameObject.SetActive(false);
+        _setUpAnim.SetTrigger("BattleStart");
     }
 
     // 나중에 필요 없으면 아래 두개 함수 다 지워

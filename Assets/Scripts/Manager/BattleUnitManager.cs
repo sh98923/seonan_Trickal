@@ -5,9 +5,25 @@ public class BattleUnitManager : Singleton<BattleUnitManager>
 {
     private Dictionary<int, PlayerUnit> _activeUnits = new Dictionary<int, PlayerUnit>();
 
+    private int _alivePlayerCount = 0;
+
     public void RegisterUnit(PlayerData data, GameObject instance)
     {
+        Player player = instance.GetComponent<Player>();
+        player.OnDie += OnPlayerDie;
+        _alivePlayerCount++;
+
         _activeUnits[data.Key] = new PlayerUnit(data, instance);
+    }
+
+    private void OnPlayerDie(Character ch)
+    {
+        _alivePlayerCount--;
+        if (_alivePlayerCount <= 0)
+        {
+            Debug.Log("All players defeated. Game Over.");
+            BattleStateManager.Instance.SetState(BattleState.GameOver);
+        }
     }
 
     public void UpgradeUnit(int key)
