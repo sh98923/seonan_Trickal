@@ -35,6 +35,23 @@ public class WaveManager : Singleton<WaveManager>
         return result;
     }
 
+    public HashSet<int> GetStageMonster(int totalWaveCount)
+    {
+        int startWaveKey = GameManager.Instance.WaveKey;
+        int endKey = startWaveKey + totalWaveCount;
+        HashSet<int> monsterKeys = new HashSet<int>();
+
+        foreach (WaveData data in _waveDatas.Values)
+        {
+            if (startWaveKey <= data.WaveKey && data.WaveKey < endKey)
+            {
+                monsterKeys.Add(data.MonsterKey);
+            }
+        }
+
+        return monsterKeys;
+    }
+
     private void LoadWaveData()
     {
         TextAsset textAsset = Resources.Load<TextAsset>("Tables/WaveTable");

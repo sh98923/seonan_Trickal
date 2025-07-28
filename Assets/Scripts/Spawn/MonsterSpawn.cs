@@ -16,7 +16,7 @@ public class MonsterSpawn : MonoBehaviour
         { FormationLayer.Back, new Vector3[3] }
     };
 
-    private readonly int _poolSize = 3;
+    private readonly int _poolSize = 5;
 
     private int _aliveMonsterCount = 0;
     private int _startMonsterIndex;
@@ -31,31 +31,26 @@ public class MonsterSpawn : MonoBehaviour
         LoadMonsterPos();
     }
 
-    private void Update()
+    private void OnEnable()
     {
-        if(Input.GetKeyUp(KeyCode.Escape))
-        {
-            _spawned = false;
-            BattleStateManager.Instance.SetState(BattleState.Battle);
-            PoolingManager.Instance.InActiveAll();
-            a++;
-        }
+        BattleStateManager.Instance.OnReroll += HandleReroll;
+    }
 
-        if (!_spawned && BattleStateManager.Instance.IsReroll)
-        {
-            int waveKey = StageManager.Instance.StageStartKey + a;
-            StageData wave = StageManager.Instance.GetStageData(waveKey);
-            Dictionary<int, WaveData> waveMonsters = WaveManager.Instance.GetWaveMonster(waveKey);
+    private void OnDisable()
+    {
+        BattleStateManager.Instance.OnReroll -= HandleReroll;
+    }
 
-            SpawnWaveMonsters(waveMonsters, wave.Wave);
+    private void HandleReroll()
+    {
+        if (_spawned) return;
 
-            _spawned = true;
-        }
+        int waveKey = GameManager.Instance.WaveKey + a;
+        StageData wave = StageManager.Instance.GetStageData(waveKey);
+        Dictionary<int, WaveData> waveMonsters = WaveManager.Instance.GetWaveMonster(waveKey);
 
-        if(Input.GetKeyDown(KeyCode.A))
-        {
-            BattleStateManager.Instance.SetState(BattleState.Battle);
-        }
+        SpawnWaveMonsters(waveMonsters, wave.Wave);
+        _spawned = true;
     }
 
     private void LoadMonsterPos()
@@ -78,8 +73,17 @@ public class MonsterSpawn : MonoBehaviour
 
     private void LoadMonsterPool()
     {
-        //몬스터 종류마다 한 번씩만 등록
-        foreach (MonsterData monsterData in CharacterManager.Instance.AllMonsterDatas)
+        int waveCnt = GameManager.Instance.StageDatas.Count;
+        List<MonsterData> stageMonsters = new List<MonsterData>();
+        HashSet<int> stageMonsterKeys = WaveManager.Instance.GetStageMonster(waveCnt);
+
+        foreach (int monsterKey in stageMonsterKeys)
+        {
+            stageMonsters.Add(CharacterManager.Instance.GetMonsterData(monsterKey));
+        }
+
+        // 그 스테이지에서 나오는 몬스터만 풀링
+        foreach (MonsterData monsterData in stageMonsters)
         {
             GameObject prefab = Resources.Load<GameObject>(monsterData.PrefabPath);
             PoolingManager.Instance.Add(monsterData.Name, _poolSize, prefab, transform);
@@ -130,5 +134,6 @@ public class MonsterSpawn : MonoBehaviour
     {
         yield return new WaitForSeconds(4.0f);
         _spawned = false;
+        BattleStateManager.Instance.RerollEvent();
     }
 }

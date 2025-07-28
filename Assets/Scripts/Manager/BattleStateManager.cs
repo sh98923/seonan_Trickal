@@ -15,6 +15,13 @@ public enum BattleState
 
 public class BattleStateManager : Singleton<BattleStateManager>
 {
+    private event Action _onReroll;
+    public event Action OnReroll
+    {
+        add { _onReroll += value; }
+        remove { _onReroll -= value; }
+    }
+
     private BattleState _currentState = BattleState.None;
 
     public BattleState CurrentState
@@ -29,7 +36,10 @@ public class BattleStateManager : Singleton<BattleStateManager>
 
     public bool IsReroll
     {
-        get { return _currentState == BattleState.Reroll; }
+        get
+        {
+            return _currentState == BattleState.Reroll;
+        }
     }
 
     public bool IsGameOver
@@ -40,5 +50,10 @@ public class BattleStateManager : Singleton<BattleStateManager>
     public void SetState(BattleState newState)
     {
         _currentState = newState;
+    }
+
+    public void RerollEvent()
+    {
+        _onReroll?.Invoke();
     }
 }

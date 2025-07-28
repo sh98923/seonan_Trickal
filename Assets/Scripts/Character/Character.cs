@@ -191,7 +191,7 @@ public class Character : MonoBehaviour
 
     private IEnumerator FadeOutAndInactive()
     {
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(1.5f);
 
         float timer = 0;
 

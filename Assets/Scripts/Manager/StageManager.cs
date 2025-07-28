@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public struct StageData
 {
@@ -28,6 +29,22 @@ public class StageManager : Singleton<StageManager>
     public StageData GetStageData(int key)
     {
         return _stageDatas[key];
+    }
+
+    public List<StageData> GetStageDatas(int key)
+    {
+        int stage = _stageDatas[key].Stage;
+        List<StageData> results = new List<StageData>();
+
+        foreach (StageData data in _stageDatas.Values)
+        {
+            if (data.Stage == stage)
+            {
+                results.Add(data);
+            }
+        }
+
+        return results;
     }
 
     private void LoadStageData()

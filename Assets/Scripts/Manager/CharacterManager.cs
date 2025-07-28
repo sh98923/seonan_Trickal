@@ -36,13 +36,10 @@ public class CharacterManager : Singleton<CharacterManager>
 {
     private Dictionary<int, PlayerData> _playerDatas = new Dictionary<int, PlayerData>();
     private Dictionary<int, MonsterData> _monsterDatas = new Dictionary<int, MonsterData>();
-    public IEnumerable<MonsterData> AllMonsterDatas
-    {
-        get { return _monsterDatas.Values; }
-    }
 
     private readonly int _firstPlayerKey = 1;
     private int _playerStartKey;
+
     public int PlayerStartKey
     {
         get { return _playerStartKey; }

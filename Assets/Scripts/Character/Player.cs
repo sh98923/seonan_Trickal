@@ -96,14 +96,14 @@ public class Player : Character
 
     public void OnAttackHit()
     {
-        _targetCollider.GetComponent<Monster>().TakeDamage(_data.Atk);
+        _targetCollider.GetComponent<Monster>().TakeDamage(_data.Atk * 119);
     }
 
     public void OnSkillHit()
     {
         float atk = _data.Atk * _data.BaseSkill;
         _curMp -= _data.Mp;
-        _targetCollider.GetComponent<Monster>().TakeDamage(atk);
+        _targetCollider.GetComponent<Monster>().TakeDamage(atk * 119);
     }
 
     private IEnumerator RegenerateMp()

@@ -10,31 +10,23 @@ public class MapBG : MonoBehaviour
     private SpriteRenderer[] _BGSprites;
     private BGData _BGData;
     private int _BGStartIndex;
+    private int _waveKey;
 
     private void Awake()
     {    
         _BGSprites = GetComponentsInChildren<SpriteRenderer>();
+        _waveKey = GameManager.Instance.WaveKey;
     }
 
     private void Start()
     {
         _BGStartIndex = BGManager.Instance.BGStartKey;
-    }
-
-    private void Update()
-    {
-        for (int i = 1; i <= 3; i++)
-        {
-            if (Input.GetKeyDown(KeyCode.Alpha0 + i))
-            {
-                LoadBGByIndex(i);
-            }
-        }
+        LoadBGByIndex(StageManager.Instance.GetStageData(_waveKey).Map);
     }
 
     private void LoadBGByIndex(int index)
     {
-        _BGData = BGManager.Instance.GetBGData(_BGStartIndex + index - 1);
+        _BGData = BGManager.Instance.GetBGData(_BGStartIndex + index);
 
         string skyPath = _BGData.SkyPath;
         string groundPath = _BGData.GroundPath;

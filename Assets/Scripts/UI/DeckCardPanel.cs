@@ -65,5 +65,6 @@ public class DeckCardPanel : MonoBehaviour
     {
         gameObject.SetActive(false);
         BattleStateManager.Instance.SetState(BattleState.Reroll);
+        BattleStateManager.Instance.RerollEvent();
     }
 }
