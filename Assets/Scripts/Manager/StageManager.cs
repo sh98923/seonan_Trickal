@@ -8,6 +8,7 @@ public struct StageData
     public int Map;
     public int Stage;
     public int Wave;
+    public int WaveCoin;
 }
 
 public class StageManager : Singleton<StageManager>
@@ -65,7 +66,8 @@ public class StageManager : Singleton<StageManager>
             data.Map = int.Parse(colData[1]);
             data.Stage = int.Parse(colData[2]);
             data.Wave = int.Parse(colData[3]);
-            
+            data.WaveCoin = int.Parse(colData[4]);
+
             if (_firstStageKey == i)
             {
                 _stageStartKey = data.Key;

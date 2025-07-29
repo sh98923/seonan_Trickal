@@ -6,6 +6,11 @@ public class BattleUnitManager : Singleton<BattleUnitManager>
     private Dictionary<int, PlayerUnit> _activeUnits = new Dictionary<int, PlayerUnit>();
 
     private int _alivePlayerCount = 0;
+    private int _curLevel;
+    public int CurLevel
+    {
+        get { return _curLevel; }
+    }
 
     public void RegisterUnit(PlayerData data, GameObject instance)
     {
@@ -31,6 +36,7 @@ public class BattleUnitManager : Singleton<BattleUnitManager>
         if (_activeUnits.TryGetValue(key, out PlayerUnit unit))
         {
             unit.LevelUp();
+            _curLevel = unit.Level;
         }
     }
 }
@@ -42,6 +48,10 @@ public class PlayerUnit
     private PlayerStatData[] _playerStats;
 
     private int _level = 0;
+    public int Level
+    {
+        get { return _level; }
+    }
 
     public PlayerUnit(PlayerData data, GameObject unit)
     {

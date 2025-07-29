@@ -11,6 +11,7 @@ public struct PlayerData
     public string SpritePath;
     public string Layer;
     public int SpawnLine;
+    public int CardCost;
 }
 
 public struct MonsterData
@@ -100,7 +101,8 @@ public class CharacterManager : Singleton<CharacterManager>
             data.SpritePath = colData[5];
             data.Layer = colData[6];
             data.SpawnLine = int.Parse(colData[7]);
-            
+            data.CardCost = int.Parse(colData[8]);
+
             if (_firstPlayerKey == i)
             {
                 _playerStartKey = data.Key;

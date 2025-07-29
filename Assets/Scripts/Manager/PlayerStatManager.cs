@@ -71,7 +71,7 @@ public class PlayerStatManager : Singleton<PlayerStatManager>
             data.AtkCoolTime = float.Parse(colDatas[11]);
             data.UltCoolTime = float.Parse(colDatas[12]);
             data.CanUseUlt = bool.Parse(colDatas[13]);
-            
+
             if (_firstStageKey == i)
             {
                 _statStartKey = data.Key;

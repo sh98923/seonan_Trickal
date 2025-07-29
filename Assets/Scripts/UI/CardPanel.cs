@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,16 +7,14 @@ public class CardPanel : MonoBehaviour
 {
     private enum CardUIElement
     {
-        cardBG, DeployButton, CostImage
-    }
-
-    private enum BtnUIElement
-    {
-        CharacterImage, CharacterName
+        cardBG = 1, DeployButton, 
+        CharacterImage, CharacterName, 
+        CostImage, CostText
     }
 
     private InGameUIPanel _inGameUIPanel;
     private Transform[] _cardChildren;
+    private BattleSetupPanel _parentPanel;
     private PlayerSpawn _spawnParent;
 
     private PlayerData _playerData;
@@ -24,23 +23,22 @@ public class CardPanel : MonoBehaviour
 
     private void Awake()
     {
-        InitUIElements();
+        _cardChildren = GetComponentsInChildren<Transform>();
     }
 
     private void Start()
     {
-        Sprite costImage = Resources.Load<Sprite>("Sprites/CardInfo/CostBG");
-        _cardChildren[(int)CardUIElement.CostImage].GetComponent<Image>().sprite = costImage;
-
-        _cardChildren[(int)CardUIElement.CostImage].GetChild(0).GetComponent<TextMeshProUGUI>().text = "5";
-
         _inGameUIPanel = GetComponentInParent<InGameUIPanel>();
         _spawnParent = _inGameUIPanel.SpawnParent.GetComponent<PlayerSpawn>();
+        _parentPanel = _inGameUIPanel.GetUIElement<BattleSetupPanel>(InGameUIElement.BattleSetUpPanel);
 
-        _cardChildren[(int)CardUIElement.DeployButton].
-            GetComponent<Button>().onClick.AddListener(OnClickMyDeckCard);
+        InitUI();
+        RegisterButtonEvents();
+    }
 
-        _cardChildren[(int)CardUIElement.CostImage].gameObject.SetActive(false);  
+    private void InitUI()
+    {
+        _cardChildren[(int)CardUIElement.CostImage].gameObject.SetActive(false);
     }
 
     private void Update()
@@ -57,6 +55,12 @@ public class CardPanel : MonoBehaviour
             _cardChildren[(int)CardUIElement.CostImage].gameObject.SetActive(isRerollActive);
             _wasRerollActive = isRerollActive;
         }
+    }
+
+    private void RegisterButtonEvents()
+    {
+        _cardChildren[(int)CardUIElement.DeployButton]
+            .GetComponent<Button>().onClick.AddListener(OnClickMyDeckCard);
     }
 
     private void OnClickMyDeckCard()
@@ -79,7 +83,6 @@ public class CardPanel : MonoBehaviour
             return;
         }
 
-
         Vector3 spawnPos = _spawnParent.SetPlayerPos(_playerData);
 
         // 위치 못 찾으면 생성을 안 함
@@ -101,31 +104,38 @@ public class CardPanel : MonoBehaviour
 
     private void UpgradePlayer()
     {
-        BattleUnitManager.Instance.UpgradeUnit(_playerData.Key);  
+        BattleUnitManager.Instance.UpgradeUnit(_playerData.Key);
+
+        int curLevel = BattleUnitManager.Instance.CurLevel;
+        _parentPanel.CardCostUpdate(_playerData.Key, curLevel);
     }
 
-    private void InitUIElements()
+    public void SetPlayerUnit(PlayerData playerData)
     {
-        _cardChildren = new Transform[transform.childCount];
+        _playerData = playerData;
 
-        for (int i = 0; i < _cardChildren.Length; i++)
-        {
-            _cardChildren[i] = transform.GetChild(i);
-        }
+        SetCardInfo();
     }
 
-    public void SetPlayerUnit(int key)
+    private void SetCardInfo()
     {
-        _playerData = CharacterManager.Instance.GetPlayerData(key);
-
-        Transform deployBtn = _cardChildren[(int)CardUIElement.DeployButton];
-
-        Image characterImage = 
-            deployBtn.GetChild((int)BtnUIElement.CharacterImage).GetComponent<Image>();
+        // 캐릭터 텍스쳐
+        Image characterImage = _cardChildren[(int)CardUIElement.CharacterImage].GetComponent<Image>();
         characterImage.sprite = Resources.Load<Sprite>(_playerData.SpritePath);
 
-        TextMeshProUGUI characterName = 
-            deployBtn.GetChild((int)BtnUIElement.CharacterName).GetComponent<TextMeshProUGUI>();
+        // 캐릭터 이름
+        TextMeshProUGUI characterName = _cardChildren[(int)CardUIElement.CharacterName].GetComponent<TextMeshProUGUI>();
         characterName.text = _playerData.Name;
+
+        // 캐릭터 Cost BG
+        Sprite costImage = Resources.Load<Sprite>("Sprites/CardInfo/CostBG");
+
+        Image cardCostBG = _cardChildren[(int)CardUIElement.CostImage].GetComponent<Image>();
+        cardCostBG.sprite = costImage;
+
+        // 캐릭터 Cost Text
+        TextMeshProUGUI cardCost = _cardChildren[(int)CardUIElement.CostText].GetComponent<TextMeshProUGUI>();
+        string curCost = _playerData.CardCost.ToString();
+        cardCost.text = curCost;
     }
 }

@@ -50,8 +50,10 @@ public class DeckCardPanel : MonoBehaviour
             GameObject obj = Instantiate(UIprefab, deckConent);
             obj.name += ("_" + i);
 
+            PlayerData playerData = CharacterManager.Instance.GetPlayerData(_startPlayerKey + i);
+
             _deployBtn = obj.GetComponent<CardPanel>();
-            _deployBtn.SetPlayerUnit(_startPlayerKey + i);
+            _deployBtn.SetPlayerUnit(playerData);
         }
     }
 

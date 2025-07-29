@@ -16,6 +16,7 @@ public class BattleSetupPanel : MonoBehaviour
     private Transform[] _rerollChildren;
     private Button[] _cardBtns;
 
+    private readonly int _maxLevel = 5;
     private int _cardCount = (int)CardRerollUIElement.CardCount;
 
     private void Awake()
@@ -75,7 +76,20 @@ public class BattleSetupPanel : MonoBehaviour
         {
             int randomIndex = Random.Range(0, _rerollCandidates.Count);
             _rerollChildren[i].GetComponent<CardPanel>()
-                .SetPlayerUnit(_rerollCandidates[randomIndex].Key);
+                .SetPlayerUnit(_rerollCandidates[randomIndex]);
+        }
+    }
+
+    public void CardCostUpdate(int key, int curLevel)
+    {
+        for(int i = 0; i < _rerollCandidates.Count; i++)
+        {
+            if (_rerollCandidates[i].Key == key && curLevel < _maxLevel)
+            {
+                PlayerData data = _rerollCandidates[i];
+                data.CardCost += 5;
+                _rerollCandidates[i] = data;
+            }
         }
     }
 }
