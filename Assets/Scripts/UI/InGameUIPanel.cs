@@ -6,7 +6,7 @@ public enum InGameUIElement
     DeckPanel = 1, StageName = 2, InGameStartBtn = 3,
     DeckContent = 6, BattleSetUpPanel = 7,
     LeftCardBtn = 10, CenterCardBtn = 17, RightCardBtn = 24,
-    RerollImage = 29, RerollBtn = 30, TimeControlPanel = 37, WaveTimerPanel = 40
+    RerollImage = 29, RerollBtn = 30, TimeControlPanel = 39, WaveTimerPanel = 42
 }
 
 public class InGameUIPanel : MonoBehaviour

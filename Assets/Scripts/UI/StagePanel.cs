@@ -37,6 +37,6 @@ public class StagePanel : MonoBehaviour
     {
         int stageKey = _stageIndex + (index * 5);
         GameManager.Instance.SetStageKey(stageKey);
-        SceneManager.LoadScene("SampleScene");
+        SceneManager.LoadScene("InGameScene");
     }
 }
