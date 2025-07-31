@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -14,10 +15,12 @@ public class StagePanel : MonoBehaviour
     }
 
     private Transform[] _stageChildren;
+    private Transform _monsterPreviewRoot;
     private readonly int _stageCount = 3;
 
     private void Awake()
     {
+        _monsterPreviewRoot = GameObject.Find("MonsterPreivew").transform;
         _stageChildren = GetComponentsInChildren<Transform>();
         SetStageInfoPanelActive(false);
     }
@@ -53,6 +56,7 @@ public class StagePanel : MonoBehaviour
         int stageNumber = index + 1;
         int stageKey = StageManager.Instance.GetStageStartKey(stageNumber);
         GameManager.Instance.SetStageKey(stageKey);
+        ShowMonsterInfo();
         SetStageInfoPanelActive(true);
     }
 
@@ -64,6 +68,44 @@ public class StagePanel : MonoBehaviour
     private void OnClickCancel()
     {
         SetStageInfoPanelActive(false);
+    }
+
+    private void ShowMonsterInfo()
+    {
+        // 기존에 생성된 몬스터 미리보기 제거
+        foreach (Transform child in _monsterPreviewRoot)
+        {
+            Destroy(child.gameObject);
+        }
+
+        int waveCnt = GameManager.Instance.WaveCount;
+        List<MonsterData> stageMonsters = new List<MonsterData>();
+        HashSet<int> stageMonsterKeys = WaveManager.Instance.GetStageMonster(waveCnt);
+
+        foreach (int monsterKey in stageMonsterKeys)
+        {
+            stageMonsters.Add(CharacterManager.Instance.GetMonsterData(monsterKey));
+        }
+
+        // 시작 위치
+        Vector3 startPos = new Vector3(-3.75f, 2.0f, 0f); // 왼쪽 상단 쯤
+        float spacingX = 3.0f; // 가로 간격
+        float spacingY = 3.0f; // 세로 간격
+        int columnCount = 3;   // 가로로 몇 마리씩 표시할지
+
+        for (int i = 0; i < stageMonsters.Count; i++)
+        {
+            MonsterData monsterData = stageMonsters[i];
+            GameObject prefab = Resources.Load<GameObject>(monsterData.PrefabPath);
+            GameObject obj = Instantiate(prefab, _monsterPreviewRoot);
+
+            int row = i / columnCount;
+            int col = i % columnCount;
+
+            Vector3 pos = startPos + new Vector3(col * spacingX, -row * spacingY, 0f);
+            obj.transform.localScale *= 2.0f; 
+            obj.transform.position = pos;
+        }
     }
 
     private void SetStageInfoPanelActive(bool active)

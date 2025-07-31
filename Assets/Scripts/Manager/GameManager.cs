@@ -1,24 +1,21 @@
-using System.Collections.Generic;
-
 public class GameManager : Singleton<GameManager>
 {
-    private List<StageData> _stageDatas = new List<StageData>();
-    public List<StageData> StageDatas
+    private readonly int _inGameStartCoin = 30;
+    public int InGameStartCoin
     {
-        get { return _stageDatas; }
+        get { return _inGameStartCoin; }
+    }
+
+    private int _waveCount;
+    public int WaveCount
+    {
+        get { return _waveCount; }
     }
 
     private int _waveKey;
     public int WaveKey
     {
         get { return _waveKey; }
-    }
-
-    private int _mapBGKey;
-    public int MapBGKey
-    {
-        get { return _mapBGKey; }
-        set { _mapBGKey = value; }
     }
 
     private void Awake()
@@ -29,6 +26,6 @@ public class GameManager : Singleton<GameManager>
     public void SetStageKey(int waveKey)
     {
         _waveKey = waveKey; 
-        _stageDatas = StageManager.Instance.GetStageDataList(_waveKey);
+        _waveCount = StageManager.Instance.GetWaveCount(_waveKey);
     }
 }

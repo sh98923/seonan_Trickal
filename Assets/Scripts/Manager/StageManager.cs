@@ -32,7 +32,7 @@ public class StageManager : Singleton<StageManager>
         return _stageDatas[key];
     }
 
-    public List<StageData> GetStageDataList(int key)
+    public int GetWaveCount(int key)
     {
         int stage = _stageDatas[key].Stage;
         List<StageData> results = new List<StageData>();
@@ -45,7 +45,7 @@ public class StageManager : Singleton<StageManager>
             }
         }
 
-        return results;
+        return results.Count;
     }
 
     public int GetStageStartKey(int stageNumber)

@@ -73,7 +73,7 @@ public class MonsterSpawn : MonoBehaviour
 
     private void LoadMonsterPool()
     {
-        int waveCnt = GameManager.Instance.StageDatas.Count;
+        int waveCnt = GameManager.Instance.WaveCount;
         List<MonsterData> stageMonsters = new List<MonsterData>();
         HashSet<int> stageMonsterKeys = WaveManager.Instance.GetStageMonster(waveCnt);
 
