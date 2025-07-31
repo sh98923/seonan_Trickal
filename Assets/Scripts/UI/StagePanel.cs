@@ -79,13 +79,7 @@ public class StagePanel : MonoBehaviour
         }
 
         int waveCnt = GameManager.Instance.WaveCount;
-        List<MonsterData> stageMonsters = new List<MonsterData>();
         HashSet<int> stageMonsterKeys = WaveManager.Instance.GetStageMonster(waveCnt);
-
-        foreach (int monsterKey in stageMonsterKeys)
-        {
-            stageMonsters.Add(CharacterManager.Instance.GetMonsterData(monsterKey));
-        }
 
         // 시작 위치
         Vector3 startPos = new Vector3(-3.75f, 2.0f, 0f); // 왼쪽 상단 쯤
@@ -93,9 +87,10 @@ public class StagePanel : MonoBehaviour
         float spacingY = 3.0f; // 세로 간격
         int columnCount = 3;   // 가로로 몇 마리씩 표시할지
 
-        for (int i = 0; i < stageMonsters.Count; i++)
+        int i = 0;
+        foreach (int monsterKey in stageMonsterKeys)
         {
-            MonsterData monsterData = stageMonsters[i];
+            CharacterData monsterData = CharacterManager.Instance.GetCharacterData(monsterKey);
             GameObject prefab = Resources.Load<GameObject>(monsterData.PrefabPath);
             GameObject obj = Instantiate(prefab, _monsterPreviewRoot);
 
@@ -103,8 +98,10 @@ public class StagePanel : MonoBehaviour
             int col = i % columnCount;
 
             Vector3 pos = startPos + new Vector3(col * spacingX, -row * spacingY, 0f);
-            obj.transform.localScale *= 2.0f; 
+            obj.transform.localScale *= 2.0f;
             obj.transform.position = pos;
+
+            i++;
         }
     }
 

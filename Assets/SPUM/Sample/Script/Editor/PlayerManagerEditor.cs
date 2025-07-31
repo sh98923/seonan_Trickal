@@ -1,13 +1,13 @@
 using UnityEngine;
 using UnityEditor;
-[CustomEditor(typeof(PlayerManager))]
+[CustomEditor(typeof(PlayerUnitManager))]
 public class PlayerManagerEditor : Editor
 {
     public override void OnInspectorGUI()
     {
         DrawDefaultInspector();
 
-        PlayerManager manager = (PlayerManager)target;
+        PlayerUnitManager manager = (PlayerUnitManager)target;
 
         if (GUILayout.Button("CREATE UNIT"))
         {

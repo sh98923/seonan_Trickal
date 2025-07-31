@@ -32,12 +32,12 @@ public class SpawnManager : Singleton<SpawnManager>
         LoadSpawnPosData();
     }
 
-    public SpawnPosData GetPlayerData(int key)
+    public SpawnPosData GetPlayerSpawnData(int key)
     {
         return _spawnPlayerDatas[key];
     }
 
-    public SpawnPosData GetMonsterData(int key)
+    public SpawnPosData GetMonsterSpawnData(int key)
     {
         return _spawnMonsterDatas[key];
     }

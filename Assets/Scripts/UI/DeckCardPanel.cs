@@ -45,16 +45,16 @@ public class DeckCardPanel : MonoBehaviour
 
         GameObject UIprefab = Resources.Load<GameObject>("Prefabs/UI/CardPanel");
 
-        for (int i = _startPlayerKey; i < CharacterManager.Instance.GetPlayerDataCount(); i++)
+        /*for (int i = _startPlayerKey; i < CharacterManager.Instance.PlayerCount; i++)
         {
             GameObject obj = Instantiate(UIprefab, deckConent);
             obj.name += ("_" + i);
 
-            PlayerData playerData = CharacterManager.Instance.GetPlayerData(_startPlayerKey + i);
+            PlayerData playerData = CharacterManager.Instance.GetCharacterData(_startPlayerKey + i);
 
             _deployBtn = obj.GetComponent<CardPanel>();
             _deployBtn.SetPlayerUnit(playerData);
-        }
+        }*/
     }
 
     private void SetStartBtn()

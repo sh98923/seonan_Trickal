@@ -24,7 +24,7 @@ public class PlayerSpawn : MonoBehaviour
     private List<PlayerData> _deployedDatas = new List<PlayerData>();
     public List<PlayerData> DeployedDatas
     {
-        get { return _deployedDatas; }
+         get { return _deployedDatas; }
     }
 
     private int _startPlayerIndex;
@@ -44,7 +44,7 @@ public class PlayerSpawn : MonoBehaviour
         {
             for (int i = 0; i < positions.Length; i++)
             {
-                SpawnPosData spawnData = SpawnManager.Instance.GetPlayerData(_startPlayerIndex + index);
+                SpawnPosData spawnData = SpawnManager.Instance.GetPlayerSpawnData(_startPlayerIndex + index);
                 Vector3 newPos = new Vector3(origin.x * spawnData.Ratio.x, origin.y * spawnData.Ratio.y, 0.0f);
 
                 positions[i].Position = Camera.main.ScreenToWorldPoint(newPos);
@@ -56,7 +56,7 @@ public class PlayerSpawn : MonoBehaviour
 
     public bool IsDataDeployed(PlayerData data)
     {
-        for(int i = 0; i < _deployedDatas.Count; i++)
+        for (int i = 0; i < _deployedDatas.Count; i++)
         {
             if (_deployedDatas[i].Key == data.Key)
                 return true;
@@ -64,8 +64,9 @@ public class PlayerSpawn : MonoBehaviour
         return false;
     }
 
-    public Vector3 SetPlayerPos(PlayerData data)
+    public Vector3 SetPlayerPos(PlayerData playerData)
     {
+        CharacterData data = CharacterManager.Instance.GetCharacterData(playerData.Key);
         FormationSlot[] slots = _deployedCharacters[data.SpawnLine];
 
         for (int i = 0; i < slots.Length; i++)
@@ -73,7 +74,7 @@ public class PlayerSpawn : MonoBehaviour
             if (slots[i].IsOccupied) continue;
 
             if(!BattleStateManager.Instance.IsBattle)
-                _deployedDatas.Add(data);
+                _deployedDatas.Add(playerData);
 
             slots[i].IsOccupied = true;
             return slots[i].Position;

@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class PlayerManager : MonoBehaviour
+public class PlayerUnitManager : MonoBehaviour
 {
     public PlayerObj _prefabObj;
     public List<SPUM_Prefabs> _savedUnitList = new List<SPUM_Prefabs>();

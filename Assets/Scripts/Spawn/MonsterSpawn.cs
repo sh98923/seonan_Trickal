@@ -62,7 +62,7 @@ public class MonsterSpawn : MonoBehaviour
         {
             for (int i = 0; i < positions.Length; i++)
             {
-                SpawnPosData spawnData = SpawnManager.Instance.GetMonsterData(_startMonsterIndex + index);
+                SpawnPosData spawnData = SpawnManager.Instance.GetMonsterSpawnData(_startMonsterIndex + index);
                 Vector3 newPos = new Vector3(origin.x * spawnData.Ratio.x, origin.y * spawnData.Ratio.y, 0.0f);
 
                 positions[i] = Camera.main.ScreenToWorldPoint(newPos);
@@ -73,7 +73,7 @@ public class MonsterSpawn : MonoBehaviour
 
     private void LoadMonsterPool()
     {
-        int waveCnt = GameManager.Instance.WaveCount;
+        /*int waveCnt = GameManager.Instance.WaveCount;
         List<MonsterData> stageMonsters = new List<MonsterData>();
         HashSet<int> stageMonsterKeys = WaveManager.Instance.GetStageMonster(waveCnt);
 
@@ -87,14 +87,14 @@ public class MonsterSpawn : MonoBehaviour
         {
             GameObject prefab = Resources.Load<GameObject>(monsterData.PrefabPath);
             PoolingManager.Instance.Add(monsterData.Name, _poolSize, prefab, transform);
-        }
+        }*/
     }
 
     private void SpawnWaveMonsters(Dictionary<int, WaveData> waveMonsters, int wave)
     {
         _aliveMonsterCount = 0;
 
-        foreach (WaveData data in waveMonsters.Values)
+        /*foreach (WaveData data in waveMonsters.Values)
         {
             Vector3[] linePositions = _formationPositions[(FormationLayer)data.SpawnLine];
             MonsterData monsterData = CharacterManager.Instance.GetMonsterData(data.MonsterKey);
@@ -114,7 +114,7 @@ public class MonsterSpawn : MonoBehaviour
 
                 _aliveMonsterCount++;
             }
-        }
+        }*/
     }
 
     private void OnMonsterDie(Character ch)

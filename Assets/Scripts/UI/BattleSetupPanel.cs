@@ -10,7 +10,7 @@ public class BattleSetupPanel : MonoBehaviour
         CardCount = 3
     }
 
-    private List<PlayerData> _rerollCandidates = new List<PlayerData>();
+   // private List<PlayerData> _rerollCandidates = new List<PlayerData>();
     private InGameUIPanel _inGameUIPanel;
     private Animator _setupAnimator;
     private Transform[] _rerollChildren;
@@ -27,7 +27,7 @@ public class BattleSetupPanel : MonoBehaviour
         InitRerollUI();
     }
 
-    private void Start()
+    /*private void Start()
     {
         _rerollCandidates = _inGameUIPanel.SetRerollCandidates();
 
@@ -39,7 +39,7 @@ public class BattleSetupPanel : MonoBehaviour
 
         _cardBtns[(int)CardRerollUIElement.RerollBtn].onClick.AddListener(OnClickReroll);
         _cardBtns[(int)CardRerollUIElement.BattleBtn].onClick.AddListener(OnClickBattle);
-    }
+    }*/
 
     private void InitRerollUI()
     {
@@ -70,7 +70,7 @@ public class BattleSetupPanel : MonoBehaviour
         _setupAnimator.SetTrigger("SelectedCard" + index);
     }
 
-    private void OnCardDataRamdomSet()
+    /*private void OnCardDataRamdomSet()
     {
         for (int i = 0; i < _cardCount; i++)
         {
@@ -91,5 +91,5 @@ public class BattleSetupPanel : MonoBehaviour
                 _rerollCandidates[i] = data;
             }
         }
-    }
+    }*/
 }

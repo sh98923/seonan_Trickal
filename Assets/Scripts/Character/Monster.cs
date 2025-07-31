@@ -100,7 +100,7 @@ public class Monster : Character
         }*/
     }
 
-    public void SetMonsterStat(MonsterData data, int wave)
+    /*public void SetMonsterStat(MonsterData data, int wave)
     {
         _type = data.Type;
         _criRate = data.CriRate;
@@ -123,5 +123,5 @@ public class Monster : Character
         _atk = Mathf.Round(_atk * 10f) * 0.1f;
 
         print(data.Name + " : " + _curHp.ToString("F1") + ", " + _atk.ToString("F1"));
-    }
+    }*/
 }

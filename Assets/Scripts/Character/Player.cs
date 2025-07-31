@@ -5,7 +5,7 @@ public class Player : Character
 {
     private Vector3 _originPos;
 
-    private PlayerStatData _data;
+    private PlayerUpgradeData _data;
 
     private float _curMp = 0.0f;
 
@@ -99,12 +99,12 @@ public class Player : Character
         _targetCollider.GetComponent<Monster>().TakeDamage(_data.Atk * 119);
     }
 
-    public void OnSkillHit()
+    /*public void OnSkillHit()
     {
         float atk = _data.Atk * _data.BaseSkill;
         _curMp -= _data.Mp;
         _targetCollider.GetComponent<Monster>().TakeDamage(atk * 119);
-    }
+    }*/
 
     private IEnumerator RegenerateMp()
     {
@@ -121,12 +121,12 @@ public class Player : Character
         }
     }
 
-    public void SetPlayerStat(PlayerStatData data)
+    /*public void SetPlayerStat(PlayerUpgradeData data)
     {
         _data = data;
         _curHp = _data.Hp * 10;
         _attackRange = _data.Range;
         _atkCoolTime = data.AtkCoolTime;
         _originPos = transform.position;
-    }
+    }*/
 }

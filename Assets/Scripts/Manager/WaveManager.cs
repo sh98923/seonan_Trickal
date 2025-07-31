@@ -4,7 +4,7 @@ using UnityEngine;
 public struct WaveData
 {
     public int Key;
-    public int WaveKey;
+    public int StageKey;
     public int MonsterKey;
     public string Name;
     public int Count;
@@ -26,7 +26,7 @@ public class WaveManager : Singleton<WaveManager>
 
         foreach (KeyValuePair<int, WaveData> pair in _waveDatas)
         {
-            if (pair.Value.WaveKey == waveKey)
+            if (pair.Value.StageKey == waveKey)
             {
                 result.Add(pair.Key, pair.Value);
             }
@@ -43,7 +43,7 @@ public class WaveManager : Singleton<WaveManager>
 
         foreach (WaveData data in _waveDatas.Values)
         {
-            if (startWaveKey <= data.WaveKey && data.WaveKey < endKey)
+            if (startWaveKey <= data.StageKey && data.StageKey < endKey)
             {
                 monsterKeys.Add(data.MonsterKey);
             }
@@ -67,7 +67,7 @@ public class WaveManager : Singleton<WaveManager>
 
             WaveData data;
             data.Key = int.Parse(colData[0]);
-            data.WaveKey = int.Parse(colData[1]);
+            data.StageKey = int.Parse(colData[1]);
             data.MonsterKey = int.Parse(colData[2]);
             data.Name = colData[3];
             data.Count = int.Parse(colData[4]);

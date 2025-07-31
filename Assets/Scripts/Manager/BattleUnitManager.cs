@@ -12,7 +12,7 @@ public class BattleUnitManager : Singleton<BattleUnitManager>
         get { return _curLevel; }
     }
 
-    public void RegisterUnit(PlayerData data, GameObject instance)
+   /* public void RegisterUnit(PlayerData data, GameObject instance)
     {
         Player player = instance.GetComponent<Player>();
         player.OnDie += OnPlayerDie;
@@ -20,7 +20,7 @@ public class BattleUnitManager : Singleton<BattleUnitManager>
 
         _activeUnits[data.Key] = new PlayerUnit(data, instance);
     }
-
+*/
     private void OnPlayerDie(Character ch)
     {
         _alivePlayerCount--;
@@ -31,21 +31,21 @@ public class BattleUnitManager : Singleton<BattleUnitManager>
         }
     }
 
-    public void UpgradeUnit(int key)
+    /*public void UpgradeUnit(int key)
     {
         if (_activeUnits.TryGetValue(key, out PlayerUnit unit))
         {
             unit.LevelUp();
             _curLevel = unit.Level;
         }
-    }
+    }*/
 }
 
 public class PlayerUnit
 {
     private Player _playerUnitObj;
 
-    private PlayerStatData[] _playerStats;
+    private PlayerUpgradeData[] _playerStats;
 
     private int _level = 0;
     public int Level
@@ -53,16 +53,16 @@ public class PlayerUnit
         get { return _level; }
     }
 
-    public PlayerUnit(PlayerData data, GameObject unit)
+    /*public PlayerUnit(PlayerData data, GameObject unit)
     {
-        _playerStats = PlayerStatManager.Instance.GetPlayerStatData(data.StatKey);
+        _playerStats = PlayerUpgradeManager.Instance.GetPlayerStatData(data.StatKey);
 
         // 여기서 이제 캐릭터 스크립트에 스탯 설정하는 함수 있으면 스탯 세팅 해주면 댐
         _playerUnitObj = unit.GetComponent<Player>();
         _playerUnitObj.SetPlayerStat(_playerStats[_level]);
-    }
+    }*/
 
-    public void LevelUp()
+    /*public void LevelUp()
     {
         _level++;
         // 이 조건문이 달성되면 그 카드는 제외시켜야함
@@ -71,5 +71,5 @@ public class PlayerUnit
         Debug.Log(_playerUnitObj.name + " " + _playerStats[_level].Hp + " " + _playerStats[_level].Mp + " " + _playerStats[_level].Atk);
         _playerUnitObj.SetPlayerStat(_playerStats[_level]);
         //curUnit.(_playerStat[levelUp]);
-    }
+    }*/
 }

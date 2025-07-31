@@ -79,7 +79,7 @@ public class CardPanel : MonoBehaviour
     {
         if (_spawnParent.IsDataDeployed(_playerData))
         {
-            Debug.LogWarning(_playerData.Name + "이(가) 이미 배치되어 있습니다.");
+            //Debug.LogWarning(_playerData.Name + "이(가) 이미 배치되어 있습니다.");
             return;
         }
 
@@ -92,32 +92,32 @@ public class CardPanel : MonoBehaviour
             return;
         }
 
-        GameObject playerPrefab = Resources.Load<GameObject>(_playerData.PrefabPath);
+       /* GameObject playerPrefab = Resources.Load<GameObject>(_playerData.PrefabPath);
         GameObject player = Instantiate(playerPrefab, _spawnParent.transform);
         player.name = _playerData.EngName;
         player.layer = LayerMask.NameToLayer(_playerData.Layer);
         spawnPos.z = 0.0f;
         player.transform.position = spawnPos;
 
-        BattleUnitManager.Instance.RegisterUnit(_playerData, player);
+        BattleUnitManager.Instance.RegisterUnit(_playerData, player);*/
     }
 
     private void UpgradePlayer()
     {
-        BattleUnitManager.Instance.UpgradeUnit(_playerData.Key);
+        /*BattleUnitManager.Instance.UpgradeUnit(_playerData.Key);
 
         int curLevel = BattleUnitManager.Instance.CurLevel;
-        _parentPanel.CardCostUpdate(_playerData.Key, curLevel);
+        _parentPanel.CardCostUpdate(_playerData.Key, curLevel);*/
     }
 
-    public void SetPlayerUnit(PlayerData playerData)
+   /* public void SetPlayerUnit(PlayerData playerData)
     {
         _playerData = playerData;
 
         SetCardInfo();
-    }
+    }*/
 
-    private void SetCardInfo()
+    /*private void SetCardInfo()
     {
         // 캐릭터 텍스쳐
         Image characterImage = _cardChildren[(int)CardUIElement.CharacterImage].GetComponent<Image>();
@@ -137,5 +137,5 @@ public class CardPanel : MonoBehaviour
         TextMeshProUGUI cardCost = _cardChildren[(int)CardUIElement.CostText].GetComponent<TextMeshProUGUI>();
         string curCost = _playerData.CardCost.ToString();
         cardCost.text = curCost;
-    }
+    }*/
 }
