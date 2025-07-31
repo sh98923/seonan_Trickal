@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8420544298616875423}
   - component: {fileID: 6417045127051317126}
   m_Layer: 5
-  m_Name: hpbar
+  m_Name: HpBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -35,7 +35,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -29.6, y: 5.6}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 246, y: 58}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8420544298616875423

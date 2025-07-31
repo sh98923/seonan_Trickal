@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2875494962286535508}
   - component: {fileID: 6849528787575540746}
   m_Layer: 5
-  m_Name: mpbar
+  m_Name: MpBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
