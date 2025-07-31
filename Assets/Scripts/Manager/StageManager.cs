@@ -32,7 +32,7 @@ public class StageManager : Singleton<StageManager>
         return _stageDatas[key];
     }
 
-    public List<StageData> GetStageDatas(int key)
+    public List<StageData> GetStageDataList(int key)
     {
         int stage = _stageDatas[key].Stage;
         List<StageData> results = new List<StageData>();
@@ -46,6 +46,27 @@ public class StageManager : Singleton<StageManager>
         }
 
         return results;
+    }
+
+    public int GetStageStartKey(int stageNumber)
+    {
+        int minKey = int.MaxValue;
+
+        foreach (StageData data in _stageDatas.Values)
+        {
+            if (data.Stage == stageNumber && data.Key < minKey)
+            {
+                minKey = data.Key;
+            }
+        }
+
+        if (minKey == int.MaxValue)
+        {
+            Debug.LogError($"Stage {stageNumber}에 해당하는 데이터가 없습니다.");
+            return -1;
+        }
+
+        return minKey;
     }
 
     private void LoadStageData()

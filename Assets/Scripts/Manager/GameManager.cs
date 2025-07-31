@@ -29,6 +29,6 @@ public class GameManager : Singleton<GameManager>
     public void SetStageKey(int waveKey)
     {
         _waveKey = waveKey; 
-        _stageDatas = StageManager.Instance.GetStageDatas(_waveKey);
+        _stageDatas = StageManager.Instance.GetStageDataList(_waveKey);
     }
 }
