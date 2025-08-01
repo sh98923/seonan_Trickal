@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class OptionPanel : MonoBehaviour
 {
-    private enum OptionElement
+    private enum OptionUI
     {
         InGameSpeed, Pause
     }
@@ -35,10 +35,10 @@ public class OptionPanel : MonoBehaviour
     {
         _inGameSpeedSprites = Resources.LoadAll<Sprite>("Sprites/Option");
 
-        _speedButtonImage = _optionButtons[(int)OptionElement.InGameSpeed].GetComponent<Image>();
+        _speedButtonImage = _optionButtons[(int)OptionUI.InGameSpeed].GetComponent<Image>();
 
-        _optionButtons[(int)OptionElement.Pause].onClick.AddListener(OnClickPause);
-        _optionButtons[(int)OptionElement.InGameSpeed].onClick.AddListener(OnClickInGameSpeed);
+        _optionButtons[(int)OptionUI.Pause].onClick.AddListener(OnClickPause);
+        _optionButtons[(int)OptionUI.InGameSpeed].onClick.AddListener(OnClickInGameSpeed);
 
         UpdateSpeedSprite();
     }

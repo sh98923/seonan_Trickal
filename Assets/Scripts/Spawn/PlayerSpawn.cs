@@ -66,7 +66,7 @@ public class PlayerSpawn : MonoBehaviour
 
     public Vector3 SetPlayerPos(PlayerData playerData)
     {
-        CharacterData data = CharacterManager.Instance.GetCharacterData(playerData.Key);
+        CharacterData data = CharacterManager.Instance.GetCharacterData(playerData.CharacterKey);
         FormationSlot[] slots = _deployedCharacters[data.SpawnLine];
 
         for (int i = 0; i < slots.Length; i++)

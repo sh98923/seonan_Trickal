@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum InGameUIElement
+public enum InGameUI
 {
     DeckPanel = 1, StageName = 2, InGameStartBtn = 3,
     DeckContent = 6, BattleSetUpPanel = 7,
@@ -32,7 +32,7 @@ public class InGameUIPanel : MonoBehaviour
         _spawnParent = GameObject.Find("SpawnPlayer").transform;
         _inGameUIs = GetComponentsInChildren<Transform>();
 
-        Transform setUpPanel = _inGameUIs[(int)InGameUIElement.BattleSetUpPanel];
+        Transform setUpPanel = _inGameUIs[(int)InGameUI.BattleSetUpPanel];
         _setUpAnim = setUpPanel.GetComponent<Animator>();
 
         SetUIInit();
@@ -44,8 +44,8 @@ public class InGameUIPanel : MonoBehaviour
 
         if (_isDeckMode && Input.GetKeyDown(KeyCode.Alpha4))
         {
-            _inGameUIs[(int)InGameUIElement.DeckPanel].gameObject.SetActive(true);
-            _inGameUIs[(int)InGameUIElement.BattleSetUpPanel].gameObject.SetActive(false);
+            _inGameUIs[(int)InGameUI.DeckPanel].gameObject.SetActive(true);
+            _inGameUIs[(int)InGameUI.BattleSetUpPanel].gameObject.SetActive(false);
 
             _isDeckMode = false;
             BattleStateManager.Instance.SetState(BattleState.None);
@@ -76,16 +76,16 @@ public class InGameUIPanel : MonoBehaviour
 
     private void SetUIInit()
     {
-        _inGameUIs[(int)InGameUIElement.WaveTimerPanel].gameObject.SetActive(false);
-        _inGameUIs[(int)InGameUIElement.TimeControlPanel].gameObject.SetActive(false);
-        _inGameUIs[(int)InGameUIElement.BattleSetUpPanel].gameObject.SetActive(false);
+        _inGameUIs[(int)InGameUI.WaveTimerPanel].gameObject.SetActive(false);
+        _inGameUIs[(int)InGameUI.TimeControlPanel].gameObject.SetActive(false);
+        _inGameUIs[(int)InGameUI.BattleSetUpPanel].gameObject.SetActive(false);
     }
 
     private void ShowRerollUI()
     {
-        _inGameUIs[(int)InGameUIElement.WaveTimerPanel].gameObject.SetActive(true);
-        _inGameUIs[(int)InGameUIElement.TimeControlPanel].gameObject.SetActive(true);
-        _inGameUIs[(int)InGameUIElement.BattleSetUpPanel].gameObject.SetActive(true);
+        _inGameUIs[(int)InGameUI.WaveTimerPanel].gameObject.SetActive(true);
+        _inGameUIs[(int)InGameUI.TimeControlPanel].gameObject.SetActive(true);
+        _inGameUIs[(int)InGameUI.BattleSetUpPanel].gameObject.SetActive(true);
         _setUpAnim.SetTrigger("RerollStart");
     }
 
@@ -96,12 +96,12 @@ public class InGameUIPanel : MonoBehaviour
 
     // 나중에 필요 없으면 아래 두개 함수 다 지워
     // 이 함수는 인게임 UI에서 필요한 컴포넌트를 자식 오브젝트에서 접근하는 것
-    public T GetUIElement<T>(InGameUIElement element) where T : Component
+    public T GetUIElement<T>(InGameUI element) where T : Component
     {
         return _inGameUIs[(int)element].GetComponent<T>();
     }
 
-    public GameObject GetUIElement(InGameUIElement element)
+    public GameObject GetUIElement(InGameUI element)
     {
         return _inGameUIs[(int)element].gameObject;
     }

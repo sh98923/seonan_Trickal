@@ -4,6 +4,8 @@ public class Monster : Character
 {
     private ProjectilePool _projectilePool;
 
+    private MonsterData _data;
+
     private void Awake()
     {
         base.Awake();
@@ -85,7 +87,7 @@ public class Monster : Character
             _targetCollider.GetComponent<Player>().TakeDamage(_atk);
         }
 
-        /*Collider2D[] hitTargets = Physics2D.OverlapCircleAll(_attackPoint.position, _attackRange);
+        Collider2D[] hitTargets = Physics2D.OverlapCircleAll(_attackPoint.position, _attackRange);
 
         foreach (Collider2D hitTarget in hitTargets)
         {
@@ -97,18 +99,25 @@ public class Monster : Character
                     player.TakeDamage(_atk);
                 }
             }
-        }*/
+        }
     }
 
-    /*public void SetMonsterStat(MonsterData data, int wave)
+    public override void SetCharacterData(CharacterFullData fullData)
     {
-        _type = data.Type;
-        _criRate = data.CriRate;
-        _attackRange = data.Range;
-        _atkCoolTime = data.AtkCoolTime;
+        base.SetCharacterData(fullData);
 
-        float hpLinear = data.Hp + data.HpPerWave * wave;
-        float hpExp = data.Hp * Mathf.Pow(data.HpGrowthRate, wave);
+        _data = (MonsterData)fullData.monsterData;
+
+        _type = _data.Type;
+        _criRate = _characterData.CriRate;
+        _attackRange = _characterData.AtkRange;
+        _atkCoolTime = _characterData.AtkCoolTime;
+    }
+
+    public void WaveUpgrade(int wave)
+    {
+        float hpLinear = _characterData.Hp + _data.HpPerWave * wave;
+        float hpExp = _characterData.Hp * Mathf.Pow(_data.HpGrowthRate, wave);
 
         // 두 가지의 공식을 평균 낸 값 (선형, 지수)
         _maxHp = (hpLinear + hpExp) * 0.5f;
@@ -117,11 +126,11 @@ public class Monster : Character
         _maxHp = Mathf.Round(_maxHp * 10f) * 0.1f;
         _curHp = _maxHp;
 
-        float atkLinear = data.Atk + data.AtkPerWave * wave;
-        float atkExp = data.Atk * Mathf.Pow(data.AtkGrowthRate, wave);
+        float atkLinear = _characterData.Atk + _data.AtkPerWave * wave;
+        float atkExp = _characterData.Atk * Mathf.Pow(_data.AtkGrowthRate, wave);
         _atk = (atkLinear + atkExp) * 0.5f;
         _atk = Mathf.Round(_atk * 10f) * 0.1f;
 
-        print(data.Name + " : " + _curHp.ToString("F1") + ", " + _atk.ToString("F1"));
-    }*/
+        print(_characterData.EngName + " : " + _curHp.ToString("F1") + ", " + _atk.ToString("F1"));
+    }
 }

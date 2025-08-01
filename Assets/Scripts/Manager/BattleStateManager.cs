@@ -1,5 +1,4 @@
 using System;
-using static UnityEngine.CullingGroup;
 
 public enum BattleState
 {

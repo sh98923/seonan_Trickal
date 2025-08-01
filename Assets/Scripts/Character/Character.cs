@@ -16,10 +16,12 @@ public class Character : MonoBehaviour
         add { _onDie += value; }
         remove { _onDie -= value; }
     }
+
+    [SerializeField] protected Transform _attackPoint;
     protected Animator _animator;
     protected Collider2D _targetCollider;
-    [SerializeField] protected Transform _attackPoint;
-    
+
+    protected CharacterData _characterData;
     protected Vector2 _moveDir;
     protected State _curState = State.Idle;
 
@@ -187,6 +189,11 @@ public class Character : MonoBehaviour
         GetComponent<Collider2D>().enabled = false;
 
         StartCoroutine(FadeOutAndInactive());
+    }
+
+    public virtual void SetCharacterData(CharacterFullData fullData)
+    {
+        _characterData = fullData.characterData;
     }
 
     private IEnumerator FadeOutAndInactive()

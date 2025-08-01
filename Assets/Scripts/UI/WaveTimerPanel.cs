@@ -4,17 +4,17 @@ using UnityEngine.UI;
 
 public class WaveTimerPanel : MonoBehaviour
 {
-    private enum WaveTimerElement
+    private enum WaveTimerUI
     {
-        TimerImage = 2,
-        TimerText = 3,
-        WaveText = 5
+        TimerImage = 2, TimerText = 3, WaveText = 5
     }
 
     private Image _timerImage;
     private Transform[] _waveTimerChildren;
     private TextMeshProUGUI _timerText;
     private InGameUIPanel _inGameUIPanel;
+
+    private BattleState _prevState = BattleState.None;
 
     private readonly float _rerollDuration = 60.0f;
     private readonly float _battleDuration = 70.0f; // 1분 10초
@@ -23,14 +23,12 @@ public class WaveTimerPanel : MonoBehaviour
     private float _timer;
     private bool IsTimerRunning => _timer > 0.0f;
 
-    private BattleState _prevState = BattleState.None;
-
     private void Awake()
     {
         _inGameUIPanel = GetComponentInParent<InGameUIPanel>();
         _waveTimerChildren = GetComponentsInChildren<Transform>();
-        _timerImage = _waveTimerChildren[(int)WaveTimerElement.TimerImage].GetComponent<Image>();
-        _timerText = _waveTimerChildren[(int)WaveTimerElement.TimerText].GetComponent<TextMeshProUGUI>();
+        _timerImage = _waveTimerChildren[(int)WaveTimerUI.TimerImage].GetComponent<Image>();
+        _timerText = _waveTimerChildren[(int)WaveTimerUI.TimerText].GetComponent<TextMeshProUGUI>();
     }
 
     private void Update()

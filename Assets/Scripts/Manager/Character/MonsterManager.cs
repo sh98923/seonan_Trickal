@@ -4,6 +4,7 @@ using UnityEngine;
 public struct MonsterData
 {
     public int Key;
+    public int CharacterKey;
     public float HpPerWave;
     public float HpGrowthRate;
     public float AtkPerWave;
@@ -42,12 +43,13 @@ public class MonsterManager : Singleton<MonsterManager>
             MonsterData data;
 
             data.Key = int.Parse(colData[0]);
-            data.HpPerWave = float.Parse(colData[1]);
-            data.HpGrowthRate = float.Parse(colData[2]);
-            data.AtkPerWave = float.Parse(colData[3]);
-            data.AtkGrowthRate = float.Parse(colData[4]);
-            data.Type = colData[5];
-            data.WeaponPath = colData[6];
+            data.CharacterKey = int.Parse(colData[1]);
+            data.HpPerWave = float.Parse(colData[2]);
+            data.HpGrowthRate = float.Parse(colData[3]);
+            data.AtkPerWave = float.Parse(colData[4]);
+            data.AtkGrowthRate = float.Parse(colData[5]);
+            data.Type = colData[6];
+            data.WeaponPath = colData[7];
 
             _monsterDatas.Add(data.Key, data);
         }

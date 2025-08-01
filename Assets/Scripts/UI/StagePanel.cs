@@ -7,11 +7,9 @@ using UnityEngine.UI;
 
 public class StagePanel : MonoBehaviour
 {
-    private enum StageElement
+    private enum StageUI
     {
-        StageInfoPanel = 1,
-        StageStartBtn = 2,
-        CancelBtn = 3
+        StageInfoPanel = 1, StageStartBtn = 2, CancelBtn = 4
     }
 
     private Transform[] _stageChildren;
@@ -47,8 +45,8 @@ public class StagePanel : MonoBehaviour
             obj.GetComponentInChildren<TextMeshProUGUI>().text = $"Stage {i + 1}";
         }
 
-        SetBtnEvent(StageElement.StageStartBtn, OnClickStart);
-        SetBtnEvent(StageElement.CancelBtn, OnClickCancel);
+        SetBtnEvent(StageUI.StageStartBtn, OnClickStart);
+        SetBtnEvent(StageUI.CancelBtn, OnClickCancel);
     }
 
     private void OnClickStage(int index)
@@ -67,50 +65,54 @@ public class StagePanel : MonoBehaviour
 
     private void OnClickCancel()
     {
-        SetStageInfoPanelActive(false);
-    }
-
-    private void ShowMonsterInfo()
-    {
         // 기존에 생성된 몬스터 미리보기 제거
         foreach (Transform child in _monsterPreviewRoot)
         {
             Destroy(child.gameObject);
         }
 
+        SetStageInfoPanelActive(false);
+    }
+
+    private void ShowMonsterInfo()
+    {
         int waveCnt = GameManager.Instance.WaveCount;
         HashSet<int> stageMonsterKeys = WaveManager.Instance.GetStageMonster(waveCnt);
 
         // 시작 위치
-        Vector3 startPos = new Vector3(-3.75f, 2.0f, 0f); // 왼쪽 상단 쯤
+        Vector3 startPos = new Vector3(-3.75f, 1.0f, 0f); // 왼쪽 상단 쯤
         float spacingX = 3.0f; // 가로 간격
         float spacingY = 3.0f; // 세로 간격
         int columnCount = 3;   // 가로로 몇 마리씩 표시할지
 
-        int i = 0;
+        int index = 0;
         foreach (int monsterKey in stageMonsterKeys)
         {
-            CharacterData monsterData = CharacterManager.Instance.GetCharacterData(monsterKey);
-            GameObject prefab = Resources.Load<GameObject>(monsterData.PrefabPath);
+            MonsterData monsterData = MonsterManager.Instance.GetMonsterData(monsterKey);
+            CharacterData characterData = CharacterManager.Instance.GetCharacterData(monsterData.CharacterKey);
+
+            string prefabPath = characterData.PrefabPath;
+
+            GameObject prefab = Resources.Load<GameObject>(prefabPath);
             GameObject obj = Instantiate(prefab, _monsterPreviewRoot);
 
-            int row = i / columnCount;
-            int col = i % columnCount;
+            int row = index / columnCount;
+            int col = index % columnCount;
 
             Vector3 pos = startPos + new Vector3(col * spacingX, -row * spacingY, 0f);
             obj.transform.localScale *= 2.0f;
             obj.transform.position = pos;
 
-            i++;
+            index++;
         }
     }
 
     private void SetStageInfoPanelActive(bool active)
     {
-        _stageChildren[(int)StageElement.StageInfoPanel].gameObject.SetActive(active);
+        _stageChildren[(int)StageUI.StageInfoPanel].gameObject.SetActive(active);
     }
 
-    private void SetBtnEvent(StageElement element, Action func)
+    private void SetBtnEvent(StageUI element, Action func)
     {
         Button btn = _stageChildren[(int)element].GetComponent<Button>();
         btn.onClick.AddListener(() => func());

@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class DeckCardPanel : MonoBehaviour
 {
-    private enum DeckElement
+    private enum DeckUI
     {
         StageName = 1, StartBtn = 2, DeckContent = 5
     }
@@ -29,7 +29,7 @@ public class DeckCardPanel : MonoBehaviour
 
     private void SetStageName()
     {
-        GameObject stageObj = _deckChildren[(int)DeckElement.StageName].gameObject;
+        GameObject stageObj = _deckChildren[(int)DeckUI.StageName].gameObject;
         TextMeshProUGUI stageName = stageObj.GetComponent<TextMeshProUGUI>();
         int key = StageManager.Instance.StageStartKey;
         StageData data = StageManager.Instance.GetStageData(key);
@@ -39,27 +39,27 @@ public class DeckCardPanel : MonoBehaviour
 
     private void SetDeckCard()
     {
-        Transform deckConent = _deckChildren[(int)DeckElement.DeckContent];
+        Transform deckConent = _deckChildren[(int)DeckUI.DeckContent];
 
-        _startPlayerKey = CharacterManager.Instance.PlayerStartKey;
+        _startPlayerKey = PlayerManager.Instance.PlayerStartKey;
 
         GameObject UIprefab = Resources.Load<GameObject>("Prefabs/UI/CardPanel");
 
-        /*for (int i = _startPlayerKey; i < CharacterManager.Instance.PlayerCount; i++)
+        for (int i = 0; i < PlayerManager.Instance.PlayerCount; i++)
         {
             GameObject obj = Instantiate(UIprefab, deckConent);
             obj.name += ("_" + i);
 
-            PlayerData playerData = CharacterManager.Instance.GetCharacterData(_startPlayerKey + i);
+            PlayerData playerData = PlayerManager.Instance.GetPlayerData(_startPlayerKey + i);
 
             _deployBtn = obj.GetComponent<CardPanel>();
             _deployBtn.SetPlayerUnit(playerData);
-        }*/
+        }
     }
 
     private void SetStartBtn()
     {
-        Button startBtn = _deckChildren[(int)DeckElement.StartBtn].GetComponent<Button>();
+        Button startBtn = _deckChildren[(int)DeckUI.StartBtn].GetComponent<Button>();
         startBtn.onClick.AddListener(OnClickStart);
     }
 

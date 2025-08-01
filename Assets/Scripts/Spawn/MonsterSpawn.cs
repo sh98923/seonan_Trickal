@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.U2D.Animation;
 using UnityEngine;
 
 public class MonsterSpawn : MonoBehaviour
@@ -16,11 +17,13 @@ public class MonsterSpawn : MonoBehaviour
         { FormationLayer.Back, new Vector3[3] }
     };
 
+    private Dictionary<int, CharacterFullData> _monsterFullDatas = new Dictionary<int, CharacterFullData>();
+
     private readonly int _poolSize = 5;
 
     private int _aliveMonsterCount = 0;
     private int _startMonsterIndex;
-    private int a = 0;
+    private int _waveStep = 0;
 
     private bool _spawned = false;
 
@@ -45,8 +48,11 @@ public class MonsterSpawn : MonoBehaviour
     {
         if (_spawned) return;
 
-        int waveKey = GameManager.Instance.WaveKey + a;
+        int waveKey = GameManager.Instance.WaveKey + _waveStep;
         StageData wave = StageManager.Instance.GetStageData(waveKey);
+
+        if (_waveStep >= wave.MaxWave) return;
+
         Dictionary<int, WaveData> waveMonsters = WaveManager.Instance.GetWaveMonster(waveKey);
 
         SpawnWaveMonsters(waveMonsters, wave.Wave);
@@ -73,48 +79,87 @@ public class MonsterSpawn : MonoBehaviour
 
     private void LoadMonsterPool()
     {
-        /*int waveCnt = GameManager.Instance.WaveCount;
-        List<MonsterData> stageMonsters = new List<MonsterData>();
+       
+        InitMonsterFullData();        // 데이터 로드
+        CreateMonsterPools();         // 풀링 생성
+        RegisterMonsterEvents();      // OnDie 이벤트 연결
+    }
+
+    private void InitMonsterFullData()
+    {
+        int waveCnt = GameManager.Instance.WaveCount;
         HashSet<int> stageMonsterKeys = WaveManager.Instance.GetStageMonster(waveCnt);
 
         foreach (int monsterKey in stageMonsterKeys)
         {
-            stageMonsters.Add(CharacterManager.Instance.GetMonsterData(monsterKey));
-        }
+            MonsterData monsterData = MonsterManager.Instance.GetMonsterData(monsterKey);
+            CharacterData characterData = CharacterManager.Instance.GetCharacterData(monsterData.CharacterKey);
 
-        // 그 스테이지에서 나오는 몬스터만 풀링
-        foreach (MonsterData monsterData in stageMonsters)
+            CharacterFullData fullData = new CharacterFullData
+            {
+                characterData = characterData,
+                monsterData = monsterData
+            };
+
+            _monsterFullDatas.Add(monsterKey, fullData);
+        }
+    }
+
+    private void CreateMonsterPools()
+    {
+        foreach (CharacterFullData fullData in _monsterFullDatas.Values)
         {
-            GameObject prefab = Resources.Load<GameObject>(monsterData.PrefabPath);
-            PoolingManager.Instance.Add(monsterData.Name, _poolSize, prefab, transform);
-        }*/
+            CharacterData characterData = fullData.characterData;
+            GameObject prefab = Resources.Load<GameObject>(characterData.PrefabPath);
+            PoolingManager.Instance.Add(characterData.EngName, _poolSize, prefab, transform);
+        }
+    }
+
+    private void RegisterMonsterEvents()
+    {
+        foreach (CharacterFullData fullData in _monsterFullDatas.Values)
+        {
+            string engName = fullData.characterData.EngName;
+            List<GameObject> objects = PoolingManager.Instance.GetObjects(engName);
+
+            foreach (GameObject obj in objects)
+            {
+                Monster monster = obj.GetComponent<Monster>();
+                monster.OnDie += OnMonsterDie;
+            }
+        }
     }
 
     private void SpawnWaveMonsters(Dictionary<int, WaveData> waveMonsters, int wave)
     {
         _aliveMonsterCount = 0;
 
-        /*foreach (WaveData data in waveMonsters.Values)
+        foreach (WaveData data in waveMonsters.Values)
         {
+            CharacterFullData fullData = new CharacterFullData();
+            MonsterData monsterData = MonsterManager.Instance.GetMonsterData(data.MonsterKey);
+            CharacterData characterData = CharacterManager.Instance.GetCharacterData(monsterData.CharacterKey);
+
+            fullData.characterData = characterData;
+            fullData.monsterData = monsterData;
+
             Vector3[] linePositions = _formationPositions[(FormationLayer)data.SpawnLine];
-            MonsterData monsterData = CharacterManager.Instance.GetMonsterData(data.MonsterKey);
 
             for (int i = 0; i < data.Count && i < linePositions.Length; i++)
             {
-                GameObject monsterObj = PoolingManager.Instance.Pop(monsterData.Name);
+                GameObject monsterObj = PoolingManager.Instance.Pop(characterData.EngName);
                 monsterObj.transform.position = linePositions[i];
                 Vector3 finalPos = monsterObj.transform.position;
                 finalPos.z = 0.0f;
                 monsterObj.transform.localPosition = finalPos;
 
                 Monster monster = monsterObj.GetComponent<Monster>();
-                monster.SetMonsterStat(monsterData, wave);
-                monster.OnDie -= OnMonsterDie;
-                monster.OnDie += OnMonsterDie;
+                monster.SetCharacterData(fullData);
+                monster.WaveUpgrade(wave);
 
                 _aliveMonsterCount++;
             }
-        }*/
+        }
     }
 
     private void OnMonsterDie(Character ch)
@@ -126,7 +171,7 @@ public class MonsterSpawn : MonoBehaviour
             Debug.Log("Wave cleared.");
             BattleStateManager.Instance.SetState(BattleState.MonstersDefeated);
             StartCoroutine(MonsterSpawnDelay());
-            a++;
+            _waveStep++;
         }
     }
 

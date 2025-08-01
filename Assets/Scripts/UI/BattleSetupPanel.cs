@@ -4,20 +4,19 @@ using System.Collections.Generic;
 
 public class BattleSetupPanel : MonoBehaviour
 {
-    private enum CardRerollUIElement
+    private enum CardRerollUI
     {
-        LeftCardPanel, CenterCardPanel, RightCardPanel, RerollBtn, BattleBtn,
-        CardCount = 3
+        LeftCardPanel, CenterCardPanel, RightCardPanel, 
+        RerollBtn, BattleBtn, CardCount = 3
     }
 
-   // private List<PlayerData> _rerollCandidates = new List<PlayerData>();
+    private List<PlayerData> _rerollCandidates = new List<PlayerData>();
     private InGameUIPanel _inGameUIPanel;
     private Animator _setupAnimator;
     private Transform[] _rerollChildren;
     private Button[] _cardBtns;
 
-    private readonly int _maxLevel = 5;
-    private int _cardCount = (int)CardRerollUIElement.CardCount;
+    private int _cardCount = (int)CardRerollUI.CardCount;
 
     private void Awake()
     {
@@ -27,7 +26,7 @@ public class BattleSetupPanel : MonoBehaviour
         InitRerollUI();
     }
 
-    /*private void Start()
+    private void Start()
     {
         _rerollCandidates = _inGameUIPanel.SetRerollCandidates();
 
@@ -37,9 +36,9 @@ public class BattleSetupPanel : MonoBehaviour
             _cardBtns[i].onClick.AddListener(() => OnClickCard(index));
         }
 
-        _cardBtns[(int)CardRerollUIElement.RerollBtn].onClick.AddListener(OnClickReroll);
-        _cardBtns[(int)CardRerollUIElement.BattleBtn].onClick.AddListener(OnClickBattle);
-    }*/
+        _cardBtns[(int)CardRerollUI.RerollBtn].onClick.AddListener(OnClickReroll);
+        _cardBtns[(int)CardRerollUI.BattleBtn].onClick.AddListener(OnClickBattle);
+    }
 
     private void InitRerollUI()
     {
@@ -70,7 +69,7 @@ public class BattleSetupPanel : MonoBehaviour
         _setupAnimator.SetTrigger("SelectedCard" + index);
     }
 
-    /*private void OnCardDataRamdomSet()
+    private void OnCardDataRamdomSet()
     {
         for (int i = 0; i < _cardCount; i++)
         {
@@ -82,14 +81,17 @@ public class BattleSetupPanel : MonoBehaviour
 
     public void CardCostUpdate(int key, int curLevel)
     {
-        for(int i = 0; i < _rerollCandidates.Count; i++)
+        for (int i = 0; i < _rerollCandidates.Count; i++)
         {
-            if (_rerollCandidates[i].Key == key && curLevel < _maxLevel)
+            int curKey = _rerollCandidates[i].Key;
+            int maxLevel = _rerollCandidates[i].MaxLevel;
+
+            if (curKey == key && curLevel < maxLevel)
             {
                 PlayerData data = _rerollCandidates[i];
-                data.CardCost += 5;
+                data.CardUpgradeCost += 5;
                 _rerollCandidates[i] = data;
             }
         }
-    }*/
+    }
 }

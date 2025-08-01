@@ -8,6 +8,7 @@ public struct StageData
     public int Stage;
     public int Wave;
     public int WaveCoin;
+    public int MaxWave;
 }
 
 public class StageManager : Singleton<StageManager>
@@ -87,6 +88,7 @@ public class StageManager : Singleton<StageManager>
             data.Stage = int.Parse(colData[2]);
             data.Wave = int.Parse(colData[3]);
             data.WaveCoin = int.Parse(colData[4]);
+            data.MaxWave = int.Parse(colData[5]);
 
             if (_firstStageKey == i)
             {

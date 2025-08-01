@@ -29,16 +29,9 @@ public class PlayerUpgradeManager : Singleton<PlayerUpgradeManager>
         LoadPlayerStatData();
     }
 
-    public PlayerUpgradeData[] GetPlayerStatData(int key)
+    public PlayerUpgradeData GetPlayerStatData(int key)
     {
-        PlayerUpgradeData[] unitStats = new PlayerUpgradeData[_upgradeStepCount];
-
-        for(int i = 0; i < unitStats.Length; i++)
-        {
-            unitStats[i] = _playerUpgradeDatas[key + i];
-        }
-
-        return unitStats;
+        return _playerUpgradeDatas[key];
     }
 
     private void LoadPlayerStatData()
