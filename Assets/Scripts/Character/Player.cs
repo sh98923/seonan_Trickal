@@ -1,11 +1,9 @@
-using System.Collections;
 using UnityEngine;
+using System.Collections;
 
 public class Player : Character
 {
     private Vector3 _originPos;
-
-    private PlayerData _data;
 
     private float _curMp = 0.0f;
 
@@ -41,7 +39,7 @@ public class Player : Character
                 _curState = State.Idle;
             }
         }
-        else
+        else if (BattleStateManager.Instance.CurrentState == BattleState.Battle)
         {
             if (_targetCollider == null)
             {
@@ -84,7 +82,7 @@ public class Player : Character
 
         _isAttacking = true;
 
-        if (_curMp >= _data.Mp)
+        if (_curMp >= _characterData.Mp)
         {
             _animator.SetTrigger("Skill");
         }
@@ -100,9 +98,9 @@ public class Player : Character
     }
 
     public void OnSkillHit()
-    {
-        float atk = _characterData.Atk * _data.SkillRate;
-        _curMp -= _data.Mp;
+    { 
+        float atk = _characterData.Atk * _characterData.SkillRate;
+        _curMp -= _characterData.Mp;
         _targetCollider.GetComponent<Monster>().TakeDamage(atk * 119);
     }
 
@@ -110,7 +108,7 @@ public class Player : Character
     {
         while (BattleStateManager.Instance.IsBattle)
         {
-            if(_curMp >= _data.Mp)
+            if (_curMp >= _characterData.Mp)
             {
                 yield return new WaitForSeconds(1.0f);
                 continue;
@@ -119,16 +117,5 @@ public class Player : Character
             _curMp += 20.0f;
             yield return new WaitForSeconds(1.0f);
         }
-    }
-
-    public override void SetCharacterData(CharacterFullData fullData)
-    {
-        base.SetCharacterData(fullData);
-
-        _data = (PlayerData)fullData.playerData;
-        _curHp = _characterData.Hp * 10;
-        _attackRange = _characterData.AtkRange;
-        _atkCoolTime = _characterData.AtkCoolTime;
-        _originPos = transform.position;
     }
 }

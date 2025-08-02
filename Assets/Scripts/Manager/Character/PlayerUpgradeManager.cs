@@ -29,7 +29,7 @@ public class PlayerUpgradeManager : Singleton<PlayerUpgradeManager>
         LoadPlayerStatData();
     }
 
-    public PlayerUpgradeData GetPlayerStatData(int key)
+    public PlayerUpgradeData GetPlayerUpgradeData(int key)
     {
         return _playerUpgradeDatas[key];
     }

@@ -21,7 +21,7 @@ public class Character : MonoBehaviour
     protected Animator _animator;
     protected Collider2D _targetCollider;
 
-    protected CharacterData _characterData;
+    protected CharacterFullData _characterData;
     protected Vector2 _moveDir;
     protected State _curState = State.Idle;
 
@@ -191,9 +191,9 @@ public class Character : MonoBehaviour
         StartCoroutine(FadeOutAndInactive());
     }
 
-    public virtual void SetCharacterData(CharacterFullData fullData)
+    public void SetCharacterData(CharacterFullData fullData)
     {
-        _characterData = fullData.characterData;
+        _characterData = fullData;
     }
 
     private IEnumerator FadeOutAndInactive()

@@ -1,13 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public struct CharacterFullData
-{ 
-    public CharacterData characterData;
-    public PlayerData? playerData;
-    public MonsterData? monsterData;
-}
-
 public struct CharacterData
 {
     public int Key;

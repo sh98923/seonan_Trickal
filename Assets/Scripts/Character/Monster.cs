@@ -4,8 +4,6 @@ public class Monster : Character
 {
     private ProjectilePool _projectilePool;
 
-    private MonsterData _data;
-
     private void Awake()
     {
         base.Awake();
@@ -102,22 +100,10 @@ public class Monster : Character
         }
     }
 
-    public override void SetCharacterData(CharacterFullData fullData)
-    {
-        base.SetCharacterData(fullData);
-
-        _data = (MonsterData)fullData.monsterData;
-
-        _type = _data.Type;
-        _criRate = _characterData.CriRate;
-        _attackRange = _characterData.AtkRange;
-        _atkCoolTime = _characterData.AtkCoolTime;
-    }
-
     public void WaveUpgrade(int wave)
     {
-        float hpLinear = _characterData.Hp + _data.HpPerWave * wave;
-        float hpExp = _characterData.Hp * Mathf.Pow(_data.HpGrowthRate, wave);
+        float hpLinear = _characterData.Hp + _characterData.HpPerWave * wave;
+        float hpExp = _characterData.Hp * Mathf.Pow(_characterData.HpGrowthRate, wave);
 
         // 두 가지의 공식을 평균 낸 값 (선형, 지수)
         _maxHp = (hpLinear + hpExp) * 0.5f;
@@ -126,8 +112,8 @@ public class Monster : Character
         _maxHp = Mathf.Round(_maxHp * 10f) * 0.1f;
         _curHp = _maxHp;
 
-        float atkLinear = _characterData.Atk + _data.AtkPerWave * wave;
-        float atkExp = _characterData.Atk * Mathf.Pow(_data.AtkGrowthRate, wave);
+        float atkLinear = _characterData.Atk + _characterData.AtkPerWave * wave;
+        float atkExp = _characterData.Atk * Mathf.Pow(_characterData.AtkGrowthRate, wave);
         _atk = (atkLinear + atkExp) * 0.5f;
         _atk = Mathf.Round(_atk * 10f) * 0.1f;
 

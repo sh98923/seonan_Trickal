@@ -44,6 +44,16 @@ public class PlayerManager : Singleton<PlayerManager>
         return _playerDatas[key]; 
     }
 
+    public CharacterFullData GetPlayerFullData(int key)
+    {
+        PlayerData playerData = _playerDatas[key];
+        CharacterData characterData = CharacterManager.Instance.GetCharacterData(playerData.CharacterKey);
+
+        CharacterFullData data = new CharacterFullData(characterData, playerData);
+
+        return data;
+    }
+
     private void LoadPlayerDatas()
     {
         TextAsset textAsset = Resources.Load<TextAsset>("Tables/PlayableTable");

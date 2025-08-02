@@ -79,7 +79,6 @@ public class MonsterSpawn : MonoBehaviour
 
     private void LoadMonsterPool()
     {
-       
         InitMonsterFullData();        // 데이터 로드
         CreateMonsterPools();         // 풀링 생성
         RegisterMonsterEvents();      // OnDie 이벤트 연결
@@ -95,12 +94,7 @@ public class MonsterSpawn : MonoBehaviour
             MonsterData monsterData = MonsterManager.Instance.GetMonsterData(monsterKey);
             CharacterData characterData = CharacterManager.Instance.GetCharacterData(monsterData.CharacterKey);
 
-            CharacterFullData fullData = new CharacterFullData
-            {
-                characterData = characterData,
-                monsterData = monsterData
-            };
-
+            CharacterFullData fullData = new CharacterFullData(characterData, monsterData);
             _monsterFullDatas.Add(monsterKey, fullData);
         }
     }
@@ -109,9 +103,8 @@ public class MonsterSpawn : MonoBehaviour
     {
         foreach (CharacterFullData fullData in _monsterFullDatas.Values)
         {
-            CharacterData characterData = fullData.characterData;
-            GameObject prefab = Resources.Load<GameObject>(characterData.PrefabPath);
-            PoolingManager.Instance.Add(characterData.EngName, _poolSize, prefab, transform);
+            GameObject prefab = Resources.Load<GameObject>(fullData.PrefabPath);
+            PoolingManager.Instance.Add(fullData.EngName, _poolSize, prefab, transform);
         }
     }
 
@@ -119,8 +112,8 @@ public class MonsterSpawn : MonoBehaviour
     {
         foreach (CharacterFullData fullData in _monsterFullDatas.Values)
         {
-            string engName = fullData.characterData.EngName;
-            List<GameObject> objects = PoolingManager.Instance.GetObjects(engName);
+            string key = fullData.EngName;
+            List<GameObject> objects = PoolingManager.Instance.GetObjects(key);
 
             foreach (GameObject obj in objects)
             {
@@ -136,18 +129,13 @@ public class MonsterSpawn : MonoBehaviour
 
         foreach (WaveData data in waveMonsters.Values)
         {
-            CharacterFullData fullData = new CharacterFullData();
-            MonsterData monsterData = MonsterManager.Instance.GetMonsterData(data.MonsterKey);
-            CharacterData characterData = CharacterManager.Instance.GetCharacterData(monsterData.CharacterKey);
-
-            fullData.characterData = characterData;
-            fullData.monsterData = monsterData;
+            CharacterFullData fullData = MonsterManager.Instance.GetMonsterFullData(data.MonsterKey);
 
             Vector3[] linePositions = _formationPositions[(FormationLayer)data.SpawnLine];
 
             for (int i = 0; i < data.Count && i < linePositions.Length; i++)
             {
-                GameObject monsterObj = PoolingManager.Instance.Pop(characterData.EngName);
+                GameObject monsterObj = PoolingManager.Instance.Pop(fullData.EngName);
                 monsterObj.transform.position = linePositions[i];
                 Vector3 finalPos = monsterObj.transform.position;
                 finalPos.z = 0.0f;

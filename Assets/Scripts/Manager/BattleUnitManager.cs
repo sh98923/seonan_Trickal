@@ -47,6 +47,7 @@ public class PlayerUnit
 
     private CharacterFullData _fullData;
     private PlayerUpgradeData _upgradeData;
+
     private int _level = 0;
     public int Level
     {
@@ -55,8 +56,7 @@ public class PlayerUnit
 
     public PlayerUnit(PlayerData data, GameObject unit)
     {
-        _fullData.playerData = data;
-        _fullData.characterData = CharacterManager.Instance.GetCharacterData(data.CharacterKey);
+        _fullData = PlayerManager.Instance.GetPlayerFullData(data.Key);
 
         // 여기서 이제 캐릭터 스크립트에 스탯 설정하는 함수 있으면 스탯 세팅 해주면 댐
         _unitObj = unit.GetComponent<Player>();
@@ -65,14 +65,14 @@ public class PlayerUnit
 
     public void LevelUp()
     {
-        int maxLevel = _fullData.playerData.Value.MaxLevel;
+        int maxLevel = _fullData.MaxLevel;
 
         // 이 조건문이 달성되면 그 카드는 제외시켜야함
         if (_level >= maxLevel) return;
 
         SetCharacterFullData();
 
-        Debug.Log(_unitObj.name + " " + _fullData.characterData.Hp + " " + _fullData.playerData.Value.Mp + " " + _fullData.characterData.Atk);
+        Debug.Log(_unitObj.name + " " + _fullData.Hp + " " + _fullData.Mp + " " + _fullData.Atk);
 
         _unitObj.SetCharacterData(_fullData);
         //curUnit.(_playerStat[levelUp]);
@@ -80,36 +80,12 @@ public class PlayerUnit
 
     private void SetCharacterFullData()
     {
-        int startKey = _fullData.playerData.Value.UpgradeKey;
+        int startKey = _fullData.UpgradeKey;
         int curKey = startKey + _level;
 
-        _upgradeData = PlayerUpgradeManager.Instance.GetPlayerStatData(curKey);
-
-        UpdateFullDataStats(_upgradeData);
+        _upgradeData = PlayerUpgradeManager.Instance.GetPlayerUpgradeData(curKey);
+        _fullData.UpdatePlayerStat(_upgradeData);
 
          _level++;
-    }
-
-    private void UpdateFullDataStats(PlayerUpgradeData upgradeData)
-    {
-        // CharacterData 업데이트
-        CharacterData characterData = _fullData.characterData;
-        characterData.Hp = upgradeData.Hp;
-        characterData.Atk = upgradeData.Atk;
-        characterData.AtkRange = upgradeData.AtkRange;
-        characterData.AtkCoolTime = upgradeData.AtkCoolTime;
-        characterData.CriRate = upgradeData.CriRate;
-        _fullData.characterData = characterData;
-
-        // PlayerData 업데이트 (nullable struct 처리)
-        if (_fullData.playerData is PlayerData pData)
-        {
-            pData.Mp = upgradeData.Mp;
-            pData.SkillRate = upgradeData.SkillRate;
-            pData.Ultimate = upgradeData.Ultimate;
-            pData.UltCoolTime = upgradeData.UltCoolTime;
-            pData.CanUseUlt = upgradeData.CanUseUlt;
-            _fullData.playerData = pData;
-        }
     }
 }

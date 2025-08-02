@@ -27,6 +27,16 @@ public class MonsterManager : Singleton<MonsterManager>
         return _monsterDatas[key];
     }
 
+    public CharacterFullData GetMonsterFullData(int key)
+    {
+        MonsterData monsterData = _monsterDatas[key];
+        CharacterData characterData = CharacterManager.Instance.GetCharacterData(monsterData.CharacterKey);
+
+        CharacterFullData data = new CharacterFullData(characterData, monsterData);
+
+        return data;
+    }
+
     private void LoadMonsterDatas()
     {
         TextAsset textAsset = Resources.Load<TextAsset>("Tables/MonsterTable");
