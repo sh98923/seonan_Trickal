@@ -19,8 +19,8 @@ public class Player : Character
 
         if (BattleStateManager.Instance.IsBattle)
         {
+            _curHp = 199;
             StartCoroutine(RegenerateMp());
-            _curState = State.Move;
         }
     }
 
@@ -92,16 +92,16 @@ public class Player : Character
         }
     }
 
-    public void OnAttackHit()
+    /*public void OnAttackHit()
     {
-        _targetCollider.GetComponent<Monster>().TakeDamage(_characterData.Atk * 119);
-    }
+        _targetCollider.GetComponent<Monster>().TakeDamage(_characterData.Atk);
+    }*/
 
     public void OnSkillHit()
     { 
         float atk = _characterData.Atk * _characterData.SkillRate;
         _curMp -= _characterData.Mp;
-        _targetCollider.GetComponent<Monster>().TakeDamage(atk * 119);
+        _targetCollider.GetComponent<Monster>().TakeDamage(atk);
     }
 
     private IEnumerator RegenerateMp()

@@ -51,6 +51,8 @@ public class StagePanel : MonoBehaviour
 
     private void OnClickStage(int index)
     {
+        RemovePreview();
+
         int stageNumber = index + 1;
         int stageKey = StageManager.Instance.GetStageStartKey(stageNumber);
         GameManager.Instance.SetStageKey(stageKey);
@@ -65,13 +67,18 @@ public class StagePanel : MonoBehaviour
 
     private void OnClickCancel()
     {
+        RemovePreview();
+
+        SetStageInfoPanelActive(false);
+    }
+
+    private void RemovePreview()
+    {
         // 기존에 생성된 몬스터 미리보기 제거
         foreach (Transform child in _monsterPreviewRoot)
         {
             Destroy(child.gameObject);
         }
-
-        SetStageInfoPanelActive(false);
     }
 
     private void ShowMonsterInfo()

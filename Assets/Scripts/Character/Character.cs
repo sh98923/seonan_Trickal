@@ -19,12 +19,26 @@ public class Character : MonoBehaviour
 
     [SerializeField] protected Transform _attackPoint;
     protected Animator _animator;
+    protected CharacterAttack _attack;
     protected Collider2D _targetCollider;
 
     protected CharacterFullData _characterData;
+    public string CharacterWeaponPath
+    {
+        get 
+        {
+            if (_characterData == null)
+            {
+                return string.Empty;
+            }
+
+            return _characterData.WeaponPath;
+        }
+    }
+
     protected Vector2 _moveDir;
     protected State _curState = State.Idle;
-
+    
     protected string _type = "";
     protected readonly float _colliderOffset = 0.5f;
     protected readonly float _findTargetRange = 5.0f;
@@ -47,8 +61,9 @@ public class Character : MonoBehaviour
 
     private bool _isDead = false;
 
-    protected void Awake() 
-    { 
+    protected void Awake()
+    {
+        _attack = GetComponent<CharacterAttack>();
         _animator = GetComponent<Animator>();
         _myCollider = GetComponent<Collider2D>();
         _sortingGroup = GetComponent<SortingGroup>();
@@ -62,8 +77,8 @@ public class Character : MonoBehaviour
         _curState = State.Idle; 
         
         _isAttacking = false;
-        _myCollider.enabled = true;
         _isDead = false;
+        _myCollider.enabled = true;
 
         for (int i = 0; i < _spriteRenderers.Length; i++)
         {
@@ -104,6 +119,11 @@ public class Character : MonoBehaviour
     protected virtual void IdleStateAction()
     {
         _animator.SetBool("IdleState", true);
+
+        if (BattleStateManager.Instance.IsBattle)
+        {
+            _curState = State.Move;
+        }
     }
 
     protected virtual void MoveStateAction()
@@ -116,14 +136,18 @@ public class Character : MonoBehaviour
         if (_isAttacking)
             return;
 
+        _isAttacking = true;
+
         if (!_targetCollider.enabled)
         {
             _targetCollider = null;
             _curState = State.Move;
         }
 
-        _isAttacking = true;
-        _animator.SetTrigger("Attack");
+        if (_targetCollider != null)
+        { 
+            _animator.SetTrigger("Attack");
+        }
     }
 
     public void TakeDamage(float damage)
@@ -194,6 +218,14 @@ public class Character : MonoBehaviour
     public void SetCharacterData(CharacterFullData fullData)
     {
         _characterData = fullData;
+        _type = fullData.Type;
+        _criRate = fullData.CriRate;
+        _attackRange = fullData.AtkRange;
+        _atkCoolTime = fullData.AtkCoolTime;
+    }
+    public void OnAttackHit()
+    {
+        _attack.BaseAttack(_targetCollider, _atk);
     }
 
     private IEnumerator FadeOutAndInactive()

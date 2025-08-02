@@ -10,11 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 2767340984756934891}
   - component: {fileID: 3048888863384797016}
-  - component: {fileID: -9027470178997505349}
   - component: {fileID: 4729975481474491864}
   - component: {fileID: -7094308000992389973}
+  - component: {fileID: 4567408240863826182}
   m_Layer: 0
-  m_Name: SkeltonBaseAtk
+  m_Name: SkeltonArrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -90,20 +90,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &-9027470178997505349
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2753817495291238354}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c341852f759d3ec41a87a0c8b2ff29c9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _speed: 10
-  _lifeTime: 2
 --- !u!58 &4729975481474491864
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -167,3 +153,17 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &4567408240863826182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2753817495291238354}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c341852f759d3ec41a87a0c8b2ff29c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speed: 2.2
+  _lifeTime: 3

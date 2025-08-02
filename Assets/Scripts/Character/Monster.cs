@@ -2,41 +2,20 @@ using UnityEngine;
 
 public class Monster : Character
 {
-    private ProjectilePool _projectilePool;
-
     private void Awake()
     {
         base.Awake();
         _moveDir = Vector2.left;
     }
 
-    private void Start()
-    {
-        _projectilePool = FindObjectOfType<ProjectilePool>();
-    }
-
-    private void Update()
-    {
-        base.Update();
-        _targetCollider = FindTarget("Player", _findTargetRange);
-    }
-
-    protected override void IdleStateAction()
-    {
-        base.IdleStateAction();
-
-        if (BattleStateManager.Instance.IsBattle)
-        {
-            _curState = State.Move;
-        }
-    }
-
+    // Idle 상태면 Battle모드일 때 move로 넘어옴
     protected override void MoveStateAction()
     {
         base.MoveStateAction();
 
         if(_targetCollider == null)
         {
+            _targetCollider = FindTarget("Player", _findTargetRange);
             transform.Translate(_moveDir * _moveSpeed * Time.deltaTime);
         }
         else
@@ -50,52 +29,6 @@ public class Monster : Character
             {
                 _animator.SetBool("IdleState", true);
                 _curState = State.Attack;
-            }
-        }
-    }
-
-    protected override void AttackStateAction()
-    {
-        base.AttackStateAction();
-
-        if(_targetCollider == null)
-        {
-            _curState = State.Move;
-        }
-    }
-
-    public void OnAttackHit()
-    {
-        if(_type == "Range")
-        {
-            if (_projectilePool == null || _targetCollider == null)
-                return;
-
-            Vector3 pos = _targetCollider.transform.position;
-            pos.y += _colliderOffset;
-
-            Vector2 direction = (pos - _attackPoint.position).normalized;
-
-            Projectile proj = _projectilePool.Get(_attackPoint.position, direction, _atk);
-            proj.SetPool(_projectilePool);
-        }
-
-        else
-        {
-            _targetCollider.GetComponent<Player>().TakeDamage(_atk);
-        }
-
-        Collider2D[] hitTargets = Physics2D.OverlapCircleAll(_attackPoint.position, _attackRange);
-
-        foreach (Collider2D hitTarget in hitTargets)
-        {
-            if (hitTarget.CompareTag("Player"))
-            {
-                Player player = hitTarget.GetComponent<Player>();
-                if (player != null)
-                {
-                    player.TakeDamage(_atk);
-                }
             }
         }
     }

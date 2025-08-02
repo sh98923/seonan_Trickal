@@ -2761,7 +2761,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1360557684}
-  - component: {fileID: 1360557685}
   m_Layer: 0
   m_Name: InGameManager
   m_TagString: Untagged
@@ -2784,20 +2783,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1360557685
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1360557682}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f167c9c063b69b488ef6d5a5474caa1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: -9027470178997505349, guid: ca6b3940e9eec114189d6a97e5fa22dc, type: 3}
-  poolSize: 10
 --- !u!1 &1371064245
 GameObject:
   m_ObjectHideFlags: 0

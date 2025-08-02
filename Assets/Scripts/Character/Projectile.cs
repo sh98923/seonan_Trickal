@@ -1,45 +1,41 @@
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class Projectile : MonoBehaviour
 {
     [SerializeField] private float _speed = 10.0f;
     [SerializeField] private float _lifeTime = 2.0f;
+    private readonly float _offset = 0.5f;
+
+    private Vector2 _direction;
 
     private float _damage;
-    private Vector2 _direction;
-    private ProjectilePool _pool;
+    private float _lifeTimer;
 
-    private float _timer;
+    private void OnEnable()
+    {
+        _lifeTimer = 0.0f;
+    }
 
     private void Update()
     {
         transform.Translate(_direction * _speed * Time.deltaTime);
 
-        _timer += Time.deltaTime;
-        if (_timer >= _lifeTime)
+        _lifeTimer += Time.deltaTime;
+        if (_lifeTimer >= _lifeTime)
         {
-            ReturnToPool();
+            gameObject.SetActive(false);
         }
     }
 
-    public void SetPool(ProjectilePool pool)
+    public void Fire(Vector2 direction, Vector3 startPos, float damage)
     {
-        _pool = pool;
-    }
+        Vector3 pos = startPos;
+        pos.y += _offset;
+        startPos = pos;
 
-    public void Init(Vector2 direction, float damage)
-    {
-        _direction = direction.normalized;
+        transform.position = startPos;
         _damage = damage;
-
-        _timer = 0f;
-        gameObject.SetActive(true);
-    }
-
-    private void OnEnable()
-    {
-        _timer = 0f;   
+        _direction = direction.normalized;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -52,13 +48,7 @@ public class Projectile : MonoBehaviour
             if (player != null)
                 player.TakeDamage(_damage);
 
-            ReturnToPool();
+            gameObject.SetActive(false);
         }
-    }
-
-    private void ReturnToPool()
-    {
-        gameObject.SetActive(false);
-        _pool?.Return(this);
     }
 }

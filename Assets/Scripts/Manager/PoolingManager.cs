@@ -4,6 +4,7 @@ using UnityEngine;
 public class PoolingManager : Singleton<PoolingManager>
 {
     private Dictionary<string, List<GameObject>> _totalObject = new Dictionary<string, List<GameObject>>();
+    private List<GameObject> _object = new List<GameObject>();
 
     public List<GameObject> GetObjects(string key) { return _totalObject[key]; }
 
