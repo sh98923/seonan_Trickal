@@ -3,10 +3,9 @@ using UnityEngine;
 
 public enum InGameUI
 {
-    DeckPanel = 1, StageName = 2, InGameStartBtn = 3,
-    DeckContent = 6, BattleSetUpPanel = 7,
-    LeftCardBtn = 10, CenterCardBtn = 17, RightCardBtn = 24,
-    RerollImage = 29, RerollBtn = 30, TimeControlPanel = 39, WaveTimerPanel = 42
+    BattleSetUpPanel = 1,
+    LeftCardBtn = 4, CenterCardBtn = 11, RightCardBtn = 18,
+    RerollImage = 23, RerollBtn = 24, OptionPanel = 33, WaveTimerPanel = 36
 }
 
 public class InGameUIPanel : MonoBehaviour
@@ -34,8 +33,6 @@ public class InGameUIPanel : MonoBehaviour
 
         Transform setUpPanel = _inGameUIs[(int)InGameUI.BattleSetUpPanel];
         _setUpAnim = setUpPanel.GetComponent<Animator>();
-
-        SetUIInit();
     }
 
     private void Update()
@@ -44,7 +41,6 @@ public class InGameUIPanel : MonoBehaviour
 
         if (_isDeckMode && Input.GetKeyDown(KeyCode.Alpha4))
         {
-            _inGameUIs[(int)InGameUI.DeckPanel].gameObject.SetActive(true);
             _inGameUIs[(int)InGameUI.BattleSetUpPanel].gameObject.SetActive(false);
 
             _isDeckMode = false;
@@ -76,15 +72,15 @@ public class InGameUIPanel : MonoBehaviour
 
     private void SetUIInit()
     {
-        _inGameUIs[(int)InGameUI.WaveTimerPanel].gameObject.SetActive(false);
-        _inGameUIs[(int)InGameUI.TimeControlPanel].gameObject.SetActive(false);
-        _inGameUIs[(int)InGameUI.BattleSetUpPanel].gameObject.SetActive(false);
+        /*_inGameUIs[(int)InGameUI.WaveTimerPanel].gameObject.SetActive(false);
+        _inGameUIs[(int)InGameUI.OptionPanel].gameObject.SetActive(false);
+        _inGameUIs[(int)InGameUI.BattleSetUpPanel].gameObject.SetActive(false);*/
     }
 
     private void ShowRerollUI()
     {
         _inGameUIs[(int)InGameUI.WaveTimerPanel].gameObject.SetActive(true);
-        _inGameUIs[(int)InGameUI.TimeControlPanel].gameObject.SetActive(true);
+        _inGameUIs[(int)InGameUI.OptionPanel].gameObject.SetActive(true);
         _inGameUIs[(int)InGameUI.BattleSetUpPanel].gameObject.SetActive(true);
         _setUpAnim.SetTrigger("RerollStart");
     }

@@ -2,14 +2,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public struct FormationSlot
-{
-    public Vector3 Position;
-    public bool IsOccupied;
-}
-
 public class PlayerSpawn : MonoBehaviour
 {
+    private struct FormationSlot
+    {
+        public Vector3 Position;
+        public bool IsOccupied;
+    }
+
     private enum FormationLayer
     {
         Front, Middle, Back
@@ -28,30 +28,28 @@ public class PlayerSpawn : MonoBehaviour
          get { return _deployedDatas; }
     }
 
-    private string sceneName;
+    private string _sceneName;
     private int _startPlayerIndex;
 
     private void Awake()
     {
-        sceneName = SceneManager.GetActiveScene().name;
+        _sceneName = SceneManager.GetActiveScene().name;
+
+        if (_sceneName == "InGameScene")
+        {
+            LoadPlayerPos();
+            // 룰렛 만들게되면 룰렛에 나온 애들만 스폰
+            GameManager.Instance.RegisterDeckUnits(transform);
+        }
     }
 
     private void Start()
     {
-        switch (sceneName)
-        {
-            case "StageSelectScene":
-                _startPlayerIndex = SpawnManager.Instance.StartPlayerSpawnKey;
-                LoadPlayerPos();
-                break;
-            case "InGameScene":
-                // 룰렛 만들게되면 룰렛에 나온 애들만 스폰
-                GameManager.Instance.RegisterDeckUnits();
-                break;
-        }
+        _startPlayerIndex = SpawnManager.Instance.StartPlayerSpawnKey;
+        InitDeployPos();
     }
 
-    private void LoadPlayerPos()
+    private void InitDeployPos()
     {
         int index = 0;
         Vector3 origin = new Vector3(Screen.width * 0.5f, Screen.height * 0.5f, 0.0f);
@@ -61,12 +59,22 @@ public class PlayerSpawn : MonoBehaviour
             for (int i = 0; i < positions.Length; i++)
             {
                 SpawnPosData spawnData = SpawnManager.Instance.GetPlayerSpawnData(_startPlayerIndex + index);
-                Vector3 newPos = new Vector3(origin.x * spawnData.Ratio.x, origin.y * spawnData.Ratio.y, 0.0f);
+                Vector3 newPos = new Vector3(origin.x * spawnData.Ratio.x, origin.y * spawnData.Ratio.y, Camera.main.nearClipPlane);
 
                 positions[i].Position = Camera.main.ScreenToWorldPoint(newPos);
                 positions[i].IsOccupied = false;
                 index++;
             }
+        }
+    }
+
+    private void LoadPlayerPos()
+    {
+        List<PlayerData> datas = GameManager.Instance.SpawnablePlayerDatas;
+
+        for(int i = 0; i < datas.Count; i++)
+        {
+            _deployedDatas.Add(datas[i]);
         }
     }
 

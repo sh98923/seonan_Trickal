@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class CardPanel : MonoBehaviour
@@ -11,34 +12,40 @@ public class CardPanel : MonoBehaviour
         CostImage, CostText
     }
 
-    private InGameUIPanel _inGameUIPanel;
     private Transform[] _cardChildren;
     private BattleSetupPanel _parentPanel;
     private PlayerSpawn _spawnParent;
 
     private PlayerData _playerData;
 
+    private string _sceneName;
     private bool _wasRerollActive = false;
 
     private void Awake()
     {
-        _spawnParent = GameObject.Find("SpawnPlayer").GetComponent<PlayerSpawn>();
+        _sceneName = SceneManager.GetActiveScene().name;
         _cardChildren = GetComponentsInChildren<Transform>();
+        _spawnParent = GameObject.Find("SpawnPlayer").GetComponent<PlayerSpawn>();
     }
 
     private void Start()
     {
-        /*_inGameUIPanel = GetComponentInParent<InGameUIPanel>();
-        _spawnParent = _inGameUIPanel.SpawnParent.GetComponent<PlayerSpawn>();
-        _parentPanel = _inGameUIPanel.GetUIElement<BattleSetupPanel>(InGameUI.BattleSetUpPanel);*/
-
         InitUI();
         RegisterButtonEvents();
     }
 
     private void InitUI()
     {
-        _cardChildren[(int)CardUI.CostImage].gameObject.SetActive(false);
+        if (_sceneName == "StageSelectScene")
+        {
+            _cardChildren[(int)CardUI.CostImage].gameObject.SetActive(false);
+        }
+
+        if(_sceneName == "InGameScene")
+        {
+            _cardChildren[(int)CardUI.CostImage].gameObject.SetActive(true); 
+            _parentPanel = GetComponentInParent<BattleSetupPanel>();
+        }
     }
 
     private void Update()
@@ -65,17 +72,17 @@ public class CardPanel : MonoBehaviour
 
     private void OnClickMyDeckCard()
     {
-        if(BattleStateManager.Instance.IsReroll)
+        if (_sceneName == "StageSelectScene")
         {
-            UpgradePlayer();
+            HandleStageSelectClick();
         }
-        else
+        else if (_sceneName == "InGameScene")
         {
-            SpawnPlayer();
+            HandleInGameClick();
         }
     }
 
-    private void SpawnPlayer()
+    private void HandleStageSelectClick()
     {
         CharacterData characterData = CharacterManager.Instance.GetCharacterData(_playerData.CharacterKey);
 
@@ -86,22 +93,45 @@ public class CardPanel : MonoBehaviour
         }
 
         Vector3 spawnPos = _spawnParent.SetPlayerPos(_playerData);
+        spawnPos.z = 0.0f;
 
-        // 위치 못 찾으면 생성을 안 함
         if (spawnPos == Vector3.zero)
         {
             Debug.LogWarning("스폰할 자리가 없습니다.");
             return;
         }
 
+        SpawnPlayerAtPosition(characterData, spawnPos);
+
+        CharacterFullData data = new CharacterFullData(characterData, _playerData);
+        GameManager.Instance.SetDeckUnit(data, spawnPos);
+    }
+
+    private void SpawnPlayerAtPosition(CharacterData characterData, Vector3 spawnPos)
+    {
         GameObject playerPrefab = Resources.Load<GameObject>(characterData.PrefabPath);
         GameObject player = Instantiate(playerPrefab, _spawnParent.transform);
         player.name = characterData.EngName;
         player.layer = LayerMask.NameToLayer(characterData.Layer);
-        spawnPos.z = 0.0f;
         player.transform.position = spawnPos;
+    }
 
-        GameManager.Instance.SetDeckUnit(_playerData, player);
+    private void HandleInGameClick()
+    {
+        string characterName = CharacterManager.Instance.GetCharacterData(_playerData.CharacterKey).EngName;
+        Transform existingChild = _spawnParent.transform.Find(characterName);
+
+        if (existingChild != null)
+        {
+            if (!existingChild.gameObject.activeSelf)
+            {
+                existingChild.gameObject.SetActive(true);
+            }
+            else
+            {
+                UpgradePlayer();
+            }
+        }
     }
 
     private void UpgradePlayer()

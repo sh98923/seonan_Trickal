@@ -185,7 +185,9 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      HumanFlame3_0: 4526844997253568889
+      HumanFlame3_1: -1995168575260978318
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

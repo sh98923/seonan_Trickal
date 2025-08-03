@@ -9,6 +9,8 @@ public struct CharacterData
     public string KrName;
     public string PrefabPath;
     public string Layer;
+    public string AttackType;
+    public string ProjectilePath;
     public int SpawnLine;
     public float Hp;
     public float Atk;
@@ -66,12 +68,14 @@ public class CharacterManager : Singleton<CharacterManager>
             data.KrName = colData[3];
             data.PrefabPath = colData[4];
             data.Layer = colData[5];
-            data.SpawnLine = int.Parse(colData[6]);
-            data.Hp = float.Parse(colData[7]);
-            data.Atk = float.Parse(colData[8]);
-            data.AtkRange = float.Parse(colData[9]);
-            data.AtkCoolTime = float.Parse(colData[10]);
-            data.CriRate = float.Parse(colData[11]);
+            data.AttackType = colData[6];
+            data.ProjectilePath = colData[7];
+            data.SpawnLine = int.Parse(colData[8]);
+            data.Hp = float.Parse(colData[9]);
+            data.Atk = float.Parse(colData[10]);
+            data.AtkRange = float.Parse(colData[11]);
+            data.AtkCoolTime = float.Parse(colData[12]);
+            data.CriRate = float.Parse(colData[13]);
 
             _characterDatas.Add(data.Key, data);
         }

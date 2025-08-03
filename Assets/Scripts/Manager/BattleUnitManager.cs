@@ -12,13 +12,13 @@ public class BattleUnitManager : Singleton<BattleUnitManager>
         get { return _curLevel; }
     }
 
-    public void RegisterUnit(PlayerData data, GameObject instance)
+    public void RegisterUnit(CharacterFullData data, GameObject instance)
     {
         Player player = instance.GetComponent<Player>();
         player.OnDie += OnPlayerDie;
         _alivePlayerCount++;
 
-        _activeUnits[data.Key] = new PlayerUnit(data, instance);
+        _activeUnits[data.PlayerKey] = new PlayerUnit(data, instance);
     }
 
     private void OnPlayerDie(Character ch)
@@ -54,9 +54,10 @@ public class PlayerUnit
         get { return _level; }
     }
 
-    public PlayerUnit(PlayerData data, GameObject unit)
+    public PlayerUnit(CharacterFullData data, GameObject unit)
     {
-        _fullData = PlayerManager.Instance.GetPlayerFullData(data.Key);
+        _fullData = data; 
+        //PlayerManager.Instance.GetPlayerFullData(data.Key);
 
         // 여기서 이제 캐릭터 스크립트에 스탯 설정하는 함수 있으면 스탯 세팅 해주면 댐
         _unitObj = unit.GetComponent<Player>();

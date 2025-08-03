@@ -72,7 +72,7 @@ public class BattleSetupPanel : MonoBehaviour
     private void OnCardDataRamdomSet()
     {
         for (int i = 0; i < _cardCount; i++)
-        {
+       {
             int randomIndex = Random.Range(0, _rerollCandidates.Count);
             _rerollChildren[i].GetComponent<CardPanel>()
                 .SetPlayerUnit(_rerollCandidates[randomIndex]);

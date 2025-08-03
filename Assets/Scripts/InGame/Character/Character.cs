@@ -39,7 +39,7 @@ public class Character : MonoBehaviour
     protected Vector2 _moveDir;
     protected State _curState = State.Idle;
     
-    protected string _type = "";
+    protected string _attackType = "";
     protected readonly float _colliderOffset = 0.5f;
     protected readonly float _findTargetRange = 5.0f;
     protected float _curHp = 0.0f;
@@ -218,7 +218,7 @@ public class Character : MonoBehaviour
     public void SetCharacterData(CharacterFullData fullData)
     {
         _characterData = fullData;
-        _type = fullData.Type;
+        _attackType = fullData.CharacterData.AttackType;
         _criRate = fullData.CriRate;
         _attackRange = fullData.AtkRange;
         _atkCoolTime = fullData.AtkCoolTime;

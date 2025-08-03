@@ -210,7 +210,10 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      ElfFlame2_0: 853391684639952181
+      ElfFlame2_1: -1957674503014775350
+      ElfFlame2_2: -6667208971397816756
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

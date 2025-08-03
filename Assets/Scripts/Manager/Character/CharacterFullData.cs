@@ -1,7 +1,7 @@
 public class CharacterFullData
 {
     private CharacterData _characterInfo;
-    public CharacterData CharacterInfo
+    public CharacterData CharacterData
     {
         get { return _characterInfo; }
         set { _characterInfo = value; }
@@ -15,7 +15,7 @@ public class CharacterFullData
     }
 
     private MonsterData _monsterInfo;
-    public MonsterData MonsterInfo
+    public MonsterData MonsterData
     {
         get { return _monsterInfo; }
         set { _monsterInfo = value; }
@@ -52,6 +52,11 @@ public class CharacterFullData
         set { _characterInfo.CriRate = value; }
     }
 
+    public string Layer
+    {
+        get { return _characterInfo.Layer; }
+    }
+    
     public string EngName
     {
         get { return _characterInfo.EngName; }
@@ -62,7 +67,24 @@ public class CharacterFullData
         get { return _characterInfo.PrefabPath; }
     }
 
+    public string Type
+    {
+        get { return _characterInfo.Type; }
+        set { _characterInfo.Type = value; }
+    }
+
+    public string ProjectilePath
+    {
+        get { return _characterInfo.ProjectilePath; }
+        set { _characterInfo.ProjectilePath = value; }
+    }
+
     // 플레이어 정보
+    public int PlayerKey
+    {
+        get { return _playerInfo.Key; }
+    }
+
     public int MaxLevel
     {
         get { return _playerInfo.MaxLevel; }
@@ -137,18 +159,6 @@ public class CharacterFullData
     {
         get { return _monsterInfo.AtkGrowthRate; }
         set { _monsterInfo.AtkGrowthRate = value; }
-    }
-
-    public string Type
-    {
-        get { return _monsterInfo.Type; }
-        set { _monsterInfo.Type = value; }
-    }
-
-    public string ProjectilePath
-    {
-        get { return _monsterInfo.ProjectilePath; }
-        set { _monsterInfo.ProjectilePath = value; }
     }
 
     public CharacterFullData(CharacterData characterInfo, PlayerData playerInfo)

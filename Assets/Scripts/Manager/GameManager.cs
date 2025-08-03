@@ -3,13 +3,19 @@ using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
-    public struct DeckUnitData
+    private struct PlayerUnitFullData
     {
-        public PlayerData playerData;
-        public GameObject playerObj;
+        public Vector3 spawnPos;
+        public CharacterFullData characterFullData;
     }
 
-    private Dictionary<int, DeckUnitData> _deckUnitDatas = new Dictionary<int, DeckUnitData>();
+    private List<PlayerData> _spawnablePlayerDatas = new List<PlayerData>();
+    public List<PlayerData> SpawnablePlayerDatas
+    {
+        get { return _spawnablePlayerDatas; }
+    }
+
+    private Dictionary<int, PlayerUnitFullData> _deckUnitDatas = new Dictionary<int, PlayerUnitFullData>();
 
     private readonly int _inGameStartCoin = 30;
     public int InGameStartCoin
@@ -40,23 +46,34 @@ public class GameManager : Singleton<GameManager>
         _waveCount = StageManager.Instance.GetWaveCount(_stageKey);
     }
 
-    public void SetDeckUnit(PlayerData data, GameObject unit)
+    public void SetDeckUnit(CharacterFullData fullData, Vector3 spawnPos)
     {
-        DeckUnitData unitData = 
-            new DeckUnitData 
-            { 
-                playerData = data, 
-                playerObj = unit
+        PlayerUnitFullData data =
+            new PlayerUnitFullData
+            {
+                spawnPos = spawnPos,
+                characterFullData = fullData
             };
 
-        _deckUnitDatas.Add(data.Key, unitData);
+        _spawnablePlayerDatas.Add(fullData.PlayerInfo);
+        _deckUnitDatas.Add(fullData.PlayerKey, data);
     }
 
-    public void RegisterDeckUnits()
+    public void RegisterDeckUnits(Transform parent)
     {
-        foreach(DeckUnitData data in _deckUnitDatas.Values)
+        foreach(PlayerUnitFullData data in _deckUnitDatas.Values)
         {
-            BattleUnitManager.Instance.RegisterUnit(data.playerData, data.playerObj);
+            CharacterFullData fullData = data.characterFullData;
+
+            GameObject prefab = Resources.Load<GameObject>(fullData.PrefabPath);
+
+            GameObject player = Instantiate(prefab, parent);
+            player.name = fullData.EngName;
+            player.layer = LayerMask.NameToLayer(fullData.Layer);
+            player.transform.position = data.spawnPos;
+            player.SetActive(false);
+
+            BattleUnitManager.Instance.RegisterUnit(fullData, player);
         }
     }
 }
