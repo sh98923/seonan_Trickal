@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class DeckCardPanel : MonoBehaviour
@@ -18,6 +19,7 @@ public class DeckCardPanel : MonoBehaviour
     private void Awake()
     {
         _deckChildren = GetComponentsInChildren<Transform>();
+        gameObject.SetActive(false);
     }
 
     private void Start()
@@ -65,8 +67,10 @@ public class DeckCardPanel : MonoBehaviour
 
     private void OnClickStart()
     {
-        gameObject.SetActive(false);
+        SceneManager.LoadScene("InGameScene");
+
+        /*gameObject.SetActive(false);
         BattleStateManager.Instance.SetState(BattleState.Reroll);
-        BattleStateManager.Instance.RerollEvent();
+        BattleStateManager.Instance.RerollEvent();*/
     }
 }

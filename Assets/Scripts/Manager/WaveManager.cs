@@ -37,7 +37,7 @@ public class WaveManager : Singleton<WaveManager>
 
     public HashSet<int> GetStageMonster(int totalWaveCount)
     {
-        int startWaveKey = GameManager.Instance.WaveKey;
+        int startWaveKey = GameManager.Instance.StageKey;
         int endKey = startWaveKey + totalWaveCount;
         HashSet<int> monsterKeys = new HashSet<int>();
 
