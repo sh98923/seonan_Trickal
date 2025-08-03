@@ -145,10 +145,10 @@ public class CharacterFullData
         set { _monsterInfo.Type = value; }
     }
 
-    public string WeaponPath
+    public string ProjectilePath
     {
-        get { return _monsterInfo.WeaponPath; }
-        set { _monsterInfo.WeaponPath = value; }
+        get { return _monsterInfo.ProjectilePath; }
+        set { _monsterInfo.ProjectilePath = value; }
     }
 
     public CharacterFullData(CharacterData characterInfo, PlayerData playerInfo)

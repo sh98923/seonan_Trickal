@@ -10,7 +10,7 @@ public struct MonsterData
     public float AtkPerWave;
     public float AtkGrowthRate;
     public string Type;
-    public string WeaponPath;
+    public string ProjectilePath;
 }
 
 public class MonsterManager : Singleton<MonsterManager>
@@ -59,7 +59,7 @@ public class MonsterManager : Singleton<MonsterManager>
             data.AtkPerWave = float.Parse(colData[4]);
             data.AtkGrowthRate = float.Parse(colData[5]);
             data.Type = colData[6];
-            data.WeaponPath = colData[7];
+            data.ProjectilePath = colData[7];
 
             _monsterDatas.Add(data.Key, data);
         }

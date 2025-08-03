@@ -17,13 +17,13 @@ public class Character : MonoBehaviour
         remove { _onDie -= value; }
     }
 
-    [SerializeField] protected Transform _attackPoint;
+    [SerializeField] public Transform _attackPoint;
     protected Animator _animator;
     protected CharacterAttack _attack;
     protected Collider2D _targetCollider;
 
     protected CharacterFullData _characterData;
-    public string CharacterWeaponPath
+    public string CharacterProjectilePath
     {
         get 
         {
@@ -32,7 +32,7 @@ public class Character : MonoBehaviour
                 return string.Empty;
             }
 
-            return _characterData.WeaponPath;
+            return _characterData.ProjectilePath;
         }
     }
 

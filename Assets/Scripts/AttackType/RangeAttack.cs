@@ -12,7 +12,7 @@ public class RangeAttack : CharacterAttack
     private void Start()
     {
         _character = GetComponent<Character>();
-        _prefab = Resources.Load<GameObject>(_character.CharacterWeaponPath);
+        _prefab = Resources.Load<GameObject>(_character.CharacterProjectilePath);
 
         if (_prefab != null)
         {
@@ -47,7 +47,8 @@ public class RangeAttack : CharacterAttack
 
     public override void BaseAttack(Collider2D target, float damage)
     {
-        Vector3 curPos = transform.position;
+        //Vector3 curPos = transform.position;
+        Vector3 curPos = _character._attackPoint.position;
         Vector2 dir = target.transform.position - transform.position;
         Projectile projectile = Pop().GetComponent<Projectile>();
         projectile.Fire(dir, curPos, damage);

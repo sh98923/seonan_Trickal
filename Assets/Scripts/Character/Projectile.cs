@@ -30,7 +30,7 @@ public class Projectile : MonoBehaviour
     public void Fire(Vector2 direction, Vector3 startPos, float damage)
     {
         Vector3 pos = startPos;
-        pos.y += _offset;
+        //pos.y += _offset;
         startPos = pos;
 
         transform.position = startPos;
