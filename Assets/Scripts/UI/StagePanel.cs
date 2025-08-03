@@ -87,7 +87,7 @@ public class StagePanel : MonoBehaviour
         HashSet<int> stageMonsterKeys = WaveManager.Instance.GetStageMonster(waveCnt);
 
         // 시작 위치
-        Vector3 startPos = new Vector3(-3.75f, 1.0f, 0f); // 왼쪽 상단 쯤
+        Vector3 startPos = new Vector3(-3.75f, 0.5f, 0.0f); // 왼쪽 상단 쯤
         float spacingX = 3.0f; // 가로 간격
         float spacingY = 3.0f; // 세로 간격
         int columnCount = 3;   // 가로로 몇 마리씩 표시할지
