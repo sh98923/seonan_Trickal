@@ -1,4 +1,3 @@
-using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -23,14 +22,15 @@ public class CardPanel : MonoBehaviour
 
     private void Awake()
     {
+        _spawnParent = GameObject.Find("SpawnPlayer").GetComponent<PlayerSpawn>();
         _cardChildren = GetComponentsInChildren<Transform>();
     }
 
     private void Start()
     {
-        _inGameUIPanel = GetComponentInParent<InGameUIPanel>();
+        /*_inGameUIPanel = GetComponentInParent<InGameUIPanel>();
         _spawnParent = _inGameUIPanel.SpawnParent.GetComponent<PlayerSpawn>();
-        _parentPanel = _inGameUIPanel.GetUIElement<BattleSetupPanel>(InGameUI.BattleSetUpPanel);
+        _parentPanel = _inGameUIPanel.GetUIElement<BattleSetupPanel>(InGameUI.BattleSetUpPanel);*/
 
         InitUI();
         RegisterButtonEvents();
@@ -101,7 +101,7 @@ public class CardPanel : MonoBehaviour
         spawnPos.z = 0.0f;
         player.transform.position = spawnPos;
 
-        BattleUnitManager.Instance.RegisterUnit(_playerData, player);
+        GameManager.Instance.SetDeckUnit(_playerData, player);
     }
 
     private void UpgradePlayer()

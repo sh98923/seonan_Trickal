@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public struct FormationSlot
 {
@@ -27,12 +28,27 @@ public class PlayerSpawn : MonoBehaviour
          get { return _deployedDatas; }
     }
 
+    private string sceneName;
     private int _startPlayerIndex;
-    
+
+    private void Awake()
+    {
+        sceneName = SceneManager.GetActiveScene().name;
+    }
+
     private void Start()
     {
-        _startPlayerIndex = SpawnManager.Instance.StartPlayerSpawnKey;
-        LoadPlayerPos();
+        switch (sceneName)
+        {
+            case "StageSelectScene":
+                _startPlayerIndex = SpawnManager.Instance.StartPlayerSpawnKey;
+                LoadPlayerPos();
+                break;
+            case "InGameScene":
+                // 룰렛 만들게되면 룰렛에 나온 애들만 스폰
+                GameManager.Instance.RegisterDeckUnits();
+                break;
+        }
     }
 
     private void LoadPlayerPos()
@@ -73,8 +89,7 @@ public class PlayerSpawn : MonoBehaviour
         {
             if (slots[i].IsOccupied) continue;
 
-            if(!BattleStateManager.Instance.IsBattle)
-                _deployedDatas.Add(playerData);
+            _deployedDatas.Add(playerData);
 
             slots[i].IsOccupied = true;
             return slots[i].Position;

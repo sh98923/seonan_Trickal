@@ -2,25 +2,41 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class StagePanel : MonoBehaviour
 {
     private enum StageUI
     {
-        StageInfoPanel = 1, StageStartBtn = 2, CancelBtn = 4
+        StageInfoPanel = 1, DeckSetUpBtn = 2, CancelBtn = 4
     }
 
+    private MapBG _mapBG;
+    private GameObject _deckPanel; 
     private Transform[] _stageChildren;
     private Transform _monsterPreviewRoot;
+
     private readonly int _stageCount = 3;
 
     private void Awake()
     {
+        _mapBG = GameObject.Find("BG").GetComponent<MapBG>();
+        _deckPanel = transform.parent.Find("DeckPanel").gameObject;
         _monsterPreviewRoot = GameObject.Find("MonsterPreivew").transform;
         _stageChildren = GetComponentsInChildren<Transform>();
         SetStageInfoPanelActive(false);
+    }
+
+    private void OnEnable()
+    {
+        _mapBG.OnMapFound += HandleMapBGFound;
+        _mapBG.OnSetMapBG += HandleMapBGSetting;
+    }
+
+    private void OnDisable()
+    {
+        _mapBG.OnMapFound -= HandleMapBGFound;
+        _mapBG.OnSetMapBG -= HandleMapBGSetting;
     }
 
     private void Start()
@@ -45,7 +61,7 @@ public class StagePanel : MonoBehaviour
             obj.GetComponentInChildren<TextMeshProUGUI>().text = $"Stage {i + 1}";
         }
 
-        SetBtnEvent(StageUI.StageStartBtn, OnClickStart);
+        SetBtnEvent(StageUI.DeckSetUpBtn, OnClickDeckSetup);
         SetBtnEvent(StageUI.CancelBtn, OnClickCancel);
     }
 
@@ -60,9 +76,14 @@ public class StagePanel : MonoBehaviour
         SetStageInfoPanelActive(true);
     }
 
-    private void OnClickStart()
+    private void OnClickDeckSetup()
     {
-        SceneManager.LoadScene("InGameScene");
+        RemovePreview();
+
+        _mapBG.gameObject.SetActive(true);
+        _deckPanel.SetActive(true);
+
+        gameObject.SetActive(false);
     }
 
     private void OnClickCancel()
@@ -123,5 +144,15 @@ public class StagePanel : MonoBehaviour
     {
         Button btn = _stageChildren[(int)element].GetComponent<Button>();
         btn.onClick.AddListener(() => func());
+    }
+
+    private void HandleMapBGFound(MapBG bg)
+    {
+        bg.InActiveBG();
+    }
+
+    private void HandleMapBGSetting(MapBG bg)
+    {
+        bg.SetMapBG();
     }
 }
