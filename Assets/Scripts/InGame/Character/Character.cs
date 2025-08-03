@@ -92,8 +92,8 @@ public class Character : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            _curHp -= 30f;
-            Debug.Log($"{gameObject.name} HP: {_curHp}");
+            TakeDamage(30);
+            //Debug.Log($"{gameObject.name} HP: {_curHp}");
         }
 
         switch (_curState)
@@ -155,10 +155,20 @@ public class Character : MonoBehaviour
         _curHp -= damage;
         Debug.Log($"{gameObject.name} 현재 체력: {_curHp}");
 
+        ShowDamageText(damage);
+
         if (_curHp <= 0)
         {
             _curState = State.Dead;
         }
+    }
+
+    protected void ShowDamageText(float damage)
+    {
+        GameObject damageText = PoolingManager.Instance.Pop("DamageText");
+
+        Vector3 worldPos = transform.position + Vector3.up * 1.8f;
+        damageText.GetComponent<DamageText>().Initialize(damage, worldPos);
     }
 
     private void AttackCoolTime()

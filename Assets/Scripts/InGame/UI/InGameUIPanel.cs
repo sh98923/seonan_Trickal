@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-
 public enum InGameUI
 {
     BattleSetUpPanel = 1,
@@ -33,6 +32,11 @@ public class InGameUIPanel : MonoBehaviour
 
         Transform setUpPanel = _inGameUIs[(int)InGameUI.BattleSetUpPanel];
         _setUpAnim = setUpPanel.GetComponent<Animator>();
+<<<<<<< Updated upstream
+=======
+
+        //SetUIInit();
+>>>>>>> Stashed changes
     }
 
     private void Update()
@@ -41,6 +45,10 @@ public class InGameUIPanel : MonoBehaviour
 
         if (_isDeckMode && Input.GetKeyDown(KeyCode.Alpha4))
         {
+<<<<<<< Updated upstream
+=======
+            //_inGameUIs[(int)InGameUI.DeckPanel].gameObject.SetActive(true);
+>>>>>>> Stashed changes
             _inGameUIs[(int)InGameUI.BattleSetUpPanel].gameObject.SetActive(false);
 
             _isDeckMode = false;
@@ -70,12 +78,21 @@ public class InGameUIPanel : MonoBehaviour
         }
     }
 
+<<<<<<< Updated upstream
     private void SetUIInit()
     {
         /*_inGameUIs[(int)InGameUI.WaveTimerPanel].gameObject.SetActive(false);
         _inGameUIs[(int)InGameUI.OptionPanel].gameObject.SetActive(false);
         _inGameUIs[(int)InGameUI.BattleSetUpPanel].gameObject.SetActive(false);*/
     }
+=======
+    //private void SetUIInit()
+    //{
+    //    _inGameUIs[(int)InGameUI.WaveTimerPanel].gameObject.SetActive(false);
+    //    _inGameUIs[(int)InGameUI.OptionPanel].gameObject.SetActive(false);
+    //    _inGameUIs[(int)InGameUI.BattleSetUpPanel].gameObject.SetActive(false);
+    //}
+>>>>>>> Stashed changes
 
     private void ShowRerollUI()
     {
