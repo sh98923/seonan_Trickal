@@ -32,6 +32,7 @@ public class MonsterSpawn : MonoBehaviour
         _startMonsterIndex = SpawnManager.Instance.StartMonsterSpawnKey;
         LoadMonsterPool();
         LoadMonsterPos();
+        BattleStateManager.Instance.RerollEvent();
     }
 
     private void OnEnable()

@@ -51,6 +51,11 @@ public class BattleStateManager : Singleton<BattleStateManager>
         _currentState = newState;
     }
 
+    public void PrintCurState()
+    {
+        print(_currentState);
+    }
+
     public void RerollEvent()
     {
         _onReroll?.Invoke();
