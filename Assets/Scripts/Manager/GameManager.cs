@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : Singleton<GameManager>
 {
@@ -38,6 +40,21 @@ public class GameManager : Singleton<GameManager>
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
+
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "InGameScene")  // 씬 이름을 확인
+        {
+            BattleStart();  // 인게임 씬 시작 시 상태 설정
+        }
+    }
+
+    private void BattleStart()
+    {
+        BattleStateManager.Instance.SetState(BattleState.Reroll);
     }
 
     public void SetStageKey(int stageKey)

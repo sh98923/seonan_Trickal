@@ -15,6 +15,15 @@ public class StageManager : Singleton<StageManager>
 {
     private Dictionary<int, StageData> _stageDatas = new Dictionary<int, StageData>();
 
+    // 스테이지 번호 단위로 언락 여부 관리 (Stage → unlocked)
+    private Dictionary<int, bool> _stageUnlockStatus = new Dictionary<int, bool>();
+
+    private int _stageCount = 0;
+    public int StageCount
+    {
+        get { return _stageCount = _stageUnlockStatus.Count; }
+    }
+
     private readonly int _firstStageKey = 1;
     private int _stageStartKey;
     public int StageStartKey
@@ -25,6 +34,7 @@ public class StageManager : Singleton<StageManager>
     private void Awake()
     {
         LoadStageData();
+        InitializeStageUnlocks();
     }
 
     public StageData GetStageData(int key)
@@ -75,11 +85,11 @@ public class StageManager : Singleton<StageManager>
 
         string[] rowData = textAsset.text.Split("\r\n");
 
-        for(int i = 1; i < rowData.Length; i++)
+        for (int i = 1; i < rowData.Length; i++)
         {
             string[] colData = rowData[i].Split(',');
 
-            if(colData.Length <= 1) continue;
+            if (colData.Length <= 1) continue;
             if (rowData[i] == "") continue;
 
             StageData data;
@@ -96,6 +106,42 @@ public class StageManager : Singleton<StageManager>
             }
 
             _stageDatas.Add(data.Key, data);
+        }
+    }
+
+    private void InitializeStageUnlocks()
+    {
+        // 스테이지별 최초 언락 상태 세팅 (1 스테이지만 해금)
+        HashSet<int> registeredStages = new HashSet<int>();
+        foreach (StageData data in _stageDatas.Values)
+        {
+            if (!registeredStages.Contains(data.Stage))
+            {
+                // 1 스테이지만 true, 나머지는 false
+                bool unlocked = (data.Stage == 1);
+                _stageUnlockStatus[data.Stage] = unlocked;
+                registeredStages.Add(data.Stage);
+            }
+        }
+    }
+
+    // 언락 상태 조회
+    public bool IsStageUnlocked(int stageNumber)
+    {
+        if (_stageUnlockStatus.TryGetValue(stageNumber, out bool unlocked))
+        {
+            return unlocked;
+        }
+        return false;
+    }
+
+    // 스테이지 클리어 시 다음 스테이지 언락 처리
+    public void UnlockNextStage(int clearedStage)
+    {
+        int nextStage = clearedStage + 1;
+        if (_stageUnlockStatus.ContainsKey(nextStage))
+        {
+            _stageUnlockStatus[nextStage] = true;
         }
     }
 }

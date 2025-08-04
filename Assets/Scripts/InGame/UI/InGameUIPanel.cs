@@ -70,13 +70,6 @@ public class InGameUIPanel : MonoBehaviour
         }
     }
 
-    private void SetUIInit()
-    {
-        /*_inGameUIs[(int)InGameUI.WaveTimerPanel].gameObject.SetActive(false);
-        _inGameUIs[(int)InGameUI.OptionPanel].gameObject.SetActive(false);
-        _inGameUIs[(int)InGameUI.BattleSetUpPanel].gameObject.SetActive(false);*/
-    }
-
     private void ShowRerollUI()
     {
         _inGameUIs[(int)InGameUI.WaveTimerPanel].gameObject.SetActive(true);

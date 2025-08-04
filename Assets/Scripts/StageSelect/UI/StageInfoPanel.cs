@@ -1,96 +1,68 @@
 using System;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class StagePanel : MonoBehaviour
+public class StageInfoPanel : MonoBehaviour
 {
     private enum StageUI
     {
-        StageInfoPanel = 1, DeckSetUpBtn = 2, CancelBtn = 4
+        DeckSetUpBtn = 1, CancelBtn = 3
     }
 
     private MapBG _mapBG;
-    private GameObject _deckPanel; 
-    private Transform[] _stageChildren;
+    private GameObject _deckPanel;
+    private GameObject _stageBtn;
+    private Transform[] _stageChildren; 
     private Transform _monsterPreviewRoot;
-
-    private readonly int _stageCount = 3;
 
     private void Awake()
     {
-        _mapBG = GameObject.Find("BG").GetComponent<MapBG>();
-        _deckPanel = transform.parent.Find("DeckPanel").gameObject;
-        _monsterPreviewRoot = GameObject.Find("MonsterPreivew").transform;
         _stageChildren = GetComponentsInChildren<Transform>();
-        SetStageInfoPanelActive(false);
+
+        _mapBG = GameObject.Find("BG").GetComponent<MapBG>();
+        _monsterPreviewRoot = GameObject.Find("MonsterPreivew").transform;
+        
+        _deckPanel = transform.parent.Find("DeckPanel").gameObject;
+        _stageBtn = transform.parent.Find("StageBtnPanel").gameObject;
+
+        gameObject.SetActive(false);
     }
 
     private void OnEnable()
     {
+        ShowMonsterInfo();
+
         _mapBG.OnMapFound += HandleMapBGFound;
         _mapBG.OnSetMapBG += HandleMapBGSetting;
     }
 
     private void OnDisable()
     {
+        RemovePreview();
+
         _mapBG.OnMapFound -= HandleMapBGFound;
         _mapBG.OnSetMapBG -= HandleMapBGSetting;
     }
 
     private void Start()
     {
-        GameObject stageObj = Resources.Load<GameObject>("Prefabs/UI/StageBtn");
-
-        float totalSpacing = Screen.width * 0.6f;
-        float spacing = totalSpacing / (_stageCount - 1);
-        float startPosX = (Screen.width - totalSpacing) / 2.0f;
-
-        for (int i = 0; i < _stageCount; i++)
-        {
-            int index = i;
-            GameObject obj = Instantiate(stageObj, transform);
-            obj.transform.SetSiblingIndex(i);
-
-            float x = startPosX + spacing * i;
-            Vector3 pos = new Vector3(x, transform.position.y, transform.position.z);
-            obj.transform.position = pos;
-
-            obj.GetComponent<Button>().onClick.AddListener(() => OnClickStage(index));
-            obj.GetComponentInChildren<TextMeshProUGUI>().text = $"Stage {i + 1}";
-        }
-
         SetBtnEvent(StageUI.DeckSetUpBtn, OnClickDeckSetup);
         SetBtnEvent(StageUI.CancelBtn, OnClickCancel);
     }
 
-    private void OnClickStage(int index)
-    {
-        RemovePreview();
-
-        int stageNumber = index + 1;
-        int stageKey = StageManager.Instance.GetStageStartKey(stageNumber);
-        GameManager.Instance.SetStageKey(stageKey);
-        ShowMonsterInfo();
-        SetStageInfoPanelActive(true);
-    }
-
     private void OnClickDeckSetup()
     {
-        RemovePreview();
-
         _mapBG.gameObject.SetActive(true);
-        _deckPanel.SetActive(true);
 
+        _deckPanel.SetActive(true);
+        _stageBtn.SetActive(false);
         gameObject.SetActive(false);
     }
 
     private void OnClickCancel()
     {
-        RemovePreview();
-
-        SetStageInfoPanelActive(false);
+        gameObject.SetActive(false);
     }
 
     private void RemovePreview()
@@ -133,11 +105,6 @@ public class StagePanel : MonoBehaviour
 
             index++;
         }
-    }
-
-    private void SetStageInfoPanelActive(bool active)
-    {
-        _stageChildren[(int)StageUI.StageInfoPanel].gameObject.SetActive(active);
     }
 
     private void SetBtnEvent(StageUI element, Action func)
