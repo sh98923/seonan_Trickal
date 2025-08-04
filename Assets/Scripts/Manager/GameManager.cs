@@ -19,10 +19,17 @@ public class GameManager : Singleton<GameManager>
 
     private Dictionary<int, PlayerUnitFullData> _deckUnitDatas = new Dictionary<int, PlayerUnitFullData>();
 
+
     private readonly int _inGameStartCoin = 30;
     public int InGameStartCoin
     {
         get { return _inGameStartCoin; }
+    }
+
+    private int _mapBGKey;
+    public int MapBGKey
+    {
+        get { return _mapBGKey; }
     }
 
     private int _waveCount = -1;

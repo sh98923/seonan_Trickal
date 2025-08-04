@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public struct StageData
@@ -34,7 +35,7 @@ public class StageManager : Singleton<StageManager>
     private void Awake()
     {
         LoadStageData();
-        InitializeStageUnlocks();
+        InitStageUnlocks();
     }
 
     public StageData GetStageData(int key)
@@ -79,6 +80,11 @@ public class StageManager : Singleton<StageManager>
         return minKey;
     }
 
+    public int GetMapBGKey(int key)
+    {
+        return _stageDatas[key].Map;
+    }
+
     private void LoadStageData()
     {
         TextAsset textAsset = Resources.Load<TextAsset>("Tables/StageTable");
@@ -109,7 +115,7 @@ public class StageManager : Singleton<StageManager>
         }
     }
 
-    private void InitializeStageUnlocks()
+    private void InitStageUnlocks()
     {
         // 스테이지별 최초 언락 상태 세팅 (1 스테이지만 해금)
         HashSet<int> registeredStages = new HashSet<int>();
@@ -118,7 +124,7 @@ public class StageManager : Singleton<StageManager>
             if (!registeredStages.Contains(data.Stage))
             {
                 // 1 스테이지만 true, 나머지는 false
-                bool unlocked = (data.Stage == 1);
+                bool unlocked = (data.Stage == 2);
                 _stageUnlockStatus[data.Stage] = unlocked;
                 registeredStages.Add(data.Stage);
             }

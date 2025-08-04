@@ -11,6 +11,8 @@ public class Player : Character
     {
         base.Awake();
         _moveDir = Vector2.right;
+        _atk = 25f;
+        _curHp = 5500;
     }
 
     protected override void IdleStateAction()
@@ -19,7 +21,6 @@ public class Player : Character
 
         if (BattleStateManager.Instance.IsBattle)
         {
-            _curHp = 199;
             StartCoroutine(RegenerateMp());
         }
     }

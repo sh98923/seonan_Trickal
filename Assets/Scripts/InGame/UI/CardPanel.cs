@@ -19,6 +19,7 @@ public class CardPanel : MonoBehaviour
     private PlayerData _playerData;
 
     private string _sceneName;
+
     private bool _wasRerollActive = false;
 
     private void Awake()

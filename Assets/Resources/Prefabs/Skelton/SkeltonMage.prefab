@@ -4268,9 +4268,9 @@ GameObject:
   - component: {fileID: 2740132119626579061}
   - component: {fileID: 867976992889558492}
   - component: {fileID: 9173335986549780146}
+  - component: {fileID: -6398948588167949357}
   - component: {fileID: -687051735130556098}
   - component: {fileID: 6500149532511272506}
-  - component: {fileID: -6398948588167949357}
   m_Layer: 7
   m_Name: SkeltonMage
   m_TagString: Enemy
@@ -4330,31 +4330,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &-687051735130556098
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8596251588449234241}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f94e4d9f3fad76249b9f6c47b86a9ded, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &6500149532511272506
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8596251588449234241}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c518956222b73a4f866151a5cf412be, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _attackPoint: {fileID: 8487358146263892796}
 --- !u!58 &-6398948588167949357
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -4391,3 +4366,28 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: -0.2, y: 0.35}
   m_Radius: 0.35
+--- !u!114 &-687051735130556098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8596251588449234241}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94e4d9f3fad76249b9f6c47b86a9ded, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6500149532511272506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8596251588449234241}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c518956222b73a4f866151a5cf412be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _attackPoint: {fileID: 8487358146263892796}

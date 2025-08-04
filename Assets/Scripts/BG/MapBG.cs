@@ -1,18 +1,12 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MapBG : MonoBehaviour
 {
     private enum BG
     {
         LeftSky, RightSky, Ground
-    }
-
-    private event Action<MapBG> _onMapFound;
-    public event Action<MapBG> OnMapFound
-    {
-        add { _onMapFound += value; }
-        remove { _onMapFound -= value; }
     }
 
     private event Action<MapBG> _onSetMapBG;
@@ -26,26 +20,24 @@ public class MapBG : MonoBehaviour
 
     private BGData _BGData;
 
+    private string _sceneName;
+
     private int _BGStartIndex;
     private int _stageKey;
 
     private void Awake()
     {
+        _sceneName = SceneManager.GetActiveScene().name;
         _BGSprites = GetComponentsInChildren<SpriteRenderer>();
-        _stageKey = GameManager.Instance.StageKey;
+        _BGStartIndex = BGManager.Instance.BGStartKey;
+
+        if(_sceneName == "InGameScene")
+        {
+            SetMapBG();
+        }
     }
 
-    private void Start()
-    {
-        _onMapFound?.Invoke(this);
-    }
-
-    private void OnEnable()
-    {
-        _onSetMapBG?.Invoke(this);
-    }
-
-    private void LoadBGByIndex(int index)
+    private void LoadBG(int index)
     {
         _BGData = BGManager.Instance.GetBGData(_BGStartIndex + index);
 
@@ -62,15 +54,16 @@ public class MapBG : MonoBehaviour
         _BGSprites[(int)BG.Ground].sprite = groundSprite;
     }
 
-    public void InActiveBG()
+    public void SetMapBGEvent()
     {
-        gameObject.SetActive(false);
+        _onSetMapBG?.Invoke(this);
     }
 
     public void SetMapBG()
     {
         _stageKey = GameManager.Instance.StageKey;
-        _BGStartIndex = BGManager.Instance.BGStartKey;
-        LoadBGByIndex(StageManager.Instance.GetStageData(_stageKey).Map);
+        int mapBGKey = StageManager.Instance.GetMapBGKey(_stageKey);
+
+        LoadBG(mapBGKey);
     }
 }

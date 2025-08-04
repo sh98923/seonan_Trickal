@@ -1,16 +1,16 @@
 using UnityEngine;
 
-public class MeleeMonsterAttack : CharacterAttack
+public class MeleeAttack : CharacterAttack
 {
     public override void BaseAttack(Collider2D target, float damage)
     {
         if (target == null)
             return;
 
-        Player player = target.GetComponent<Player>();
-        if (player != null)
+        Character character = target.GetComponent<Character>();
+        if (character != null)
         {
-            player.TakeDamage(damage);
+            character.TakeDamage(damage);
         }
     }
 
