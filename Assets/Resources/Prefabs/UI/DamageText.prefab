@@ -150,6 +150,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _text: {fileID: 9201738940646720836}
-  _lifeTime: 2
-  _moveSpeed: 2
+  _lifeTime: 1
+  _moveSpeed: 100
   _alphaSpeed: 1
