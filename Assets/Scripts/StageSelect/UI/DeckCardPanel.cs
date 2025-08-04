@@ -36,7 +36,7 @@ public class DeckCardPanel : MonoBehaviour
         int key = StageManager.Instance.StageStartKey;
         StageData data = StageManager.Instance.GetStageData(key);
 
-        stageName.text = data.Stage.ToString() + "-" + data.Wave.ToString();
+        stageName.text = "Stage " + data.Stage.ToString();
     }
 
     private void SetDeckCard()

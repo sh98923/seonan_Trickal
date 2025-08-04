@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6895883125145559779}
   m_Layer: 0
   m_Name: Sky
-  m_TagString: BG
+  m_TagString: Sky
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

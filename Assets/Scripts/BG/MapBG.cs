@@ -6,7 +6,7 @@ public class MapBG : MonoBehaviour
 {
     private enum BG
     {
-        LeftSky, RightSky, Ground
+        LeftSky, RightSky, LeftGround, RightGround
     }
 
     private event Action<MapBG> _onSetMapBG;
@@ -16,7 +16,18 @@ public class MapBG : MonoBehaviour
         remove { _onSetMapBG -= value; }
     }
 
+    private event Action _onMoveBGInit;
+    public event Action OnMoveBGInit
+    {
+        add { _onMoveBGInit += value; }
+        remove { _onMoveBGInit -= value; }
+    }
+
     private SpriteRenderer[] _BGSprites;
+    public SpriteRenderer[] BGSprites
+    {
+        get { return _BGSprites; }
+    }
 
     private BGData _BGData;
 
@@ -31,10 +42,23 @@ public class MapBG : MonoBehaviour
         _BGSprites = GetComponentsInChildren<SpriteRenderer>();
         _BGStartIndex = BGManager.Instance.BGStartKey;
 
-        if(_sceneName == "InGameScene")
+        if (_sceneName == "InGameScene")
         {
             SetMapBG();
         }
+    }
+
+    public void SetMapBGEvent()
+    {
+        _onSetMapBG?.Invoke(this);
+    }
+
+    public void SetMapBG()
+    {
+        _stageKey = GameManager.Instance.StageKey;
+        int mapBGKey = StageManager.Instance.GetMapBGKey(_stageKey);
+
+        LoadBG(mapBGKey);
     }
 
     private void LoadBG(int index)
@@ -51,19 +75,9 @@ public class MapBG : MonoBehaviour
         _BGSprites[(int)BG.LeftSky].sprite = skySprite;
         _BGSprites[(int)BG.RightSky].sprite = skySprite;
         _BGSprites[(int)BG.RightSky].flipX = isFlip;
-        _BGSprites[(int)BG.Ground].sprite = groundSprite;
-    }
+        _BGSprites[(int)BG.LeftGround].sprite = groundSprite;
+        _BGSprites[(int)BG.RightGround].sprite = groundSprite;
 
-    public void SetMapBGEvent()
-    {
-        _onSetMapBG?.Invoke(this);
-    }
-
-    public void SetMapBG()
-    {
-        _stageKey = GameManager.Instance.StageKey;
-        int mapBGKey = StageManager.Instance.GetMapBGKey(_stageKey);
-
-        LoadBG(mapBGKey);
+        _onMoveBGInit?.Invoke();
     }
 }

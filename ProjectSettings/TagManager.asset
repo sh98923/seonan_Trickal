@@ -5,8 +5,9 @@ TagManager:
   serializedVersion: 3
   tags:
   - Enemy
-  - BG
   - BattleBtn
+  - Sky
+  - Ground
   layers:
   - Default
   - TransparentFX
