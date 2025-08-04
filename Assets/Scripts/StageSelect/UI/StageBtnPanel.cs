@@ -24,18 +24,34 @@ public class StageBtnPanel : MonoBehaviour
 
     private void CreateStageButtons(GameObject stagePrefab)
     {
-        float totalSpacing = Screen.width * 0.6f;
-        float spacing = totalSpacing / (_stageCount - 1);
-        float startPosX = (Screen.width - totalSpacing) / 2.0f;
-
+        //Vector3[] positions = new Vector3[3];
+        //
+        //positions[0] = new Vector3(Screen.width * 0.68f, Screen.height * 0.2f, 0); // 하단 오른쪽
+        //positions[1] = new Vector3(Screen.width * 0.33f, Screen.height * 0.5f, 0); // 중단 왼쪽
+        //positions[2] = new Vector3(Screen.width * 0.68f, Screen.height * 0.78f, 0); // 상단 오른쪽
+        //
+        //for (int i = 0; i < _stageCount; i++)
+        //{
+        //    int stageNumber = i + 1;
+        //    GameObject obj = Instantiate(stagePrefab, transform);
+        //
+        //    int index = i % 3;
+        //    obj.transform.position = positions[index];
+        //
+        //    SetupStageButton(obj, stageNumber);
+        //}
         for (int i = 0; i < _stageCount; i++)
         {
             int stageNumber = i + 1;
             GameObject obj = Instantiate(stagePrefab, transform);
 
-            float x = startPosX + spacing * i;
-            Vector3 pos = new Vector3(x, transform.position.y, transform.position.z);
-            obj.transform.position = pos;
+            int index = i % 3;
+
+            float x = (index == 1) ? Screen.width * 0.33f : Screen.width * 0.68f;
+            float y = (index == 0) ? Screen.height * 0.2f :
+                      (index == 1) ? Screen.height * 0.5f : Screen.height * 0.78f;
+
+            obj.transform.position = new Vector3(x, y, 0f);
 
             SetupStageButton(obj, stageNumber);
         }

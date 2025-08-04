@@ -124,7 +124,7 @@ public class StageManager : Singleton<StageManager>
             if (!registeredStages.Contains(data.Stage))
             {
                 // 1 스테이지만 true, 나머지는 false
-                bool unlocked = (data.Stage == 2);
+                bool unlocked = (data.Stage == 1);
                 _stageUnlockStatus[data.Stage] = unlocked;
                 registeredStages.Add(data.Stage);
             }
