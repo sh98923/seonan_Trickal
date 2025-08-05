@@ -3744,6 +3744,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _attackPoint: {fileID: 2641506787405701872}
+  _skillEffect: {fileID: 0}
 --- !u!114 &1388670823603877655
 MonoBehaviour:
   m_ObjectHideFlags: 0

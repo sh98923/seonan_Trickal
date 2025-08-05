@@ -7,11 +7,17 @@ public class Player : Character
 
     private float _curMp = 0.0f;
 
+    [SerializeField]
+    private GameObject _skillEffect;
+
     private void Awake()
     {
         base.Awake();
         _moveDir = Vector2.right;
-        _atk = 25f;
+
+        _skillEffect.SetActive(false);
+
+        _atk = 5f;
         _curHp = 5500;
     }
 
@@ -100,9 +106,23 @@ public class Player : Character
 
     public void OnSkillHit()
     { 
-        float atk = _characterData.Atk * _characterData.SkillRate;
+        float skillAtk = _characterData.Atk * _characterData.SkillRate;
         _curMp -= _characterData.Mp;
-        _targetCollider.GetComponent<Monster>().TakeDamage(atk);
+        _attack.SkillAttack(_targetCollider, skillAtk);
+        Debug.Log("skilldamage " + skillAtk);
+    }
+
+    public void PlaySkillEffect()
+    {
+        _skillEffect.SetActive(true);
+        _skillEffect.GetComponent<Animator>()?.Play("SkillEffect");
+        StartCoroutine(DisableEffectAfterTime(1.0f)); 
+    }
+
+    private IEnumerator DisableEffectAfterTime(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        _skillEffect.SetActive(false);
     }
 
     private IEnumerator RegenerateMp()
