@@ -153,25 +153,45 @@ public class CardPanel : MonoBehaviour
 
     private void SetCardInfo()
     {
-        CharacterData characterData = CharacterManager.Instance.GetCharacterData(_playerData.CharacterKey);
+        SetCharacterImage();
+        SetCharacterName();
+        SetCardCost();
 
-        // 캐릭터 텍스쳐
+        if (_sceneName == "InGameScene")
+        {
+            UpdateDeployButtonState();
+        }
+    }
+
+    private void SetCharacterImage()
+    {
         Image characterImage = _cardChildren[(int)CardUI.CharacterImage].GetComponent<Image>();
         characterImage.sprite = Resources.Load<Sprite>(_playerData.SpritePath);
+    }
 
-        // 캐릭터 이름
+    private void SetCharacterName()
+    {
+        CharacterData characterData = CharacterManager.Instance.GetCharacterData(_playerData.CharacterKey);
         TextMeshProUGUI characterName = _cardChildren[(int)CardUI.CharacterName].GetComponent<TextMeshProUGUI>();
         characterName.text = characterData.KrName;
+    }
 
-        // 캐릭터 Cost BG
+    private void SetCardCost()
+    {
         Sprite costImage = Resources.Load<Sprite>("Sprites/CardInfo/CostBG");
 
         Image cardCostBG = _cardChildren[(int)CardUI.CostImage].GetComponent<Image>();
         cardCostBG.sprite = costImage;
 
-        // 캐릭터 Cost Text
         TextMeshProUGUI cardUpgradeCost = _cardChildren[(int)CardUI.CostText].GetComponent<TextMeshProUGUI>();
-        string curUpgradeCost = _playerData.CardUpgradeCost.ToString();
-        cardUpgradeCost.text = curUpgradeCost;
+        cardUpgradeCost.text = _playerData.CardUpgradeCost.ToString();
+    }
+
+    private void UpdateDeployButtonState()
+    {
+        Button deployBtn = _cardChildren[(int)CardUI.DeployButton].GetComponent<Button>();
+        bool isCardLocked = InGameManager.Instance.InGameCoin >= _playerData.CardUpgradeCost;
+
+        deployBtn.interactable = isCardLocked;
     }
 }

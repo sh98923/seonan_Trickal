@@ -32,6 +32,8 @@ public class StageManager : Singleton<StageManager>
         get { return _stageStartKey; }
     }
 
+    private readonly int _firstStage = 9000;
+
     private void Awake()
     {
         LoadStageData();
@@ -45,18 +47,18 @@ public class StageManager : Singleton<StageManager>
 
     public int GetWaveCount(int key)
     {
+        int waveCnt = 0;
         int stage = _stageDatas[key].Stage;
-        List<StageData> results = new List<StageData>();
 
         foreach (StageData data in _stageDatas.Values)
         {
             if (data.Stage == stage)
             {
-                results.Add(data);
+                waveCnt++;
             }
         }
 
-        return results.Count;
+        return waveCnt;
     }
 
     public int GetStageStartKey(int stageNumber)
@@ -124,7 +126,7 @@ public class StageManager : Singleton<StageManager>
             if (!registeredStages.Contains(data.Stage))
             {
                 // 1 스테이지만 true, 나머지는 false
-                bool unlocked = (data.Stage == 1);
+                bool unlocked = (data.Stage == _firstStage);
                 _stageUnlockStatus[data.Stage] = unlocked;
                 registeredStages.Add(data.Stage);
             }

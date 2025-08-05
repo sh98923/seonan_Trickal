@@ -12,6 +12,7 @@ public class StageBtnPanel : MonoBehaviour
     private GameObject _stageInfo;
 
     private int _stageCount = 0;
+    private int _stageBtnStartKey;
 
     private void Awake()
     {
@@ -21,6 +22,7 @@ public class StageBtnPanel : MonoBehaviour
     private void Start()
     {
         _stageCount = StageManager.Instance.StageCount;
+        _stageBtnStartKey = StageBtnPosManager.Instance.StageBtnStartKey;
 
         GameObject stageObj = Resources.Load<GameObject>("Prefabs/UI/StageBtn");
 
@@ -29,46 +31,27 @@ public class StageBtnPanel : MonoBehaviour
 
     private void CreateStageButtons(GameObject stagePrefab)
     {
-        //Vector3[] positions = new Vector3[3];
-        //
-        //positions[0] = new Vector3(Screen.width * 0.68f, Screen.height * 0.2f, 0); // 하단 오른쪽
-        //positions[1] = new Vector3(Screen.width * 0.33f, Screen.height * 0.5f, 0); // 중단 왼쪽
-        //positions[2] = new Vector3(Screen.width * 0.68f, Screen.height * 0.78f, 0); // 상단 오른쪽
-        //
-        //for (int i = 0; i < _stageCount; i++)
-        //{
-        //    int stageNumber = i + 1;
-        //    GameObject obj = Instantiate(stagePrefab, transform);
-        //
-        //    int index = i % 3;
-        //    obj.transform.position = positions[index];
-        //
-        //    SetupStageButton(obj, stageNumber);
-        //}
         for (int i = 0; i < _stageCount; i++)
         {
-            int stageNumber = i + 1;
+            int stageKey = _stageBtnStartKey + i;
+            Vector3 pos = StageBtnPosManager.Instance.GetStageBtnPos(stageKey);
+            
             GameObject obj = Instantiate(stagePrefab, transform);
 
-            int index = i % 3;
+            obj.transform.position = pos;
 
-            float x = (index == 1) ? Screen.width * 0.33f : Screen.width * 0.68f;
-            float y = (index == 0) ? Screen.height * 0.2f :
-                      (index == 1) ? Screen.height * 0.5f : Screen.height * 0.78f;
-
-            obj.transform.position = new Vector3(x, y, 0f);
-
-            SetupStageButton(obj, stageNumber);
+            SetupStageButton(obj, stageKey);
         }
     }
 
     private void SetupStageButton(GameObject buttonObj, int stageNumber)
     {
+        int stage = StageBtnPosManager.Instance.GetStageKey(stageNumber);
         Button btn = buttonObj.GetComponent<Button>();
         Image[] btnImage = buttonObj.GetComponentsInChildren<Image>();
         TextMeshProUGUI txt = buttonObj.GetComponentInChildren<TextMeshProUGUI>();
 
-        txt.text = $"Stage {stageNumber}";
+        txt.text = $"Stage {stage}";
         
         bool isUnlocked = StageManager.Instance.IsStageUnlocked(stageNumber);
 
@@ -91,7 +74,7 @@ public class StageBtnPanel : MonoBehaviour
 
         if(isUnlocked)
         {
-            int stageKey = StageManager.Instance.GetStageStartKey(stageNum  );
+            int stageKey = StageManager.Instance.GetStageStartKey(stageNum);
             GameManager.Instance.SetStageKey(stageKey);
 
             _stageInfo.SetActive(true);

@@ -148,6 +148,8 @@ GameObject:
   - component: {fileID: 456170146553147981}
   - component: {fileID: 3817748684876165973}
   - component: {fileID: 4077818688443710840}
+  - component: {fileID: 1316283695556880826}
+  - component: {fileID: 7031313425403269856}
   m_Layer: 5
   m_Name: StageBtn
   m_TagString: Untagged
@@ -258,6 +260,40 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!95 &1316283695556880826
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 993685800407661089}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 0ab902ae768fc334cb61183fc0c30a0b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &7031313425403269856
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 993685800407661089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0e16601f6b6b124f9671135ee77f973, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6820650325384650792
 GameObject:
   m_ObjectHideFlags: 0

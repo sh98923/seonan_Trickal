@@ -7,7 +7,7 @@ public class StageInfoPanel : MonoBehaviour
 {
     private enum StageUI
     {
-        DeckSetUpBtn = 1, CancelBtn = 3
+        DeckSetUpBtn = 12, CancelBtn = 14
     }
 
     private MapBG _mapBG;
@@ -78,28 +78,29 @@ public class StageInfoPanel : MonoBehaviour
         int waveCnt = GameManager.Instance.WaveCount;
         HashSet<int> stageMonsterKeys = WaveManager.Instance.GetStageMonster(waveCnt);
 
-        // 시작 위치
-        Vector3 startPos = new Vector3(-3.75f, 0.5f, 0.0f); // 왼쪽 상단 쯤
-        float spacingX = 3.0f; // 가로 간격
-        float spacingY = 3.0f; // 세로 간격
-        int columnCount = 3;   // 가로로 몇 마리씩 표시할지
+        float spacingX = 3.5f;
+
+        int count = stageMonsterKeys.Count;
+
+        // 전체 너비 계산
+        float totalWidth = (count - 1) * spacingX;
+
+        // 시작 위치: 가운데 기준에서 왼쪽으로 totalWidth/2 만큼 이동
+        Vector3 startPos = new Vector3(-totalWidth * 0.5f, 0.5f, 0.0f);
 
         int index = 0;
         foreach (int monsterKey in stageMonsterKeys)
         {
-            MonsterData monsterData = MonsterManager.Instance.GetMonsterData(monsterKey);
-            CharacterData characterData = CharacterManager.Instance.GetCharacterData(monsterData.CharacterKey);
+            int key = MonsterManager.Instance.GetMonsterCharacterKey(monsterKey);
+            CharacterData characterData = CharacterManager.Instance.GetCharacterData(key);
 
             string prefabPath = characterData.PrefabPath;
 
             GameObject prefab = Resources.Load<GameObject>(prefabPath);
             GameObject obj = Instantiate(prefab, _monsterPreviewRoot);
-
-            int row = index / columnCount;
-            int col = index % columnCount;
-
-            Vector3 pos = startPos + new Vector3(col * spacingX, -row * spacingY, 0f);
             obj.transform.localScale *= 2.0f;
+
+            Vector3 pos = startPos + new Vector3(index * spacingX, 0.0f, 0.0f);
             obj.transform.position = pos;
 
             index++;

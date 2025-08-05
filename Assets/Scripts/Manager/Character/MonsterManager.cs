@@ -25,6 +25,11 @@ public class MonsterManager : Singleton<MonsterManager>
         return _monsterDatas[key];
     }
 
+    public int GetMonsterCharacterKey(int key)
+    {
+        return _monsterDatas[key].CharacterKey;
+    }
+
     public CharacterFullData GetMonsterFullData(int key)
     {
         MonsterData monsterData = _monsterDatas[key];

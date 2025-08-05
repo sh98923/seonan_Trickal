@@ -35,8 +35,9 @@ public class DeckCardPanel : MonoBehaviour
         TextMeshProUGUI stageName = stageObj.GetComponent<TextMeshProUGUI>();
         int key = StageManager.Instance.StageStartKey;
         StageData data = StageManager.Instance.GetStageData(key);
+        int stage = StageBtnPosManager.Instance.GetStageKey(data.Stage);
 
-        stageName.text = "Stage " + data.Stage.ToString();
+        stageName.text = "Stage " + stage.ToString();
     }
 
     private void SetDeckCard()

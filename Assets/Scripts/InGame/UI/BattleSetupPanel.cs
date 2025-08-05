@@ -1,13 +1,13 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using TMPro;
 
 public class BattleSetupPanel : MonoBehaviour
 {
     private enum CardRerollUI
     {
-        LeftCardPanel, CenterCardPanel, RightCardPanel, 
-        RerollBtn, BattleBtn, CardCount = 3
+        CardCount = 3, RerollBtn = 3, BattleBtn = 4
     }
 
     private List<PlayerData> _rerollCandidates = new List<PlayerData>();
@@ -15,14 +15,17 @@ public class BattleSetupPanel : MonoBehaviour
     private Animator _setupAnimator;
     private Transform[] _rerollChildren;
     private Button[] _cardBtns;
+    private TextMeshProUGUI _coinText;
 
     private int _cardCount = (int)CardRerollUI.CardCount;
+    private int _curCoin = 30;
 
     private void Awake()
     {
+        _curCoin = InGameManager.Instance.InGameCoin;
         _setupAnimator = GetComponent<Animator>();
         _inGameUIPanel = GetComponentInParent<InGameUIPanel>();
-        
+
         InitRerollUI();
     }
 
@@ -42,16 +45,30 @@ public class BattleSetupPanel : MonoBehaviour
 
     private void InitRerollUI()
     {
-        int childCount = transform.childCount;
-        _rerollChildren = new Transform[childCount];
-        _cardBtns = new Button[childCount];
+        List<Transform> childList = new List<Transform>();
+        List<Button> buttonList = new List<Button>();
 
-        for (int i = 0; i < childCount; i++)
+        for (int i = 0; i < transform.childCount; i++)
         {
             Transform child = transform.GetChild(i);
-            _rerollChildren[i] = child;
-            _cardBtns[i] = child.GetComponentInChildren<Button>();
+            Button btn = child.GetComponentInChildren<Button>();
+
+            childList.Add(child);
+
+            if (btn != null)
+            {
+                buttonList.Add(btn);
+            }
+            else
+            {
+                // 이건 CoinText임 (필요하면 저장)
+                _coinText = child.GetComponentInChildren<TextMeshProUGUI>();
+                _coinText.text = _curCoin.ToString();
+            }
         }
+
+        _rerollChildren = childList.ToArray();
+        _cardBtns = buttonList.ToArray();
     }
 
     private void OnClickReroll()
@@ -68,6 +85,13 @@ public class BattleSetupPanel : MonoBehaviour
     {
         _setupAnimator.SetTrigger("SelectedCard" + index);
     }
+
+    /*private void UpdateCoinText(int cost)
+    {
+        int remainingCoin = _curCoin - cost;
+
+        _coinText.text = remainingCoin.ToString();
+    }*/
 
     private void OnCardDataRamdomSet()
     {
