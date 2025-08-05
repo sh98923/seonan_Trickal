@@ -14,6 +14,11 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
                 _instance = obj.AddComponent<T>();
             }
 
+            if (!Application.isPlaying)
+            {
+                return null;
+            }
+
             return _instance;
         }
     }

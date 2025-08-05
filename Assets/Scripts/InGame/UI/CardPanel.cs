@@ -51,6 +51,7 @@ public class CardPanel : MonoBehaviour
 
     private void Update()
     {
+        // 여기 부분 이벤트로 리팩토링 해보자
         UpdateCostImageVisibility();
     }
 

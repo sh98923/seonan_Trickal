@@ -4,6 +4,11 @@ using UnityEngine.UI;
 
 public class StageBtnPanel : MonoBehaviour
 {
+    private enum BtnImageUI
+    {
+        StageBtn, StageLock
+    }
+
     private GameObject _stageInfo;
 
     private int _stageCount = 0;
@@ -60,7 +65,7 @@ public class StageBtnPanel : MonoBehaviour
     private void SetupStageButton(GameObject buttonObj, int stageNumber)
     {
         Button btn = buttonObj.GetComponent<Button>();
-        Image btnImage = buttonObj.GetComponent<Image>();
+        Image[] btnImage = buttonObj.GetComponentsInChildren<Image>();
         TextMeshProUGUI txt = buttonObj.GetComponentInChildren<TextMeshProUGUI>();
 
         txt.text = $"Stage {stageNumber}";
@@ -69,11 +74,12 @@ public class StageBtnPanel : MonoBehaviour
 
         if (isUnlocked)
         {
-            btnImage.color = Color.white; // 버튼 배경도 흰색
+            btnImage[(int)BtnImageUI.StageBtn].color = Color.white; // 버튼 배경 흰색
+            btnImage[(int)BtnImageUI.StageLock].gameObject.SetActive(false);
         }
         else
         {
-            btnImage.color = Color.gray; // 회색 (RGB: 128,128,128)
+            btnImage[(int)BtnImageUI.StageBtn].color = Color.gray; // 버튼 배경 회색
         }
 
         btn.onClick.AddListener(() => OnClickStage(stageNumber));
