@@ -55,6 +55,7 @@ public class RangeAttack : CharacterAction
 
     public override void Skill(Collider2D target, float damage)
     {
+
     }
 
     public override void Ultimate(Collider2D target, float damage)

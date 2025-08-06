@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 804411295016243875}
   - component: {fileID: 3694820100807442443}
   m_Layer: 0
-  m_Name: DianaSkill
+  m_Name: PaladinSkill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
