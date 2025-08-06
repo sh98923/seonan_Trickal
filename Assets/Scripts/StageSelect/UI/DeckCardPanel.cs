@@ -12,7 +12,7 @@ public class DeckCardPanel : MonoBehaviour
 
     private Transform[] _deckChildren;
 
-    private CardPanel _deployBtn;
+    private StageCardPanel _deployBtn;
 
     private int _startPlayerKey;
 
@@ -55,7 +55,7 @@ public class DeckCardPanel : MonoBehaviour
 
             PlayerData playerData = PlayerManager.Instance.GetPlayerData(_startPlayerKey + i);
 
-            _deployBtn = obj.GetComponent<CardPanel>();
+            _deployBtn = obj.GetComponent<StageCardPanel>();
             _deployBtn.SetPlayerUnit(playerData);
         }
     }

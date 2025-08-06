@@ -108,7 +108,7 @@ public class Player : Character
     { 
         float skillAtk = _characterData.Atk * _characterData.SkillRate;
         _curMp -= _characterData.Mp;
-        _attack.SkillAttack(_targetCollider, skillAtk);
+        _attack.Skill(_targetCollider, skillAtk);
         Debug.Log("skilldamage " + skillAtk);
     }
 

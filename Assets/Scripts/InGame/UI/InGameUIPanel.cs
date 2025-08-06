@@ -97,9 +97,9 @@ public class InGameUIPanel : MonoBehaviour
 
     public List<PlayerData> SetRerollCandidates()
     {
-        // 배치된 플레이어 데이터 가져오기
-        PlayerSpawn playerSpawn = _spawnParent.GetComponent<PlayerSpawn>();
-        List<PlayerData> deployedPlayers = playerSpawn.DeployedDatas;
+        // 배치 가능한 플레이어 데이터 가져오기
+        InGamePlayerSpawn playerSpawn = _spawnParent.GetComponent<InGamePlayerSpawn>();
+        List<PlayerData> deployedPlayers = playerSpawn.DeployableData;
 
         return deployedPlayers;
     }

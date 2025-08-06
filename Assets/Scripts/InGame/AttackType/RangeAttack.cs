@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RangeAttack : CharacterAttack
+public class RangeAttack : CharacterAction
 {
     private Character _character;
     private GameObject _prefab;
@@ -47,18 +47,17 @@ public class RangeAttack : CharacterAttack
 
     public override void BaseAttack(Collider2D target, float damage)
     {
-        //Vector3 curPos = transform.position;
         Vector3 curPos = _character._attackPoint.position;
         Vector2 dir = target.transform.position - transform.position;
         Projectile projectile = Pop().GetComponent<Projectile>();
         projectile.Fire(dir, curPos, damage);
     }
 
-    public override void SkillAttack(Collider2D target, float damage)
+    public override void Skill(Collider2D target, float damage)
     {
     }
 
-    public override void UltAttack(Collider2D target, float damage)
+    public override void Ultimate(Collider2D target, float damage)
     {
     }
 }

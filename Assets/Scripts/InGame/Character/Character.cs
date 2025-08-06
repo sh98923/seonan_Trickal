@@ -19,7 +19,7 @@ public class Character : MonoBehaviour
 
     [SerializeField] public Transform _attackPoint;
     protected Animator _animator;
-    protected CharacterAttack _attack;
+    protected CharacterAction _attack;
     protected Collider2D _targetCollider;
 
     protected CharacterFullData _characterData;
@@ -63,7 +63,7 @@ public class Character : MonoBehaviour
 
     protected void Awake()
     {
-        _attack = GetComponent<CharacterAttack>();
+        _attack = GetComponent<CharacterAction>();
         _animator = GetComponent<Animator>();
         _myCollider = GetComponent<Collider2D>();
         _sortingGroup = GetComponent<SortingGroup>();

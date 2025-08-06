@@ -10,7 +10,7 @@ public class StageInfoPanel : MonoBehaviour
         DeckSetUpBtn = 12, CancelBtn = 14
     }
 
-    private MapBG _mapBG;
+    private StageMapBG _mapBG;
     private GameObject _deckPanel;
     private GameObject _stageBtn;
     private Transform[] _stageChildren; 
@@ -20,7 +20,7 @@ public class StageInfoPanel : MonoBehaviour
     {
         _stageChildren = GetComponentsInChildren<Transform>();
 
-        _mapBG = GameObject.Find("BG").GetComponent<MapBG>();
+        _mapBG = GameObject.Find("BG").GetComponent<StageMapBG>();
         _monsterPreviewRoot = GameObject.Find("MonsterPreivew").transform;
         
         _deckPanel = transform.parent.Find("DeckPanel").gameObject;

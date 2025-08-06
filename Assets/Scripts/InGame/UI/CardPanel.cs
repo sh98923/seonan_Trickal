@@ -5,48 +5,31 @@ using UnityEngine.UI;
 
 public class CardPanel : MonoBehaviour
 {
-    private enum CardUI
+    protected enum CardUI
     {
-        cardBG = 1, DeployButton, 
+        DeployButton = 1, 
         CharacterImage, CharacterName, 
         CostImage, CostText
     }
 
-    private Transform[] _cardChildren;
-    private BattleSetupPanel _parentPanel;
-    private PlayerSpawn _spawnParent;
+    protected Transform[] _cardChildren;
 
-    private PlayerData _playerData;
+    protected PlayerData _playerData;
+    protected Color _color = Color.white;
 
-    private string _sceneName;
-
+    protected string _curScene;
     private bool _wasRerollActive = false;
 
-    private void Awake()
+    protected void Awake()
     {
-        _sceneName = SceneManager.GetActiveScene().name;
+        _curScene = SceneManager.GetActiveScene().name;
         _cardChildren = GetComponentsInChildren<Transform>();
-        _spawnParent = GameObject.Find("SpawnPlayer").GetComponent<PlayerSpawn>();
     }
 
-    private void Start()
+    protected void Start()
     {
         InitUI();
         RegisterButtonEvents();
-    }
-
-    private void InitUI()
-    {
-        if (_sceneName == "StageSelectScene")
-        {
-            _cardChildren[(int)CardUI.CostImage].gameObject.SetActive(false);
-        }
-
-        if(_sceneName == "InGameScene")
-        {
-            _cardChildren[(int)CardUI.CostImage].gameObject.SetActive(true); 
-            _parentPanel = GetComponentInParent<BattleSetupPanel>();
-        }
     }
 
     private void Update()
@@ -74,74 +57,17 @@ public class CardPanel : MonoBehaviour
 
     private void OnClickMyDeckCard()
     {
-        if (_sceneName == "StageSelectScene")
-        {
-            HandleStageSelectClick();
-        }
-        else if (_sceneName == "InGameScene")
-        {
-            HandleInGameClick();
-        }
+        HandleClick();
     }
 
-    private void HandleStageSelectClick()
+    protected virtual void InitUI()
     {
-        CharacterData characterData = CharacterManager.Instance.GetCharacterData(_playerData.CharacterKey);
-
-        if (_spawnParent.IsDataDeployed(_playerData))
-        {
-            Debug.LogWarning(characterData.EngName + "이(가) 이미 배치되어 있습니다.");
-            return;
-        }
-
-        Vector3 spawnPos = _spawnParent.SetPlayerPos(_playerData);
-        spawnPos.z = 0.0f;
-
-        if (spawnPos == Vector3.zero)
-        {
-            Debug.LogWarning("스폰할 자리가 없습니다.");
-            return;
-        }
-
-        SpawnPlayerAtPosition(characterData, spawnPos);
-
-        CharacterFullData data = new CharacterFullData(characterData, _playerData);
-        GameManager.Instance.SetDeckUnit(data, spawnPos);
+        // 자식 스크립트에서 처리
     }
 
-    private void SpawnPlayerAtPosition(CharacterData characterData, Vector3 spawnPos)
+    protected virtual void HandleClick()
     {
-        GameObject playerPrefab = Resources.Load<GameObject>(characterData.PrefabPath);
-        GameObject player = Instantiate(playerPrefab, _spawnParent.transform);
-        player.name = characterData.EngName;
-        player.layer = LayerMask.NameToLayer(characterData.Layer);
-        player.transform.position = spawnPos;
-    }
-
-    private void HandleInGameClick()
-    {
-        string characterName = CharacterManager.Instance.GetCharacterData(_playerData.CharacterKey).EngName;
-        Transform existingChild = _spawnParent.transform.Find(characterName);
-
-        if (existingChild != null)
-        {
-            if (!existingChild.gameObject.activeSelf)
-            {
-                existingChild.gameObject.SetActive(true);
-            }
-            else
-            {
-                UpgradePlayer();
-            }
-        }
-    }
-
-    private void UpgradePlayer()
-    {
-        BattleUnitManager.Instance.UpgradeUnit(_playerData.Key);
-
-        int curLevel = BattleUnitManager.Instance.CurLevel;
-        _parentPanel.CardCostUpdate(_playerData.Key, curLevel);
+        // 자식 스크립트에서 처리
     }
 
     public void SetPlayerUnit(PlayerData playerData)
@@ -151,22 +77,18 @@ public class CardPanel : MonoBehaviour
         SetCardInfo();
     }
 
-    private void SetCardInfo()
+    protected virtual void SetCardInfo()
     {
         SetCharacterImage();
         SetCharacterName();
         SetCardCost();
-
-        if (_sceneName == "InGameScene")
-        {
-            UpdateDeployButtonState();
-        }
     }
 
     private void SetCharacterImage()
     {
         Image characterImage = _cardChildren[(int)CardUI.CharacterImage].GetComponent<Image>();
         characterImage.sprite = Resources.Load<Sprite>(_playerData.SpritePath);
+        characterImage.color = _color;
     }
 
     private void SetCharacterName()
@@ -174,6 +96,7 @@ public class CardPanel : MonoBehaviour
         CharacterData characterData = CharacterManager.Instance.GetCharacterData(_playerData.CharacterKey);
         TextMeshProUGUI characterName = _cardChildren[(int)CardUI.CharacterName].GetComponent<TextMeshProUGUI>();
         characterName.text = characterData.KrName;
+        characterName.color = _color;
     }
 
     private void SetCardCost()
@@ -185,13 +108,5 @@ public class CardPanel : MonoBehaviour
 
         TextMeshProUGUI cardUpgradeCost = _cardChildren[(int)CardUI.CostText].GetComponent<TextMeshProUGUI>();
         cardUpgradeCost.text = _playerData.CardUpgradeCost.ToString();
-    }
-
-    private void UpdateDeployButtonState()
-    {
-        Button deployBtn = _cardChildren[(int)CardUI.DeployButton].GetComponent<Button>();
-        bool isCardLocked = InGameManager.Instance.InGameCoin >= _playerData.CardUpgradeCost;
-
-        deployBtn.interactable = isCardLocked;
     }
 }

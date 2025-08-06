@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class MeleeAttack : CharacterAttack
+public class MeleeAttack : CharacterAction
 {
     public override void BaseAttack(Collider2D target, float damage)
     {
@@ -14,7 +14,7 @@ public class MeleeAttack : CharacterAttack
         }
     }
 
-    public override void SkillAttack(Collider2D target, float damage)
+    public override void Skill(Collider2D target, float damage)
     {
         if (target == null)
             return;
@@ -26,7 +26,7 @@ public class MeleeAttack : CharacterAttack
         }
     }
 
-    public override void UltAttack(Collider2D target, float damage)
+    public override void Ultimate(Collider2D target, float damage)
     {
     }
 }

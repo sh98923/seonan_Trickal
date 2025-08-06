@@ -5,7 +5,7 @@ public class MoveBG : MonoBehaviour
     private SpriteRenderer[] _skySprites = new SpriteRenderer[2];
     private SpriteRenderer[] _groundSprites = new SpriteRenderer[2];
 
-    private MapBG _mapBG;
+    private InGameBG _mapBG;
 
     private Camera _mainCam;
 
@@ -15,7 +15,7 @@ public class MoveBG : MonoBehaviour
 
     private void Awake()
     {
-        _mapBG = GetComponent<MapBG>();
+        _mapBG = GetComponent<InGameBG>();
         _mainCam = Camera.main;
 
         float screenHalfWidth = _mainCam.orthographicSize * _mainCam.aspect;
@@ -53,7 +53,7 @@ public class MoveBG : MonoBehaviour
         }
     }
 
-    public void InitSprites()
+    public void InitSprites(InGameBG bg)
     {
         _isInit = true;
 
