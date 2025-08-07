@@ -2566,12 +2566,8 @@ Transform:
   - {fileID: 2215070610701348804}
   - {fileID: 2782999210407764796}
   - {fileID: 1927737846604180169}
-<<<<<<< Updated upstream
-  - {fileID: 5833487933658073322}
-=======
   - {fileID: 2695787523125636761}
   - {fileID: 4400010797485980819}
->>>>>>> Stashed changes
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!210 &740109035647288148
