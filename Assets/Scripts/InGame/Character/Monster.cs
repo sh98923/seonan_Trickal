@@ -35,8 +35,8 @@ public class Monster : Character
 
     public void WaveUpgrade(int wave)
     {
-        float hpLinear = _characterData.Hp + _characterData.HpPerWave * wave;
-        float hpExp = _characterData.Hp * Mathf.Pow(_characterData.HpGrowthRate, wave);
+        float hpLinear = _data.Hp + _data.HpPerWave * wave;
+        float hpExp = _data.Hp * Mathf.Pow(_data.HpGrowthRate, wave);
 
         // 두 가지의 공식을 평균 낸 값 (선형, 지수)
         _maxHp = (hpLinear + hpExp) * 0.5f;
@@ -45,11 +45,11 @@ public class Monster : Character
         _maxHp = Mathf.Round(_maxHp * 10f) * 0.1f;
         _curHp = _maxHp;
 
-        float atkLinear = _characterData.Atk + _characterData.AtkPerWave * wave;
-        float atkExp = _characterData.Atk * Mathf.Pow(_characterData.AtkGrowthRate, wave);
+        float atkLinear = _data.Atk + _data.AtkPerWave * wave;
+        float atkExp = _data.Atk * Mathf.Pow(_data.AtkGrowthRate, wave);
         _atk = (atkLinear + atkExp) * 0.5f;
         _atk = Mathf.Round(_atk * 10f) * 0.1f;
 
-        print(_characterData.EngName + " : " + _curHp.ToString("F1") + ", " + _atk.ToString("F1"));
+        print(_data.EngName + " : " + _curHp.ToString("F1") + ", " + _atk.ToString("F1"));
     }
 }

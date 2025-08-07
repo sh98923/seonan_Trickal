@@ -4,22 +4,23 @@ using UnityEngine;
 public struct PlayerData
 {
     public int Key;
-    public int CharacterKey;
     public int UpgradeKey;
+    public string EngName;
+    public string KrName;
     public string SpritePath;
-    public int CardUpgradeCost;
+    public string PrefabPath;
+    public string Layer;
+    public string AttackType;
+    public string ProjectilePath;
+    public int SpawnLine;
+    public int UpgradeCost;
     public int MaxLevel;
-    public float Mp;
-    public float SkillRate;
-    public float Ultimate;
-    public float UltCoolTime;
-    public bool CanUseUlt;
 }
 
 public class PlayerManager : Singleton<PlayerManager>
 {
     private Dictionary<int, PlayerData> _playerDatas = new Dictionary<int, PlayerData>();
-    
+
     private int _playerStartKey;
     public int PlayerStartKey
     {
@@ -41,17 +42,7 @@ public class PlayerManager : Singleton<PlayerManager>
 
     public PlayerData GetPlayerData(int key)
     {
-        return _playerDatas[key]; 
-    }
-
-    public CharacterFullData GetPlayerFullData(int key)
-    {
-        PlayerData playerData = _playerDatas[key];
-        CharacterData characterData = CharacterManager.Instance.GetCharacterData(playerData.CharacterKey);
-
-        CharacterFullData data = new CharacterFullData(characterData, playerData);
-
-        return data;
+        return _playerDatas[key];
     }
 
     private void LoadPlayerDatas()
@@ -60,7 +51,7 @@ public class PlayerManager : Singleton<PlayerManager>
 
         string[] rowData = textAsset.text.Split("\r\n");
 
-        for(int i = 1; i < rowData.Length; i++)
+        for (int i = 1; i < rowData.Length; i++)
         {
             string[] colData = rowData[i].Split(",");
 
@@ -70,18 +61,19 @@ public class PlayerManager : Singleton<PlayerManager>
             PlayerData data;
 
             data.Key = int.Parse(colData[0]);
-            data.CharacterKey = int.Parse(colData[1]);
-            data.UpgradeKey = int.Parse(colData[2]);
-            data.SpritePath = colData[3];
-            data.CardUpgradeCost = int.Parse(colData[4]);
-            data.MaxLevel = int.Parse(colData[5]);
-            data.Mp = float.Parse(colData[6]);
-            data.SkillRate = float.Parse(colData[7]);
-            data.Ultimate = float.Parse(colData[8]);
-            data.UltCoolTime = float.Parse(colData[9]);
-            data.CanUseUlt = bool.Parse(colData[10]);
+            data.UpgradeKey = int.Parse(colData[1]);
+            data.EngName = colData[2];
+            data.KrName = colData[3];
+            data.SpritePath = colData[4];
+            data.PrefabPath = colData[5];
+            data.Layer = colData[6];
+            data.AttackType = colData[7];
+            data.ProjectilePath = colData[8];
+            data.SpawnLine = int.Parse(colData[9]);
+            data.UpgradeCost = int.Parse(colData[10]);
+            data.MaxLevel = int.Parse(colData[11]);
 
-            if(!_isPlayerFirstkey)
+            if (!_isPlayerFirstkey)
             {
                 _isPlayerFirstkey = true;
                 _playerStartKey = data.Key;

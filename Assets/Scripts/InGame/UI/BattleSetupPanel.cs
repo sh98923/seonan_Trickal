@@ -115,7 +115,7 @@ public class BattleSetupPanel : MonoBehaviour
             if (curKey == key && curLevel < maxLevel)
             {
                 PlayerData data = _rerollCandidates[i];
-                data.CardUpgradeCost += 5;
+                data.UpgradeCost += 5;
                 _rerollCandidates[i] = data;
             }
         }

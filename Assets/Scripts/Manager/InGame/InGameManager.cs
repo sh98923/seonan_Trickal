@@ -16,7 +16,7 @@ public class InGameManager : Singleton<InGameManager>
 
     private void Awake()
     {
-        _inGameCoin = 30;
+        _inGameCoin = 106;
 
         BattleStart();
     }

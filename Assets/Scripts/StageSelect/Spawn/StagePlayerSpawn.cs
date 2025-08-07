@@ -66,8 +66,7 @@ public class StagePlayerSpawn : MonoBehaviour
 
     public Vector3 SetPlayerPos(PlayerData playerData)
     {
-        CharacterData data = CharacterManager.Instance.GetCharacterData(playerData.CharacterKey);
-        FormationSlot[] slots = _deployedCharacters[data.SpawnLine];
+        FormationSlot[] slots = _deployedCharacters[playerData.SpawnLine];
 
         for (int i = 0; i < slots.Length; i++)
         {

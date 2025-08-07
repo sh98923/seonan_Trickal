@@ -91,10 +91,7 @@ public class StageInfoPanel : MonoBehaviour
         int index = 0;
         foreach (int monsterKey in stageMonsterKeys)
         {
-            int key = MonsterManager.Instance.GetMonsterCharacterKey(monsterKey);
-            CharacterData characterData = CharacterManager.Instance.GetCharacterData(key);
-
-            string prefabPath = characterData.PrefabPath;
+            string prefabPath = MonsterManager.Instance.GetMonsterPrefab(monsterKey);
 
             GameObject prefab = Resources.Load<GameObject>(prefabPath);
             GameObject obj = Instantiate(prefab, _monsterPreviewRoot);

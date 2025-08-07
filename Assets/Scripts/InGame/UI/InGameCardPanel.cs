@@ -33,8 +33,8 @@ public class InGameCardPanel : CardPanel
 
     protected override void HandleClick()
     {
-        int cost = _playerData.CardUpgradeCost;
-        string characterName = CharacterManager.Instance.GetCharacterData(_playerData.CharacterKey).EngName;
+        int cost = _playerData.UpgradeCost;
+        string characterName = _playerData.EngName;
         Transform existingChild = _spawnParent.transform.Find(characterName);
         
         if (!InGameManager.Instance.TrySpendCoin(cost))
@@ -47,20 +47,26 @@ public class InGameCardPanel : CardPanel
         {
             // 아직 비활성화 상태 → 유닛 배치
             existingChild.gameObject.SetActive(true);
-            _parentPanel.UpdateCoinUI(); // 코인 텍스트 업데이트가 있다면
+            UpdateCardCostUI();
         }
         else
         {
             // 이미 배치됨 → 업그레이드
             UpgradePlayer();
-            _parentPanel.UpdateCoinUI();
         }
+
+        _parentPanel.UpdateCoinUI();
     }
 
     private void UpgradePlayer()
     {
         BattleUnitManager.Instance.UpgradeUnit(_playerData.Key);
 
+        UpdateCardCostUI();
+    }
+
+    private void UpdateCardCostUI()
+    {
         int curLevel = BattleUnitManager.Instance.CurLevel;
         _parentPanel.CardCostUpdate(_playerData.Key, curLevel);
     }
@@ -68,7 +74,7 @@ public class InGameCardPanel : CardPanel
     private void UpdateDeployButtonState()
     {
         Button deployBtn = _cardChildren[(int)CardUI.DeployButton].GetComponent<Button>();
-        bool isCardLocked = InGameManager.Instance.InGameCoin < _playerData.CardUpgradeCost;
+        bool isCardLocked = InGameManager.Instance.InGameCoin < _playerData.UpgradeCost;
 
         if(isCardLocked)
         {

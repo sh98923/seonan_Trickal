@@ -23,9 +23,9 @@ public class StageCardPanel : CardPanel
 
     protected override void HandleClick()
     {
-        if (IsAlreadyDeployed(_playerData, out CharacterData characterData))
+        if (IsAlreadyDeployed(_playerData))
         {
-            Debug.LogWarning($"{characterData.EngName}이(가) 이미 배치되어 있습니다.");
+            Debug.LogWarning($"{_playerData.EngName}이(가) 이미 배치되어 있습니다.");
             return;
         }
 
@@ -35,15 +35,13 @@ public class StageCardPanel : CardPanel
             return;
         }
 
-        SpawnPlayerAtPosition(characterData, spawnPos);
+        SpawnPlayerAtPosition(_playerData, spawnPos);
 
-        CharacterFullData data = new CharacterFullData(characterData, _playerData);
-        GameManager.Instance.SetDeckUnit(data, spawnPos);
+        GameManager.Instance.SetDeckUnit(_playerData, spawnPos);
     }
 
-    private bool IsAlreadyDeployed(PlayerData playerData, out CharacterData characterData)
+    private bool IsAlreadyDeployed(PlayerData playerData)
     {
-        characterData = CharacterManager.Instance.GetCharacterData(playerData.CharacterKey);
         return _spawnParent.IsDataDeployed(playerData);
     }
 
@@ -58,12 +56,12 @@ public class StageCardPanel : CardPanel
         return false;
     }
 
-    private void SpawnPlayerAtPosition(CharacterData characterData, Vector3 spawnPos)
+    private void SpawnPlayerAtPosition(PlayerData playerData, Vector3 spawnPos)
     {
-        GameObject playerPrefab = Resources.Load<GameObject>(characterData.PrefabPath);
+        GameObject playerPrefab = Resources.Load<GameObject>(playerData.PrefabPath);
         GameObject player = Instantiate(playerPrefab, _spawnParent.transform);
-        player.name = characterData.EngName;
-        player.layer = LayerMask.NameToLayer(characterData.Layer);
+        player.name = playerData.EngName;
+        player.layer = LayerMask.NameToLayer(playerData.Layer);
         player.transform.position = spawnPos;
     }
 }

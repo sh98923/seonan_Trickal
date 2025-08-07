@@ -16,7 +16,7 @@ public class MonsterSpawn : MonoBehaviour
         { FormationLayer.Back, new Vector3[3] }
     };
 
-    private Dictionary<int, CharacterFullData> _monsterFullDatas = new Dictionary<int, CharacterFullData>();
+    private Dictionary<int, CharacterData> _monsterDatas = new Dictionary<int, CharacterData>();
 
     private readonly int _poolSize = 5;
 
@@ -92,16 +92,15 @@ public class MonsterSpawn : MonoBehaviour
         foreach (int monsterKey in stageMonsterKeys)
         {
             MonsterData monsterData = MonsterManager.Instance.GetMonsterData(monsterKey);
-            CharacterData characterData = CharacterManager.Instance.GetCharacterData(monsterData.CharacterKey);
 
-            CharacterFullData fullData = new CharacterFullData(characterData, monsterData);
-            _monsterFullDatas.Add(monsterKey, fullData);
+            CharacterData fullData = new CharacterData(monsterData);
+            _monsterDatas.Add(monsterKey, fullData);
         }
     }
 
     private void CreateMonsterPools()
     {
-        foreach (CharacterFullData fullData in _monsterFullDatas.Values)
+        foreach (CharacterData fullData in _monsterDatas.Values)
         {
             GameObject prefab = Resources.Load<GameObject>(fullData.PrefabPath);
             PoolingManager.Instance.Add(fullData.EngName, _poolSize, prefab, transform);
@@ -110,7 +109,7 @@ public class MonsterSpawn : MonoBehaviour
 
     private void RegisterMonsterEvents()
     {
-        foreach (CharacterFullData fullData in _monsterFullDatas.Values)
+        foreach (CharacterData fullData in _monsterDatas.Values)
         {
             string key = fullData.EngName;
             List<GameObject> objects = PoolingManager.Instance.GetObjects(key);
@@ -129,7 +128,7 @@ public class MonsterSpawn : MonoBehaviour
 
         foreach (WaveData data in waveMonsters.Values)
         {
-            CharacterFullData fullData = MonsterManager.Instance.GetMonsterFullData(data.MonsterKey);
+            CharacterData fullData = MonsterManager.Instance.GetMonsterFullData(data.MonsterKey);
 
             Vector3[] linePositions = _formationPositions[(FormationLayer)data.SpawnLine];
 

@@ -22,17 +22,17 @@ public class Character : MonoBehaviour
     protected CharacterAction _attack;
     protected Collider2D _targetCollider;
 
-    protected CharacterFullData _characterData;
+    protected CharacterData _data;
     public string CharacterProjectilePath
     {
         get 
         {
-            if (_characterData == null)
+            if (_data == null)
             {
                 return string.Empty;
             }
 
-            return _characterData.ProjectilePath;
+            return _data.ProjectilePath;
         }
     }
 
@@ -224,13 +224,14 @@ public class Character : MonoBehaviour
         StartCoroutine(FadeOutAndInactive());
     }
 
-    public void SetCharacterData(CharacterFullData fullData)
+    public void SetCharacterData(CharacterData data)
     {
-        _characterData = fullData;
-        _attackType = fullData.CharacterData.AttackType;
-        _criRate = fullData.CriRate;
-        _attackRange = fullData.AtkRange;
-        _atkCoolTime = fullData.AtkCoolTime;
+        _data = data;
+        _criRate = data.CriRate;
+        _atk = data.Atk;
+        _attackType = data.AtkType;
+        _attackRange = data.AtkRange;
+        _atkCoolTime = data.AtkCoolTime;
     }
     public void OnAttackHit()
     {

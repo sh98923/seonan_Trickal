@@ -12,13 +12,17 @@ public class BattleUnitManager : Singleton<BattleUnitManager>
         get { return _curLevel; }
     }
 
-    public void RegisterUnit(CharacterFullData data, GameObject instance)
+    public void RegisterUnit(CharacterData data, GameObject instance)
     {
         Player player = instance.GetComponent<Player>();
         player.OnDie += OnPlayerDie;
         _alivePlayerCount++;
 
         _activeUnits[data.PlayerKey] = new PlayerUnit(data, instance);
+
+        CharacterData a = _activeUnits[data.PlayerKey].CharacterInfo;
+
+        Debug.Log(a.EngName + " " + a.Hp + " " + a.Mp + " " + a.Atk);
     }
 
     private void OnPlayerDie(Character ch)
@@ -45,8 +49,13 @@ public class PlayerUnit
 {
     private Player _unitObj;
 
-    private CharacterFullData _fullData;
-    private PlayerUpgradeData _upgradeData;
+    private CharacterData _data;
+    public CharacterData CharacterInfo
+    {
+        get { return _data; }
+    }
+
+    private PlayerStatData _upgradeData;
 
     private int _level = 0;
     public int Level
@@ -54,39 +63,39 @@ public class PlayerUnit
         get { return _level; }
     }
 
-    public PlayerUnit(CharacterFullData data, GameObject unit)
+    public PlayerUnit(CharacterData data, GameObject unit)
     {
-        _fullData = data; 
+        _data = data; 
         //PlayerManager.Instance.GetPlayerFullData(data.Key);
 
         // 여기서 이제 캐릭터 스크립트에 스탯 설정하는 함수 있으면 스탯 세팅 해주면 댐
         _unitObj = unit.GetComponent<Player>();
-        _unitObj.SetCharacterData(_fullData);
+        _unitObj.SetCharacterData(_data);
     }
 
     public void LevelUp()
     {
-        int maxLevel = _fullData.MaxLevel;
+        _level++;
+
+        int maxLevel = _data.MaxLevel;
 
         // 이 조건문이 달성되면 그 카드는 제외시켜야함
         if (_level >= maxLevel) return;
 
         SetCharacterFullData();
 
-        Debug.Log(_unitObj.name + " " + _fullData.Hp + " " + _fullData.Mp + " " + _fullData.Atk);
+        Debug.Log(_unitObj.name + " " + _data.Hp + " " + _data.Mp + " " + _data.Atk);
 
-        _unitObj.SetCharacterData(_fullData);
+        _unitObj.SetCharacterData(_data);
         //curUnit.(_playerStat[levelUp]);
     }
 
     private void SetCharacterFullData()
     {
-        int startKey = _fullData.UpgradeKey;
+        int startKey = _data.UpgradeKey;
         int curKey = startKey + _level;
 
-        _upgradeData = PlayerUpgradeManager.Instance.GetPlayerUpgradeData(curKey);
-        _fullData.UpdatePlayerStat(_upgradeData);
-
-         _level++;
+        _upgradeData = PlayerStatManager.Instance.GetPlayerStatData(curKey);
+        _data.UpdatePlayerStat(_upgradeData);
     }
 }

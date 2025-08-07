@@ -4,11 +4,21 @@ using UnityEngine;
 public struct MonsterData
 {
     public int Key;
-    public int CharacterKey;
+    public string EngName;
+    public string PrefabPath;
+    public string ProjectilePath;
+    public string Layer;
+    public string AttackType;
+    public int SpawnLine;
+    public float Hp;
     public float HpPerWave;
     public float HpGrowthRate;
+    public float Atk;
     public float AtkPerWave;
     public float AtkGrowthRate;
+    public float AtkRange;
+    public float AtkCoolTime;
+    public float CriRate;
 }
 
 public class MonsterManager : Singleton<MonsterManager>
@@ -25,17 +35,15 @@ public class MonsterManager : Singleton<MonsterManager>
         return _monsterDatas[key];
     }
 
-    public int GetMonsterCharacterKey(int key)
+    public string GetMonsterPrefab(int key)
     {
-        return _monsterDatas[key].CharacterKey;
+        return _monsterDatas[key].PrefabPath;
     }
 
-    public CharacterFullData GetMonsterFullData(int key)
+    public CharacterData GetMonsterFullData(int key)
     {
         MonsterData monsterData = _monsterDatas[key];
-        CharacterData characterData = CharacterManager.Instance.GetCharacterData(monsterData.CharacterKey);
-
-        CharacterFullData data = new CharacterFullData(characterData, monsterData);
+        CharacterData data = new CharacterData(monsterData);
 
         return data;
     }
@@ -56,11 +64,21 @@ public class MonsterManager : Singleton<MonsterManager>
             MonsterData data;
 
             data.Key = int.Parse(colData[0]);
-            data.CharacterKey = int.Parse(colData[1]);
-            data.HpPerWave = float.Parse(colData[2]);
-            data.HpGrowthRate = float.Parse(colData[3]);
-            data.AtkPerWave = float.Parse(colData[4]);
-            data.AtkGrowthRate = float.Parse(colData[5]);
+            data.EngName = colData[1];
+            data.PrefabPath = colData[2];
+            data.ProjectilePath = colData[3];
+            data.Layer = colData[4];
+            data.AttackType = colData[5];
+            data.SpawnLine = int.Parse(colData[6]);
+            data.Hp = float.Parse(colData[7]);
+            data.HpPerWave = float.Parse(colData[8]);
+            data.HpGrowthRate = float.Parse(colData[9]);
+            data.Atk = float.Parse(colData[10]);
+            data.AtkPerWave = float.Parse(colData[11]);
+            data.AtkGrowthRate = float.Parse(colData[12]);
+            data.AtkRange = float.Parse(colData[13]);
+            data.AtkCoolTime = float.Parse(colData[14]);
+            data.CriRate = float.Parse(colData[15]);
 
             _monsterDatas.Add(data.Key, data);
         }

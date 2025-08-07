@@ -17,7 +17,6 @@ public class Player : Character
 
         _skillEffect.SetActive(false);
 
-        _atk = 5f;
         _curHp = 5500;
     }
 
@@ -89,7 +88,7 @@ public class Player : Character
 
         _isAttacking = true;
 
-        if (_curMp >= _characterData.Mp)
+        if (_curMp >= _data.Mp)
         {
             _animator.SetTrigger("Skill");
         }
@@ -99,15 +98,15 @@ public class Player : Character
         }
     }
 
-    /*public void OnAttackHit()
+   /* public void OnAttackHit()
     {
         _targetCollider.GetComponent<Monster>().TakeDamage(_characterData.Atk);
     }*/
 
     public void OnSkillHit()
     { 
-        float skillAtk = _characterData.Atk * _characterData.SkillRate;
-        _curMp -= _characterData.Mp;
+        float skillAtk = _data.Atk * _data.SkillRate;
+        _curMp -= _data.Mp;
         _attack.Skill(_targetCollider, skillAtk);
         Debug.Log("skilldamage " + skillAtk);
     }
@@ -129,7 +128,7 @@ public class Player : Character
     {
         while (BattleStateManager.Instance.IsBattle)
         {
-            if (_curMp >= _characterData.Mp)
+            if (_curMp >= _data.Mp)
             {
                 yield return new WaitForSeconds(1.0f);
                 continue;

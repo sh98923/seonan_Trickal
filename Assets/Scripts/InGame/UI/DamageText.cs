@@ -8,22 +8,23 @@ public class DamageText : MonoBehaviour
     [SerializeField] private float _moveSpeed = 2.0f;
     [SerializeField] private float _alphaSpeed = 1.0f;
 
-    private float _time;
     private Color _alpha;
+
+    private float _time;
     private float _dirX;
 
     private void Update()
     {
-        transform.Translate(new Vector3(_dirX, _moveSpeed * Time.deltaTime, 0)); // ÅØ½ºÆ® À§Ä¡
+        transform.Translate(new Vector3(_dirX, _moveSpeed * Time.deltaTime, 0)); // ï¿½Ø½ï¿½Æ® ï¿½ï¿½Ä¡
 
-        _alpha.a = Mathf.Lerp(_alpha.a, 0, Time.deltaTime * _alphaSpeed); // ÅØ½ºÆ® ¾ËÆÄ°ª
+        _alpha.a = Mathf.Lerp(_alpha.a, 0, Time.deltaTime * _alphaSpeed); // ï¿½Ø½ï¿½Æ® ï¿½ï¿½ï¿½Ä°ï¿½
         _text.color = _alpha;
 
         _time += Time.deltaTime;
 
         if (_time > _lifeTime)
         {
-            this.gameObject.SetActive(false);
+            gameObject.SetActive(false);
         }
     }
 
@@ -49,6 +50,7 @@ public class DamageText : MonoBehaviour
         _text.color = _alpha;
         //this.gameObject.SetActive(true);
     }
+
     private void Disable()
     {
         gameObject.SetActive(false);

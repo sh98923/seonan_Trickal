@@ -93,9 +93,8 @@ public class CardPanel : MonoBehaviour
 
     private void SetCharacterName()
     {
-        CharacterData characterData = CharacterManager.Instance.GetCharacterData(_playerData.CharacterKey);
         TextMeshProUGUI characterName = _cardChildren[(int)CardUI.CharacterName].GetComponent<TextMeshProUGUI>();
-        characterName.text = characterData.KrName;
+        characterName.text = _playerData.KrName;
         characterName.color = _color;
     }
 
@@ -107,6 +106,6 @@ public class CardPanel : MonoBehaviour
         cardCostBG.sprite = costImage;
 
         TextMeshProUGUI cardUpgradeCost = _cardChildren[(int)CardUI.CostText].GetComponent<TextMeshProUGUI>();
-        cardUpgradeCost.text = _playerData.CardUpgradeCost.ToString();
+        cardUpgradeCost.text = _playerData.UpgradeCost.ToString();
     }
 }
