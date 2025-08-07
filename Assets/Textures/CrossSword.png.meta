@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: d08ed66580dc23f41ac387e3e75df510
+guid: 7ef2d1f9b0651cb4db4097a9a6197e01
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -1108851643146246176
-    second: PlayerCardBG1_0
+      213: -6309216724300702931
+    second: AssassinSkill_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: PlayerCardBG1_0
+      name: AssassinSkill_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 640
-        height: 896
+        width: 1024
+        height: 1024
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0e7e8a53e419c90f0800000000000000
-      internalID: -1108851643146246176
+      spriteID: d2b5a1121d82178a0800000000000000
+      internalID: -6309216724300702931
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      PlayerCardBG1_0: -1108851643146246176
+      AssassinSkill_0: -6309216724300702931
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
