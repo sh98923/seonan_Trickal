@@ -80,7 +80,7 @@ public class Character : MonoBehaviour
         _isDead = false;
         _myCollider.enabled = true;
 
-        for (int i = 0; i < _spriteRenderers.Length; i++)
+        for (int i = 0; i < _spriteRenderers.Length - 1; i++)
         {
             Color color = _spriteRenderers[i].color;
             color.a = 1.0f;

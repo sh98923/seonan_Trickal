@@ -7,7 +7,6 @@ public class Player : Character
 
     private float _curMp = 0.0f;
 
-    [SerializeField]
     private GameObject _skillEffect;
 
     private void Awake()
@@ -15,9 +14,31 @@ public class Player : Character
         base.Awake();
         _moveDir = Vector2.right;
 
-        _skillEffect.SetActive(false);
-
+        //_skillEffect.SetActive(false);
         _curHp = 5500;
+    }
+
+    private void Start()
+    {
+        _animator.SetTrigger("Intro");
+    }
+
+    private void Update()
+    {
+        base.Update();
+
+        if(Input.GetKeyDown(KeyCode.S))
+        {
+            _animator.SetTrigger("Ult");
+        }
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            _animator.SetTrigger("Attack");
+        }
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            _animator.SetTrigger("Skill");
+        }
     }
 
     protected override void IdleStateAction()
