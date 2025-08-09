@@ -3,6 +3,8 @@ using System.Collections;
 
 public class Player : Character
 {
+    private GameObject _skillEffect;
+
     private Vector3 _originPos;
 
     private float _curMp = 0.0f;
@@ -10,6 +12,11 @@ public class Player : Character
     private void Awake()
     {
         base.Awake();
+
+        Transform lastChild = transform.GetChild(transform.childCount - 1);
+        _skillEffect = lastChild.gameObject;
+        SkillEffectOff();
+
         _moveDir = Vector2.right;
         
         _scale.x *= -1;
@@ -39,6 +46,15 @@ public class Player : Character
         {
             _animator.SetTrigger("Skill");
         }
+    }
+
+    private void SkillEffectOn()
+    {
+        _skillEffect.SetActive(true);
+    }
+    private void SkillEffectOff()
+    {
+        _skillEffect.SetActive(false);
     }
 
     protected override void IdleStateAction()

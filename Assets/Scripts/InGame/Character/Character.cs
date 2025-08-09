@@ -82,8 +82,11 @@ public class Character : MonoBehaviour
         _isDead = false;
         _myCollider.enabled = true;
 
-        for (int i = 0; i < _spriteRenderers.Length - 1; i++)
+        for (int i = 0; i < _spriteRenderers.Length; i++)
         {
+            if (_spriteRenderers[i].name == "Shadow")
+                continue;
+
             Color color = _spriteRenderers[i].color;
             color.a = 1.0f;
             _spriteRenderers[i].color = color;
