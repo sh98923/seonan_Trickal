@@ -6,18 +6,16 @@ AnimatorOverrideController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: PaladinController
+  m_Name: RuneBladeController
   m_Controller: {fileID: 9100000, guid: 1b7e5771d0832c641abdfcfe548480fa, type: 2}
   m_Clips:
   - m_OriginalClip: {fileID: 7400000, guid: 0b62bd139e2249240b7358a1f4362b35, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: c66e5eb2778574f1abbd40dcb05e1df7, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 6fb0d327821de4ca19ea0fcf940b27ee, type: 2}
   - m_OriginalClip: {fileID: 7400000, guid: e5c0896e9a6b8054da7d8859df3fd7f6, type: 2}
     m_OverrideClip: {fileID: 7400000, guid: e23bc41dfc64fef439b0a9d4b49d7d6a, type: 2}
-  - m_OriginalClip: {fileID: 7400000, guid: 15f49a0f0c608e94ca0fb73191df3b92, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: 223e23e2d2190a3489afdd60ad5c2bb0, type: 2}
   - m_OriginalClip: {fileID: 7400000, guid: b81ad915777074048bdcc320f687ee1e, type: 2}
     m_OverrideClip: {fileID: 7400000, guid: b81ad915777074048bdcc320f687ee1e, type: 2}
   - m_OriginalClip: {fileID: 7400000, guid: b1692a522a645ad488394d241ad662df, type: 2}
     m_OverrideClip: {fileID: 7400000, guid: b1692a522a645ad488394d241ad662df, type: 2}
   - m_OriginalClip: {fileID: 7400000, guid: 961cec37b6c80a945825fec2937bd1fd, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: 18e69fa82d4e12d46abc5917fe545494, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: adb97dae0ae0a0d46b2b74e520d1738d, type: 2}
