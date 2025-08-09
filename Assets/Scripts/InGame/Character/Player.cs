@@ -7,14 +7,14 @@ public class Player : Character
 
     private float _curMp = 0.0f;
 
-    private GameObject _skillEffect;
-
     private void Awake()
     {
         base.Awake();
         _moveDir = Vector2.right;
+        
+        _scale.x *= -1;
+        transform.localScale = _scale;
 
-        //_skillEffect.SetActive(false);
         _curHp = 5500;
     }
 
@@ -27,7 +27,7 @@ public class Player : Character
     {
         base.Update();
 
-        if(Input.GetKeyDown(KeyCode.S))
+        if (Input.GetKeyDown(KeyCode.S))
         {
             _animator.SetTrigger("Ult");
         }
@@ -134,15 +134,15 @@ public class Player : Character
 
     public void PlaySkillEffect()
     {
-        _skillEffect.SetActive(true);
-        _skillEffect.GetComponent<Animator>()?.Play("SkillEffect");
+        //_skillEffect.SetActive(true);
+        //_skillEffect.GetComponent<Animator>()?.Play("SkillEffect");
         StartCoroutine(DisableEffectAfterTime(1.0f)); 
     }
 
     private IEnumerator DisableEffectAfterTime(float delay)
     {
         yield return new WaitForSeconds(delay);
-        _skillEffect.SetActive(false);
+        //_skillEffect.SetActive(false);
     }
 
     private IEnumerator RegenerateMp()

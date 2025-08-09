@@ -3653,7 +3653,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: -1.6, y: 1.6, z: 1.5}
+  m_LocalScale: {x: 1.6, y: 1.6, z: 1.5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7505776339140306217}
@@ -3745,7 +3745,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _attackPoint: {fileID: 2641506787405701872}
-  _skillEffect: {fileID: 987687800042460479}
 --- !u!114 &1388670823603877655
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4466,11 +4465,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c5c71a28517a03a408079395daeb57cd, type: 3}
---- !u!1 &987687800042460479 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1406153715284662305, guid: c5c71a28517a03a408079395daeb57cd, type: 3}
-  m_PrefabInstance: {fileID: 2177298592327781662}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8012640123592860929 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8144140033376167967, guid: c5c71a28517a03a408079395daeb57cd, type: 3}

@@ -25,7 +25,7 @@ public class Character : MonoBehaviour
     protected CharacterData _data;
     public string CharacterProjectilePath
     {
-        get 
+        get
         {
             if (_data == null)
             {
@@ -36,9 +36,10 @@ public class Character : MonoBehaviour
         }
     }
 
+    protected Vector3 _scale;
     protected Vector2 _moveDir;
     protected State _curState = State.Idle;
-    
+
     protected string _attackType = "";
     protected readonly float _colliderOffset = 0.5f;
     protected readonly float _findTargetRange = 5.0f;
@@ -52,9 +53,9 @@ public class Character : MonoBehaviour
 
     protected bool _isAttacking = false;
 
+    private Collider2D _myCollider;
     private SortingGroup _sortingGroup;
     private SpriteRenderer[] _spriteRenderers;
-    private Collider2D _myCollider;
 
     private float _fadeDuration = 3.0f;
     private float _attackCoolTimer = 0.0f;
@@ -63,6 +64,7 @@ public class Character : MonoBehaviour
 
     protected void Awake()
     {
+        _scale = transform.localScale;
         _attack = GetComponent<CharacterAction>();
         _animator = GetComponent<Animator>();
         _myCollider = GetComponent<Collider2D>();
@@ -73,9 +75,9 @@ public class Character : MonoBehaviour
     private void OnEnable()
     {
         _attackCoolTimer = 0.0f;
-        
-        _curState = State.Idle; 
-        
+
+        _curState = State.Idle;
+
         _isAttacking = false;
         _isDead = false;
         _myCollider.enabled = true;
@@ -95,6 +97,8 @@ public class Character : MonoBehaviour
             TakeDamage(30);
         }
 
+        FlipToTarget();
+
         switch (_curState)
         {
             case State.Idle:
@@ -113,6 +117,23 @@ public class Character : MonoBehaviour
         }
 
         _sortingGroup.sortingOrder = Mathf.RoundToInt(-transform.position.y * 100);
+    }
+
+    private void FlipToTarget()
+    {
+        if (_targetCollider != null)
+        {
+            if (_targetCollider.transform.position.x<transform.position.x)
+            {
+                _scale.x = Mathf.Abs(_scale.x); // 무조건 양수
+            }
+            else
+            {
+                _scale.x = Mathf.Abs(_scale.x) * -1; // 무조건 음수
+            }
+
+            transform.localScale = _scale;
+        }
     }
 
     protected virtual void IdleStateAction()
