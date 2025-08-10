@@ -9,6 +9,8 @@ public class Player : Character
 
     private float _curMp = 0.0f;
 
+    private bool _isFront = false;
+
     private void Awake()
     {
         base.Awake();
@@ -36,6 +38,7 @@ public class Player : Character
 
         if (Input.GetKeyDown(KeyCode.S))
         {
+            _isFront = true;
             _animator.SetTrigger("Ult");
         }
         if (Input.GetKeyDown(KeyCode.A))
@@ -44,14 +47,19 @@ public class Player : Character
         }
         if (Input.GetKeyDown(KeyCode.D))
         {
+            _isFront = true;
             _animator.SetTrigger("Skill");
         }
     }
 
     private void SkillEffectOn()
     {
+        int sortNum = _isFront ? _sortingGroup.sortingOrder + 1 : -101;
+
+        _skillEffect.GetComponent<SpriteRenderer>().sortingOrder = sortNum;
         _skillEffect.SetActive(true);
     }
+
     private void SkillEffectOff()
     {
         _skillEffect.SetActive(false);

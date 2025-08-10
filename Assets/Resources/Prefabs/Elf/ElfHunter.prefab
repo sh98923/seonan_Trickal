@@ -1276,6 +1276,37 @@ Transform:
   - {fileID: 8495216990079151910}
   m_Father: {fileID: 1013153008176259725}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2199822690091971567
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 734427336070383140}
+  m_Layer: 6
+  m_Name: SkillEffect
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &734427336070383140
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2199822690091971567}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6263944852880320412}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2254394436450199125
 GameObject:
   m_ObjectHideFlags: 0
@@ -2850,6 +2881,7 @@ Transform:
   - {fileID: 1669779740865140916}
   - {fileID: 6640524862082644990}
   - {fileID: 7714560333901081874}
+  - {fileID: 734427336070383140}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!210 &9208762271900334443
@@ -2920,8 +2952,8 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.2, y: 0.35}
-  m_Radius: 0.35
+  m_Offset: {x: 0, y: 0.35}
+  m_Radius: 0.5
 --- !u!114 &3690779255243733410
 MonoBehaviour:
   m_ObjectHideFlags: 0

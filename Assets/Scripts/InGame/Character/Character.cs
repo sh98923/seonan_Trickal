@@ -21,6 +21,7 @@ public class Character : MonoBehaviour
     protected Animator _animator;
     protected CharacterAction _attack;
     protected Collider2D _targetCollider;
+    protected SortingGroup _sortingGroup;
 
     protected CharacterData _data;
     public string CharacterProjectilePath
@@ -54,7 +55,6 @@ public class Character : MonoBehaviour
     protected bool _isAttacking = false;
 
     private Collider2D _myCollider;
-    private SortingGroup _sortingGroup;
     private SpriteRenderer[] _spriteRenderers;
 
     private float _fadeDuration = 3.0f;
@@ -126,7 +126,7 @@ public class Character : MonoBehaviour
     {
         if (_targetCollider != null)
         {
-            if (_targetCollider.transform.position.x<transform.position.x)
+            if (_targetCollider.transform.position.x < transform.position.x)
             {
                 _scale.x = Mathf.Abs(_scale.x); // 무조건 양수
             }
@@ -257,6 +257,7 @@ public class Character : MonoBehaviour
         _attackRange = data.AtkRange;
         _atkCoolTime = data.AtkCoolTime;
     }
+
     public void OnAttackHit()
     {
         _attack.BaseAttack(_targetCollider, _atk);
