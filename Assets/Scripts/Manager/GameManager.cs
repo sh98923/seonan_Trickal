@@ -65,7 +65,7 @@ public class GameManager : Singleton<GameManager>
         {
             PlayerData playerData = data.playerData;
 
-            GameObject prefab = Resources.Load<GameObject>(playerData.PrefabPath);
+            GameObject prefab = Resources.Load<GameObject>(playerData.CharacterPrefabPath);
 
             GameObject player = Instantiate(prefab, parent);
             player.name = playerData.EngName;

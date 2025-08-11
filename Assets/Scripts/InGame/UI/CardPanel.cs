@@ -87,7 +87,7 @@ public class CardPanel : MonoBehaviour
     private void SetCharacterImage()
     {
         Image characterImage = _cardChildren[(int)CardUI.CharacterImage].GetComponent<Image>();
-        characterImage.sprite = Resources.Load<Sprite>(_playerData.SpritePath);
+        characterImage.sprite = Resources.Load<Sprite>(_playerData.CharacterSpritePath);
         characterImage.color = _color;
     }
 

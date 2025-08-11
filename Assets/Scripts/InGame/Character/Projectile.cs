@@ -8,6 +8,8 @@ public class Projectile : MonoBehaviour
 
     private Vector2 _direction;
 
+    private string _tag;
+
     private float _damage;
     private float _lifeTimer;
 
@@ -27,20 +29,21 @@ public class Projectile : MonoBehaviour
         }
     }
 
-    public void Fire(Vector2 direction, Vector3 startPos, float damage)
+    public void Fire(Vector2 direction, Vector3 startPos, float damage, string tag)
     {
         Vector3 pos = startPos;
-        //pos.y += _offset;
+        pos.y += _offset;
         startPos = pos;
-
         transform.position = startPos;
+
+        _tag = tag;
         _damage = damage;
         _direction = direction.normalized;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+        if (collision.CompareTag(_tag))
         {
             Debug.Log($"Projectile hit: {collision.name} with tag {collision.tag}");
             Character player = collision.GetComponent<Character>();

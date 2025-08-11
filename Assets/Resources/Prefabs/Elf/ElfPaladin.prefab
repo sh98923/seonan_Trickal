@@ -2328,7 +2328,7 @@ GameObject:
   - component: {fileID: 6365812282411688536}
   - component: {fileID: -5636077691054053115}
   - component: {fileID: -6646389396232836868}
-  - component: {fileID: -1062612871045612570}
+  - component: {fileID: 885334377884433822}
   m_Layer: 6
   m_Name: ElfPaladin
   m_TagString: Player
@@ -2438,7 +2438,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _attackPoint: {fileID: 7110439485372645832}
---- !u!114 &-1062612871045612570
+--- !u!114 &885334377884433822
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2447,7 +2447,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4265259247209871949}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef1550e9664344d4c92821df0d940a73, type: 3}
+  m_Script: {fileID: 11500000, guid: f94e4d9f3fad76249b9f6c47b86a9ded, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &4335516103182397593

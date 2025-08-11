@@ -15,12 +15,12 @@ public class Monster : Character
 
         if(_targetCollider == null)
         {
-            _targetCollider = FindTarget("Player", _findTargetRange);
+            _targetCollider = FindTarget(_data.Target, _findTargetRange);
             transform.Translate(_moveDir * _moveSpeed * Time.deltaTime);
         }
         else
         {
-            if (FindTarget("Player", _attackRange) == null)
+            if (FindTarget(_data.Target, _attackRange) == null)
             {
                 Vector2 dir = _targetCollider.transform.position - transform.position;
                 transform.Translate(dir.normalized * _moveSpeed * Time.deltaTime);

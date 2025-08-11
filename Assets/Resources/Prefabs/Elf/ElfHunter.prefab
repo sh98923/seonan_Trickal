@@ -2857,7 +2857,7 @@ GameObject:
   - component: {fileID: 2589194030862603302}
   - component: {fileID: 5887810324594082753}
   - component: {fileID: 3690779255243733410}
-  - component: {fileID: 658609479044566977}
+  - component: {fileID: 7301078194270570054}
   m_Layer: 0
   m_Name: ElfHunter
   m_TagString: Untagged
@@ -2967,7 +2967,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _attackPoint: {fileID: 7714560333901081874}
---- !u!114 &658609479044566977
+--- !u!114 &7301078194270570054
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

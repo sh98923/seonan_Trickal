@@ -1415,11 +1415,11 @@ GameObject:
   - component: {fileID: 3325313441253568149}
   - component: {fileID: 8538546550874658160}
   - component: {fileID: 5989177429138325099}
-  - component: {fileID: 7320634741782663222}
   - component: {fileID: 7353764249792686132}
+  - component: {fileID: -3404786805369019505}
   m_Layer: 7
   m_Name: SkeltonDefender
-  m_TagString: Enemy
+  m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1512,18 +1512,6 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0.35}
   m_Radius: 0.5
---- !u!114 &7320634741782663222
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3230077365253691975}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef1550e9664344d4c92821df0d940a73, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &7353764249792686132
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1537,6 +1525,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _attackPoint: {fileID: 4618498138686309282}
+--- !u!114 &-3404786805369019505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3230077365253691975}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94e4d9f3fad76249b9f6c47b86a9ded, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3847418617662843366
 GameObject:
   m_ObjectHideFlags: 0

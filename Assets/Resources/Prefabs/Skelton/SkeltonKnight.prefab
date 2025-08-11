@@ -4082,11 +4082,11 @@ GameObject:
   - component: {fileID: 8343852859634732219}
   - component: {fileID: 4950727259488836792}
   - component: {fileID: -6560061490460682045}
-  - component: {fileID: 3632058885354667980}
   - component: {fileID: -8664324866768575389}
+  - component: {fileID: 1013235775300442454}
   m_Layer: 7
   m_Name: SkeltonKnight
-  m_TagString: Enemy
+  m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4179,18 +4179,6 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0.35}
   m_Radius: 0.5
---- !u!114 &3632058885354667980
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8504700360622106869}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef1550e9664344d4c92821df0d940a73, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &-8664324866768575389
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4204,6 +4192,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _attackPoint: {fileID: 3334850518700300552}
+--- !u!114 &1013235775300442454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8504700360622106869}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94e4d9f3fad76249b9f6c47b86a9ded, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8811361013956717022
 GameObject:
   m_ObjectHideFlags: 0

@@ -58,7 +58,7 @@ public class StageCardPanel : CardPanel
 
     private void SpawnPlayerAtPosition(PlayerData playerData, Vector3 spawnPos)
     {
-        GameObject playerPrefab = Resources.Load<GameObject>(playerData.PrefabPath);
+        GameObject playerPrefab = Resources.Load<GameObject>(playerData.CharacterPrefabPath);
         GameObject player = Instantiate(playerPrefab, _spawnParent.transform);
         player.name = playerData.EngName;
         player.layer = LayerMask.NameToLayer(playerData.Layer);

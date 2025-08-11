@@ -8,11 +8,15 @@ public class CharacterData
         public string PrefabPath;
         public string ProjectilePath;
         public string AttackType;
+        public string Target;
+        public string[] ProjectileSpritePath;
         public float Hp;
         public float Atk;
         public float CriRate;
         public float AtkRange;
         public float AtkCoolTime;
+        public int[] ProjectilePool;
+        public bool[] IsRange;
     }
 
     private SharedStats _shared;
@@ -56,6 +60,10 @@ public class CharacterData
         get => _shared.AttackType;
         set => _shared.AttackType = value;
     }
+    public string Target
+    {
+        get { return _shared.Target; }
+    }
 
     public string Layer => _shared.Layer;
     public string EngName => _shared.EngName;
@@ -73,9 +81,23 @@ public class CharacterData
         set => _shared.ProjectilePath = value;
     }
 
+    public string[] ProjectileSpritePath
+    {
+        get { return _shared.ProjectileSpritePath; }
+    }
+
+    public int[] PoolSize
+    {
+        get { return _shared.ProjectilePool; }
+    }
+
+    public bool[] IsRangeAttack
+    {
+        get { return _shared.IsRange; }
+    }
+
     // 플레이어 전용
     public PlayerData PlayerInfo => _playerInfo;
-
     public int PlayerKey => _playerInfo.Key;
     public int MaxLevel => _playerInfo.MaxLevel;
     public int UpgradeKey => _playerInfo.UpgradeKey;
@@ -159,10 +181,14 @@ public class CharacterData
             AttackType = playerData.AttackType,
             Layer = playerData.Layer,
             EngName = playerData.EngName,
-            PrefabPath = playerData.PrefabPath,
+            PrefabPath = playerData.CharacterPrefabPath,
             Type = "Player",
-            ProjectilePath = playerData.ProjectilePath
-        };
+            Target = playerData.Target,
+            ProjectilePath = playerData.ProjectilePath,
+            IsRange = playerData.IsRange,
+            ProjectileSpritePath = playerData.ProjectileSpritePath,
+            ProjectilePool = playerData.ProjectilePool
+};
 
         UpdatePlayerStat(PlayerStatManager.Instance.GetPlayerStatData(playerData.UpgradeKey));
     }
@@ -185,7 +211,11 @@ public class CharacterData
             EngName = monsterData.EngName,
             PrefabPath = monsterData.PrefabPath,
             Type = "Monster",
-            ProjectilePath = monsterData.ProjectilePath
+            Target = monsterData.Target,
+            ProjectilePath = monsterData.ProjectilePath,
+            IsRange = monsterData.IsRange,
+            ProjectileSpritePath = monsterData.ProjectileSpritePath,
+            ProjectilePool = monsterData.ProjectilePool
         };
     }
 

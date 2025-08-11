@@ -94,12 +94,12 @@ public class Player : Character
         {
             if (_targetCollider == null)
             {
-                _targetCollider = FindTarget("Enemy", _findTargetRange);
+                _targetCollider = FindTarget(_data.Target, _findTargetRange);
                 transform.Translate(_moveDir * _moveSpeed * Time.deltaTime);
             }
             else
             {
-                if (FindTarget("Enemy", _attackRange) == null)
+                if (FindTarget(_data.Target, _attackRange) == null)
                 {
                     Vector2 dir = _targetCollider.transform.position - transform.position;
                     transform.Translate(dir.normalized * _moveSpeed * Time.deltaTime);
@@ -150,10 +150,9 @@ public class Player : Character
 
     public void OnSkillHit()
     { 
-        float skillAtk = _data.Atk * _data.SkillRate;
+        float skillAtk = _data.Atk * _data.Ultimate;
         _curMp -= _data.Mp;
-        _attack.Skill(_targetCollider, skillAtk);
-        Debug.Log("skilldamage " + skillAtk);
+        _attack.Attack(_targetCollider, skillAtk, _data.IsRangeAttack[(int)AttackType.Ult]);
     }
 
     public void PlaySkillEffect()

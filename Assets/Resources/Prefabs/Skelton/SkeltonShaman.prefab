@@ -3810,10 +3810,10 @@ GameObject:
   - component: {fileID: 4465316765206201792}
   - component: {fileID: -327759401370275168}
   - component: {fileID: 7770433800470687941}
-  - component: {fileID: -5090092933322704747}
+  - component: {fileID: -7314812771493510486}
   m_Layer: 7
   m_Name: SkeltonShaman
-  m_TagString: Enemy
+  m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3919,7 +3919,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _attackPoint: {fileID: 7532308524137654555}
---- !u!114 &-5090092933322704747
+--- !u!114 &-7314812771493510486
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

@@ -484,7 +484,7 @@ GameObject:
   - component: {fileID: 7911071685998797589}
   - component: {fileID: 49811241052460197}
   - component: {fileID: 735428783276588562}
-  - component: {fileID: -6702378825657309883}
+  - component: {fileID: 862515177202494870}
   m_Layer: 6
   m_Name: ElfKnight
   m_TagString: Player
@@ -594,7 +594,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _attackPoint: {fileID: 6917295281469079970}
---- !u!114 &-6702378825657309883
+--- !u!114 &862515177202494870
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -603,7 +603,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1195749144708485587}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef1550e9664344d4c92821df0d940a73, type: 3}
+  m_Script: {fileID: 11500000, guid: f94e4d9f3fad76249b9f6c47b86a9ded, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1197137325883799076

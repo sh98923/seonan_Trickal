@@ -5,6 +5,11 @@ using UnityEngine.Rendering;
 
 public class Character : MonoBehaviour
 {
+    protected enum AttackType
+    {
+        Base, Skill, Ult
+    }
+
     protected enum State
     {
         Idle, Move, Attack, Dead
@@ -19,22 +24,14 @@ public class Character : MonoBehaviour
 
     [SerializeField] public Transform _attackPoint;
     protected Animator _animator;
-    protected CharacterAction _attack;
+    protected CharacterAttack _attack;
     protected Collider2D _targetCollider;
     protected SortingGroup _sortingGroup;
 
     protected CharacterData _data;
-    public string CharacterProjectilePath
+    public CharacterData Data
     {
-        get
-        {
-            if (_data == null)
-            {
-                return string.Empty;
-            }
-
-            return _data.ProjectilePath;
-        }
+        get { return _data; }
     }
 
     protected Vector3 _scale;
@@ -65,7 +62,7 @@ public class Character : MonoBehaviour
     protected void Awake()
     {
         _scale = transform.localScale;
-        _attack = GetComponent<CharacterAction>();
+        _attack = GetComponent<CharacterAttack>();
         _animator = GetComponent<Animator>();
         _myCollider = GetComponent<Collider2D>();
         _sortingGroup = GetComponent<SortingGroup>();
@@ -256,11 +253,13 @@ public class Character : MonoBehaviour
         _attackType = data.AtkType;
         _attackRange = data.AtkRange;
         _atkCoolTime = data.AtkCoolTime;
+
+        _attack.SetAttack();
     }
 
     public void OnAttackHit()
     {
-        _attack.BaseAttack(_targetCollider, _atk);
+        _attack.Attack(_targetCollider, _atk, _data.IsRangeAttack[(int)AttackType.Base]);
     }
 
     private IEnumerator FadeOutAndInactive()

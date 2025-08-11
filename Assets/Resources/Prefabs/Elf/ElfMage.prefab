@@ -3635,7 +3635,7 @@ GameObject:
   - component: {fileID: 1280394194220995294}
   - component: {fileID: 376664657498340726}
   - component: {fileID: 2118818014092952823}
-  - component: {fileID: 1388670823603877655}
+  - component: {fileID: 4315227516313642427}
   m_Layer: 6
   m_Name: ElfMage
   m_TagString: Player
@@ -3745,7 +3745,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _attackPoint: {fileID: 2641506787405701872}
---- !u!114 &1388670823603877655
+--- !u!114 &4315227516313642427
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

@@ -4,12 +4,8 @@ using UnityEngine;
 public struct MonsterData
 {
     public int Key;
-    public string EngName;
-    public string PrefabPath;
-    public string ProjectilePath;
-    public string Layer;
-    public string AttackType;
     public int SpawnLine;
+    public int[] ProjectilePool;
     public float Hp;
     public float HpPerWave;
     public float HpGrowthRate;
@@ -19,6 +15,14 @@ public struct MonsterData
     public float AtkRange;
     public float AtkCoolTime;
     public float CriRate;
+    public string EngName;
+    public string PrefabPath;
+    public string ProjectilePath;
+    public string Layer;
+    public string AttackType;
+    public string Target;
+    public string[] ProjectileSpritePath;
+    public bool[] IsRange;
 }
 
 public class MonsterManager : Singleton<MonsterManager>
@@ -62,6 +66,9 @@ public class MonsterManager : Singleton<MonsterManager>
             if (colData.Length <= 1) continue;
 
             MonsterData data;
+            data.IsRange = new bool[1];
+            data.ProjectilePool = new int[1];
+            data.ProjectileSpritePath = new string[1];
 
             data.Key = int.Parse(colData[0]);
             data.EngName = colData[1];
@@ -69,16 +76,20 @@ public class MonsterManager : Singleton<MonsterManager>
             data.ProjectilePath = colData[3];
             data.Layer = colData[4];
             data.AttackType = colData[5];
-            data.SpawnLine = int.Parse(colData[6]);
-            data.Hp = float.Parse(colData[7]);
-            data.HpPerWave = float.Parse(colData[8]);
-            data.HpGrowthRate = float.Parse(colData[9]);
-            data.Atk = float.Parse(colData[10]);
-            data.AtkPerWave = float.Parse(colData[11]);
-            data.AtkGrowthRate = float.Parse(colData[12]);
-            data.AtkRange = float.Parse(colData[13]);
-            data.AtkCoolTime = float.Parse(colData[14]);
-            data.CriRate = float.Parse(colData[15]);
+            data.Target = colData[6];
+            data.ProjectileSpritePath[0] = colData[7];
+            data.IsRange[0] = bool.Parse(colData[8]);
+            data.ProjectilePool[0] = int.Parse(colData[9]);
+            data.SpawnLine = int.Parse(colData[10]);
+            data.Hp = float.Parse(colData[11]);
+            data.HpPerWave = float.Parse(colData[12]);
+            data.HpGrowthRate = float.Parse(colData[13]);
+            data.Atk = float.Parse(colData[14]);
+            data.AtkPerWave = float.Parse(colData[15]);
+            data.AtkGrowthRate = float.Parse(colData[16]);
+            data.AtkRange = float.Parse(colData[17]);
+            data.AtkCoolTime = float.Parse(colData[18]);
+            data.CriRate = float.Parse(colData[19]);
 
             _monsterDatas.Add(data.Key, data);
         }
