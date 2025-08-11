@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 3349fd0e073862a40b883777cdf2ff4f
+guid: 63a8097328a1dc9438025b6ea5706a00
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8482712648628362555
-    second: Cross_0
+      213: 7579687607191648099
+    second: AssassinUlt_line2_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Cross_0
+      name: AssassinUlt_line2_0
       rect:
         serializedVersion: 2
-        x: 3
-        y: 0
-        width: 1019
-        height: 1019
+        x: 9
+        y: 7
+        width: 106
+        height: 114
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b3dd439e536a8b570800000000000000
-      internalID: 8482712648628362555
+      spriteID: 367b61748b5703960800000000000000
+      internalID: 7579687607191648099
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Cross_0: 8482712648628362555
+      AssassinUlt_line2_0: 7579687607191648099
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
