@@ -71,6 +71,7 @@ public class PlayerUnit
         // 여기서 이제 캐릭터 스크립트에 스탯 설정하는 함수 있으면 스탯 세팅 해주면 댐
         _unitObj = unit.GetComponent<Player>();
         _unitObj.SetCharacterData(_data);
+        _unitObj.SetCharacterActionInit();
     }
 
     public void LevelUp()

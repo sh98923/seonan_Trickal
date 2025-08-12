@@ -141,18 +141,26 @@ public class Player : Character
         {
             _animator.SetTrigger("Attack");
         }
+
+        StartCoroutine(SetCoolTime());
     }
 
-   /* public void OnAttackHit()
+    /* public void OnAttackHit()
+     {
+         _targetCollider.GetComponent<Monster>().TakeDamage(_characterData.Atk);
+     }*/
+
+    public void OnSkillBuff()
     {
-        _targetCollider.GetComponent<Monster>().TakeDamage(_characterData.Atk);
-    }*/
+        _action[(int)ActionType.Buff].Excute();
+    }
 
     public void OnSkillHit()
     { 
-        float skillAtk = _data.Atk * _data.Ultimate;
+        float skillAtk = _data.Atk * _data.SkillRate;
         _curMp -= _data.Mp;
-        _attack.Attack(_targetCollider, skillAtk, _data.IsRangeAttack[(int)AttackType.Ult]);
+        _action[(int)ActionType.Attack].SetAttackInfo(_targetCollider, AttackType.Skill, skillAtk, _data.IsRangeAttack[(int)AttackType.Skill]);
+        _action[(int)ActionType.Attack].Excute();
     }
 
     public void PlaySkillEffect()

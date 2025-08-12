@@ -1,13 +1,14 @@
 using System;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 
 public class Character : MonoBehaviour
 {
-    protected enum AttackType
+    protected enum ActionType
     {
-        Base, Skill, Ult
+        Attack, Buff
     }
 
     protected enum State
@@ -24,7 +25,7 @@ public class Character : MonoBehaviour
 
     [SerializeField] public Transform _attackPoint;
     protected Animator _animator;
-    protected CharacterAttack _attack;
+    protected CharacterAction[] _action;
     protected Collider2D _targetCollider;
     protected SortingGroup _sortingGroup;
 
@@ -62,7 +63,7 @@ public class Character : MonoBehaviour
     protected void Awake()
     {
         _scale = transform.localScale;
-        _attack = GetComponent<CharacterAttack>();
+        _action = GetComponents<CharacterAction>();
         _animator = GetComponent<Animator>();
         _myCollider = GetComponent<Collider2D>();
         _sortingGroup = GetComponent<SortingGroup>();
@@ -168,18 +169,63 @@ public class Character : MonoBehaviour
         { 
             _animator.SetTrigger("Attack");
         }
+
+        StartCoroutine(SetCoolTime());
+    }
+
+    private float GetCurrentAnimationLength()
+    {
+        AnimatorClipInfo[] clipInfos = _animator.GetCurrentAnimatorClipInfo(0);
+        if (clipInfos.Length > 0.0f)
+        {
+            // 일반적으로 하나만 존재하지만 여러 개일 수도 있음 -> 첫 번째 클립의 길이를 가져옴
+            return clipInfos[0].clip.length;
+        }
+
+        return 0.0f;
+    }
+
+    protected IEnumerator SetCoolTime()
+    {
+        yield return null; // 한 프레임 대기 (애니메이션 상태가 바뀔 시간을 줌)
+
+        float animLength = GetCurrentAnimationLength();
+
+        _atkCoolTime = animLength;
     }
 
     public void TakeDamage(float damage)
     {
         _curHp -= damage;
-        Debug.Log($"{gameObject.name} 현재 체력: {_curHp}");
 
         ShowDamageText(damage);
 
         if (_curHp <= 0)
         {
             _curState = State.Dead;
+        }
+    }
+
+    public void TakeDotDamage(float damage, float duration, float tickInterval)
+    {
+        float dotDamage = damage * 0.2f;
+        TakeDamage(damage);
+        StartCoroutine(Dot(dotDamage, duration, tickInterval));
+    }
+
+    private IEnumerator Dot(float damagePerTick, float duration, float tickInterval)
+    {
+        float elapsed = 0.0f;
+
+        while (elapsed < duration)
+        {
+            yield return new WaitForSeconds(tickInterval);
+
+            if (_curState == State.Dead)
+                yield break;
+
+            TakeDamage(damagePerTick);
+            elapsed += tickInterval;
         }
     }
 
@@ -252,14 +298,20 @@ public class Character : MonoBehaviour
         _atk = data.Atk;
         _attackType = data.AtkType;
         _attackRange = data.AtkRange;
-        _atkCoolTime = data.AtkCoolTime;
-
-        _attack.SetAttack();
     }
+
+    public void SetCharacterActionInit()
+    {
+        for (int i = 0; i < _action.Length; i++)
+        {
+            _action[i].SetInit();
+        }
+    }    
 
     public void OnAttackHit()
     {
-        _attack.Attack(_targetCollider, _atk, _data.IsRangeAttack[(int)AttackType.Base]);
+        _action[(int)ActionType.Attack].SetAttackInfo(_targetCollider, AttackType.Base, _atk, _data.IsRangeAttack[(int)AttackType.Base]);
+        _action[(int)ActionType.Attack].Excute();
     }
 
     private IEnumerator FadeOutAndInactive()

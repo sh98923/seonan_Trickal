@@ -6,9 +6,9 @@ public class CharacterData
         public string Layer;
         public string EngName;
         public string PrefabPath;
-        public string ProjectilePath;
         public string AttackType;
         public string Target;
+        public string[] ProjectilePrefabPath;
         public string[] ProjectileSpritePath;
         public float Hp;
         public float Atk;
@@ -22,6 +22,7 @@ public class CharacterData
     private SharedStats _shared;
     private PlayerData _playerInfo;
     private PlayerStatData _playerStat;
+    private PlayerAttackData _playerAttack;
     private MonsterData _monsterInfo;
 
     // 공통 정보
@@ -75,10 +76,10 @@ public class CharacterData
         set => _shared.Type = value;
     }
 
-    public string ProjectilePath
+    public string[] ProjectilePath
     {
-        get => _shared.ProjectilePath;
-        set => _shared.ProjectilePath = value;
+        get => _shared.ProjectilePrefabPath;
+        set => _shared.ProjectilePrefabPath = value;
     }
 
     public string[] ProjectileSpritePath
@@ -169,13 +170,13 @@ public class CharacterData
     public CharacterData(PlayerData playerData)
     {
         _playerInfo = playerData;
+        _playerAttack = PlayerAttackManager.Instance.GetplayerAttackData(playerData.AttackKey);
 
         _shared = new SharedStats
         {
             Hp = _playerStat.Hp,
             Atk = _playerStat.Atk,
             AtkRange = _playerStat.AtkRange,
-            AtkCoolTime = _playerStat.AtkCoolTime,
             CriRate = _playerStat.CriRate,
 
             AttackType = playerData.AttackType,
@@ -184,10 +185,10 @@ public class CharacterData
             PrefabPath = playerData.CharacterPrefabPath,
             Type = "Player",
             Target = playerData.Target,
-            ProjectilePath = playerData.ProjectilePath,
-            IsRange = playerData.IsRange,
-            ProjectileSpritePath = playerData.ProjectileSpritePath,
-            ProjectilePool = playerData.ProjectilePool
+            ProjectilePrefabPath = _playerAttack.ProjectilePrefabPath,
+            IsRange = _playerAttack.IsRange,
+            ProjectileSpritePath = _playerAttack.ProjectileSpritePath,
+            ProjectilePool = _playerAttack.ProjectilePool
 };
 
         UpdatePlayerStat(PlayerStatManager.Instance.GetPlayerStatData(playerData.UpgradeKey));
@@ -203,7 +204,6 @@ public class CharacterData
             Hp = monsterData.Hp,
             Atk = monsterData.Atk,
             AtkRange = monsterData.AtkRange,
-            AtkCoolTime = monsterData.AtkCoolTime,
             CriRate = monsterData.CriRate,
 
             AttackType = monsterData.AttackType,
@@ -212,7 +212,7 @@ public class CharacterData
             PrefabPath = monsterData.PrefabPath,
             Type = "Monster",
             Target = monsterData.Target,
-            ProjectilePath = monsterData.ProjectilePath,
+            ProjectilePrefabPath = monsterData.ProjectilePrefabPath,
             IsRange = monsterData.IsRange,
             ProjectileSpritePath = monsterData.ProjectileSpritePath,
             ProjectilePool = monsterData.ProjectilePool
@@ -226,7 +226,6 @@ public class CharacterData
         Hp = data.Hp;
         Atk = data.Atk;
         AtkRange = data.AtkRange;
-        AtkCoolTime = data.AtkCoolTime;
         CriRate = data.CriRate;
 
         Mp = data.Mp;

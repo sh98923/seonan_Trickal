@@ -12,7 +12,6 @@ public struct PlayerStatData
     public float Ultimate;
     public float CriRate;
     public float AtkRange;
-    public float AtkCoolTime;
     public float UltCoolTime;
     public bool CanUseUlt;
 }
@@ -35,28 +34,27 @@ public class PlayerStatManager : Singleton<PlayerStatManager>
     {
         TextAsset textAsset = Resources.Load<TextAsset>("Tables/PlayerUpgradeTable");
 
-        string[] rowDatas = textAsset.text.Split("\r\n");
+        string[] rowData = textAsset.text.Split("\r\n");
 
-        for(int i = 1; i < rowDatas.Length; i++)
+        for(int i = 1; i < rowData.Length; i++)
         {
-            string[] colDatas = rowDatas[i].Split(',');
+            string[] colData = rowData[i].Split(',');
 
-            if (colDatas.Length <= 1) continue;
-            if (rowDatas[i] == "") continue;
+            if (colData.Length <= 1) continue;
+            if (rowData[i] == "") continue;
 
             PlayerStatData data;
-            data.Key = int.Parse(colDatas[0]);
-            data.EngName = colDatas[1];
-            data.Hp = float.Parse(colDatas[2]);
-            data.Mp = float.Parse(colDatas[3]);
-            data.Atk = float.Parse(colDatas[4]);
-            data.SkillRate = float.Parse(colDatas[5]);
-            data.Ultimate = float.Parse(colDatas[6]);
-            data.CriRate = float.Parse(colDatas[7]);
-            data.AtkRange = float.Parse(colDatas[8]);
-            data.AtkCoolTime = float.Parse(colDatas[9]);
-            data.UltCoolTime = float.Parse(colDatas[10]);
-            data.CanUseUlt = bool.Parse(colDatas[11]);
+            data.Key = int.Parse(colData[0]);
+            data.EngName = colData[1];
+            data.Hp = float.Parse(colData[2]);
+            data.Mp = float.Parse(colData[3]);
+            data.Atk = float.Parse(colData[4]);
+            data.SkillRate = float.Parse(colData[5]);
+            data.Ultimate = float.Parse(colData[6]);
+            data.CriRate = float.Parse(colData[7]);
+            data.AtkRange = float.Parse(colData[8]);
+            data.UltCoolTime = float.Parse(colData[9]);
+            data.CanUseUlt = bool.Parse(colData[10]);
 
             _playerStatDatas.Add(data.Key, data);
         }

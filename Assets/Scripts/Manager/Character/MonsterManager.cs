@@ -13,14 +13,13 @@ public struct MonsterData
     public float AtkPerWave;
     public float AtkGrowthRate;
     public float AtkRange;
-    public float AtkCoolTime;
     public float CriRate;
     public string EngName;
     public string PrefabPath;
-    public string ProjectilePath;
     public string Layer;
     public string AttackType;
     public string Target;
+    public string[] ProjectilePrefabPath;
     public string[] ProjectileSpritePath;
     public bool[] IsRange;
 }
@@ -68,18 +67,25 @@ public class MonsterManager : Singleton<MonsterManager>
             MonsterData data;
             data.IsRange = new bool[1];
             data.ProjectilePool = new int[1];
+            data.ProjectilePrefabPath = new string[1];
             data.ProjectileSpritePath = new string[1];
 
             data.Key = int.Parse(colData[0]);
             data.EngName = colData[1];
             data.PrefabPath = colData[2];
-            data.ProjectilePath = colData[3];
+
+            data.ProjectilePrefabPath[0] = colData[3];
+
             data.Layer = colData[4];
             data.AttackType = colData[5];
             data.Target = colData[6];
+
             data.ProjectileSpritePath[0] = colData[7];
+
             data.IsRange[0] = bool.Parse(colData[8]);
+
             data.ProjectilePool[0] = int.Parse(colData[9]);
+
             data.SpawnLine = int.Parse(colData[10]);
             data.Hp = float.Parse(colData[11]);
             data.HpPerWave = float.Parse(colData[12]);
@@ -88,8 +94,7 @@ public class MonsterManager : Singleton<MonsterManager>
             data.AtkPerWave = float.Parse(colData[15]);
             data.AtkGrowthRate = float.Parse(colData[16]);
             data.AtkRange = float.Parse(colData[17]);
-            data.AtkCoolTime = float.Parse(colData[18]);
-            data.CriRate = float.Parse(colData[19]);
+            data.CriRate = float.Parse(colData[18]);
 
             _monsterDatas.Add(data.Key, data);
         }

@@ -117,6 +117,8 @@ public class MonsterSpawn : MonoBehaviour
             foreach (GameObject obj in objects)
             {
                 Monster monster = obj.GetComponent<Monster>();
+                monster.SetCharacterData(fullData);
+                monster.SetCharacterActionInit();
                 monster.OnDie += OnMonsterDie;
             }
         }
