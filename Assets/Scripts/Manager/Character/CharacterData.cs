@@ -8,7 +8,8 @@ public class CharacterData
         public string PrefabPath;
         public string AttackType;
         public string Target;
-        public string[] ProjectilePrefabPath;
+        public string ProjectileKey;
+        public string[] AttackEffect;
         public string[] ProjectileSpritePath;
         public float Hp;
         public float Atk;
@@ -76,15 +77,20 @@ public class CharacterData
         set => _shared.Type = value;
     }
 
-    public string[] ProjectilePath
+    public string ProjectileKey
     {
-        get => _shared.ProjectilePrefabPath;
-        set => _shared.ProjectilePrefabPath = value;
+        get => _shared.ProjectileKey;
+        set => _shared.ProjectileKey = value;
     }
 
     public string[] ProjectileSpritePath
     {
         get { return _shared.ProjectileSpritePath; }
+    }
+
+    public string[] AttackEffect
+    {
+        get { return _shared.AttackEffect; }
     }
 
     public int[] PoolSize
@@ -185,10 +191,10 @@ public class CharacterData
             PrefabPath = playerData.CharacterPrefabPath,
             Type = "Player",
             Target = playerData.Target,
-            ProjectilePrefabPath = _playerAttack.ProjectilePrefabPath,
+            ProjectileKey = _playerAttack.ProjectileKey,
             IsRange = _playerAttack.IsRange,
+            AttackEffect = _playerAttack.AttackEffect,
             ProjectileSpritePath = _playerAttack.ProjectileSpritePath,
-            ProjectilePool = _playerAttack.ProjectilePool
 };
 
         UpdatePlayerStat(PlayerStatManager.Instance.GetPlayerStatData(playerData.UpgradeKey));
@@ -212,10 +218,10 @@ public class CharacterData
             PrefabPath = monsterData.PrefabPath,
             Type = "Monster",
             Target = monsterData.Target,
-            ProjectilePrefabPath = monsterData.ProjectilePrefabPath,
             IsRange = monsterData.IsRange,
+            AttackEffect = monsterData.AttackEffect,
+            ProjectileKey = monsterData.ProjectileKey,
             ProjectileSpritePath = monsterData.ProjectileSpritePath,
-            ProjectilePool = monsterData.ProjectilePool
         };
     }
 

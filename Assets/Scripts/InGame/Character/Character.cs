@@ -208,9 +208,7 @@ public class Character : MonoBehaviour
 
     public void TakeDotDamage(float damage, float duration, float tickInterval)
     {
-        float dotDamage = damage * 0.2f;
-        TakeDamage(damage);
-        StartCoroutine(Dot(dotDamage, duration, tickInterval));
+        StartCoroutine(Dot(damage, duration, tickInterval));
     }
 
     private IEnumerator Dot(float damagePerTick, float duration, float tickInterval)

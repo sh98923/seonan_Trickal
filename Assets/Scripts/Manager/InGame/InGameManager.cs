@@ -21,6 +21,11 @@ public class InGameManager : Singleton<InGameManager>
         BattleStart();
     }
 
+    private void Start()
+    {
+        WeaponManager.Instance.CreateWeapon();
+    }
+
     private void BattleStart()
     {
         BattleStateManager.Instance.SetState(BattleState.Reroll);

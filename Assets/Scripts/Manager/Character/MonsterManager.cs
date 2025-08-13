@@ -5,7 +5,6 @@ public struct MonsterData
 {
     public int Key;
     public int SpawnLine;
-    public int[] ProjectilePool;
     public float Hp;
     public float HpPerWave;
     public float HpGrowthRate;
@@ -19,7 +18,8 @@ public struct MonsterData
     public string Layer;
     public string AttackType;
     public string Target;
-    public string[] ProjectilePrefabPath;
+    public string ProjectileKey;
+    public string[] AttackEffect;
     public string[] ProjectileSpritePath;
     public bool[] IsRange;
 }
@@ -66,16 +66,13 @@ public class MonsterManager : Singleton<MonsterManager>
 
             MonsterData data;
             data.IsRange = new bool[1];
-            data.ProjectilePool = new int[1];
-            data.ProjectilePrefabPath = new string[1];
             data.ProjectileSpritePath = new string[1];
+            data.AttackEffect = new string[1];
 
             data.Key = int.Parse(colData[0]);
             data.EngName = colData[1];
             data.PrefabPath = colData[2];
-
-            data.ProjectilePrefabPath[0] = colData[3];
-
+            data.ProjectileKey = colData[3];
             data.Layer = colData[4];
             data.AttackType = colData[5];
             data.Target = colData[6];
@@ -84,7 +81,7 @@ public class MonsterManager : Singleton<MonsterManager>
 
             data.IsRange[0] = bool.Parse(colData[8]);
 
-            data.ProjectilePool[0] = int.Parse(colData[9]);
+            data.AttackEffect[0] = colData[9];
 
             data.SpawnLine = int.Parse(colData[10]);
             data.Hp = float.Parse(colData[11]);

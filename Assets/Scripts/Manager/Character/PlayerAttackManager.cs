@@ -5,10 +5,10 @@ public struct PlayerAttackData
 {
     public int Key;
     public string EngName;
-    public string[] ProjectilePrefabPath;
+    public string ProjectileKey;
     public string[] ProjectileSpritePath;
+    public string[] AttackEffect;
     public bool[] IsRange;
-    public int[] ProjectilePool;
 }
 
 public class PlayerAttackManager : Singleton<PlayerAttackManager>
@@ -41,28 +41,24 @@ public class PlayerAttackManager : Singleton<PlayerAttackManager>
 
             PlayerAttackData data;
             data.IsRange = new bool[3];
-            data.ProjectilePool = new int[3];
-            data.ProjectilePrefabPath = new string[3];
+            data.AttackEffect = new string[3];
             data.ProjectileSpritePath = new string[3];
 
             data.Key = int.Parse(colData[0]);
             data.EngName = colData[1];
+            data.ProjectileKey = colData[2];
 
-            data.ProjectilePrefabPath[0] = colData[2];
-            data.ProjectilePrefabPath[1] = colData[3];
-            data.ProjectilePrefabPath[2] = colData[4];
+            data.ProjectileSpritePath[0] = colData[3];
+            data.ProjectileSpritePath[1] = colData[4];
+            data.ProjectileSpritePath[2] = colData[5];
 
-            data.ProjectileSpritePath[0] = colData[5];
-            data.ProjectileSpritePath[1] = colData[6];
-            data.ProjectileSpritePath[2] = colData[7];
+            data.AttackEffect[0] = colData[6];
+            data.AttackEffect[1] = colData[7];
+            data.AttackEffect[2] = colData[8];
 
-            data.IsRange[0] = bool.Parse(colData[8]);
-            data.IsRange[1] = bool.Parse(colData[9]);
-            data.IsRange[2] = bool.Parse(colData[10]);
-
-            data.ProjectilePool[0] = int.Parse(colData[11]);
-            data.ProjectilePool[1] = int.Parse(colData[12]);
-            data.ProjectilePool[2] = int.Parse(colData[13]);
+            data.IsRange[0] = bool.Parse(colData[9]);
+            data.IsRange[1] = bool.Parse(colData[10]);
+            data.IsRange[2] = bool.Parse(colData[11]);
 
             _playerAttackDatas.Add(data.Key, data);
         }
