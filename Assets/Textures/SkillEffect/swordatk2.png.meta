@@ -1,16 +1,31 @@
 fileFormatVersion: 2
-guid: a17c2ff0f3ec1c14ea6550dfffcebb34
+guid: 054b6da6b60c1a04a93c3c751b02c85b
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 194267116164964566
-    second: 008_0
+      213: -3098434020735566787
+    second: swordatk2_0
   - first:
-      213: 9101181456426357815
-    second: 008_1
+      213: -4052286866121006728
+    second: swordatk2_1
   - first:
-      213: 4181659106735188333
-    second: 008_2
+      213: 9210806620597191901
+    second: swordatk2_2
+  - first:
+      213: -597606557917775118
+    second: swordatk2_3
+  - first:
+      213: -8048804587541078268
+    second: swordatk2_4
+  - first:
+      213: 5917280829235066015
+    second: swordatk2_5
+  - first:
+      213: 401813061024316324
+    second: swordatk2_6
+  - first:
+      213: 2254732129671615900
+    second: swordatk2_7
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -52,7 +67,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -132,13 +147,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: 008_0
+      name: swordatk2_0
       rect:
         serializedVersion: 2
-        x: 54
-        y: 43
-        width: 10
-        height: 7
+        x: 259
+        y: 751
+        width: 257
+        height: 268
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -147,20 +162,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6d06d82b9ec22b200800000000000000
-      internalID: 194267116164964566
+      spriteID: d3c3212aca62005d0800000000000000
+      internalID: -3098434020735566787
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 008_1
+      name: swordatk2_1
       rect:
         serializedVersion: 2
-        x: 58
-        y: 17
-        width: 6
-        height: 29
+        x: 683
+        y: 672
+        width: 323
+        height: 291
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -169,20 +184,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7345aa28054ed4e70800000000000000
-      internalID: 9101181456426357815
+      spriteID: 87160e0b09263c7c0800000000000000
+      internalID: -4052286866121006728
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 008_2
+      name: swordatk2_2
       rect:
         serializedVersion: 2
-        x: 54
-        y: 13
-        width: 10
-        height: 7
+        x: 151
+        y: 63
+        width: 710
+        height: 651
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -191,8 +206,118 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d696abc5dcc380a30800000000000000
-      internalID: 4181659106735188333
+      spriteID: dd4038b02db53df70800000000000000
+      internalID: 9210806620597191901
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: swordatk2_3
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 673
+        width: 44
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2fafdd77000e4b7f0800000000000000
+      internalID: -597606557917775118
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: swordatk2_4
+      rect:
+        serializedVersion: 2
+        x: 682
+        y: 639
+        width: 45
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 40f541d3fd6ec4090800000000000000
+      internalID: -8048804587541078268
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: swordatk2_5
+      rect:
+        serializedVersion: 2
+        x: 802
+        y: 632
+        width: 28
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f94f8c620976e1250800000000000000
+      internalID: 5917280829235066015
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: swordatk2_6
+      rect:
+        serializedVersion: 2
+        x: 818
+        y: 483
+        width: 64
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4ab7770a9d6839500800000000000000
+      internalID: 401813061024316324
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: swordatk2_7
+      rect:
+        serializedVersion: 2
+        x: 855
+        y: 351
+        width: 46
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c959cb40dea6a4f10800000000000000
+      internalID: 2254732129671615900
       vertices: []
       indices: 
       edges: []
@@ -201,7 +326,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -210,10 +335,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      008_0: 194267116164964566
-      008_1: 9101181456426357815
-      008_2: 4181659106735188333
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
