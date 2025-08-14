@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -23,7 +22,6 @@ public class Character : MonoBehaviour
         remove { _onDie -= value; }
     }
 
-    [SerializeField] public Transform _attackPoint;
     protected Animator _animator;
     protected CharacterAction[] _action;
     protected Collider2D _targetCollider;
@@ -47,14 +45,28 @@ public class Character : MonoBehaviour
     protected float _atk = 0.0f;
     protected float _criRate = 0.0f;
     protected float _attackRange = 0.0f;
-    protected float _atkCoolTime = 0.0f;
+    //protected float _atkCoolTime = 0.0f;
     protected float _moveSpeed = 2.0f;
 
     protected bool _isAttacking = false;
 
+    private Transform _atkPoint;
+    public Transform AtkPoint
+    {
+        get { return _atkPoint; }
+    }
+    private Transform _centerPoint;
+    public Transform CenterPoint
+    {
+        get { return _centerPoint; }
+    }
+
     private Collider2D _myCollider;
     private SpriteRenderer[] _spriteRenderers;
 
+    private Coroutine _slowCoroutine = null;
+
+    private float _animLengthRate = 1.0f;
     private float _fadeDuration = 3.0f;
     private float _attackCoolTimer = 0.0f;
 
@@ -63,6 +75,8 @@ public class Character : MonoBehaviour
     protected void Awake()
     {
         _scale = transform.localScale;
+        _atkPoint = transform.Find("AtkPos");
+        _centerPoint = transform.Find("CenterPos");
         _action = GetComponents<CharacterAction>();
         _animator = GetComponent<Animator>();
         _myCollider = GetComponent<Collider2D>();
@@ -170,16 +184,16 @@ public class Character : MonoBehaviour
             _animator.SetTrigger("Attack");
         }
 
-        StartCoroutine(SetCoolTime());
+        //StartCoroutine(SetCoolTime());
     }
 
-    private float GetCurrentAnimationLength()
+   /* private float GetCurrentAnimationLength()
     {
         AnimatorClipInfo[] clipInfos = _animator.GetCurrentAnimatorClipInfo(0);
         if (clipInfos.Length > 0.0f)
         {
             // 일반적으로 하나만 존재하지만 여러 개일 수도 있음 -> 첫 번째 클립의 길이를 가져옴
-            return clipInfos[0].clip.length;
+            return clipInfos[0].clip.length * _animLengthRate;
         }
 
         return 0.0f;
@@ -192,7 +206,7 @@ public class Character : MonoBehaviour
         float animLength = GetCurrentAnimationLength();
 
         _atkCoolTime = animLength;
-    }
+    }*/
 
     public void TakeDamage(float damage)
     {
@@ -227,6 +241,26 @@ public class Character : MonoBehaviour
         }
     }
 
+    public void ApplyAttackSlow(float duration, float speed)
+    {
+        if (_slowCoroutine != null)
+            StopCoroutine(_slowCoroutine);
+
+        _slowCoroutine = StartCoroutine(SlowAttackCoroutine(duration, speed));
+    }
+
+    private IEnumerator SlowAttackCoroutine(float duration, float speed)
+    {
+        _animLengthRate = 1 / speed;
+        _animator.speed = speed;
+
+        yield return new WaitForSeconds(duration);
+
+        _animLengthRate = 1.0f;
+        _animator.speed = 1.0f;
+        _slowCoroutine = null; // 코루틴 종료 표시
+    }   
+
     protected void ShowDamageText(float damage)
     {
         GameObject damageText = PoolingManager.Instance.Pop("DamageText");
@@ -237,15 +271,18 @@ public class Character : MonoBehaviour
 
     private void AttackCoolTime()
     {
-        if (_isAttacking)
-        {
-            _attackCoolTimer += Time.deltaTime;
+        if (!_isAttacking)
+            return;
 
-            if (_attackCoolTimer >= _atkCoolTime)
-            {
-                _attackCoolTimer -= _atkCoolTime;
-                _isAttacking = false;
-            }
+        AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
+
+        bool isNotTransitioning = !_animator.IsInTransition(0);
+        bool hasAnimationEnded = stateInfo.normalizedTime >= 1.0f;
+
+        // 공격 애니메이션이 끝났거나 다른 상태로 넘어갔을 때만 종료
+        if (isNotTransitioning && hasAnimationEnded)
+        {
+            _isAttacking = false;
         }
     }
 

@@ -16,6 +16,7 @@ public class CharacterData
         public float CriRate;
         public float AtkRange;
         public float AtkCoolTime;
+        public float[] AtkSpeed;
         public int[] ProjectilePool;
         public bool[] IsRange;
     }
@@ -55,6 +56,11 @@ public class CharacterData
     {
         get => _shared.CriRate;
         set => _shared.CriRate = value;
+    }
+
+    public float[] AtkSpeed
+    {
+        get => _shared.AtkSpeed;
     }
 
     public string AtkType
@@ -176,27 +182,34 @@ public class CharacterData
     public CharacterData(PlayerData playerData)
     {
         _playerInfo = playerData;
+
+        // 공격 데이터 가져오기
         _playerAttack = PlayerAttackManager.Instance.GetplayerAttackData(playerData.AttackKey);
 
+        // 공통 Stats 초기화
         _shared = new SharedStats
         {
             Hp = _playerStat.Hp,
             Atk = _playerStat.Atk,
-            AtkRange = _playerStat.AtkRange,
             CriRate = _playerStat.CriRate,
+            AtkRange = _playerStat.AtkRange,
 
-            AttackType = playerData.AttackType,
-            Layer = playerData.Layer,
-            EngName = playerData.EngName,
-            PrefabPath = playerData.CharacterPrefabPath,
             Type = "Player",
+            Layer = playerData.Layer,
             Target = playerData.Target,
-            ProjectileKey = _playerAttack.ProjectileKey,
-            IsRange = _playerAttack.IsRange,
-            AttackEffect = _playerAttack.AttackEffect,
-            ProjectileSpritePath = _playerAttack.ProjectileSpritePath,
-};
+            EngName = playerData.EngName,
+            AttackType = playerData.AttackType,
+            PrefabPath = playerData.CharacterPrefabPath,
 
+            // 공격 관련 데이터
+            IsRange = _playerAttack.IsRange,
+            AtkSpeed = _playerAttack.AtkSpeed,
+            AttackEffect = _playerAttack.AtkEffect,
+            ProjectileKey = _playerAttack.ProjectileKey,
+            ProjectileSpritePath = _playerAttack.ProjectileSpritePath,
+        };
+
+        // 플레이어 스탯 업그레이드 적용
         UpdatePlayerStat(PlayerStatManager.Instance.GetPlayerStatData(playerData.UpgradeKey));
     }
 
@@ -205,21 +218,25 @@ public class CharacterData
     {
         _monsterInfo = monsterData;
 
+        // 공통 Stats 초기화
         _shared = new SharedStats
         {
             Hp = monsterData.Hp,
             Atk = monsterData.Atk,
-            AtkRange = monsterData.AtkRange,
             CriRate = monsterData.CriRate,
+            AtkRange = monsterData.AtkRange,
 
-            AttackType = monsterData.AttackType,
+            Type = "Monster",
             Layer = monsterData.Layer,
             EngName = monsterData.EngName,
+            AttackType = monsterData.AttackType,
             PrefabPath = monsterData.PrefabPath,
-            Type = "Monster",
+
+            // 공격 관련 데이터
             Target = monsterData.Target,
             IsRange = monsterData.IsRange,
-            AttackEffect = monsterData.AttackEffect,
+            AtkSpeed = monsterData.AtkSpeed,
+            AttackEffect = monsterData.AtkEffect,
             ProjectileKey = monsterData.ProjectileKey,
             ProjectileSpritePath = monsterData.ProjectileSpritePath,
         };

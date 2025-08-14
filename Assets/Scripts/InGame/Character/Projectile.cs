@@ -7,8 +7,9 @@ public class ProjectileData
     public Vector3 Direction;
     public AttackEffectType EffectType;
     public float Damage;
+    public float Speed;
     public string Key;
-    public string Tag;
+    public string Name;
     public bool IsFlipX;
 }
 
@@ -28,15 +29,15 @@ public class Projectile : MonoBehaviour
     private float _dotDuration;
     private float _dotInterval;
 
-    [SerializeField] private float _speed = 10.0f;
-    [SerializeField] private float _lifeTime = 3.0f;
+    private float _speed;
+    private readonly float _lifeTime = 3.0f;
     private readonly float _offset = 0.5f;
 
     private SpriteRenderer _sprite;
 
     private Vector2 _direction;
 
-    protected string _tag;
+    protected string _name;
 
     private float _lifeTimer;
 
@@ -70,11 +71,27 @@ public class Projectile : MonoBehaviour
     {
         transform.position = data.StartPos;
 
-        _tag = data.Tag;
+        _name = data.Name;
         _effectType = data.EffectType;
+        _speed = data.Speed;
         _baseDamage = data.Damage;
         _dotDamage = _baseDamage * 0.15f;
         _direction = data.Direction.normalized;
+
+        float angle = Mathf.Atan2(_direction.y, _direction.x) * Mathf.Rad2Deg;
+
+        if (transform.localScale.x > 0)
+        {
+            angle += 180.0f;
+
+            _direction = Vector2.left;
+        }
+        else
+        {
+            _direction = Vector2.right;
+        }
+
+        transform.rotation = Quaternion.Euler(0.0f, 0.0f, angle);
     }
 
     private void ApplyDamage(Character target)
@@ -87,11 +104,16 @@ public class Projectile : MonoBehaviour
         target.TakeDotDamage(_dotDamage, 10, 2.2f);
     }
 
+    private void ApplySlow(Character target)
+    {
+        target.ApplyAttackSlow(15, 0.65f);
+    }
+
     protected void OnTriggerEnter2D(Collider2D collision)
     {
         if (_hasHit) return;
 
-        if (collision.CompareTag(_tag))
+        if (collision.name == _name)
         {
             _hasHit = true;
 
@@ -107,7 +129,7 @@ public class Projectile : MonoBehaviour
                     ApplyDot(target);
                     break;
                 case AttackEffectType.Slow:
-                    //ApplySlow(target);
+                    ApplySlow(target);
                     break;
             }
 

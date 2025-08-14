@@ -7,7 +7,6 @@ public class CharacterAttack : CharacterAction
     private Collider2D _target;
     private Character _character;
     private List<Sprite> _sprites = new List<Sprite>();
-    private Dictionary<AttackType, List<GameObject>> _projectiles = new Dictionary<AttackType, List<GameObject>>();
 
     private AttackType _type;
 
@@ -47,12 +46,14 @@ public class CharacterAttack : CharacterAction
 
     private void RangeAttack(Collider2D target, AttackType type, float damage)
     {
+        Character targetChar = target.GetComponent<Character>();
         string effectName = _character.Data.AttackEffect[(int)type];
+        float attackSpeed = _character.Data.AtkSpeed[(int)type];
         bool success = Enum.TryParse(effectName, out AttackEffectType effectType);
 
         if (!success) return;
 
-        Vector2 dir = target.transform.position - transform.position;
+        Vector2 dir = targetChar.CenterPoint.position - _character.CenterPoint.position;
 
         if (_character.transform.localScale.x < 0)
         {
@@ -63,12 +64,13 @@ public class CharacterAttack : CharacterAction
             new ProjectileData
             {
                 Sprite = _sprites[(int)type],
-                StartPos = _character._attackPoint.position,
+                StartPos = _character.AtkPoint.position,
                 Direction = dir,
                 EffectType = effectType,
+                Speed = attackSpeed,
                 Damage = damage,
                 Key = _character.Data.ProjectileKey,
-                Tag = _character.Data.Target,
+                Name = targetChar.name,
                 IsFlipX = _isFlipX
             }; 
         

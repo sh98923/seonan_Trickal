@@ -13,13 +13,14 @@ public struct MonsterData
     public float AtkGrowthRate;
     public float AtkRange;
     public float CriRate;
+    public float[] AtkSpeed;
     public string EngName;
     public string PrefabPath;
     public string Layer;
     public string AttackType;
     public string Target;
     public string ProjectileKey;
-    public string[] AttackEffect;
+    public string[] AtkEffect;
     public string[] ProjectileSpritePath;
     public bool[] IsRange;
 }
@@ -66,8 +67,9 @@ public class MonsterManager : Singleton<MonsterManager>
 
             MonsterData data;
             data.IsRange = new bool[1];
+            data.AtkSpeed = new float[1];
+            data.AtkEffect = new string[1];
             data.ProjectileSpritePath = new string[1];
-            data.AttackEffect = new string[1];
 
             data.Key = int.Parse(colData[0]);
             data.EngName = colData[1];
@@ -81,17 +83,19 @@ public class MonsterManager : Singleton<MonsterManager>
 
             data.IsRange[0] = bool.Parse(colData[8]);
 
-            data.AttackEffect[0] = colData[9];
+            data.AtkEffect[0] = colData[9];
 
-            data.SpawnLine = int.Parse(colData[10]);
-            data.Hp = float.Parse(colData[11]);
-            data.HpPerWave = float.Parse(colData[12]);
-            data.HpGrowthRate = float.Parse(colData[13]);
-            data.Atk = float.Parse(colData[14]);
-            data.AtkPerWave = float.Parse(colData[15]);
-            data.AtkGrowthRate = float.Parse(colData[16]);
-            data.AtkRange = float.Parse(colData[17]);
-            data.CriRate = float.Parse(colData[18]);
+            data.AtkSpeed[0] = float.Parse(colData[10]);
+
+            data.SpawnLine = int.Parse(colData[11]);
+            data.Hp = float.Parse(colData[12]);
+            data.HpPerWave = float.Parse(colData[13]);
+            data.HpGrowthRate = float.Parse(colData[14]);
+            data.Atk = float.Parse(colData[15]);
+            data.AtkPerWave = float.Parse(colData[16]);
+            data.AtkGrowthRate = float.Parse(colData[17]);
+            data.AtkRange = float.Parse(colData[18]);
+            data.CriRate = float.Parse(colData[19]);
 
             _monsterDatas.Add(data.Key, data);
         }

@@ -7,7 +7,8 @@ public struct PlayerAttackData
     public string EngName;
     public string ProjectileKey;
     public string[] ProjectileSpritePath;
-    public string[] AttackEffect;
+    public string[] AtkEffect;
+    public float[] AtkSpeed;
     public bool[] IsRange;
 }
 
@@ -41,7 +42,8 @@ public class PlayerAttackManager : Singleton<PlayerAttackManager>
 
             PlayerAttackData data;
             data.IsRange = new bool[3];
-            data.AttackEffect = new string[3];
+            data.AtkSpeed = new float[3];
+            data.AtkEffect = new string[3];
             data.ProjectileSpritePath = new string[3];
 
             data.Key = int.Parse(colData[0]);
@@ -52,13 +54,17 @@ public class PlayerAttackManager : Singleton<PlayerAttackManager>
             data.ProjectileSpritePath[1] = colData[4];
             data.ProjectileSpritePath[2] = colData[5];
 
-            data.AttackEffect[0] = colData[6];
-            data.AttackEffect[1] = colData[7];
-            data.AttackEffect[2] = colData[8];
+            data.AtkEffect[0] = colData[6];
+            data.AtkEffect[1] = colData[7];
+            data.AtkEffect[2] = colData[8];
 
-            data.IsRange[0] = bool.Parse(colData[9]);
-            data.IsRange[1] = bool.Parse(colData[10]);
-            data.IsRange[2] = bool.Parse(colData[11]);
+            data.AtkSpeed[0] = float.Parse(colData[9]);
+            data.AtkSpeed[1] = float.Parse(colData[10]);
+            data.AtkSpeed[2] = float.Parse(colData[11]);
+
+            data.IsRange[0] = bool.Parse(colData[12]);
+            data.IsRange[1] = bool.Parse(colData[13]);
+            data.IsRange[2] = bool.Parse(colData[14]);
 
             _playerAttackDatas.Add(data.Key, data);
         }

@@ -1,6 +1,6 @@
 Key,StageKey,MonsterKey,Name,Count,SpawnLine
 2000,1000,200,SkeltonMinion,2,1
-2001,1000,201,SkeltonArcher,2,2
+2001,1000,201,SkeltonArcher,0,2
 2002,1001,202,SkeltonDefender,1,0
 2003,1001,200,SkeltonMinion,3,1
 2004,1001,201,SkeltonArcher,3,2

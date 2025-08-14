@@ -39,7 +39,7 @@ public class Player : Character
         if (Input.GetKeyDown(KeyCode.S))
         {
             _isFront = true;
-            _animator.SetTrigger("Ult");
+            _animator.SetTrigger("Ult"); 
         }
         if (Input.GetKeyDown(KeyCode.A))
         {
@@ -133,16 +133,20 @@ public class Player : Character
 
         _isAttacking = true;
 
-        if (_curMp >= _data.Mp)
+        if (Input.GetKeyDown(KeyCode.A))
         {
             _animator.SetTrigger("Skill");
         }
-        else
+        else if(Input.GetKeyDown(KeyCode.D))
         {
             _animator.SetTrigger("Attack");
         }
+        else if(Input.GetKeyDown(KeyCode.S))
+        {
+            _animator.SetTrigger("Ult");
+        }
 
-        StartCoroutine(SetCoolTime());
+        //StartCoroutine(SetCoolTime());
     }
 
     /* public void OnAttackHit()
@@ -160,6 +164,13 @@ public class Player : Character
         float skillAtk = _data.Atk * _data.SkillRate;
         _curMp -= _data.Mp;
         _action[(int)ActionType.Attack].SetAttackInfo(_targetCollider, AttackType.Skill, skillAtk, _data.IsRangeAttack[(int)AttackType.Skill]);
+        _action[(int)ActionType.Attack].Excute();
+    }
+
+    public void OnUltHit()
+    {
+        float skillAtk = _data.Atk * _data.Ultimate;
+        _action[(int)ActionType.Attack].SetAttackInfo(_targetCollider, AttackType.Ult, skillAtk, _data.IsRangeAttack[(int)AttackType.Ult]);
         _action[(int)ActionType.Attack].Excute();
     }
 
@@ -186,7 +197,7 @@ public class Player : Character
                 continue;
             }
 
-            _curMp += 20.0f;
+            _curMp += 10.0f;
             yield return new WaitForSeconds(1.0f);
         }
     }

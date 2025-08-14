@@ -21,7 +21,7 @@ public class PoolingManager : Singleton<PoolingManager>
         for (int i = 0; i < poolSize; i++)
         {
             GameObject obj = Instantiate(prefab, parent);
-            obj.name = prefab.name;
+            obj.name = prefab.name + "_" + i;
             obj.SetActive(false);
             objects.Add(obj);
         }
