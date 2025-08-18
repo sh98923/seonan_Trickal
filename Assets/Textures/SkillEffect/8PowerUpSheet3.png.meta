@@ -1,31 +1,49 @@
 fileFormatVersion: 2
-guid: 054b6da6b60c1a04a93c3c751b02c85b
+guid: 322e14228cbe76348ac3c37c490c18e6
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -3098434020735566787
-    second: swordatk2_0
+      213: -9198304895910007559
+    second: 8PowerUpSheet3_0
   - first:
-      213: -4052286866121006728
-    second: swordatk2_1
+      213: -2203415948927277109
+    second: 8PowerUpSheet3_1
   - first:
-      213: 9210806620597191901
-    second: swordatk2_2
+      213: 2196251652059147916
+    second: 8PowerUpSheet3_2
   - first:
-      213: -597606557917775118
-    second: swordatk2_3
+      213: -2296179483471030902
+    second: 8PowerUpSheet3_3
   - first:
-      213: -8048804587541078268
-    second: swordatk2_4
+      213: 4999343907038303171
+    second: 8PowerUpSheet3_4
   - first:
-      213: 5917280829235066015
-    second: swordatk2_5
+      213: 8849047459236894030
+    second: 8PowerUpSheet3_5
   - first:
-      213: 401813061024316324
-    second: swordatk2_6
+      213: 8480287544865811066
+    second: 8PowerUpSheet3_6
   - first:
-      213: 2254732129671615900
-    second: swordatk2_7
+      213: -9076058931460662876
+    second: 8PowerUpSheet3_7
+  - first:
+      213: -1428777530382157730
+    second: 8PowerUpSheet3_8
+  - first:
+      213: 8788316032068476216
+    second: 8PowerUpSheet3_9
+  - first:
+      213: -5153233872083104870
+    second: 8PowerUpSheet3_10
+  - first:
+      213: -6098562246016819257
+    second: 8PowerUpSheet3_11
+  - first:
+      213: 3662737573608249322
+    second: 8PowerUpSheet3_12
+  - first:
+      213: -2884912949679715236
+    second: 8PowerUpSheet3_13
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -67,7 +85,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -147,177 +165,177 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: swordatk2_0
+      name: 8PowerUpSheet3_0
       rect:
         serializedVersion: 2
-        x: 259
-        y: 751
-        width: 257
-        height: 268
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: d3c3212aca62005d0800000000000000
-      internalID: -3098434020735566787
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: swordatk2_1
-      rect:
-        serializedVersion: 2
-        x: 683
-        y: 672
-        width: 323
-        height: 291
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 87160e0b09263c7c0800000000000000
-      internalID: -4052286866121006728
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: swordatk2_2
-      rect:
-        serializedVersion: 2
-        x: 151
-        y: 63
-        width: 710
-        height: 651
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: dd4038b02db53df70800000000000000
-      internalID: 9210806620597191901
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: swordatk2_3
-      rect:
-        serializedVersion: 2
-        x: 300
-        y: 673
-        width: 44
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 2fafdd77000e4b7f0800000000000000
-      internalID: -597606557917775118
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: swordatk2_4
-      rect:
-        serializedVersion: 2
-        x: 682
-        y: 639
-        width: 45
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 40f541d3fd6ec4090800000000000000
-      internalID: -8048804587541078268
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: swordatk2_5
-      rect:
-        serializedVersion: 2
-        x: 802
-        y: 632
-        width: 28
-        height: 25
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: f94f8c620976e1250800000000000000
-      internalID: 5917280829235066015
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: swordatk2_6
-      rect:
-        serializedVersion: 2
-        x: 818
-        y: 483
+        x: 0
+        y: 0
         width: 64
-        height: 66
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 4ab7770a9d6839500800000000000000
-      internalID: 401813061024316324
+      spriteID: 2647e7520a59b3141bfc8a5445b927f3
+      internalID: 1109022483
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: swordatk2_7
+      name: 8PowerUpSheet3_1
       rect:
         serializedVersion: 2
-        x: 855
-        y: 351
-        width: 46
-        height: 42
+        x: 64
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: c959cb40dea6a4f10800000000000000
-      internalID: 2254732129671615900
+      spriteID: 0570cb32089a5f94aaa4d02630a55ef0
+      internalID: 1622219953
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 8PowerUpSheet3_2
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 95684ef2bc6b55a41bc3db6b4a4c895f
+      internalID: -1042887361
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 8PowerUpSheet3_3
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b62ecb90b7d2622478e2bd5eb71bc4b4
+      internalID: -1926471460
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 8PowerUpSheet3_4
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c1cccacb91f07ff4f80aa2bf7ac121dd
+      internalID: 293486145
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 8PowerUpSheet3_5
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: df38afb3929c01546aae640790c09cda
+      internalID: 1272910615
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 8PowerUpSheet3_6
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9a865593d0fb6b14290cfef1e1802ff6
+      internalID: 1745406396
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 8PowerUpSheet3_7
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a91efc4a26ee2ac4d8b29f1d1707a50e
+      internalID: -1087155288
       vertices: []
       indices: 
       edges: []
@@ -326,7 +344,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 4f16b11eb6237f14280b87a77df94459
     internalID: 0
     vertices: []
     indices: 
@@ -336,14 +354,14 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      swordatk2_0: -3098434020735566787
-      swordatk2_1: -4052286866121006728
-      swordatk2_2: 9210806620597191901
-      swordatk2_3: -597606557917775118
-      swordatk2_4: -8048804587541078268
-      swordatk2_5: 5917280829235066015
-      swordatk2_6: 401813061024316324
-      swordatk2_7: 2254732129671615900
+      8PowerUpSheet3_0: 1109022483
+      8PowerUpSheet3_1: 1622219953
+      8PowerUpSheet3_2: -1042887361
+      8PowerUpSheet3_3: -1926471460
+      8PowerUpSheet3_4: 293486145
+      8PowerUpSheet3_5: 1272910615
+      8PowerUpSheet3_6: 1745406396
+      8PowerUpSheet3_7: -1087155288
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
