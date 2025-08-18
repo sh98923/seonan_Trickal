@@ -1,8 +1,4 @@
 using UnityEngine;
-public enum AttackType
-{
-    Base, Skill, Ult
-}
 
 public abstract class CharacterAction : MonoBehaviour
 {

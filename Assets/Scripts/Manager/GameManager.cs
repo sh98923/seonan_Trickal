@@ -3,12 +3,6 @@ using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
-    private struct PlayerUnitData
-    {
-        public Vector3 spawnPos;
-        public PlayerData playerData;
-    }
-
     private List<PlayerData> _spawnablePlayerDatas = new List<PlayerData>();
     public List<PlayerData> SpawnablePlayerDatas
     {
@@ -16,6 +10,10 @@ public class GameManager : Singleton<GameManager>
     }
 
     private Dictionary<int, PlayerUnitData> _deckUnitDatas = new Dictionary<int, PlayerUnitData>();
+    public Dictionary<int, PlayerUnitData> DeckUnitDatas
+    {
+        get { return _deckUnitDatas; }
+    }
 
     private int _mapBGKey;
     public int MapBGKey
@@ -57,24 +55,5 @@ public class GameManager : Singleton<GameManager>
 
         _spawnablePlayerDatas.Add(data);
         _deckUnitDatas.Add(data.Key, unitData);
-    }
-
-    public void RegisterDeckUnits(Transform parent)
-    {
-        foreach (PlayerUnitData data in _deckUnitDatas.Values)
-        {
-            PlayerData playerData = data.playerData;
-
-            GameObject prefab = Resources.Load<GameObject>(playerData.CharacterPrefabPath);
-
-            GameObject player = Instantiate(prefab, parent);
-            player.name = playerData.EngName;
-            player.layer = LayerMask.NameToLayer(playerData.Layer);
-            player.transform.position = data.spawnPos;
-            player.SetActive(false);
-
-            CharacterData characterData = new CharacterData(playerData);
-            BattleUnitManager.Instance.RegisterUnit(characterData, player);
-        }
     }
 }

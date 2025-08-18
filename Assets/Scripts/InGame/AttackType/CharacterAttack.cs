@@ -2,6 +2,11 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum AttackType
+{
+    Base, Skill, Ult
+}
+
 public class CharacterAttack : CharacterAction
 {
     private Collider2D _target;
