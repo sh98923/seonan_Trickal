@@ -5,18 +5,17 @@ public class Player : Character
 {
     private GameObject _skillEffect;
 
+    private AttackType _atkType;
     private Vector3 _originPos;
 
     private float _curMp = 0.0f;
-
-    private bool _isFront = false;
 
     private void Awake()
     {
         base.Awake();
 
-        Transform lastChild = transform.GetChild(transform.childCount - 1);
-        _skillEffect = lastChild.gameObject;
+        _skillEffect = transform.Find("SkillEffect").gameObject;
+
         SkillEffectOff();
 
         _moveDir = Vector2.right;
@@ -38,23 +37,24 @@ public class Player : Character
 
         if (Input.GetKeyDown(KeyCode.S))
         {
-            _isFront = true;
+            _atkType = AttackType.Ult;
             _animator.SetTrigger("Ult"); 
         }
         if (Input.GetKeyDown(KeyCode.A))
         {
+            _atkType = AttackType.Base;
             _animator.SetTrigger("Attack");
         }
         if (Input.GetKeyDown(KeyCode.D))
         {
-            _isFront = true;
+            _atkType = AttackType.Skill;
             _animator.SetTrigger("Skill");
         }
     }
 
     private void SkillEffectOn()
     {
-        int sortNum = _isFront ? _sortingGroup.sortingOrder + 1 : -101;
+        int sortNum = _data.IsEffectInFront[(int)_atkType] ? _sortingGroup.sortingOrder + 1 : -101;
 
         _skillEffect.GetComponent<SpriteRenderer>().sortingOrder = sortNum;
         _skillEffect.SetActive(true);
@@ -133,17 +133,20 @@ public class Player : Character
 
         _isAttacking = true;
 
-        if (Input.GetKeyDown(KeyCode.A))
+        if (_curMp >= _data.Mp)
         {
+            _atkType = AttackType.Skill;
             _animator.SetTrigger("Skill");
         }
-        else if(Input.GetKeyDown(KeyCode.D))
+        else if (Input.GetKeyDown(KeyCode.S))
         {
-            _animator.SetTrigger("Attack");
-        }
-        else if(Input.GetKeyDown(KeyCode.S))
-        {
+            _atkType = AttackType.Ult;
             _animator.SetTrigger("Ult");
+        }
+        else
+        {
+            _atkType = AttackType.Base;
+            _animator.SetTrigger("Attack");
         }
 
         //StartCoroutine(SetCoolTime());

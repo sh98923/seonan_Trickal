@@ -13,17 +13,19 @@ AnimatorOverrideController:
     m_OverrideClip: {fileID: 7400000, guid: c66e5eb2778574f1abbd40dcb05e1df7, type: 2}
   - m_OriginalClip: {fileID: 7400000, guid: e5c0896e9a6b8054da7d8859df3fd7f6, type: 2}
     m_OverrideClip: {fileID: 7400000, guid: e23bc41dfc64fef439b0a9d4b49d7d6a, type: 2}
-  - m_OriginalClip: {fileID: 7400000, guid: 15f49a0f0c608e94ca0fb73191df3b92, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: 01ea6d3db13e8d142af020fd79ff468e, type: 2}
-  - m_OriginalClip: {fileID: 7400000, guid: d7e28d8202df85d4287051a484e0c2d8, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: 0c15fb8f99f20df41b6dc6af97065d71, type: 2}
   - m_OriginalClip: {fileID: 7400000, guid: b81ad915777074048bdcc320f687ee1e, type: 2}
     m_OverrideClip: {fileID: 7400000, guid: b81ad915777074048bdcc320f687ee1e, type: 2}
   - m_OriginalClip: {fileID: 7400000, guid: b1692a522a645ad488394d241ad662df, type: 2}
     m_OverrideClip: {fileID: 7400000, guid: b1692a522a645ad488394d241ad662df, type: 2}
   - m_OriginalClip: {fileID: 7400000, guid: 961cec37b6c80a945825fec2937bd1fd, type: 2}
     m_OverrideClip: {fileID: 7400000, guid: 23e24fe4614c5ec44910ae54147199a7, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 489fb0c408bd6744b86df6dbdc44fc45, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 735ab703bd5b0374d9c6c5556c32373b, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: d7e28d8202df85d4287051a484e0c2d8, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 01ea6d3db13e8d142af020fd79ff468e, type: 2}
   - m_OriginalClip: {fileID: 7400000, guid: b5ba3bbb770d5e942a1b93e85d2f56a6, type: 2}
     m_OverrideClip: {fileID: 7400000, guid: 07827917da8f86146aa4cccb7fad495c, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 15f49a0f0c608e94ca0fb73191df3b92, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 0c15fb8f99f20df41b6dc6af97065d71, type: 2}
   - m_OriginalClip: {fileID: 7400000, guid: 0b718c87646dc6148b1fec4a2294b0c0, type: 2}
     m_OverrideClip: {fileID: 7400000, guid: e17facd25485390468ede87e78638dbb, type: 2}

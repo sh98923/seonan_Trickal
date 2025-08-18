@@ -1,31 +1,31 @@
 fileFormatVersion: 2
-guid: 054b6da6b60c1a04a93c3c751b02c85b
+guid: 3b31f022ece89934fbf6cca11daec39d
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -3098434020735566787
-    second: swordatk2_0
+      213: -1937549999767951684
+    second: SwingEffect_0
   - first:
-      213: -4052286866121006728
-    second: swordatk2_1
+      213: -6674894464477510874
+    second: SwingEffect_1
   - first:
-      213: 9210806620597191901
-    second: swordatk2_2
+      213: 5955918486051195438
+    second: SwingEffect_2
   - first:
-      213: -597606557917775118
-    second: swordatk2_3
+      213: -4653972319855523723
+    second: SwingEffect_3
   - first:
-      213: -8048804587541078268
-    second: swordatk2_4
+      213: -801675451012512411
+    second: SwingEffect_4
   - first:
-      213: 5917280829235066015
-    second: swordatk2_5
+      213: -9113568782196150108
+    second: SwingEffect_5
   - first:
-      213: 401813061024316324
-    second: swordatk2_6
+      213: 4635339857978754493
+    second: SwingEffect_6
   - first:
-      213: 2254732129671615900
-    second: swordatk2_7
+      213: -5476089912230142473
+    second: SwingEffect_7
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -130,194 +130,181 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: iOS
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: swordatk2_0
+      name: SwingEffect_0
       rect:
         serializedVersion: 2
-        x: 259
-        y: 751
-        width: 257
-        height: 268
+        x: 0
+        y: 0
+        width: 57
+        height: 110
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: d3c3212aca62005d0800000000000000
-      internalID: -3098434020735566787
+      spriteID: e7031cc3330712148815d5dd45c08741
+      internalID: -850131631
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: swordatk2_1
+      name: SwingEffect_1
       rect:
         serializedVersion: 2
-        x: 683
-        y: 672
-        width: 323
-        height: 291
+        x: 57
+        y: 0
+        width: 57
+        height: 110
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 87160e0b09263c7c0800000000000000
-      internalID: -4052286866121006728
+      spriteID: a2d17bf0a71135b42ba3dd45d81942b3
+      internalID: -1101204529
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: swordatk2_2
+      name: SwingEffect_2
       rect:
         serializedVersion: 2
-        x: 151
-        y: 63
-        width: 710
-        height: 651
+        x: 114
+        y: 0
+        width: 57
+        height: 110
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: dd4038b02db53df70800000000000000
-      internalID: 9210806620597191901
+      spriteID: efbda40432504f8419004c5514523704
+      internalID: 982249361
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: swordatk2_3
+      name: SwingEffect_3
       rect:
         serializedVersion: 2
-        x: 300
-        y: 673
-        width: 44
-        height: 64
+        x: 171
+        y: 0
+        width: 57
+        height: 110
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 2fafdd77000e4b7f0800000000000000
-      internalID: -597606557917775118
+      spriteID: 5844398c8824b294db613fa551912718
+      internalID: 1590763645
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: swordatk2_4
+      name: SwingEffect_4
       rect:
         serializedVersion: 2
-        x: 682
-        y: 639
-        width: 45
-        height: 64
+        x: 228
+        y: 0
+        width: 57
+        height: 110
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 40f541d3fd6ec4090800000000000000
-      internalID: -8048804587541078268
+      spriteID: 905e22b07f594df41a1bad6bd1bd38a5
+      internalID: -339975198
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: swordatk2_5
+      name: SwingEffect_5
       rect:
         serializedVersion: 2
-        x: 802
-        y: 632
-        width: 28
-        height: 25
+        x: 285
+        y: 0
+        width: 57
+        height: 110
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: f94f8c620976e1250800000000000000
-      internalID: 5917280829235066015
+      spriteID: 85c539d104bcc0c4193699efac4ae4d6
+      internalID: -1891452929
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: swordatk2_6
+      name: SwingEffect_6
       rect:
         serializedVersion: 2
-        x: 818
-        y: 483
-        width: 64
-        height: 66
+        x: 342
+        y: 0
+        width: 57
+        height: 110
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 4ab7770a9d6839500800000000000000
-      internalID: 401813061024316324
+      spriteID: da860abfdd4e0ad46be715b107499797
+      internalID: 1709369594
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: swordatk2_7
+      name: SwingEffect_7
       rect:
         serializedVersion: 2
-        x: 855
-        y: 351
-        width: 46
-        height: 42
+        x: 399
+        y: 0
+        width: 57
+        height: 110
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: c959cb40dea6a4f10800000000000000
-      internalID: 2254732129671615900
+      spriteID: 5e2e03cc467832747aeb24d4b91d25ac
+      internalID: -1833223691
       vertices: []
       indices: 
       edges: []
@@ -326,7 +313,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 2aa52d9060a89c24fa0d89888b53aa3c
     internalID: 0
     vertices: []
     indices: 
@@ -336,14 +323,14 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      swordatk2_0: -3098434020735566787
-      swordatk2_1: -4052286866121006728
-      swordatk2_2: 9210806620597191901
-      swordatk2_3: -597606557917775118
-      swordatk2_4: -8048804587541078268
-      swordatk2_5: 5917280829235066015
-      swordatk2_6: 401813061024316324
-      swordatk2_7: 2254732129671615900
+      SwingEffect_0: -850131631
+      SwingEffect_1: -1101204529
+      SwingEffect_2: 982249361
+      SwingEffect_3: 1590763645
+      SwingEffect_4: -339975198
+      SwingEffect_5: -1891452929
+      SwingEffect_6: 1709369594
+      SwingEffect_7: -1833223691
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

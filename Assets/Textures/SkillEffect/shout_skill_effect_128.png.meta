@@ -160,7 +160,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      shout_skill_effect_128_0: -3916909838195793350
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

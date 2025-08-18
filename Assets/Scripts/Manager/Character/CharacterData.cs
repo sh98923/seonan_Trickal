@@ -151,6 +151,11 @@ public class CharacterData
         set => _playerStat.CanUseUlt = value;
     }
 
+    public bool[] IsEffectInFront
+    {
+        get => _playerAttack.IsEffectInFront;
+    }
+
     // 몬스터 전용
     public MonsterData MonsterInfo => _monsterInfo;
 
@@ -204,7 +209,7 @@ public class CharacterData
             // 공격 관련 데이터
             IsRange = _playerAttack.IsRange,
             AtkSpeed = _playerAttack.AtkSpeed,
-            AttackEffect = _playerAttack.AtkEffect,
+            AttackEffect = _playerAttack.AtkImpact,
             ProjectileKey = _playerAttack.ProjectileKey,
             ProjectileSpritePath = _playerAttack.ProjectileSpritePath,
         };

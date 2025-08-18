@@ -7,9 +7,10 @@ public struct PlayerAttackData
     public string EngName;
     public string ProjectileKey;
     public string[] ProjectileSpritePath;
-    public string[] AtkEffect;
+    public string[] AtkImpact;
     public float[] AtkSpeed;
     public bool[] IsRange;
+    public bool[] IsEffectInFront;
 }
 
 public class PlayerAttackManager : Singleton<PlayerAttackManager>
@@ -42,8 +43,9 @@ public class PlayerAttackManager : Singleton<PlayerAttackManager>
 
             PlayerAttackData data;
             data.IsRange = new bool[3];
+            data.IsEffectInFront = new bool[3];
             data.AtkSpeed = new float[3];
-            data.AtkEffect = new string[3];
+            data.AtkImpact = new string[3];
             data.ProjectileSpritePath = new string[3];
 
             data.Key = int.Parse(colData[0]);
@@ -54,9 +56,9 @@ public class PlayerAttackManager : Singleton<PlayerAttackManager>
             data.ProjectileSpritePath[1] = colData[4];
             data.ProjectileSpritePath[2] = colData[5];
 
-            data.AtkEffect[0] = colData[6];
-            data.AtkEffect[1] = colData[7];
-            data.AtkEffect[2] = colData[8];
+            data.AtkImpact[0] = colData[6];
+            data.AtkImpact[1] = colData[7];
+            data.AtkImpact[2] = colData[8];
 
             data.AtkSpeed[0] = float.Parse(colData[9]);
             data.AtkSpeed[1] = float.Parse(colData[10]);
@@ -65,6 +67,10 @@ public class PlayerAttackManager : Singleton<PlayerAttackManager>
             data.IsRange[0] = bool.Parse(colData[12]);
             data.IsRange[1] = bool.Parse(colData[13]);
             data.IsRange[2] = bool.Parse(colData[14]);
+
+            data.IsEffectInFront[0] = bool.Parse(colData[15]);
+            data.IsEffectInFront[1] = bool.Parse(colData[16]);
+            data.IsEffectInFront[2] = bool.Parse(colData[17]);
 
             _playerAttackDatas.Add(data.Key, data);
         }
