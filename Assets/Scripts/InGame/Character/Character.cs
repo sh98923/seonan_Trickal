@@ -26,6 +26,10 @@ public class Character : MonoBehaviour
     protected CharacterAction[] _action;
     protected Collider2D _targetCollider;
     protected SortingGroup _sortingGroup;
+    public int SortingIndex
+    {
+        get { return _sortingGroup.sortingOrder; }
+    }
 
     protected CharacterData _data;
     public CharacterData Data
@@ -69,6 +73,8 @@ public class Character : MonoBehaviour
     private float _animLengthRate = 1.0f;
     private float _fadeDuration = 3.0f;
     private float _attackCoolTimer = 0.0f;
+
+    private readonly int _sortingScale = 100;
 
     private bool _isDead = false;
 
@@ -131,7 +137,7 @@ public class Character : MonoBehaviour
                 break;
         }
 
-        _sortingGroup.sortingOrder = Mathf.RoundToInt(-transform.position.y * 100);
+        _sortingGroup.sortingOrder = Mathf.RoundToInt(-transform.position.y * _sortingScale);
     }
 
     private void FlipToTarget()

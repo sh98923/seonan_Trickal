@@ -3,7 +3,7 @@ Key,AttackKey,UpgradeKey,EngName,KrName,CharacterSpritePath,CharacterPrefabPath,
 101,4001,305,Gwin,그윈,Sprites/CardInfo/ElfKnight,Prefabs/Elf/ElfKnight,Front,Melee,Monster,0,5,5
 102,4002,310,Alette,알레트,Sprites/CardInfo/ElfDestroyer,Prefabs/Elf/ElfDestroyer,Front,Melee,Monster,0,5,5
 103,4003,315,Ed,이드,Sprites/CardInfo/ElfBishop,Prefabs/Elf/ElfBishop,Middle,Range,Monster,1,5,5
-104,4004,320,Lonan,로난,Sprites/CardInfo/ElfRuneBlade,Prefabs/Elf/ElfRuneBlade,Middle,Melee,Monster,1,5,5
+104,4004,320,Lonan,로난,Sprites/CardInfo/ElfRuneBlade,Prefabs/Elf/ElfRuneBlade,Middle,Range,Monster,1,5,5
 105,4005,325,Jade,제이드,Sprites/CardInfo/ElfMage,Prefabs/Elf/ElfMage,Middle,Range,Monster,1,5,5
 106,4006,330,Levi,레비,Sprites/CardInfo/ElfAssassin,Prefabs/Elf/ElfAssassin,Back,Melee,Monster,2,5,5
 107,4007,335,Erdin,에르딘,Sprites/CardInfo/ElfArcher,Prefabs/Elf/ElfArcher,Back,Range,Monster,2,5,5

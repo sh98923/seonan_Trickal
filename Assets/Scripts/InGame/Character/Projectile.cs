@@ -39,6 +39,9 @@ public class Projectile : MonoBehaviour
 
     protected string _name;
 
+    private readonly int _sortingOffset = 75;
+    private readonly int _sortingScale = 100;
+
     private float _lifeTimer;
 
     protected bool _hasHit = false;
@@ -64,7 +67,7 @@ public class Projectile : MonoBehaviour
             gameObject.SetActive(false);
         }
 
-        _sprite.sortingOrder = Mathf.RoundToInt(-transform.position.y * 100 + 75);
+        _sprite.sortingOrder = Mathf.RoundToInt(-transform.position.y * _sortingScale + _sortingOffset);
     }
 
     public void Fire(ProjectileData data)

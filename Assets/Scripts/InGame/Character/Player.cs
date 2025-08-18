@@ -157,8 +157,14 @@ public class Player : Character
          _targetCollider.GetComponent<Monster>().TakeDamage(_characterData.Atk);
      }*/
 
-    public void OnSkillBuff()
+    public void OnSoloBuff()
     {
+        _action[(int)ActionType.Buff].Excute();
+    }
+
+    public void OnAllBuff()
+    {
+        _action[(int)ActionType.Buff].SetBuffInfo("PowerUp", 10.0f);
         _action[(int)ActionType.Buff].Excute();
     }
 

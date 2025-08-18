@@ -40,20 +40,20 @@ public class CharacterAttack : CharacterAction
         _isRange = isRange;
     }
 
-    private void MeleeAttack(Collider2D target, float damage)
+    private void MeleeAttack()
     {
-        Character character = target.GetComponent<Character>();
+        Character character = _target.GetComponent<Character>();
         if (character != null)
         {
-            character.TakeDamage(damage);
+            character.TakeDamage(_damage);
         }
     }
 
-    private void RangeAttack(Collider2D target, AttackType type, float damage)
+    private void RangeAttack()
     {
-        Character targetChar = target.GetComponent<Character>();
-        string effectName = _character.Data.AttackEffect[(int)type];
-        float attackSpeed = _character.Data.AtkSpeed[(int)type];
+        Character targetChar = _target.GetComponent<Character>();
+        string effectName = _character.Data.AttackEffect[(int)_type];
+        float attackSpeed = _character.Data.AtkSpeed[(int)_type];
         bool success = Enum.TryParse(effectName, out AttackEffectType effectType);
 
         if (!success) return;
@@ -68,12 +68,12 @@ public class CharacterAttack : CharacterAction
         ProjectileData data =
             new ProjectileData
             {
-                Sprite = _sprites[(int)type],
+                Sprite = _sprites[(int)_type],
                 StartPos = _character.AtkPoint.position,
                 Direction = dir,
                 EffectType = effectType,
                 Speed = attackSpeed,
-                Damage = damage,
+                Damage = _damage,
                 Key = _character.Data.ProjectileKey,
                 Name = targetChar.name,
                 IsFlipX = _isFlipX
@@ -82,23 +82,23 @@ public class CharacterAttack : CharacterAction
         WeaponManager.Instance.Fire(data);
     }
 
-    public void Attack(Collider2D target, AttackType type, float damage, bool isRange)
+    private void Attack()
     {
-        if (target == null) return;
+        if (_target == null) return;
 
-        if (isRange)
+        if (_isRange)
         {
-            RangeAttack(target, type, damage);
+            RangeAttack();
         }
         else
         {
-            MeleeAttack(target, damage);
+            MeleeAttack();
         }
     }
 
     public override void Excute()
     {
-        Attack(_target, _type, _damage, _isRange);
+        Attack();
         if(_type == AttackType.Skill)
             print(_damage);
     }

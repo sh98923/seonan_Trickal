@@ -8,6 +8,11 @@ public abstract class CharacterAction : MonoBehaviour
     {
     }
 
+    public virtual void SetBuffInfo(string clipName, float time)
+    {
+
+    }
+
     public virtual void SetAttackInfo(Collider2D target, AttackType type, float damage, bool isRange)
     {
     }
