@@ -4,7 +4,7 @@ using UnityEngine;
 public struct PlayerData
 {
     public int Key;
-    public int AttackKey;
+    public int AtkKey;
     public int UpgradeKey;
     public int SpawnLine;
     public int UpgradeCost;
@@ -14,7 +14,7 @@ public struct PlayerData
     public string CharacterSpritePath;
     public string CharacterPrefabPath;
     public string Layer;
-    public string AttackType;
+    public string AtkType;
     public string Target;
 }
 
@@ -62,14 +62,14 @@ public class PlayerManager : Singleton<PlayerManager>
             PlayerData data;
 
             data.Key = int.Parse(colData[0]);
-            data.AttackKey = int.Parse(colData[1]);
+            data.AtkKey = int.Parse(colData[1]);
             data.UpgradeKey = int.Parse(colData[2]);
             data.EngName = colData[3];
             data.KrName = colData[4];
             data.CharacterSpritePath = colData[5];
             data.CharacterPrefabPath = colData[6];
             data.Layer = colData[7];
-            data.AttackType = colData[8];
+            data.AtkType = colData[8];
             data.Target = colData[9];
             data.SpawnLine = int.Parse(colData[10]);
             data.UpgradeCost = int.Parse(colData[11]);

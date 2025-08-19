@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class Monster : Character
 {
+    private float _atk = 0.0f;
+
     private void Awake()
     {
         base.Awake();
@@ -20,7 +22,7 @@ public class Monster : Character
         }
         else
         {
-            if (FindTarget(_data.Target, _attackRange) == null)
+            if (FindTarget(_data.Target, _data.AtkRange) == null)
             {
                 Vector2 dir = _targetCollider.transform.position - transform.position;
                 transform.Translate(dir.normalized * _moveSpeed * Time.deltaTime);

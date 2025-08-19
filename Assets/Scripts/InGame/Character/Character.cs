@@ -5,16 +5,17 @@ using UnityEngine.Rendering;
 
 public class Character : MonoBehaviour
 {
-    protected enum ActionType
+    // Enum
+    protected enum ActionCategory 
     {
-        Attack, Buff
+        Attack, Buff 
     }
-
-    protected enum State
+    protected enum State 
     {
         Idle, Move, Attack, Dead
     }
 
+    // 이벤트
     protected event Action<Character> _onDie;
     public event Action<Character> OnDie
     {
@@ -22,61 +23,44 @@ public class Character : MonoBehaviour
         remove { _onDie -= value; }
     }
 
+    // 컴포넌트
     protected Animator _animator;
     protected CharacterAction[] _action;
     protected Collider2D _targetCollider;
     protected SortingGroup _sortingGroup;
-    public int SortingIndex
-    {
-        get { return _sortingGroup.sortingOrder; }
-    }
+    private Collider2D _myCollider;
+    private SpriteRenderer _shadowSprite;
+    private SpriteRenderer[] _spriteRenderers;
+    private Transform _atkPoint;
+    private Transform _centerPoint;
 
+    // 속성
+    public int SortingIndex => _sortingGroup.sortingOrder;
+    public CharacterData Data => _data;
+    public Transform AtkPoint => _atkPoint;
+    public Transform CenterPoint => _centerPoint;
+
+    // 스탯
     protected CharacterData _data;
-    public CharacterData Data
-    {
-        get { return _data; }
-    }
-
     protected Vector3 _scale;
     protected Vector2 _moveDir;
+    protected ActionSlot _actionType = ActionSlot.Base;
     protected State _curState = State.Idle;
-
-    protected string _attackType = "";
-    protected readonly float _colliderOffset = 0.5f;
     protected readonly float _findTargetRange = 5.0f;
     protected float _curHp = 0.0f;
     protected float _maxHp = 0.0f;
-    protected float _atk = 0.0f;
-    protected float _criRate = 0.0f;
-    protected float _attackRange = 0.0f;
-    //protected float _atkCoolTime = 0.0f;
     protected float _moveSpeed = 2.0f;
 
     protected bool _isAttacking = false;
+    private bool _isDead = false;
 
-    private Transform _atkPoint;
-    public Transform AtkPoint
-    {
-        get { return _atkPoint; }
-    }
-    private Transform _centerPoint;
-    public Transform CenterPoint
-    {
-        get { return _centerPoint; }
-    }
-
-    private Collider2D _myCollider;
-    private SpriteRenderer[] _spriteRenderers;
-
-    private Coroutine _slowCoroutine = null;
-
+    private readonly float _colliderOffset = 0.5f;
     private float _animLengthRate = 1.0f;
     private float _fadeDuration = 3.0f;
     private float _attackCoolTimer = 0.0f;
-
     private readonly int _sortingScale = 100;
+    private Coroutine _slowCoroutine = null;
 
-    private bool _isDead = false;
 
     protected void Awake()
     {
@@ -88,83 +72,82 @@ public class Character : MonoBehaviour
         _myCollider = GetComponent<Collider2D>();
         _sortingGroup = GetComponent<SortingGroup>();
         _spriteRenderers = GetComponentsInChildren<SpriteRenderer>(true);
+
+        foreach (SpriteRenderer sprite in _spriteRenderers)
+        {
+            if (sprite.name == "Shadow")
+            {
+                _shadowSprite = sprite;
+                break;
+            }
+        }
     }
 
     private void OnEnable()
     {
         _attackCoolTimer = 0.0f;
-
         _curState = State.Idle;
-
         _isAttacking = false;
         _isDead = false;
         _myCollider.enabled = true;
 
-        for (int i = 0; i < _spriteRenderers.Length; i++)
+        foreach (SpriteRenderer sprite in _spriteRenderers)
         {
-            if (_spriteRenderers[i].name == "Shadow")
+            if (sprite.name == "Shadow")
+            {
                 continue;
+            }
 
-            Color color = _spriteRenderers[i].color;
+            Color color = sprite.color;
             color.a = 1.0f;
-            _spriteRenderers[i].color = color;
+            sprite.color = color;
         }
     }
 
     protected void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            TakeDamage(30);
-        }
-
         FlipToTarget();
 
         switch (_curState)
         {
             case State.Idle:
-                IdleStateAction();
+                IdleStateAction(); 
                 break;
             case State.Move:
-                MoveStateAction();
+                MoveStateAction(); 
                 break;
-            case State.Attack:
-                AttackStateAction();
-                AttackCoolTime();
+            case State.Attack: 
+                AttackStateAction(); 
+                AttackCoolTime(); 
                 break;
-            case State.Dead:
-                DeadStateAction();
+            case State.Dead: 
+                DeadStateAction(); 
                 break;
         }
 
         _sortingGroup.sortingOrder = Mathf.RoundToInt(-transform.position.y * _sortingScale);
     }
 
-    private void FlipToTarget()
+    private void OnDrawGizmosSelected()
     {
-        if (_targetCollider != null)
-        {
-            if (_targetCollider.transform.position.x < transform.position.x)
-            {
-                _scale.x = Mathf.Abs(_scale.x); // 무조건 양수
-            }
-            else
-            {
-                _scale.x = Mathf.Abs(_scale.x) * -1; // 무조건 음수
-            }
+        if (_data == null) return;
 
-            transform.localScale = _scale;
-        }
+        Vector3 pos = transform.position;
+        pos.y += _colliderOffset;
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(pos, _data.AtkRange);
+
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(pos, _findTargetRange);
     }
 
+    // FSM 상태 관련 함수
     protected virtual void IdleStateAction()
     {
         _animator.SetBool("IdleState", true);
-
         if (BattleStateManager.Instance.IsBattle)
-        {
             _curState = State.Move;
-        }
     }
 
     protected virtual void MoveStateAction()
@@ -174,56 +157,75 @@ public class Character : MonoBehaviour
 
     protected virtual void AttackStateAction()
     {
-        if (_isAttacking)
-            return;
-
+        if (_isAttacking) return;
         _isAttacking = true;
 
-        if (!_targetCollider.enabled)
+        if (_targetCollider == null || !_targetCollider.enabled)
         {
             _targetCollider = null;
             _curState = State.Move;
+            return;
         }
 
-        if (_targetCollider != null)
-        { 
-            _animator.SetTrigger("Attack");
-        }
-
-        //StartCoroutine(SetCoolTime());
+        _animator.SetTrigger("Attack");
     }
 
-   /* private float GetCurrentAnimationLength()
+    protected virtual void DeadStateAction()
     {
-        AnimatorClipInfo[] clipInfos = _animator.GetCurrentAnimatorClipInfo(0);
-        if (clipInfos.Length > 0.0f)
+        if (_isDead) return;
+
+        _isDead = true;
+        _targetCollider = null;
+        _onDie?.Invoke(this);
+        _animator.SetTrigger("Dead");
+        _myCollider.enabled = false;
+
+        StartCoroutine(FadeOutAndInactive());
+    }
+
+    // 타겟 위치에 맞게 Flip
+    private void FlipToTarget()
+    {
+        if (_targetCollider == null) return;
+
+        _scale.x = (_targetCollider.transform.position.x < transform.position.x)
+            ? Mathf.Abs(_scale.x)
+            : -Mathf.Abs(_scale.x);
+
+        transform.localScale = _scale;
+    }
+
+    protected Collider2D FindTarget(string targetTag, float range)
+    {
+        Vector3 pos = transform.position;
+        pos.y += _colliderOffset;
+
+        Collider2D[] hits = Physics2D.OverlapCircleAll(pos, range);
+        float closestDistance = float.MaxValue;
+        Collider2D closestTarget = null;
+
+        foreach (var hit in hits)
         {
-            // 일반적으로 하나만 존재하지만 여러 개일 수도 있음 -> 첫 번째 클립의 길이를 가져옴
-            return clipInfos[0].clip.length * _animLengthRate;
+            if (!hit.CompareTag(targetTag)) continue;
+
+            float dist = Vector2.Distance(pos, hit.transform.position);
+            if (dist < closestDistance)
+            {
+                closestDistance = dist;
+                closestTarget = hit;
+            }
         }
 
-        return 0.0f;
+        return closestTarget;
     }
 
-    protected IEnumerator SetCoolTime()
-    {
-        yield return null; // 한 프레임 대기 (애니메이션 상태가 바뀔 시간을 줌)
-
-        float animLength = GetCurrentAnimationLength();
-
-        _atkCoolTime = animLength;
-    }*/
-
+    // 공격 처리
     public void TakeDamage(float damage)
     {
         _curHp -= damage;
-
         ShowDamageText(damage);
 
-        if (_curHp <= 0)
-        {
-            _curState = State.Dead;
-        }
+        if (_curHp <= 0) _curState = State.Dead;
     }
 
     public void TakeDotDamage(float damage, float duration, float tickInterval)
@@ -238,20 +240,24 @@ public class Character : MonoBehaviour
         while (elapsed < duration)
         {
             yield return new WaitForSeconds(tickInterval);
-
-            if (_curState == State.Dead)
-                yield break;
+            if (_curState == State.Dead) yield break;
 
             TakeDamage(damagePerTick);
             elapsed += tickInterval;
         }
     }
 
+    private void ShowDamageText(float damage)
+    {
+        GameObject damageText = PoolingManager.Instance.Pop("DamageText");
+        Vector3 worldPos = transform.position + Vector3.up * 1.8f;
+        damageText.GetComponent<DamageText>().Initialize(damage, worldPos);
+    }
+
+    // 버프, 디버프 관련
     public void ApplyAttackSlow(float duration, float speed)
     {
-        if (_slowCoroutine != null)
-            StopCoroutine(_slowCoroutine);
-
+        if (_slowCoroutine != null) StopCoroutine(_slowCoroutine);
         _slowCoroutine = StartCoroutine(SlowAttackCoroutine(duration, speed));
     }
 
@@ -264,113 +270,55 @@ public class Character : MonoBehaviour
 
         _animLengthRate = 1.0f;
         _animator.speed = 1.0f;
-        _slowCoroutine = null; // 코루틴 종료 표시
-    }   
+        _slowCoroutine = null;
+    }
 
-    protected void ShowDamageText(float damage)
+    // 공격 이벤트
+    public virtual void OnAttack()
     {
-        GameObject damageText = PoolingManager.Instance.Pop("DamageText");
-
-        Vector3 worldPos = transform.position + Vector3.up * 1.8f;
-        damageText.GetComponent<DamageText>().Initialize(damage, worldPos);
+        _action[(int)ActionCategory.Attack].SetAttackInfo(_targetCollider, _actionType, _data.Atk);
+        _action[(int)ActionCategory.Attack].Excute();
     }
 
     private void AttackCoolTime()
     {
-        if (!_isAttacking)
-            return;
+        if (!_isAttacking) return;
 
         AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
-
         bool isNotTransitioning = !_animator.IsInTransition(0);
         bool hasAnimationEnded = stateInfo.normalizedTime >= 1.0f;
 
-        // 공격 애니메이션이 끝났거나 다른 상태로 넘어갔을 때만 종료
         if (isNotTransitioning && hasAnimationEnded)
-        {
             _isAttacking = false;
-        }
     }
 
-    protected Collider2D FindTarget(string target, float range)
-    {
-        Vector3 pos = transform.position;
-        pos.y += _colliderOffset;
-
-        Collider2D[] hits = Physics2D.OverlapCircleAll(pos, range);
-
-        float closestDistance = float.MaxValue;
-        Collider2D closestTarget = null;
-
-        foreach (Collider2D hit in hits)
-        {
-            if (hit.CompareTag(target))
-            {
-                float dist = Vector2.Distance(pos, hit.transform.position);
-                if (dist < closestDistance)
-                {
-                    closestDistance = dist;
-                    closestTarget = hit;
-                }
-            }
-        }
-
-        return closestTarget;
-    }
-
-    protected virtual void DeadStateAction()
-    {
-        if (_isDead) 
-            return;
-
-        _isDead = true;
-        _targetCollider = null;
-        _onDie?.Invoke(this);
-        _animator.SetTrigger("Dead");
-        GetComponent<Collider2D>().enabled = false;
-
-        StartCoroutine(FadeOutAndInactive());
-    }
-
-    public void SetCharacterData(CharacterData data)
-    {
-        _data = data;
-        _criRate = data.CriRate;
-        _atk = data.Atk;
-        _attackType = data.AtkType;
-        _attackRange = data.AtkRange;
-    }
+    // 캐릭터 세팅
+    public void SetCharacterData(CharacterData data) => _data = data;
 
     public void SetCharacterActionInit()
     {
-        for (int i = 0; i < _action.Length; i++)
+        for(int i = 0; i < _action.Length; i++)
         {
             _action[i].SetInit();
         }
-    }    
-
-    public void OnAttackHit()
-    {
-        _action[(int)ActionType.Attack].SetAttackInfo(_targetCollider, AttackType.Base, _atk, _data.IsRangeAttack[(int)AttackType.Base]);
-        _action[(int)ActionType.Attack].Excute();
     }
 
+    // 죽었을 때 페이드 아웃
     private IEnumerator FadeOutAndInactive()
     {
         yield return new WaitForSeconds(1.5f);
 
-        float timer = 0;
+        float timer = 0.0f;
+
+        Color shadowOriginalColor = _shadowSprite.color;
 
         while (timer < _fadeDuration)
         {
             timer += Time.deltaTime;
-            float curAlpha = Mathf.Lerp(1.0f, 0, timer / _fadeDuration);
 
-            for (int i = 0; i < _spriteRenderers.Length; i++)
+            foreach (SpriteRenderer sprite in _spriteRenderers)
             {
-                Color color = _spriteRenderers[i].color;
-                color.a = curAlpha;
-                _spriteRenderers[i].color = color;
+                UpdateSpriteAlpha(sprite, shadowOriginalColor, timer);
             }
 
             yield return null;
@@ -379,16 +327,21 @@ public class Character : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    private void OnDrawGizmosSelected()
+    private void UpdateSpriteAlpha(SpriteRenderer sprite, Color shadowColor, float timer)
     {
-        Gizmos.color = Color.red;
-        
-        Vector3 pos = transform.position;
-        pos.y += _colliderOffset;
+        Color color = sprite.color;
 
-        Gizmos.DrawWireSphere(pos, _attackRange);
+        float progress = timer / _fadeDuration;
 
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(pos, _findTargetRange);
+        if (sprite == _shadowSprite)
+        {
+            color.a = Mathf.Lerp(shadowColor.a, 0.0f, progress);
+        }
+        else
+        {
+            color.a = Mathf.Lerp(1.0f, 0.0f, progress);
+        }
+
+        sprite.color = color;
     }
 }

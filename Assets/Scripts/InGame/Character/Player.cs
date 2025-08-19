@@ -5,8 +5,14 @@ public class Player : Character
 {
     private GameObject _skillEffect;
 
-    private AttackType _atkType;
     private Vector3 _originPos;
+
+    private float _atkBuff = 1.0f;
+    public float AtkBuff
+    {
+        get { return _atkBuff; }
+        set { _atkBuff = value; }
+    }
 
     private float _curMp = 0.0f;
 
@@ -37,24 +43,24 @@ public class Player : Character
 
         if (Input.GetKeyDown(KeyCode.S))
         {
-            _atkType = AttackType.Ult;
+            _actionType = ActionSlot.Ult;
             _animator.SetTrigger("Ult"); 
         }
         if (Input.GetKeyDown(KeyCode.A))
         {
-            _atkType = AttackType.Base;
+            _actionType = ActionSlot.Base;
             _animator.SetTrigger("Attack");
         }
         if (Input.GetKeyDown(KeyCode.D))
         {
-            _atkType = AttackType.Skill;
+            _actionType = ActionSlot.Skill;
             _animator.SetTrigger("Skill");
         }
     }
 
     private void SkillEffectOn()
     {
-        int sortNum = _data.IsEffectInFront[(int)_atkType] ? _sortingGroup.sortingOrder + 1 : -101;
+        int sortNum = _data.IsEffectInFront[(int)_actionType] ? _sortingGroup.sortingOrder + 1 : -101;
 
         _skillEffect.GetComponent<SpriteRenderer>().sortingOrder = sortNum;
         _skillEffect.SetActive(true);
@@ -99,7 +105,7 @@ public class Player : Character
             }
             else
             {
-                if (FindTarget(_data.Target, _attackRange) == null)
+                if (FindTarget(_data.Target, _data.AtkRange) == null)
                 {
                     Vector2 dir = _targetCollider.transform.position - transform.position;
                     transform.Translate(dir.normalized * _moveSpeed * Time.deltaTime);
@@ -135,52 +141,52 @@ public class Player : Character
 
         if (_curMp >= _data.Mp)
         {
-            _atkType = AttackType.Skill;
+            _actionType = ActionSlot.Skill;
             _animator.SetTrigger("Skill");
         }
         else if (Input.GetKeyDown(KeyCode.S))
         {
-            _atkType = AttackType.Ult;
+            _actionType = ActionSlot.Ult;
             _animator.SetTrigger("Ult");
         }
         else
         {
-            _atkType = AttackType.Base;
+            _actionType = ActionSlot.Base;
             _animator.SetTrigger("Attack");
         }
-
-        //StartCoroutine(SetCoolTime());
     }
-
-    /* public void OnAttackHit()
-     {
-         _targetCollider.GetComponent<Monster>().TakeDamage(_characterData.Atk);
-     }*/
 
     public void OnSoloBuff()
     {
-        _action[(int)ActionType.Buff].Excute();
+        _action[(int)ActionCategory.Buff].Excute();
     }
 
     public void OnAllBuff()
     {
-        _action[(int)ActionType.Buff].SetBuffInfo("PowerUp", 10.0f);
-        _action[(int)ActionType.Buff].Excute();
+        _action[(int)ActionCategory.Buff].SetBuffInfo(_actionType, _data.ClipName[(int)_actionType], _data.EffectValue, _data.Duration[(int)_actionType]);
+        _action[(int)ActionCategory.Buff].Excute();
     }
 
-    public void OnSkillHit()
-    { 
-        float skillAtk = _data.Atk * _data.SkillRate;
-        _curMp -= _data.Mp;
-        _action[(int)ActionType.Attack].SetAttackInfo(_targetCollider, AttackType.Skill, skillAtk, _data.IsRangeAttack[(int)AttackType.Skill]);
-        _action[(int)ActionType.Attack].Excute();
-    }
-
-    public void OnUltHit()
+    public override void OnAttack()
     {
-        float skillAtk = _data.Atk * _data.Ultimate;
-        _action[(int)ActionType.Attack].SetAttackInfo(_targetCollider, AttackType.Ult, skillAtk, _data.IsRangeAttack[(int)AttackType.Ult]);
-        _action[(int)ActionType.Attack].Excute();
+        float finalDamage = 0.0f;
+
+        switch (_actionType)
+        {
+            case ActionSlot.Base:
+                finalDamage = _data.Atk * _atkBuff;
+                break;
+            case ActionSlot.Skill:
+                _curMp -= _data.Mp;
+                finalDamage = _data.Atk * _data.SkillRate * _atkBuff; 
+                break;
+            case ActionSlot.Ult:
+                finalDamage = _data.Atk * _data.Ultimate * _atkBuff;
+                break;
+        }
+
+        _action[(int)ActionCategory.Attack].SetAttackInfo(_targetCollider, _actionType, finalDamage);
+        _action[(int)ActionCategory.Attack].Excute();
     }
 
     public void PlaySkillEffect()

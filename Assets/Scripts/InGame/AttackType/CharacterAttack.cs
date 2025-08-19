@@ -1,84 +1,112 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
-public enum AttackType
+public enum AtkEffectType
 {
-    Base, Skill, Ult
+    Damage, Dot, Slow
 }
 
 public class CharacterAttack : CharacterAction
 {
-    private Collider2D _target;
-    private Character _character;
+    private Character _target;
     private List<Sprite> _sprites = new List<Sprite>();
 
-    private AttackType _type;
+    private AtkEffectType _effectType;
 
     private float _damage;
+    private float _dotDamage;
+    private float _duration;
+    private float _effectValue;
 
     private bool _isRange;
     private bool _isFlipX;
 
     public override void SetInit()
     {
-        _character = GetComponent<Character>();
+        base.SetInit();
 
-        for (int i = 0; i < _character.Data.IsRangeAttack.Length; i++)
+        for (int i = 0; i < _data.IsRangeAtk.Length; i++)
         {
-            string spritePath = _character.Data.ProjectileSpritePath[i];
+            string spritePath = _data.ProjectileSpritePath[i];
             Sprite sprite = Resources.Load<Sprite>(spritePath);
             _sprites.Add(sprite);
         }
     }
 
-    public override void SetAttackInfo(Collider2D target, AttackType type, float damage, bool isRange)
+    public override void SetAttackInfo(Collider2D target, ActionSlot type, float damage)
     {
-        _target = target;
         _type = type;
         _damage = damage;
-        _isRange = isRange;
-    }
+        _target = target.GetComponent<Character>();
+        _isRange = _data.IsRangeAtk[(int)type];
 
-    private void MeleeAttack()
-    {
-        Character character = _target.GetComponent<Character>();
-        if (character != null)
+        if (_target.tag == "Monster")
         {
-            character.TakeDamage(_damage);
+            _dotDamage = _damage * _data.DotDamageRate;
+            _effectValue = _data.EffectValue;
+            _duration = _data.Duration[(int)type];
         }
     }
 
-    private void RangeAttack()
+    private void MeleeAttack(string effectName)
     {
-        Character targetChar = _target.GetComponent<Character>();
-        string effectName = _character.Data.AttackEffect[(int)_type];
-        float attackSpeed = _character.Data.AtkSpeed[(int)_type];
-        bool success = Enum.TryParse(effectName, out AttackEffectType effectType);
+        if (_target != null)
+        {
+            _target.TakeDamage(_damage);
 
-        if (!success) return;
+            _effectType = GetEffectType<AtkEffectType>(effectName, out _isValid);
 
-        Vector2 dir = targetChar.CenterPoint.position - _character.CenterPoint.position;
+            if (!_isValid) return;
+
+            switch(_effectType)
+            {
+                case AtkEffectType.Dot:
+                    _target.TakeDotDamage(_dotDamage, _duration, _effectValue);
+                    break;
+                case AtkEffectType.Slow:
+                    _target.ApplyAttackSlow(_duration, _effectValue);
+                    break;
+            }
+        }
+    }
+
+    private void RangeAttack(string effectName)
+    {
+        _effectType = GetEffectType<AtkEffectType>(effectName, out _isValid);
+
+        if (!_isValid) return;
+
+        float atkSpeed = _character.Data.AtkSpeed[(int)_type];
+        Vector2 dir = _target.CenterPoint.position - _character.CenterPoint.position;
 
         if (_character.transform.localScale.x < 0)
         {
             _isFlipX = true;
         }
 
-        ProjectileData data =
-            new ProjectileData
-            {
-                Sprite = _sprites[(int)_type],
-                StartPos = _character.AtkPoint.position,
-                Direction = dir,
-                EffectType = effectType,
-                Speed = attackSpeed,
-                Damage = _damage,
-                Key = _character.Data.ProjectileKey,
-                Name = targetChar.name,
-                IsFlipX = _isFlipX
-            }; 
-        
+        ProjectileData data = new ProjectileData
+        {
+            // 기본 공격 정보
+            Name = _target.name,
+            Key = _character.Data.ProjectileKey,
+            StartPos = _character.AtkPoint.position,
+            Direction = dir,
+            Speed = atkSpeed,
+            Duration = _duration,
+            Damage = _damage,
+            DotDamage = _dotDamage,
+
+            // 상태/효과 정보
+            EffectType = _effectType,
+            EffectValue = _effectValue,
+
+            // 시각/스프라이트
+            Sprite = _sprites[(int)_type],
+            IsFlipX = _isFlipX
+        };
+
         WeaponManager.Instance.Fire(data);
     }
 
@@ -86,20 +114,20 @@ public class CharacterAttack : CharacterAction
     {
         if (_target == null) return;
 
+        string effectName = _character.Data.ActionImpact[(int)_type];
+
         if (_isRange)
         {
-            RangeAttack();
+            RangeAttack(effectName);
         }
         else
         {
-            MeleeAttack();
+            MeleeAttack(effectName);
         }
     }
 
     public override void Excute()
     {
         Attack();
-        if(_type == AttackType.Skill)
-            print(_damage);
     }
 }

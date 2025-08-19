@@ -32,6 +32,7 @@ public class InGameManager : Singleton<InGameManager>
     private void Start()
     {
         WeaponManager.Instance.CreateWeapon();
+        EffectManager.Instance.CreateEffect();
     }
 
     private void BattleStart()

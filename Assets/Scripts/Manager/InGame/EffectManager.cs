@@ -5,7 +5,7 @@ public class EffectManager : Singleton<EffectManager>
     private readonly string _key = "Effect";
     private readonly int _poolSize = 200;
 
-    private void Awake()
+    public void CreateEffect()
     {
         GameObject prefab = Resources.Load<GameObject>("Effect/Effect");
 

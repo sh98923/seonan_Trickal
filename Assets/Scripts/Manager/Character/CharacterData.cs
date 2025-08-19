@@ -6,10 +6,10 @@ public class CharacterData
         public string Layer;
         public string EngName;
         public string PrefabPath;
-        public string AttackType;
+        public string AtkType;
         public string Target;
         public string ProjectileKey;
-        public string[] AttackEffect;
+        public string[] ActionImpact;
         public string[] ProjectileSpritePath;
         public float Hp;
         public float Atk;
@@ -24,7 +24,7 @@ public class CharacterData
     private SharedStats _shared;
     private PlayerData _playerInfo;
     private PlayerStatData _playerStat;
-    private PlayerAttackData _playerAttack;
+    private PlayerActionData _playerAction;
     private MonsterData _monsterInfo;
 
     // 공통 정보
@@ -65,8 +65,8 @@ public class CharacterData
 
     public string AtkType
     {
-        get => _shared.AttackType;
-        set => _shared.AttackType = value;
+        get => _shared.AtkType;
+        set => _shared.AtkType = value;
     }
     public string Target
     {
@@ -94,9 +94,9 @@ public class CharacterData
         get { return _shared.ProjectileSpritePath; }
     }
 
-    public string[] AttackEffect
+    public string[] ActionImpact
     {
-        get { return _shared.AttackEffect; }
+        get { return _shared.ActionImpact; }
     }
 
     public int[] PoolSize
@@ -104,7 +104,7 @@ public class CharacterData
         get { return _shared.ProjectilePool; }
     }
 
-    public bool[] IsRangeAttack
+    public bool[] IsRangeAtk
     {
         get { return _shared.IsRange; }
     }
@@ -151,9 +151,33 @@ public class CharacterData
         set => _playerStat.CanUseUlt = value;
     }
 
+    public string[] BuffEffect
+    {
+        get => _playerAction.BuffEffect;
+    }
+
+    public string[] ClipName
+    {
+        get => _playerAction.ClipName;
+    }
+
+    public float DotDamageRate
+    {
+        get => _playerAction.DotDamageRate;
+    }
+    public float EffectValue
+    {
+        get => _playerAction.EffectValue;
+    }
+
+    public float[] Duration
+    {
+        get => _playerAction.Duration;
+    }
+
     public bool[] IsEffectInFront
     {
-        get => _playerAttack.IsEffectInFront;
+        get => _playerAction.IsEffectInFront;
     }
 
     // 몬스터 전용
@@ -189,7 +213,7 @@ public class CharacterData
         _playerInfo = playerData;
 
         // 공격 데이터 가져오기
-        _playerAttack = PlayerAttackManager.Instance.GetplayerAttackData(playerData.AttackKey);
+        _playerAction = PlayerActionManager.Instance.GetPlayerActionData(playerData.AtkKey);
 
         // 공통 Stats 초기화
         _shared = new SharedStats
@@ -203,15 +227,15 @@ public class CharacterData
             Layer = playerData.Layer,
             Target = playerData.Target,
             EngName = playerData.EngName,
-            AttackType = playerData.AttackType,
+            AtkType = playerData.AtkType,
             PrefabPath = playerData.CharacterPrefabPath,
 
             // 공격 관련 데이터
-            IsRange = _playerAttack.IsRange,
-            AtkSpeed = _playerAttack.AtkSpeed,
-            AttackEffect = _playerAttack.AtkImpact,
-            ProjectileKey = _playerAttack.ProjectileKey,
-            ProjectileSpritePath = _playerAttack.ProjectileSpritePath,
+            IsRange = _playerAction.IsRange,
+            AtkSpeed = _playerAction.AtkSpeed,
+            ActionImpact = _playerAction.ActionImpact,
+            ProjectileKey = _playerAction.ProjectileKey,
+            ProjectileSpritePath = _playerAction.ProjectileSpritePath,
         };
 
         // 플레이어 스탯 업그레이드 적용
@@ -234,14 +258,14 @@ public class CharacterData
             Type = "Monster",
             Layer = monsterData.Layer,
             EngName = monsterData.EngName,
-            AttackType = monsterData.AttackType,
+            AtkType = monsterData.AtkType,
             PrefabPath = monsterData.PrefabPath,
 
             // 공격 관련 데이터
             Target = monsterData.Target,
             IsRange = monsterData.IsRange,
             AtkSpeed = monsterData.AtkSpeed,
-            AttackEffect = monsterData.AtkEffect,
+            ActionImpact = monsterData.ActionImpact,
             ProjectileKey = monsterData.ProjectileKey,
             ProjectileSpritePath = monsterData.ProjectileSpritePath,
         };

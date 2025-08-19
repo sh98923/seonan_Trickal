@@ -5692,7 +5692,7 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0.5
-    functionName: OnAttackHit
+    functionName: OnAttack
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

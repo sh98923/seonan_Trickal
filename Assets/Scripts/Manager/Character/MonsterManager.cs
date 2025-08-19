@@ -17,10 +17,10 @@ public struct MonsterData
     public string EngName;
     public string PrefabPath;
     public string Layer;
-    public string AttackType;
+    public string AtkType;
     public string Target;
     public string ProjectileKey;
-    public string[] AtkEffect;
+    public string[] ActionImpact;
     public string[] ProjectileSpritePath;
     public bool[] IsRange;
 }
@@ -68,7 +68,7 @@ public class MonsterManager : Singleton<MonsterManager>
             MonsterData data;
             data.IsRange = new bool[1];
             data.AtkSpeed = new float[1];
-            data.AtkEffect = new string[1];
+            data.ActionImpact = new string[1];
             data.ProjectileSpritePath = new string[1];
 
             data.Key = int.Parse(colData[0]);
@@ -76,14 +76,14 @@ public class MonsterManager : Singleton<MonsterManager>
             data.PrefabPath = colData[2];
             data.ProjectileKey = colData[3];
             data.Layer = colData[4];
-            data.AttackType = colData[5];
+            data.AtkType = colData[5];
             data.Target = colData[6];
 
             data.ProjectileSpritePath[0] = colData[7];
 
             data.IsRange[0] = bool.Parse(colData[8]);
 
-            data.AtkEffect[0] = colData[9];
+            data.ActionImpact[0] = colData[9];
 
             data.AtkSpeed[0] = float.Parse(colData[10]);
 

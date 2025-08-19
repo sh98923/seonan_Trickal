@@ -5,39 +5,25 @@ public class ProjectileData
     public Sprite Sprite;
     public Vector3 StartPos;
     public Vector3 Direction;
-    public AttackEffectType EffectType;
+    public AtkEffectType EffectType;
     public float Damage;
+    public float DotDamage;
+    public float EffectValue;
+    public float Duration;
     public float Speed;
     public string Key;
     public string Name;
     public bool IsFlipX;
 }
 
-public enum AttackEffectType 
-{ 
-    Damage, Dot, Slow
-}
-
 public class Projectile : MonoBehaviour
 {
-    [Header("공통")]
-    private AttackEffectType _effectType;
-    private float _baseDamage;
-
-    [Header("도트 전용 옵션")]
-    private float _dotDamage;
-    private float _dotDuration;
-    private float _dotInterval;
-
-    private float _speed;
     private readonly float _lifeTime = 3.0f;
-    private readonly float _offset = 0.5f;
 
     private SpriteRenderer _sprite;
+    private ProjectileData _data;
 
     private Vector2 _direction;
-
-    protected string _name;
 
     private readonly int _sortingOffset = 75;
     private readonly int _sortingScale = 100;
@@ -59,7 +45,7 @@ public class Projectile : MonoBehaviour
 
     private void Update()
     {
-        transform.Translate(_direction * _speed * Time.deltaTime);
+        transform.Translate(_direction * _data.Speed * Time.deltaTime);
 
         _lifeTimer += Time.deltaTime;
         if (_lifeTimer >= _lifeTime)
@@ -74,11 +60,8 @@ public class Projectile : MonoBehaviour
     {
         transform.position = data.StartPos;
 
-        _name = data.Name;
-        _effectType = data.EffectType;
-        _speed = data.Speed;
-        _baseDamage = data.Damage;
-        _dotDamage = _baseDamage * 0.15f;
+        _data = data;
+
         _direction = data.Direction.normalized;
 
         float angle = Mathf.Atan2(_direction.y, _direction.x) * Mathf.Rad2Deg;
@@ -99,24 +82,24 @@ public class Projectile : MonoBehaviour
 
     private void ApplyDamage(Character target)
     {
-        target.TakeDamage(_baseDamage);
+        target.TakeDamage(_data.Damage);
     }
 
     private void ApplyDot(Character target)
     {
-        target.TakeDotDamage(_dotDamage, 10, 2.2f);
+        target.TakeDotDamage(_data.DotDamage, _data.Duration, _data.EffectValue);
     }
 
     private void ApplySlow(Character target)
     {
-        target.ApplyAttackSlow(15, 0.65f);
+        target.ApplyAttackSlow(_data.Duration, _data.EffectValue);
     }
 
     protected void OnTriggerEnter2D(Collider2D collision)
     {
         if (_hasHit) return;
 
-        if (collision.name == _name)
+        if (collision.name == _data.Name)
         {
             _hasHit = true;
 
@@ -126,12 +109,12 @@ public class Projectile : MonoBehaviour
 
             ApplyDamage(target);
 
-            switch (_effectType)
+            switch (_data.EffectType)
             {
-                case AttackEffectType.Dot:
+                case AtkEffectType.Dot:
                     ApplyDot(target);
                     break;
-                case AttackEffectType.Slow:
+                case AtkEffectType.Slow:
                     ApplySlow(target);
                     break;
             }
