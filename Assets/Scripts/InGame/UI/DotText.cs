@@ -1,17 +1,20 @@
 using UnityEngine;
 using TMPro;
+using System.Collections;
 
 public class DotText : MonoBehaviour
 {
     [SerializeField] private TMP_Text _text;
-    Vector3 _startPos;
-    private float _duration = 3.0f;
+    private Vector3 _startPos;
+    private float _duration = 0.7f;
     private float _timer = 0.0f;
 
-    [SerializeField] private float _amplitude;   // ÃÊ±â y ÁøÆø
-    private float _frequency = 20.0f;   // Æ¢´Â ÁÖ±â
-    private readonly float _amplitudeValue = 5.0f;
-    private float _speed = 50.0f;       // ¿À¸¥ÂÊ ÀÌµ¿ ¼Óµµ
+    private float _amplitude;
+    private readonly float _amplitudeValue = 90.0f;
+    private float _speed = 100.0f;
+
+    private int _bounceCount = 3; // íŠ•ê¸¸ íšŸìˆ˜
+    private float _frequency;     // durationì— ë§ì¶° ê³„ì‚°ëœ ì£¼íŒŒìˆ˜
 
     public void Initialize(float damage, Vector3 worldPos)
     {
@@ -22,8 +25,16 @@ public class DotText : MonoBehaviour
         _timer = 0.0f;
         _amplitude = _amplitudeValue;
 
+        // duration ì•ˆì— bounceCountë²ˆ íŠ€ê²Œ í•˜ê¸°
+        // |sin|ì€ ë°˜ ì£¼ê¸°ë§ˆë‹¤ 1ë²ˆ íŠ€ë¯€ë¡œ => bounceCount = duration * frequency / PI
+        _frequency = (_bounceCount * Mathf.PI) / _duration;
+
         _text = GetComponent<TMP_Text>();
         _text.text = damage.ToString("F0");
+
+        Color text = _text.color;
+        text.a = 1.0f;
+        _text.color = text;
 
         gameObject.SetActive(true);
     }
@@ -32,23 +43,40 @@ public class DotText : MonoBehaviour
     {
         _timer += Time.deltaTime;
 
-        // ¿À¸¥ÂÊÀ¸·Î ÀÌµ¿
+        // ê¸°ë³¸ì ìœ¼ë¡œ ì˜¤ë¥¸ìª½ ì´ë™
         transform.Translate(Vector3.right * _speed * Time.deltaTime);
 
-        // y°ª Æ¢´Â °è»ê: |sin|, ÁøÆø Á¡Á¡ °¨¼Ò
-        float yOffset = Mathf.Abs(Mathf.Sin(Time.deltaTime * _frequency)) * _amplitude;
+        // yì¶• íŠ€ê¸°ê¸° (duration ì•ˆì— bounceCountë²ˆ ë°œìƒ)
+        float yOffset = Mathf.Abs(Mathf.Sin(_timer * _frequency)) * _amplitude;
         Vector3 pos = transform.position;
         pos.y = _startPos.y + yOffset;
         transform.position = pos;
 
-        // ÁøÆø Á¡Á¡ ÁÙÀÌ±â (ÁÖ±â°¡ 1¹ø Áö³¯ ¶§¸¶´Ù ¹İÀ¸·Î)
-        float decayFactor = Mathf.Pow(0.5f, Time.deltaTime * _frequency / (2 * Mathf.PI));
+        // ì§„í­ ì¤„ì´ê¸°
+        float decayFactor = Mathf.Pow(0.5f, Time.deltaTime * _frequency / Mathf.PI);
         _amplitude *= decayFactor;
 
-        // duration Áö³ª¸é ºñÈ°¼ºÈ­
+        // duration ì§€ë‚˜ë©´ ì‚­ì œ
         if (_timer >= _duration)
         {
-            gameObject.SetActive(false);
+            StartCoroutine(FadeOutAndDisable());
         }
+    }
+
+    private IEnumerator FadeOutAndDisable()
+    {
+        float fadeTime = 0.3f; // í˜ì´ë“œ ì•„ì›ƒ ì§€ì† ì‹œê°„
+        float elapsed = 0f;
+        Color c = _text.color;
+
+        while (elapsed < fadeTime)
+        {
+            elapsed += Time.deltaTime;
+            float alpha = Mathf.Lerp(1f, 0f, elapsed / fadeTime);
+            _text.color = new Color(c.r, c.g, c.b, alpha);
+            yield return null;
+        }
+
+        gameObject.SetActive(false);
     }
 }
