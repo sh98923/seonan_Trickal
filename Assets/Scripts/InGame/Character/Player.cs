@@ -105,15 +105,25 @@ public class Player : Character
             }
             else
             {
-                if (FindTarget(_data.Target, _data.AtkRange) == null)
+                Character targetCharacter = _targetCollider.GetComponent<Character>();
+                if (targetCharacter == null)
                 {
-                    Vector2 dir = _targetCollider.transform.position - transform.position;
-                    transform.Translate(dir.normalized * _moveSpeed * Time.deltaTime);
+                    _targetCollider = null;
+                    return;
                 }
-                else
+
+                int sortingDiff = Mathf.Abs(_sortingGroup.sortingOrder - targetCharacter.SortingIndex);
+
+                if (Vector2.Distance(_targetCollider.transform.position, transform.position) <= _data.AtkRange
+                    && sortingDiff <= 5) // SortingOrder 차이 5 이내
                 {
                     _animator.SetBool("IdleState", true);
                     _curState = State.Attack;
+                }
+                else
+                {
+                    Vector2 dir = (_targetCollider.transform.position - transform.position).normalized;
+                    transform.Translate(dir * _moveSpeed * Time.deltaTime);
                 }
             }
         }
@@ -163,7 +173,10 @@ public class Player : Character
 
     public void OnAllBuff()
     {
-        _action[(int)ActionCategory.Buff].SetBuffInfo(_actionType, _data.ClipName[(int)_actionType], _data.EffectValue, _data.Duration[(int)_actionType]);
+        _clipName = _data.ClipName[(int)_actionType];
+        _duration = _data.Duration[(int)_actionType];
+
+        _action[(int)ActionCategory.Buff].SetBuffInfo(_actionType, _clipName, _data.EffectValue, _duration);
         _action[(int)ActionCategory.Buff].Excute();
     }
 
@@ -185,21 +198,14 @@ public class Player : Character
                 break;
         }
 
-        _action[(int)ActionCategory.Attack].SetAttackInfo(_targetCollider, _actionType, finalDamage);
+        if (tag == "Player")
+        {
+            _clipName = _data.ClipName[(int)_actionType];
+            _duration = _data.Duration[(int)_actionType];
+        }
+
+        _action[(int)ActionCategory.Attack].SetAttackInfo(_targetCollider, _actionType, _clipName, _duration, finalDamage);
         _action[(int)ActionCategory.Attack].Excute();
-    }
-
-    public void PlaySkillEffect()
-    {
-        //_skillEffect.SetActive(true);
-        //_skillEffect.GetComponent<Animator>()?.Play("SkillEffect");
-        StartCoroutine(DisableEffectAfterTime(1.0f)); 
-    }
-
-    private IEnumerator DisableEffectAfterTime(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        //_skillEffect.SetActive(false);
     }
 
     private IEnumerator RegenerateMp()

@@ -21,8 +21,6 @@ public class CharacterBuff : CharacterAction
     private BuffEffectType _effectType;
 
     private float _effectValue = 0.0f;
-    private float _timer = 0.0f;
-    private string _clipName = "";
 
     public override void SetBuffInfo(ActionSlot type, string clipName, float effectValue, float time)
     {
@@ -63,8 +61,7 @@ public class CharacterBuff : CharacterAction
         }
 
         // 이펙트 재생
-        Transform characterTransform = player.transform;
-        EffectManager.Instance.PlayEffect(characterTransform, _clipName, _timer);
+        PlayEffect(player.transform);
 
         // 타이머 종료 후 원래 값 복구 (힐 제외)
         if (_valueType != BuffValueType.Heal)

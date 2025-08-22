@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public enum AtkEffectType
 {
@@ -35,19 +33,26 @@ public class CharacterAttack : CharacterAction
         }
     }
 
+    public override void SetAttackInfo(Collider2D target, ActionSlot type, string clipName, float time, float damage)
+    {
+        _type = type; 
+        _timer = time;
+        _damage = damage;
+        _clipName = clipName;
+        _target = target.GetComponent<Character>();
+        _isRange = _data.IsRangeAtk[(int)type];
+
+        _dotDamage = _damage * _data.DotDamageRate;
+        _effectValue = _data.EffectValue;
+        _duration = _data.Duration[(int)type];
+    }
+
     public override void SetAttackInfo(Collider2D target, ActionSlot type, float damage)
     {
         _type = type;
         _damage = damage;
         _target = target.GetComponent<Character>();
         _isRange = _data.IsRangeAtk[(int)type];
-
-        if (_target.tag == "Monster")
-        {
-            _dotDamage = _damage * _data.DotDamageRate;
-            _effectValue = _data.EffectValue;
-            _duration = _data.Duration[(int)type];
-        }
     }
 
     private void MeleeAttack(string effectName)
@@ -78,7 +83,7 @@ public class CharacterAttack : CharacterAction
 
         if (!_isValid) return;
 
-        float atkSpeed = _character.Data.AtkSpeed[(int)_type];
+        float atkSpeed = _data.AtkSpeed[(int)_type];
         Vector2 dir = _target.CenterPoint.position - _character.CenterPoint.position;
 
         if (_character.transform.localScale.x < 0)
@@ -90,7 +95,7 @@ public class CharacterAttack : CharacterAction
         {
             // 기본 공격 정보
             Name = _target.name,
-            Key = _character.Data.ProjectileKey,
+            Key = _data.ProjectileKey,
             StartPos = _character.AtkPoint.position,
             Direction = dir,
             Speed = atkSpeed,
@@ -104,7 +109,8 @@ public class CharacterAttack : CharacterAction
 
             // 시각/스프라이트
             Sprite = _sprites[(int)_type],
-            IsFlipX = _isFlipX
+            IsFlipX = _isFlipX,
+            IsRotation = _data.IsRotationProjectile
         };
 
         WeaponManager.Instance.Fire(data);
@@ -115,6 +121,8 @@ public class CharacterAttack : CharacterAction
         if (_target == null) return;
 
         string effectName = _character.Data.ActionImpact[(int)_type];
+
+        PlayEffect(_target.transform);
 
         if (_isRange)
         {

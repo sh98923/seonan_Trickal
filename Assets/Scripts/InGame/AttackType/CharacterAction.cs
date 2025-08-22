@@ -13,7 +13,19 @@ public abstract class CharacterAction : MonoBehaviour
 
     protected ActionSlot _type;
 
+    protected string _clipName = "";
+
+    protected float _timer = 0.0f;
+
     protected bool _isValid;
+
+    protected void PlayEffect(Transform transform)
+    {
+        if (_timer <= 0.0f) return;
+
+        // 이펙트 재생
+        EffectManager.Instance.PlayEffect(transform, _clipName, _timer);
+    }
 
     protected T GetEffectType<T>(string effectName, out bool isValid) where T : struct, System.Enum
     {
@@ -31,6 +43,10 @@ public abstract class CharacterAction : MonoBehaviour
     }
 
     public virtual void SetBuffInfo(ActionSlot type, string clipName, float effectValue, float time)
+    {
+    }
+
+    public virtual void SetAttackInfo(Collider2D target, ActionSlot type, string clipName, float time, float damage)
     {
     }
 

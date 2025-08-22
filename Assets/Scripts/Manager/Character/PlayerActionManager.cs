@@ -16,6 +16,7 @@ public struct PlayerActionData
     public string[] ClipName;
     public bool[] IsRange;
     public bool[] IsEffectInFront;
+    public bool IsRotationProjectile;
 }
 
 public class PlayerActionManager : Singleton<PlayerActionManager>
@@ -93,6 +94,8 @@ public class PlayerActionManager : Singleton<PlayerActionManager>
             data.IsEffectInFront[0] = bool.Parse(colData[26]);
             data.IsEffectInFront[1] = bool.Parse(colData[27]);
             data.IsEffectInFront[2] = bool.Parse(colData[28]);
+
+            data.IsRotationProjectile = bool.Parse(colData[29]);
 
             _playerAtkDatas.Add(data.Key, data);
         }

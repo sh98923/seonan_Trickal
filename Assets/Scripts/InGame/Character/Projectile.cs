@@ -14,23 +14,23 @@ public class ProjectileData
     public string Key;
     public string Name;
     public bool IsFlipX;
+    public bool IsRotation;
 }
 
 public class Projectile : MonoBehaviour
 {
-    private readonly float _lifeTime = 3.0f;
+    protected readonly float _lifeTime = 3.0f;
 
-    private SpriteRenderer _sprite;
-    private ProjectileData _data;
+    protected SpriteRenderer _sprite;
+    protected ProjectileData _data;
 
-    private Vector2 _direction;
+    protected Vector2 _direction;
 
-    private readonly int _sortingOffset = 75;
-    private readonly int _sortingScale = 100;
+    protected readonly int _sortingOffset = 75;
+    protected readonly int _sortingScale = 100;
 
-    private float _lifeTimer;
-
-    protected bool _hasHit = false;
+    protected readonly float _rotationSpeed = 750.0f;
+    protected float _lifeTimer;
 
     private void Awake()
     {
@@ -39,13 +39,17 @@ public class Projectile : MonoBehaviour
 
     private void OnEnable()
     {
-        _hasHit = false;
         _lifeTimer = 0.0f;
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         transform.Translate(_direction * _data.Speed * Time.deltaTime);
+
+        if(_data.IsRotation)
+        {
+            transform.Rotate(Vector3.back, _rotationSpeed * Time.deltaTime);
+        }
 
         _lifeTimer += Time.deltaTime;
         if (_lifeTimer >= _lifeTime)
@@ -56,7 +60,7 @@ public class Projectile : MonoBehaviour
         _sprite.sortingOrder = Mathf.RoundToInt(-transform.position.y * _sortingScale + _sortingOffset);
     }
 
-    public void Fire(ProjectileData data)
+    public virtual void Fire(ProjectileData data)
     {
         transform.position = data.StartPos;
 
@@ -80,29 +84,25 @@ public class Projectile : MonoBehaviour
         transform.rotation = Quaternion.Euler(0.0f, 0.0f, angle);
     }
 
-    private void ApplyDamage(Character target)
+    protected void ApplyDamage(Character target)
     {
         target.TakeDamage(_data.Damage);
     }
 
-    private void ApplyDot(Character target)
+    protected void ApplyDot(Character target)
     {
         target.TakeDotDamage(_data.DotDamage, _data.Duration, _data.EffectValue);
     }
 
-    private void ApplySlow(Character target)
+    protected void ApplySlow(Character target)
     {
         target.ApplyAttackSlow(_data.Duration, _data.EffectValue);
     }
 
-    protected void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (_hasHit) return;
-
         if (collision.name == _data.Name)
         {
-            _hasHit = true;
-
             Character target = collision.GetComponent<Character>();
 
             if (target == null) return;

@@ -8,5 +8,4 @@ public class DamageTextManager : MonoBehaviour
     {
         PoolingManager.Instance.Add("DamageText", 10, _damageTextPrefab, transform);
     }
-
 }

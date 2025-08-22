@@ -175,6 +175,11 @@ public class CharacterData
         get => _playerAction.Duration;
     }
 
+    public bool IsRotationProjectile
+    {
+        get => _playerAction.IsRotationProjectile;
+    }
+
     public bool[] IsEffectInFront
     {
         get => _playerAction.IsEffectInFront;

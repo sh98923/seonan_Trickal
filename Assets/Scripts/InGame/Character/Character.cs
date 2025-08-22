@@ -40,6 +40,13 @@ public class Character : MonoBehaviour
     public Transform AtkPoint => _atkPoint;
     public Transform CenterPoint => _centerPoint;
 
+    // 임시/액션 관련 변수
+    protected string _clipName = "";
+    protected float _duration = 0.0f;
+
+    // 색상
+    private Color _shadowOriginalColor = Color.white;
+
     // 스탯
     protected CharacterData _data;
     protected Vector3 _scale;
@@ -78,6 +85,7 @@ public class Character : MonoBehaviour
             if (sprite.name == "Shadow")
             {
                 _shadowSprite = sprite;
+                _shadowOriginalColor = sprite.color;
                 break;
             }
         }
@@ -93,12 +101,14 @@ public class Character : MonoBehaviour
 
         foreach (SpriteRenderer sprite in _spriteRenderers)
         {
+            Color color = sprite.color;
+
             if (sprite.name == "Shadow")
             {
+                sprite.color = _shadowOriginalColor;
                 continue;
             }
 
-            Color color = sprite.color;
             color.a = 1.0f;
             sprite.color = color;
         }
