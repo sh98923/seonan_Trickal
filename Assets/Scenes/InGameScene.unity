@@ -3053,6 +3053,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _damageTextPrefab: {fileID: 1734880134487354382, guid: f606ef94f0cf51a49bdc86745b7769cf, type: 3}
+  _dotTextPrefab: {fileID: 1734880134487354382, guid: 314c1549da2bb9b43aa3dee1250168b1, type: 3}
 --- !u!114 &1859117860
 MonoBehaviour:
   m_ObjectHideFlags: 0

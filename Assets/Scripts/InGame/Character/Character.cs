@@ -240,6 +240,7 @@ public class Character : MonoBehaviour
 
     public void TakeDotDamage(float damage, float duration, float tickInterval)
     {
+        Debug.Log("dot");
         StartCoroutine(Dot(damage, duration, tickInterval));
     }
 
@@ -252,7 +253,11 @@ public class Character : MonoBehaviour
             yield return new WaitForSeconds(tickInterval);
             if (_curState == State.Dead) yield break;
 
-            TakeDamage(damagePerTick);
+            if (_curHp <= 0) _curState = State.Dead;
+
+            _curHp -= damagePerTick;
+            ShowDotText(damagePerTick);
+
             elapsed += tickInterval;
         }
     }
@@ -263,7 +268,12 @@ public class Character : MonoBehaviour
         Vector3 worldPos = transform.position + Vector3.up * 1.8f;
         damageText.GetComponent<DamageText>().Initialize(damage, worldPos);
     }
-
+    private void ShowDotText(float damage)
+    {
+        GameObject dotText = PoolingManager.Instance.Pop("DotText");
+        Vector3 worldPos = transform.position + Vector3.up;
+        dotText.GetComponent<DotText>().Initialize(damage, worldPos);
+    }
     // 버프, 디버프 관련
     public void ApplyAttackSlow(float duration, float speed)
     {
