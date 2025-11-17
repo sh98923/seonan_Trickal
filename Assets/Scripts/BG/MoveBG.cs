@@ -38,17 +38,26 @@ public class MoveBG : MonoBehaviour
     private void MoveLoop(SpriteRenderer[] sprites)
     {
         float camLeftX = _mainCam.transform.position.x - _screenWidthWorld;
+        float camRightX = _mainCam.transform.position.x + _screenWidthWorld;
+        const float buffer = 0.2f;
 
         foreach (SpriteRenderer sprite in sprites)
         {
-            float spriteWidth = sprite.bounds.size.x;
-            float rightMostX = sprite.transform.position.x + spriteWidth * 0.5f;
+            float width = sprite.bounds.size.x;
+            float half = width * 0.5f;
 
-            // 카메라 왼쪽 경계보다 스프라이트 오른쪽 끝이 더 왼쪽이면 → 벗어났음
-            if (rightMostX < camLeftX)
+            float left = sprite.transform.position.x - half;
+            float right = sprite.transform.position.x + half;
+
+            // 카메라 왼쪽 밖으로 벗어났을 때
+            if (right < camLeftX - buffer)
             {
-                print(spriteWidth);
-                sprite.transform.position += Vector3.right * spriteWidth * 2.0f;
+                sprite.transform.position += Vector3.right * width * 2.0f;
+            }
+            // 카메라 오른쪽 밖으로 벗어났을 때
+            else if (left > camRightX + buffer)
+            {
+                sprite.transform.position -= Vector3.right * width * 2.0f;
             }
         }
     }
