@@ -46,7 +46,7 @@ public class StagePlayerSpawn : MonoBehaviour
             {
                 SpawnPosData spawnData = SpawnManager.Instance.GetPlayerSpawnData(_startPlayerIndex + index);
                 Vector3 newPos = new Vector3(origin.x * spawnData.Ratio.x, origin.y * spawnData.Ratio.y, Camera.main.nearClipPlane);
-
+                
                 positions[i].Position = Camera.main.ScreenToWorldPoint(newPos);
                 positions[i].IsOccupied = false;
                 index++;

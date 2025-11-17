@@ -46,6 +46,8 @@ public class GameManager : Singleton<GameManager>
 
     public void SetDeckUnit(PlayerData data, Vector3 spawnPos)
     {
+        spawnPos.x += 3.33f;
+
         PlayerUnitData unitData =
             new PlayerUnitData
             {

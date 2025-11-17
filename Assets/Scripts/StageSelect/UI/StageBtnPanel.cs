@@ -50,6 +50,7 @@ public class StageBtnPanel : MonoBehaviour
         Button btn = buttonObj.GetComponent<Button>();
         Image[] btnImage = buttonObj.GetComponentsInChildren<Image>();
         TextMeshProUGUI txt = buttonObj.GetComponentInChildren<TextMeshProUGUI>();
+        Animator animator = buttonObj.GetComponent<Animator>();
 
         txt.text = $"Stage {stage}";
         
@@ -57,11 +58,15 @@ public class StageBtnPanel : MonoBehaviour
 
         if (isUnlocked)
         {
+            animator.enabled = true;
+
             btnImage[(int)BtnImageUI.StageBtn].color = Color.white; // 버튼 배경 흰색
             btnImage[(int)BtnImageUI.StageLock].gameObject.SetActive(false);
         }
         else
         {
+            animator.enabled = false;
+
             btnImage[(int)BtnImageUI.StageBtn].color = Color.gray; // 버튼 배경 회색
         }
 
