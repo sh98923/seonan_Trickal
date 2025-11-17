@@ -516,6 +516,9 @@ GameObject:
   - component: {fileID: 1657846532609195736}
   - component: {fileID: 1708682418443222120}
   - component: {fileID: 7784859329901352821}
+  - component: {fileID: -4141055218825130867}
+  - component: {fileID: 7739703251017290700}
+  - component: {fileID: 5948698197331734528}
   m_Layer: 6
   m_Name: ElfBishop
   m_TagString: Player
@@ -625,7 +628,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ece163732101c1f4aa0b0562c6c13ad9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attackPoint: {fileID: 6778573500011383675}
 --- !u!114 &7784859329901352821
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -636,6 +638,42 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f94e4d9f3fad76249b9f6c47b86a9ded, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-4141055218825130867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1432887398413912192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83dc95816ca11784797797fa8d5bbe05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7739703251017290700
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1432887398413912192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60c6951522361ec469d332a85fadca1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5948698197331734528
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1432887398413912192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e750a4276c1574d468bb8cfcc43809f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1933119268406751913

@@ -2,15 +2,16 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.UI;
 
 public class Character : MonoBehaviour
 {
     // Enum
-    protected enum ActionCategory 
+    protected enum ActionCategory
     {
-        Attack, Buff 
+        Attack, Buff
     }
-    protected enum State 
+    protected enum State
     {
         Idle, Move, Attack, Dead
     }
@@ -28,6 +29,9 @@ public class Character : MonoBehaviour
     protected CharacterAction[] _action;
     protected Collider2D _targetCollider;
     protected SortingGroup _sortingGroup;
+
+    private CharacterGraphics _characterVisual;
+    private DamageReceiver _damageReceiver;
     private Collider2D _myCollider;
     private SpriteRenderer _shadowSprite;
     private SpriteRenderer[] _spriteRenderers;
@@ -89,12 +93,23 @@ public class Character : MonoBehaviour
                 break;
             }
         }
+
+        _characterVisual = GetComponent<CharacterGraphics>();
+        _characterVisual.Initialize(this, _spriteRenderers, _shadowSprite);
+
+        _damageReceiver = GetComponent<DamageReceiver>();
     }
 
     private void OnEnable()
     {
-        _attackCoolTimer = 0.0f;
+        if (_data == null) return;
+
+        _damageReceiver.Initialize(this, _data.Hp);
+        _damageReceiver.SetHp(_data.Hp);
+        print(_data.EngName + " : " + _data.Hp);
+
         _curState = State.Idle;
+        _attackCoolTimer = 0.0f;
         _isAttacking = false;
         _isDead = false;
         _myCollider.enabled = true;
@@ -121,17 +136,17 @@ public class Character : MonoBehaviour
         switch (_curState)
         {
             case State.Idle:
-                IdleStateAction(); 
+                IdleStateAction();
                 break;
             case State.Move:
-                MoveStateAction(); 
+                MoveStateAction();
                 break;
-            case State.Attack: 
-                AttackStateAction(); 
-                AttackCoolTime(); 
+            case State.Attack:
+                AttackStateAction();
+                AttackCoolTime();
                 break;
-            case State.Dead: 
-                DeadStateAction(); 
+            case State.Dead:
+                DeadStateAction();
                 break;
         }
 
@@ -190,7 +205,7 @@ public class Character : MonoBehaviour
         _animator.SetTrigger("Dead");
         _myCollider.enabled = false;
 
-        StartCoroutine(FadeOutAndInactive());
+        FadeOutAndInactive();
     }
 
     // 타겟 위치에 맞게 Flip
@@ -232,56 +247,32 @@ public class Character : MonoBehaviour
     // 공격 처리
     public void TakeDamage(float damage)
     {
-        _curHp -= damage;
-        ShowDamageText(damage);
+        _damageReceiver.TakeDamage(damage);
+    }
 
-        if (_curHp <= 0) _curState = State.Dead;
+    public void CharacterDeath()
+    {
+        _curState = State.Dead;
     }
 
     public void TakeDotDamage(float damage, float duration, float tickInterval)
     {
-        Debug.Log("dot");
-        StartCoroutine(Dot(damage, duration, tickInterval));
+        _damageReceiver.TakeDotDamage(damage, duration, tickInterval);
     }
 
-    private IEnumerator Dot(float damagePerTick, float duration, float tickInterval)
-    {
-        float elapsed = 0.0f;
-
-        while (elapsed < duration)
-        {
-            yield return new WaitForSeconds(tickInterval);
-            if (_curState == State.Dead) yield break;
-
-            if (_curHp <= 0) _curState = State.Dead;
-
-            _curHp -= damagePerTick;
-            ShowDotText(damagePerTick);
-
-            elapsed += tickInterval;
-        }
-    }
-
-    private void ShowDamageText(float damage)
-    {
-        GameObject damageText = PoolingManager.Instance.Pop("DamageText");
-        Vector3 worldPos = transform.position + Vector3.up * 1.8f;
-        damageText.GetComponent<DamageText>().Initialize(damage, worldPos);
-    }
-    private void ShowDotText(float damage)
-    {
-        GameObject dotText = PoolingManager.Instance.Pop("DotText");
-        Vector3 worldPos = transform.position + Vector3.up;
-        dotText.GetComponent<DotText>().Initialize(damage, worldPos);
-    }
     // 버프, 디버프 관련
     public void ApplyAttackSlow(float duration, float speed)
     {
-        if (_slowCoroutine != null) StopCoroutine(_slowCoroutine);
-        _slowCoroutine = StartCoroutine(SlowAttackCoroutine(duration, speed));
+        _damageReceiver.ApplyAttackSlow(duration, speed);
     }
 
-    private IEnumerator SlowAttackCoroutine(float duration, float speed)
+    public void SetAnimatorSpeed(float speed)
+    {
+        _animLengthRate = 1 / speed;
+        _animator.speed = speed;
+    }
+
+    /*private IEnumerator SlowAttackCoroutine(float duration, float speed)
     {
         _animLengthRate = 1 / speed;
         _animator.speed = speed;
@@ -291,7 +282,7 @@ public class Character : MonoBehaviour
         _animLengthRate = 1.0f;
         _animator.speed = 1.0f;
         _slowCoroutine = null;
-    }
+    }*/
 
     // 공격 이벤트
     public virtual void OnAttack()
@@ -317,51 +308,15 @@ public class Character : MonoBehaviour
 
     public void SetCharacterActionInit()
     {
-        for(int i = 0; i < _action.Length; i++)
+        for (int i = 0; i < _action.Length; i++)
         {
             _action[i].SetInit();
         }
     }
 
     // 죽었을 때 페이드 아웃
-    private IEnumerator FadeOutAndInactive()
+    private void FadeOutAndInactive()
     {
-        yield return new WaitForSeconds(1.5f);
-
-        float timer = 0.0f;
-
-        Color shadowOriginalColor = _shadowSprite.color;
-
-        while (timer < _fadeDuration)
-        {
-            timer += Time.deltaTime;
-
-            foreach (SpriteRenderer sprite in _spriteRenderers)
-            {
-                UpdateSpriteAlpha(sprite, shadowOriginalColor, timer);
-            }
-
-            yield return null;
-        }
-
-        gameObject.SetActive(false);
-    }
-
-    private void UpdateSpriteAlpha(SpriteRenderer sprite, Color shadowColor, float timer)
-    {
-        Color color = sprite.color;
-
-        float progress = timer / _fadeDuration;
-
-        if (sprite == _shadowSprite)
-        {
-            color.a = Mathf.Lerp(shadowColor.a, 0.0f, progress);
-        }
-        else
-        {
-            color.a = Mathf.Lerp(1.0f, 0.0f, progress);
-        }
-
-        sprite.color = color;
+        _characterVisual.StartFadeOutAndDisable();
     }
 }

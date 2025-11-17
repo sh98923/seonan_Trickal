@@ -3079,6 +3079,9 @@ GameObject:
   - component: {fileID: 9072746001467152269}
   - component: {fileID: 7003365036020411370}
   - component: {fileID: 1460170985693712764}
+  - component: {fileID: 8366830565006352597}
+  - component: {fileID: -3121661483138765303}
+  - component: {fileID: 5300833920937840329}
   m_Layer: 6
   m_Name: ElfRuneBlade
   m_TagString: Player
@@ -3188,7 +3191,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ece163732101c1f4aa0b0562c6c13ad9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attackPoint: {fileID: 6567393296066932019}
 --- !u!114 &1460170985693712764
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3199,6 +3201,42 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f94e4d9f3fad76249b9f6c47b86a9ded, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8366830565006352597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6587182555845784622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83dc95816ca11784797797fa8d5bbe05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-3121661483138765303
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6587182555845784622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e750a4276c1574d468bb8cfcc43809f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5300833920937840329
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6587182555845784622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60c6951522361ec469d332a85fadca1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &6686995577533898971

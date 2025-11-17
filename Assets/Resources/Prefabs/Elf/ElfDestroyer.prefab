@@ -3578,6 +3578,9 @@ GameObject:
   - component: {fileID: 5199209361759178803}
   - component: {fileID: 9112885662285029218}
   - component: {fileID: 1993828386619373009}
+  - component: {fileID: 1288213115122663428}
+  - component: {fileID: 3555113988280737857}
+  - component: {fileID: 8600002752486051630}
   m_Layer: 6
   m_Name: ElfDestroyer
   m_TagString: Player
@@ -3687,7 +3690,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ece163732101c1f4aa0b0562c6c13ad9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attackPoint: {fileID: 9000304504659461379}
 --- !u!114 &1993828386619373009
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3698,6 +3700,42 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f94e4d9f3fad76249b9f6c47b86a9ded, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1288213115122663428
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8043560565578099387}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83dc95816ca11784797797fa8d5bbe05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3555113988280737857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8043560565578099387}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60c6951522361ec469d332a85fadca1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8600002752486051630
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8043560565578099387}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e750a4276c1574d468bb8cfcc43809f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &8045668472857019429

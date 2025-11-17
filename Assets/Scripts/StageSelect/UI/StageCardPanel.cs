@@ -10,7 +10,7 @@ public class StageCardPanel : CardPanel
 
         if(_curScene != "StageSelectScene")
         {
-            this.enabled = false;
+            enabled = false;
         }
 
         _spawnParent = GameObject.Find("SpawnPlayer").GetComponent<StagePlayerSpawn>();
@@ -60,6 +60,7 @@ public class StageCardPanel : CardPanel
     {
         GameObject playerPrefab = Resources.Load<GameObject>(playerData.CharacterPrefabPath);
         GameObject player = Instantiate(playerPrefab, _spawnParent.transform);
+
         player.name = playerData.EngName;
         player.layer = LayerMask.NameToLayer(playerData.Layer);
         player.transform.position = spawnPos;

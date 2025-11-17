@@ -4,6 +4,7 @@ using System.Collections;
 public class Player : Character
 {
     private GameObject _skillEffect;
+    private SkillEffectController _skillEffectController;
 
     private Vector3 _originPos;
 
@@ -20,16 +21,17 @@ public class Player : Character
     {
         base.Awake();
 
-        _skillEffect = transform.Find("SkillEffect").gameObject;
+        _skillEffectController = GetComponent<SkillEffectController>();
+        _skillEffectController.Initialize(this);
 
-        SkillEffectOff();
+        _skillEffectController.Stop();
 
         _moveDir = Vector2.right;
         
         _scale.x *= -1;
         transform.localScale = _scale;
 
-        _curHp = 5500;
+        //_curHp = 5500;
     }
 
     private void Start()
@@ -60,15 +62,12 @@ public class Player : Character
 
     private void SkillEffectOn()
     {
-        int sortNum = _data.IsEffectInFront[(int)_actionType] ? _sortingGroup.sortingOrder + 1 : -101;
-
-        _skillEffect.GetComponent<SpriteRenderer>().sortingOrder = sortNum;
-        _skillEffect.SetActive(true);
+        _skillEffectController.Play(_data.IsEffectInFront[(int)_actionType]);
     }
 
     private void SkillEffectOff()
     {
-        _skillEffect.SetActive(false);
+        _skillEffectController.Stop();
     }
 
     protected override void IdleStateAction()
@@ -115,7 +114,7 @@ public class Player : Character
                 int sortingDiff = Mathf.Abs(_sortingGroup.sortingOrder - targetCharacter.SortingIndex);
 
                 if (Vector2.Distance(_targetCollider.transform.position, transform.position) <= _data.AtkRange
-                    && sortingDiff <= 5) // SortingOrder 차이 5 이내
+                    && sortingDiff <= 20) // SortingOrder 차이 20 이내
                 {
                     _animator.SetBool("IdleState", true);
                     _curState = State.Attack;
