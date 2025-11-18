@@ -20,6 +20,12 @@ public class BattleStateManager : Singleton<BattleStateManager>
         add { _onReroll += value; }
         remove { _onReroll -= value; }
     }
+    private event Action _onBattle;
+    public event Action OnBattle
+    {
+        add { _onBattle += value; }
+        remove { _onBattle -= value; }
+    }
 
     private BattleState _currentState = BattleState.None;
 
@@ -49,6 +55,16 @@ public class BattleStateManager : Singleton<BattleStateManager>
     public void SetState(BattleState newState)
     {
         _currentState = newState;
+
+        switch (_currentState)
+        {
+            case BattleState.Reroll:
+                _onReroll?.Invoke();
+                break;
+            case BattleState.Battle:
+                _onBattle?.Invoke();
+                break;
+        }
     }
 
     public void PrintCurState()

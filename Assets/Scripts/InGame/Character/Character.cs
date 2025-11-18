@@ -60,7 +60,7 @@ public class Character : MonoBehaviour
     protected readonly float _findTargetRange = 5.0f;
     protected float _curHp = 0.0f;
     protected float _maxHp = 0.0f;
-    protected float _moveSpeed = 2.0f;
+    protected float _moveSpeed = 2.5f;
 
     protected bool _isAttacking = false;
     private bool _isDead = false;
@@ -204,6 +204,7 @@ public class Character : MonoBehaviour
         _onDie?.Invoke(this);
         _animator.SetTrigger("Dead");
         _myCollider.enabled = false;
+        _sortingGroup.sortingOrder = -10000;
 
         FadeOutAndInactive();
     }
@@ -229,7 +230,7 @@ public class Character : MonoBehaviour
         float closestDistance = float.MaxValue;
         Collider2D closestTarget = null;
 
-        foreach (var hit in hits)
+        foreach (Collider2D hit in hits)
         {
             if (!hit.CompareTag(targetTag)) continue;
 

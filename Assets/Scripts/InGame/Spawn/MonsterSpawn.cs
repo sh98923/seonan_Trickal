@@ -36,15 +36,15 @@ public class MonsterSpawn : MonoBehaviour
 
     private void OnEnable()
     {
-        BattleStateManager.Instance.OnReroll += HandleReroll;
+        BattleStateManager.Instance.OnReroll += SpawnMonstersOnReroll;
     }
 
     private void OnDisable()
     {
-        BattleStateManager.Instance.OnReroll -= HandleReroll;
+        BattleStateManager.Instance.OnReroll -= SpawnMonstersOnReroll;
     }
 
-    private void HandleReroll()
+    private void SpawnMonstersOnReroll()
     {
         if (_spawned) return;
 
@@ -158,16 +158,22 @@ public class MonsterSpawn : MonoBehaviour
         if (_aliveMonsterCount <= 0)
         {
             Debug.Log("Wave cleared.");
-            BattleStateManager.Instance.SetState(BattleState.MonstersDefeated);
-            StartCoroutine(MonsterSpawnDelay());
+            //BattleStateManager.Instance.SetState(BattleState.MonstersDefeated);
+
             _waveStep++;
+            _spawned = false;
+            BattleStateManager.Instance.SetState(BattleState.Reroll);
+
+            //StartCoroutine(MonsterSpawnDelay());
         }
     }
 
     private IEnumerator MonsterSpawnDelay()
     {
+        BattleStateManager.Instance.SetState(BattleState.Reroll);
+
+        //BattleStateManager.Instance.RerollEvent();
         yield return new WaitForSeconds(4.0f);
         _spawned = false;
-        BattleStateManager.Instance.RerollEvent();
     }
 }
