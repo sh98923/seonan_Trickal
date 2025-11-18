@@ -84,14 +84,14 @@ public class Player : Character
     {
         base.MoveStateAction();
 
-        if (BattleStateManager.Instance.CurrentState == BattleState.MonstersDefeated)
+        if (BattleStateManager.Instance.CurrentState == BattleState.Reroll)
         {
             Vector3 dir = _originPos - transform.position;
             transform.Translate(dir.normalized * _moveSpeed * Time.deltaTime);
 
             if (Vector3.Distance(transform.position, _originPos) < 0.01f)
             {
-                BattleStateManager.Instance.SetState(BattleState.Reroll);
+                //BattleStateManager.Instance.SetState(BattleState.Reroll);
                 _curState = State.Idle;
             }
         }

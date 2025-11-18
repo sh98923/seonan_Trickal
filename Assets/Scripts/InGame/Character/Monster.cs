@@ -18,7 +18,7 @@ public class Monster : Character
         if(_targetCollider == null)
         {
             _targetCollider = FindTarget(_data.Target, _findTargetRange);
-            transform.Translate(_moveDir * _moveSpeed * Time.deltaTime);
+            transform.Translate(_moveDir * _moveSpeed * Time.deltaTime);      
         }
         else
         {
