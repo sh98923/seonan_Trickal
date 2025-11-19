@@ -29,6 +29,7 @@ public class DamageReceiver : MonoBehaviour
 
     public void SetHp(float hp)
     {
+        _maxHp = hp;
         _curHp = hp;
     }
 
@@ -36,9 +37,9 @@ public class DamageReceiver : MonoBehaviour
     {
         if (_owner == null) return;
         
-        print("데미지: " + amount);
         _curHp -= amount;
         _graphics?.ShowDamageText(amount);
+        print(name + " " + "체력: " + _curHp + "/" + _maxHp);
 
         if (_curHp <= 0.0f)
         {

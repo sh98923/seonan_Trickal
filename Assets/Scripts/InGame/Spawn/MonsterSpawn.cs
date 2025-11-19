@@ -30,23 +30,27 @@ public class MonsterSpawn : MonoBehaviour
     {
         _startMonsterIndex = SpawnManager.Instance.StartMonsterSpawnKey;
         LoadMonsterPool();
-        LoadMonsterPos();
-        BattleStateManager.Instance.RerollEvent();
+        SpawnMonsters();
+        //BattleStateManager.Instance.RerollEvent();
     }
 
     private void OnEnable()
     {
-        BattleStateManager.Instance.OnReroll += SpawnMonstersOnReroll;
+        //BattleStateManager.Instance.OnReroll += SpawnMonstersOnReroll;
+        InGameCam.Instance.OnCameraMoveEnd += SpawnMonsters;
     }
 
     private void OnDisable()
     {
-        BattleStateManager.Instance.OnReroll -= SpawnMonstersOnReroll;
+        //BattleStateManager.Instance.OnReroll -= SpawnMonstersOnReroll;
+        InGameCam.Instance.OnCameraMoveEnd -= SpawnMonsters;
     }
 
-    private void SpawnMonstersOnReroll()
+    private void SpawnMonsters()
     {
         if (_spawned) return;
+
+        LoadMonsterPos();
 
         int waveKey = GameManager.Instance.StageKey + _waveStep;
         StageData wave = StageManager.Instance.GetStageData(waveKey);

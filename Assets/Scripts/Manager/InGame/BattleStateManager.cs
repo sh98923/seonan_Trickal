@@ -60,16 +60,18 @@ public class BattleStateManager : Singleton<BattleStateManager>
         {
             case BattleState.Reroll:
                 _onReroll?.Invoke();
+                //print("리롤");
                 break;
             case BattleState.Battle:
                 _onBattle?.Invoke();
+                //print("배틀");
                 break;
         }
     }
 
     public void PrintCurState()
     {
-        print(_currentState);
+        //print(_currentState);
     }
 
     public void RerollEvent()

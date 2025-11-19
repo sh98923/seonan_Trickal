@@ -29,9 +29,9 @@ public class Character : MonoBehaviour
     protected CharacterAction[] _action;
     protected Collider2D _targetCollider;
     protected SortingGroup _sortingGroup;
+    protected DamageReceiver _damageReceiver;
 
     private CharacterGraphics _characterVisual;
-    private DamageReceiver _damageReceiver;
     private Collider2D _myCollider;
     private SpriteRenderer _shadowSprite;
     private SpriteRenderer[] _spriteRenderers;
@@ -58,7 +58,6 @@ public class Character : MonoBehaviour
     protected ActionSlot _actionType = ActionSlot.Base;
     protected State _curState = State.Idle;
     protected readonly float _findTargetRange = 5.0f;
-    protected float _curHp = 0.0f;
     protected float _maxHp = 0.0f;
     protected float _moveSpeed = 2.5f;
 
@@ -105,8 +104,7 @@ public class Character : MonoBehaviour
         if (_data == null) return;
 
         _damageReceiver.Initialize(this, _data.Hp);
-        _damageReceiver.SetHp(_data.Hp);
-        print(_data.EngName + " : " + _data.Hp);
+        //print(_data.EngName + " : " + _data.Hp);
 
         _curState = State.Idle;
         _attackCoolTimer = 0.0f;
@@ -288,7 +286,6 @@ public class Character : MonoBehaviour
     // 공격 이벤트
     public virtual void OnAttack()
     {
-        _action[(int)ActionCategory.Attack].SetAttackInfo(_targetCollider, _actionType, _data.Atk);
         _action[(int)ActionCategory.Attack].Excute();
     }
 
@@ -305,7 +302,11 @@ public class Character : MonoBehaviour
     }
 
     // 캐릭터 세팅
-    public void SetCharacterData(CharacterData data) => _data = data;
+    public void SetCharacterData(CharacterData data)
+    {
+        _data = data;
+        _damageReceiver.SetHp(data.Hp);
+    }
 
     public void SetCharacterActionInit()
     {

@@ -86,7 +86,7 @@ public class StageBtnPanel : MonoBehaviour
         }
         else
         {
-            print("이전 스테이지 깨고 오쇼 ㅋ");
+            //print("이전 스테이지 깨고 오쇼 ㅋ");
         }
     }
 }

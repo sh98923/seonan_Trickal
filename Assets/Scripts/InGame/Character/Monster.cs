@@ -34,6 +34,13 @@ public class Monster : Character
             }
         }
     }
+    
+    public override void OnAttack()
+    {
+        _action[(int)ActionCategory.Attack].SetAttackInfo(_targetCollider, _actionType, _atk);
+
+        base.OnAttack();
+    }
 
     public void WaveUpgrade(int wave)
     {
@@ -44,14 +51,15 @@ public class Monster : Character
         _maxHp = (hpLinear + hpExp) * 0.5f;
         // Round가 정수로만 반올림 하기 떄문에
         // 소수점 첫째자리까지 나오게 하기위한 수식
-        _maxHp = Mathf.Round(_maxHp * 10f) * 0.1f;
-        _curHp = _maxHp;
+        _maxHp = Mathf.Round(_maxHp);
+
+        _damageReceiver.SetHp(_maxHp);
 
         float atkLinear = _data.Atk + _data.AtkPerWave * wave;
         float atkExp = _data.Atk * Mathf.Pow(_data.AtkGrowthRate, wave);
         _atk = (atkLinear + atkExp) * 0.5f;
-        _atk = Mathf.Round(_atk * 10f) * 0.1f;
+        _atk = Mathf.Round(_atk);
 
-        print(_data.EngName + " : " + _curHp.ToString("F1") + ", " + _atk.ToString("F1"));
+        print("몬스터 : " + _data.EngName + " : " + _maxHp.ToString("F1") + ", " + _atk.ToString("F1"));
     }
 }

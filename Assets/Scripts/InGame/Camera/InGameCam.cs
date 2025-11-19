@@ -1,26 +1,55 @@
+using System;
 using System.Collections;
 using UnityEngine;
-using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class InGameCam : MonoBehaviour
 {
+    private static InGameCam _instance;
+    public static InGameCam Instance
+    {
+        get
+        {
+            if (_instance == null && Application.isPlaying)
+            {
+                Debug.LogError("InGameCam 스크립트가 null임");
+            }
+
+            return _instance;
+        }
+    }
+
     private Camera _cam;
     private Coroutine _zoomCoroutine;
 
+    private event Action _onCameraMoveEnd; // 카메라 이동 종료 이벤트
+    public event Action OnCameraMoveEnd
+    {
+        add { _onCameraMoveEnd += value; }
+        remove { _onCameraMoveEnd -= value; }
+    }
+
     private readonly float _zoomInSize = 4.5f;
     private readonly float _zoomOutSize = 5.0f;
-    private readonly float _firstMoveX = 12.5f;   // 첫 이동
-    private readonly float _returnMoveX = -2.0f;   // 되돌아가는 이동
+    private readonly float _rightMoveX = 12.5f;   // 오른쪽으로 이동 거리
+    private readonly float _leftMoveX = -2.0f;   // 왼쪽으로 되돌아가는 이동 거리
 
     private bool _isFirstInit = true;
 
     private void Awake()
     {
+        _instance = this;
+
         _cam = GetComponent<Camera>();
         _cam.orthographicSize = _zoomInSize;
 
         BattleStateManager.Instance.OnReroll += ZoomBattleToReroll;
         BattleStateManager.Instance.OnBattle += ZoomRerollToBattle;
+    }
+
+    private void OnDisable()
+    {
+        BattleStateManager.Instance.OnReroll -= ZoomBattleToReroll;
+        BattleStateManager.Instance.OnBattle -= ZoomRerollToBattle;
     }
 
     private void ZoomRerollToBattle()
@@ -33,11 +62,11 @@ public class InGameCam : MonoBehaviour
 
     private void ZoomBattleToReroll()
     {
-        if (_isFirstInit)
+        /*if (_isFirstInit)
         {
             _isFirstInit = false;  // 첫 진입 이후에는 이벤트 허용
             return;
-        }
+        }*/
 
         if (_zoomCoroutine != null)
             StopCoroutine(_zoomCoroutine);
@@ -48,18 +77,20 @@ public class InGameCam : MonoBehaviour
     private IEnumerator ZoomOutRerollToBattle()
     {
         // 1️⃣ 줌아웃 + X축 +10
-        yield return ZoomCoroutine(_zoomOutSize, _firstMoveX, 3.0f);
+        yield return ZoomCoroutine(_zoomOutSize, _rightMoveX, 3.0f);
         // 2️⃣ X축 -2
-        yield return MoveXCoroutine(_returnMoveX, 0.75f);
+        yield return MoveXCoroutine(_leftMoveX, 1.25f);
         _zoomCoroutine = null;
     }
 
     // Battle -> Reroll: 줌인 + X축 +10
     private IEnumerator ZoomInBattleToReroll()
     {
-        yield return ZoomCoroutine(_zoomInSize, _firstMoveX, 3.0f);
+        yield return ZoomCoroutine(_zoomInSize, _rightMoveX, 3.0f);
         _zoomCoroutine = null;
-    }
+
+        _onCameraMoveEnd?.Invoke(); // 배틀 상태가 리롤(준비) 상태일때 몬스터 스폰
+    }   
 
     // ======================================
     // 공용 보간 함수
@@ -100,50 +131,5 @@ public class InGameCam : MonoBehaviour
         }
 
         transform.position = targetPos;
-    }
-
-   /* private void ZoomInLerp()
-    {
-        // 이전 코루틴이 실행 중이면 멈추고 새로 시작
-        if (_zoomCoroutine != null)
-            StopCoroutine(_zoomCoroutine);
-
-        _zoomCoroutine = StartCoroutine(ZoomCoroutine(_zoomInSize));
-    }
-
-    private void ZoomOutLerp()
-    {
-        // 이전 코루틴이 실행 중이면 멈추고 새로 시작
-        if (_zoomCoroutine != null)
-            StopCoroutine(_zoomCoroutine);
-
-        _zoomCoroutine = StartCoroutine(ZoomCoroutine(_zoomOutSize));
-    }
-
-    private IEnumerator ZoomCoroutine(float targetSize)
-    {
-        float duration = 1.5f; // 보간 시간
-        float elapsed = 0.0f;
-        float startSize = _cam.orthographicSize;
-
-        while (elapsed < duration)
-        {
-            elapsed += Time.deltaTime;
-            _cam.orthographicSize = Mathf.Lerp(startSize, targetSize, elapsed / duration);
-            yield return null;
-        }
-
-        _cam.orthographicSize = targetSize;
-        _zoomCoroutine = null;
-    }*/
-
-    private void OnDestroy()
-    {
-        // 구독 해제
-        if (BattleStateManager.Instance != null)
-        {
-            BattleStateManager.Instance.OnReroll -= ZoomBattleToReroll;
-            BattleStateManager.Instance.OnBattle -= ZoomRerollToBattle;
-        }
     }
 }

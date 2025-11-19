@@ -31,7 +31,6 @@ public class Player : Character
         _scale.x *= -1;
         transform.localScale = _scale;
 
-        //_curHp = 5500;
     }
 
     private void Start()
@@ -204,7 +203,8 @@ public class Player : Character
         }
 
         _action[(int)ActionCategory.Attack].SetAttackInfo(_targetCollider, _actionType, _clipName, _duration, finalDamage);
-        _action[(int)ActionCategory.Attack].Excute();
+
+        base.OnAttack();
     }
 
     private IEnumerator RegenerateMp()
