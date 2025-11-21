@@ -15,10 +15,10 @@ public class Monster : Character
     {
         base.MoveStateAction();
 
-        if(_targetCollider == null)
+        if (_targetCollider == null)
         {
             _targetCollider = FindTarget(_data.Target, _findTargetRange);
-            transform.Translate(_moveDir * _moveSpeed * Time.deltaTime);      
+            transform.Translate(_moveDir * _moveSpeed * Time.deltaTime);
         }
         else
         {
@@ -34,7 +34,7 @@ public class Monster : Character
             }
         }
     }
-    
+
     public override void OnAttack()
     {
         _action[(int)ActionCategory.Attack].SetAttackInfo(_targetCollider, _actionType, _atk);

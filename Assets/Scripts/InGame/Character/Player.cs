@@ -3,12 +3,15 @@ using System.Collections;
 
 public class Player : Character
 {
-    private GameObject _skillEffect;
     private SkillEffectController _skillEffectController;
 
     private Vector3 _originPos;
+    private Vector3 _wayPoint;
+
+    private readonly float _nextWaveDist = 23.0f; // 배틀 → 리롤 이동 시 플레이어 이동 거리
 
     private float _atkBuff = 1.0f;
+
     public float AtkBuff
     {
         get { return _atkBuff; }
@@ -27,7 +30,8 @@ public class Player : Character
         _skillEffectController.Stop();
 
         _moveDir = Vector2.right;
-        
+
+
         _scale.x *= -1;
         transform.localScale = _scale;
 
@@ -35,7 +39,19 @@ public class Player : Character
 
     private void Start()
     {
+        _wayPoint = transform.position;
         _animator.SetTrigger("Intro");
+    }
+
+    private void OnEnable()
+    {
+        base.OnEnable();
+        BattleStateManager.Instance.OnReroll += MoveToNextWaypoint;
+    }
+
+    private void OnDisable()
+    {
+        BattleStateManager.Instance.OnReroll -= MoveToNextWaypoint;
     }
 
     private void Update()
@@ -45,7 +61,7 @@ public class Player : Character
         if (Input.GetKeyDown(KeyCode.S))
         {
             _actionType = ActionSlot.Ult;
-            _animator.SetTrigger("Ult"); 
+            _animator.SetTrigger("Ult");
         }
         if (Input.GetKeyDown(KeyCode.A))
         {
@@ -69,6 +85,15 @@ public class Player : Character
         _skillEffectController.Stop();
     }
 
+    private void MoveToNextWaypoint()
+    {
+        // waypoint 이동
+        _wayPoint.x += _nextWaveDist;
+
+        _scale.x = -Mathf.Abs(_scale.x);
+        transform.localScale = _scale;
+    }
+
     protected override void IdleStateAction()
     {
         base.IdleStateAction();
@@ -85,10 +110,10 @@ public class Player : Character
 
         if (BattleStateManager.Instance.CurrentState == BattleState.Reroll)
         {
-            Vector3 dir = _originPos - transform.position;
+            Vector3 dir = _wayPoint - transform.position;
             transform.Translate(dir.normalized * _moveSpeed * Time.deltaTime);
 
-            if (Vector3.Distance(transform.position, _originPos) < 0.01f)
+            if (Vector3.Distance(transform.position, _wayPoint) < 0.01f)
             {
                 //BattleStateManager.Instance.SetState(BattleState.Reroll);
                 _curState = State.Idle;
@@ -189,7 +214,7 @@ public class Player : Character
                 break;
             case ActionSlot.Skill:
                 _curMp -= _data.Mp;
-                finalDamage = _data.Atk * _data.SkillRate * _atkBuff; 
+                finalDamage = _data.Atk * _data.SkillRate * _atkBuff;
                 break;
             case ActionSlot.Ult:
                 finalDamage = _data.Atk * _data.Ultimate * _atkBuff;

@@ -99,7 +99,7 @@ public class Character : MonoBehaviour
         _damageReceiver = GetComponent<DamageReceiver>();
     }
 
-    private void OnEnable()
+    protected void OnEnable()
     {
         if (_data == null) return;
 

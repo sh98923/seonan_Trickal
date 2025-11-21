@@ -30,8 +30,12 @@ public class InGameCam : MonoBehaviour
 
     private readonly float _zoomInSize = 4.5f;
     private readonly float _zoomOutSize = 5.0f;
+
     private readonly float _rightMoveX = 12.5f;   // 오른쪽으로 이동 거리
     private readonly float _leftMoveX = -2.0f;   // 왼쪽으로 되돌아가는 이동 거리
+
+    private readonly float _rightDuration = 3.0f;
+    private readonly float _leftDuration = 1.25f;
 
     private bool _isFirstInit = true;
 
@@ -76,17 +80,17 @@ public class InGameCam : MonoBehaviour
 
     private IEnumerator ZoomOutRerollToBattle()
     {
-        // 1️⃣ 줌아웃 + X축 +10
-        yield return ZoomCoroutine(_zoomOutSize, _rightMoveX, 3.0f);
-        // 2️⃣ X축 -2
-        yield return MoveXCoroutine(_leftMoveX, 1.25f);
+        // 줌아웃 + X축 +10
+        yield return ZoomCoroutine(_zoomOutSize, _rightMoveX, _rightDuration);
+        // X축 -2
+        yield return MoveXCoroutine(_leftMoveX, _leftDuration);
         _zoomCoroutine = null;
     }
 
     // Battle -> Reroll: 줌인 + X축 +10
     private IEnumerator ZoomInBattleToReroll()
     {
-        yield return ZoomCoroutine(_zoomInSize, _rightMoveX, 3.0f);
+        yield return ZoomCoroutine(_zoomInSize, _rightMoveX, _rightDuration);
         _zoomCoroutine = null;
 
         _onCameraMoveEnd?.Invoke(); // 배틀 상태가 리롤(준비) 상태일때 몬스터 스폰

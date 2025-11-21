@@ -27,8 +27,8 @@ public class Effect : MonoBehaviour
 
             _timer -= Time.deltaTime;
 
-            // 타이머 종료 시 이펙트 비활성화
-            if (_timer <= 0.0f)
+            // 타이머 종료 시 이펙트 or 캐릭터가 죽었을 경우 비활성화
+            if (_timer <= 0.0f || _characterTransform.gameObject.activeSelf == false)
             {
                 gameObject.SetActive(false);
             }
