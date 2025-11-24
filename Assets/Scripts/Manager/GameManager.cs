@@ -55,7 +55,20 @@ public class GameManager : Singleton<GameManager>
                 playerData = data
             };
 
-        _spawnablePlayerDatas.Add(data);
-        _deckUnitDatas.Add(data.Key, unitData);
+        // 이미 존재하면 갱신
+        if (_deckUnitDatas.ContainsKey(data.Key))
+        {
+            _deckUnitDatas[data.Key] = unitData;
+        }
+        else
+        {
+            _deckUnitDatas.Add(data.Key, unitData);
+        }
+
+        // _spawnablePlayerDatas는 중복 체크 필요하면 처리
+        if (!_spawnablePlayerDatas.Contains(data))
+        { 
+            _spawnablePlayerDatas.Add(data);
+        }
     }
 }

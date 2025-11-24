@@ -20,6 +20,7 @@ public class InGameCardPanel : CardPanel
 
     protected override void InitUI()
     {
+        base.InitUI();
         _cardChildren[(int)CardUI.CostImage].gameObject.SetActive(true);
         _parentPanel = GetComponentInParent<BattleSetupPanel>();
     }
@@ -73,7 +74,7 @@ public class InGameCardPanel : CardPanel
 
     private void UpdateDeployButtonState()
     {
-        Button deployBtn = _cardChildren[(int)CardUI.DeployButton].GetComponent<Button>();
+        Button deployBtn = _cardChildren[(int)CardUI.CardButton].GetComponent<Button>();
         bool isCardLocked = InGameManager.Instance.InGameCoin < _playerData.UpgradeCost;
 
         if(isCardLocked)

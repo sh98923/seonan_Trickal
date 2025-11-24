@@ -18,7 +18,7 @@ public class BattleSetupPanel : MonoBehaviour
     private InGameUIPanel _inGameUIPanel;
     private List<PlayerData> _rerollCandidates = new List<PlayerData>();
 
-    private readonly int _reRollCost = 5;
+    private readonly int _rerollCost = 5;
     private int CurCoin => InGameManager.Instance.InGameCoin; 
     private int _cardCount = (int)CardRerollUI.CardCount;
 
@@ -74,7 +74,7 @@ public class BattleSetupPanel : MonoBehaviour
 
     private void OnClickReroll()
     {
-        if (!InGameManager.Instance.TrySpendCoin(_reRollCost))
+        if (!InGameManager.Instance.TrySpendCoin(_rerollCost))
         {
             return; 
         }

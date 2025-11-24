@@ -7,9 +7,13 @@ public class CardPanel : MonoBehaviour
 {
     protected enum CardUI
     {
-        DeployButton = 1, 
-        CharacterImage, CharacterName, 
-        CostImage, CostText
+        OutLineColorImage = 1, 
+        CardBG,
+        CardButton, 
+        CharacterImage, 
+        CharacterName, 
+        CostImage, 
+        CostText
     }
 
     protected Transform[] _cardChildren;
@@ -32,7 +36,7 @@ public class CardPanel : MonoBehaviour
         RegisterButtonEvents();
     }
 
-    private void Update()
+    protected void Update()
     {
         // 여기 부분 이벤트로 리팩토링 해보자
         UpdateCostImageVisibility();
@@ -51,7 +55,7 @@ public class CardPanel : MonoBehaviour
 
     private void RegisterButtonEvents()
     {
-        _cardChildren[(int)CardUI.DeployButton]
+        _cardChildren[(int)CardUI.CardButton]
             .GetComponent<Button>().onClick.AddListener(OnClickMyDeckCard);
     }
 
@@ -62,7 +66,7 @@ public class CardPanel : MonoBehaviour
 
     protected virtual void InitUI()
     {
-        // 자식 스크립트에서 처리
+        _cardChildren[(int)CardUI.OutLineColorImage].gameObject.SetActive(false);
     }
 
     protected virtual void HandleClick()
