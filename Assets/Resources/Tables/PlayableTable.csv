@@ -1,19 +1,19 @@
 Key,AttackKey,UpgradeKey,EngName,KrName,CharacterSpritePath,CharacterPrefabPath,Layer,AttackType,Target,SpawnLine,UpgradeCost,MaxLevel
-100,4000,300,Diana,ë””ì•„ë‚˜,Sprites/CardInfo/ElfPaladin,Prefabs/Elf/ElfPaladin,Front,Melee,Monster,0,5,5
-101,4001,305,Gwin,ê·¸ìœˆ,Sprites/CardInfo/ElfKnight,Prefabs/Elf/ElfKnight,Front,Melee,Monster,0,5,5
-102,4002,310,Alette,ì•Œë ˆíŠ¸,Sprites/CardInfo/ElfDestroyer,Prefabs/Elf/ElfDestroyer,Front,Melee,Monster,0,5,5
-103,4003,315,Ed,ì´ë“œ,Sprites/CardInfo/ElfBishop,Prefabs/Elf/ElfBishop,Middle,Range,Monster,1,5,5
-104,4004,320,Lonan,ë¡œë‚œ,Sprites/CardInfo/ElfRuneBlade,Prefabs/Elf/ElfRuneBlade,Middle,Range,Monster,1,5,5
-105,4005,325,Jade,ì œì´ë“œ,Sprites/CardInfo/ElfMage,Prefabs/Elf/ElfMage,Middle,Range,Monster,1,5,5
-106,4006,330,Levi,ë ˆë¹„,Sprites/CardInfo/ElfAssassin,Prefabs/Elf/ElfAssassin,Back,Melee,Monster,2,5,5
-107,4007,335,Erdin,ì—ë¥´ë”˜,Sprites/CardInfo/ElfArcher,Prefabs/Elf/ElfArcher,Back,Range,Monster,2,5,5
-108,4008,340,Sylla,ì‹¤ë¼,Sprites/CardInfo/ElfHunter,Prefabs/Elf/ElfHunter,Back,Range,Monster,2,5,5
-109,4009,345,Ornn,ì˜¤ë¥¸,Sprites/CardInfo/HumanWarlord,Prefabs/Human/HumanWarlord,Front,Melee,Monster,0,5,5
-110,4010,350,Luke,ë£¨í¬,Sprites/CardInfo/HumanLancelot,Prefabs/Human/HumanLancelot,Front,Melee,Monster,0,5,5
-111,4011,355,Lethita,ë¦¬ì‹œíƒ€,Sprites/CardInfo/HumanGladiator,Prefabs/Human/HumanGladiator,Front,Melee,Monster,0,5,5
-112,4012,360,Eisen,ì•„ì´ì  ,Sprites/CardInfo/HumanBerserker,Prefabs/Human/HumanBerserker,Middle,Melee,Monster,1,5,5
-113,4013,365,Sein,ìì¸,Sprites/CardInfo/HumanDarkknight,Prefabs/Human/HumanDarkknight,Middle,Melee,Monster,1,5,5
-114,4014,370,Chris,í¬ë¦¬ìŠ¤,Sprites/CardInfo/HumanSoldier,Prefabs/Human/HumanSoldier,Middle,Melee,Monster,1,5,5
-115,4015,375,Silphi,ì‹¤í”¼,Sprites/CardInfo/HumanMarkman,Prefabs/Human/HumanMarkman,Back,Range,Monster,2,5,5
-116,4016,380,Hilde,íë°,Sprites/CardInfo/HumanHealer,Prefabs/Human/HumanHealer,Back,Range,Monster,2,5,5
-117,4017,385,Elena,ì—˜ë ˆë‚˜,Sprites/CardInfo/HumanSorceress,Prefabs/Human/HumanSorceress,Back,Range,Monster,2,5,5
+100,4000,300,Diana,µğ¾Æ³ª,Sprites/CardInfo/ElfPaladin,Prefabs/Elf/ElfPaladin,Front,Melee,Monster,0,5,5
+101,4001,305,Gwin,±×À©,Sprites/CardInfo/ElfKnight,Prefabs/Elf/ElfKnight,Front,Melee,Monster,0,5,5
+102,4002,310,Alette,¾Ë·¹Æ®,Sprites/CardInfo/ElfDestroyer,Prefabs/Elf/ElfDestroyer,Front,Melee,Monster,0,5,5
+103,4003,315,Ed,ÀÌµå,Sprites/CardInfo/ElfBishop,Prefabs/Elf/ElfBishop,Middle,Range,Monster,1,5,5
+104,4004,320,Lonan,·Î³­,Sprites/CardInfo/ElfRuneBlade,Prefabs/Elf/ElfRuneBlade,Middle,Range,Monster,1,5,5
+105,4005,325,Jade,Á¦ÀÌµå,Sprites/CardInfo/ElfMage,Prefabs/Elf/ElfMage,Middle,Range,Monster,1,5,5
+106,4006,330,Levi,·¹ºñ,Sprites/CardInfo/ElfAssassin,Prefabs/Elf/ElfAssassin,Back,Melee,Monster,2,5,5
+107,4007,335,Erdin,¿¡¸£µò,Sprites/CardInfo/ElfArcher,Prefabs/Elf/ElfArcher,Back,Range,Monster,2,5,5
+108,4008,340,Sylla,½Ç¶ó,Sprites/CardInfo/ElfHunter,Prefabs/Elf/ElfHunter,Back,Range,Monster,2,5,5
+109,4009,345,Ornn,¿À¸¥,Sprites/CardInfo/HumanWarlord,Prefabs/Human/HumanWarlord,Front,Melee,Monster,0,5,5
+110,4010,350,Luke,·çÅ©,Sprites/CardInfo/HumanLancelot,Prefabs/Human/HumanLancelot,Front,Melee,Monster,0,5,5
+111,4011,355,Lethita,¸®½ÃÅ¸,Sprites/CardInfo/HumanGladiator,Prefabs/Human/HumanGladiator,Front,Melee,Monster,0,5,5
+112,4012,360,Eisen,¾ÆÀÌÁ¨,Sprites/CardInfo/HumanBerserker,Prefabs/Human/HumanBerserker,Middle,Melee,Monster,1,5,5
+113,4013,365,Sein,ÀÚÀÎ,Sprites/CardInfo/HumanDarkknight,Prefabs/Human/HumanDarkknight,Middle,Melee,Monster,1,5,5
+114,4014,370,Chris,Å©¸®½º,Sprites/CardInfo/HumanSoldier,Prefabs/Human/HumanSoldier,Middle,Melee,Monster,1,5,5
+115,4015,375,Silphi,½ÇÇÇ,Sprites/CardInfo/HumanMarkman,Prefabs/Human/HumanMarkman,Back,Range,Monster,2,5,5
+116,4016,380,Hilde,Èúµ¥,Sprites/CardInfo/HumanHealer,Prefabs/Human/HumanHealer,Back,Range,Monster,2,5,5
+117,4017,385,Elena,¿¤·¹³ª,Sprites/CardInfo/HumanSorceress,Prefabs/Human/HumanSorceress,Back,Range,Monster,2,5,5
