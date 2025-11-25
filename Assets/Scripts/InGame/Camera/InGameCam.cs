@@ -46,13 +46,13 @@ public class InGameCam : MonoBehaviour
         _cam = GetComponent<Camera>();
         _cam.orthographicSize = _zoomInSize;
 
-        BattleStateManager.Instance.OnReroll += ZoomBattleToReroll;
+        BattleStateManager.Instance.OnWaveAdvance += ZoomBattleToReroll;
         BattleStateManager.Instance.OnBattle += ZoomRerollToBattle;
     }
 
     private void OnDisable()
     {
-        BattleStateManager.Instance.OnReroll -= ZoomBattleToReroll;
+        BattleStateManager.Instance.OnWaveAdvance -= ZoomBattleToReroll;
         BattleStateManager.Instance.OnBattle -= ZoomRerollToBattle;
     }
 

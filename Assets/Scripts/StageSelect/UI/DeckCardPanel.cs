@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -11,7 +12,6 @@ public class DeckCardPanel : MonoBehaviour
     }
 
     private Transform[] _deckChildren;
-
     private StageCardPanel _deployBtn;
 
     private int _startPlayerKey;

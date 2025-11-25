@@ -1,14 +1,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class StagePlayerSpawn : MonoBehaviour
 {
     private struct FormationSlot
     {
-        public Vector3 Position;
-        public bool IsOccupied;
-        public PlayerData PlayerData;
         public GameObject PlayerCharacter;
+        public Vector3 Position;
+        public PlayerData PlayerData;
+        public bool IsOccupied;
     }
 
     private enum FormationLayer
@@ -44,10 +45,11 @@ public class StagePlayerSpawn : MonoBehaviour
                 SpawnPosData spawnData = SpawnManager.Instance.GetPlayerSpawnData(_startPlayerIndex + index);
                 Vector3 newPos = new Vector3(origin.x * spawnData.Ratio.x, origin.y * spawnData.Ratio.y, Camera.main.nearClipPlane);
 
-                slots[i].Position = Camera.main.ScreenToWorldPoint(newPos);
-                slots[i].IsOccupied = false;
-                slots[i].PlayerData = default;
-                slots[i].PlayerCharacter = null;
+                ref FormationSlot slot = ref slots[i]; // ref로 배열 안 구조체 직접 수정
+                slot.Position = Camera.main.ScreenToWorldPoint(newPos);
+                slot.IsOccupied = false;
+                slot.PlayerData = default;
+                slot.PlayerCharacter = null;
 
                 index++;
             }
@@ -57,22 +59,22 @@ public class StagePlayerSpawn : MonoBehaviour
     // 슬롯에서 배치된 캐릭터 제거
     public bool CheckAndRemoveDeployed(PlayerData data)
     {
-        foreach (var kvp in _deployedCharacters)
+        foreach (KeyValuePair<int, FormationSlot[]> layerEntry in _deployedCharacters)
         {
-            FormationSlot[] slots = kvp.Value;
+            FormationSlot[] slots = layerEntry.Value;
             for (int i = 0; i < slots.Length; i++)
             {
-                if (slots[i].IsOccupied && slots[i].PlayerData.Key == data.Key)
+                ref FormationSlot slot = ref slots[i];
+                if (slot.IsOccupied && slot.PlayerData.Key == data.Key)
                 {
-                    // GameObject 제거
-                    if (slots[i].PlayerCharacter != null)
+                    if (slot.PlayerCharacter != null)
                     {
-                        Destroy(slots[i].PlayerCharacter);
-                        slots[i].PlayerCharacter = null;
+                        Destroy(slot.PlayerCharacter);
+                        slot.PlayerCharacter = null;
                     }
 
-                    slots[i].IsOccupied = false;
-                    slots[i].PlayerData = default;
+                    slot.IsOccupied = false;
+                    slot.PlayerData = default;
                     return true;
                 }
             }
@@ -89,11 +91,12 @@ public class StagePlayerSpawn : MonoBehaviour
 
         for (int i = 0; i < slots.Length; i++)
         {
-            if (!slots[i].IsOccupied)
+            ref FormationSlot slot = ref slots[i];
+            if (!slot.IsOccupied)
             {
-                slots[i].IsOccupied = true;
-                slots[i].PlayerData = playerData;
-                return slots[i].Position;
+                slot.IsOccupied = true;
+                slot.PlayerData = playerData;
+                return slot.Position;
             }
         }
 
@@ -108,7 +111,10 @@ public class StagePlayerSpawn : MonoBehaviour
 
         for (int i = 0; i < slots.Length; i++)
         {
-            if (slots[i].IsOccupied && slots[i].PlayerData.Key == playerData.Key && slots[i].PlayerCharacter == null)
+            ref FormationSlot slot = ref slots[i];
+
+            // 이미 생성된 경우 중복 방지
+            if (slot.IsOccupied && slot.PlayerData.Key == playerData.Key && slot.PlayerCharacter == null)
             {
                 GameObject prefab = Resources.Load<GameObject>(playerData.CharacterPrefabPath);
                 GameObject player = Instantiate(prefab, transform);
@@ -117,7 +123,7 @@ public class StagePlayerSpawn : MonoBehaviour
                 player.layer = LayerMask.NameToLayer(playerData.Layer);
                 player.transform.position = spawnPos;
 
-                slots[i].PlayerCharacter = player;
+                slot.PlayerCharacter = player;
                 break;
             }
         }

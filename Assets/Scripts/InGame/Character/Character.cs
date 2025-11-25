@@ -210,7 +210,10 @@ public class Character : MonoBehaviour
     // 타겟 위치에 맞게 Flip
     private void FlipToTarget()
     {
-        if (_targetCollider == null) return;
+        if (_targetCollider == null)
+        {
+            return;
+        }
 
         _scale.x = (_targetCollider.transform.position.x < transform.position.x)
             ? Mathf.Abs(_scale.x)

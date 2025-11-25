@@ -74,7 +74,7 @@ public class InGameCardPanel : CardPanel
 
     private void UpdateDeployButtonState()
     {
-        Button deployBtn = _cardChildren[(int)CardUI.CardButton].GetComponent<Button>();
+        //Button deployBtn = _cardChildren[(int)CardUI.CardButton].GetComponent<Button>();
         bool isCardLocked = InGameManager.Instance.InGameCoin < _playerData.UpgradeCost;
 
         if(isCardLocked)

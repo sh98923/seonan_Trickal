@@ -5,10 +5,10 @@ public enum BattleState
     None,
     Reroll,
     Battle,
-    MonstersDefeated,
-    PlayersDefeated,
-    PlayerWin,
-    PlayerLose,
+    WaveAdvance,
+    // GameStatemanager를 따로 스크립트 만들어서
+    // battleStatemanager처럼 클래스를 만들자
+    Victory,
     GameOver
 }
 
@@ -25,6 +25,12 @@ public class BattleStateManager : Singleton<BattleStateManager>
     {
         add { _onBattle += value; }
         remove { _onBattle -= value; }
+    }
+    private event Action _onWaveAdvance;
+    public event Action OnWaveAdvance
+    {
+        add { _onWaveAdvance += value; }
+        remove { _onWaveAdvance -= value; }
     }
 
     private BattleState _currentState = BattleState.None;
@@ -66,6 +72,10 @@ public class BattleStateManager : Singleton<BattleStateManager>
                 _onBattle?.Invoke();
                 //print("배틀");
                 break;
+            case BattleState.WaveAdvance:
+                _onWaveAdvance?.Invoke();
+                break;
+
         }
     }
 

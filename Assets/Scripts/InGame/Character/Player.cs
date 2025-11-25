@@ -1,11 +1,11 @@
 using UnityEngine;
 using System.Collections;
+using System;
 
 public class Player : Character
 {
     private SkillEffectController _skillEffectController;
 
-    private Vector3 _originPos;
     private Vector3 _wayPoint;
 
     private readonly float _nextWaveDist = 23.0f; // 배틀 → 리롤 이동 시 플레이어 이동 거리
@@ -31,7 +31,6 @@ public class Player : Character
 
         _moveDir = Vector2.right;
 
-
         _scale.x *= -1;
         transform.localScale = _scale;
 
@@ -47,11 +46,13 @@ public class Player : Character
     {
         base.OnEnable();
         BattleStateManager.Instance.OnReroll += MoveToNextWaypoint;
+        BattleStateManager.Instance.OnWaveAdvance += MoveToNextWaypoint;
     }
 
     private void OnDisable()
     {
         BattleStateManager.Instance.OnReroll -= MoveToNextWaypoint;
+        BattleStateManager.Instance.OnWaveAdvance -= MoveToNextWaypoint;
     }
 
     private void Update()
@@ -90,8 +91,10 @@ public class Player : Character
         // waypoint 이동
         _wayPoint.x += _nextWaveDist;
 
-        _scale.x = -Mathf.Abs(_scale.x);
+        /*_scale.x = -Mathf.Abs(_scale.x);
         transform.localScale = _scale;
+
+        print(gameObject.name + " : " + _scale.x);*/
     }
 
     protected override void IdleStateAction()
@@ -108,23 +111,128 @@ public class Player : Character
     {
         base.MoveStateAction();
 
-        if (BattleStateManager.Instance.CurrentState == BattleState.Reroll)
+        switch (BattleStateManager.Instance.CurrentState)
         {
-            Vector3 dir = _wayPoint - transform.position;
-            transform.Translate(dir.normalized * _moveSpeed * Time.deltaTime);
+            case BattleState.Reroll:
+                HandleRerollMovement();
+                break;
+            case BattleState.Battle:
+                HandleBattleMovement();
+                break;
+            case BattleState.WaveAdvance:
+                HandleWaveAdvanceMovement();
+                break;
+        }
 
-            if (Vector3.Distance(transform.position, _wayPoint) < 0.01f)
+        print(BattleStateManager.Instance.CurrentState);
+    }
+
+    private void HandleRerollMovement()
+    {
+        if (Vector3.Distance(transform.position, _wayPoint) < 0.01f)
+        {
+            _curState = State.Idle;
+        }
+    }
+    
+    private void HandleBattleMovement()
+    {
+        /*if (_targetCollider == null)
+        {
+            _targetCollider = FindTarget(_data.Target, _findTargetRange);
+            transform.Translate(_moveDir * _moveSpeed * Time.deltaTime);
+            print(_moveDir + " : " + _moveSpeed);
+        }
+        else
+        {
+            Character targetCharacter = _targetCollider.GetComponent<Character>();
+            if (targetCharacter == null)
             {
                 //BattleStateManager.Instance.SetState(BattleState.Reroll);
                 _curState = State.Idle;
+                _targetCollider = null;
+                return;
             }
+
+            int sortingDiff = Mathf.Abs(_sortingGroup.sortingOrder - targetCharacter.SortingIndex);
+
+            if (Vector2.Distance(_targetCollider.transform.position, transform.position) <= _data.AtkRange)
+            //&& sortingDiff <= 20) // SortingOrder 차이 20 이내
+            {
+                _animator.SetBool("IdleState", true);
+                _curState = State.Attack;
+            }
+            else
+            {
+                Vector2 dir = (_targetCollider.transform.position - transform.position).normalized;
+                transform.Translate(dir * _moveSpeed * Time.deltaTime);
+                print(dir + " : " + _moveSpeed);
+            }
+        }*/
+        if (_targetCollider == null)
+        {
+            _targetCollider = FindTarget(_data.Target, _findTargetRange);
+            transform.Translate(_moveDir * _moveSpeed * Time.deltaTime);
+            return;
         }
-        else if (BattleStateManager.Instance.CurrentState == BattleState.Battle)
+
+        Character targetCharacter = _targetCollider.GetComponent<Character>();
+        if (targetCharacter == null)
+        {
+            _targetCollider = null;
+            return;
+        }
+
+        if (Vector2.Distance(_targetCollider.transform.position, transform.position) <= _data.AtkRange)
+        {
+            _animator.SetBool("IdleState", true);
+            _curState = State.Attack;
+        }
+        else
+        {
+            Vector2 dir = (_targetCollider.transform.position - transform.position).normalized;
+            transform.Translate(dir * _moveSpeed * Time.deltaTime);
+        }
+    }
+
+    private void HandleWaveAdvanceMovement()
+    {
+        Vector3 dir = _wayPoint - transform.position;
+        transform.Translate(dir.normalized * _moveSpeed * Time.deltaTime);
+
+        if (transform.position == _wayPoint)
         {
             if (_targetCollider == null)
+                BattleStateManager.Instance.SetState(BattleState.Reroll);
+        }
+    }
+
+    /*protected override void MoveStateAction()
+    {
+        
+        if (_targetCollider == null)
+        {
+            _targetCollider = FindTarget(_data.Target, _findTargetRange);
+            transform.Translate(_moveDir * _moveSpeed * Time.deltaTime);
+        }
+        else
+        {
+            Character targetCharacter = _targetCollider.GetComponent<Character>();
+            if (targetCharacter == null)
+            {
+                _targetCollider = null;
+                return;
+            }
+
+            int sortingDiff = Mathf.Abs(_sortingGroup.sortingOrder - targetCharacter.SortingIndex);
+
+            if (Vector2.Distance(_targetCollider.transform.position, transform.position) <= _data.AtkRange)
+                //&& sortingDiff <= 20) // SortingOrder 차이 20 이내
             {
                 _targetCollider = FindTarget(_data.Target, _findTargetRange);
                 transform.Translate(_moveDir * _moveSpeed * Time.deltaTime);
+                _animator.SetBool("IdleState", true);
+                _curState = State.Attack;
             }
             else
             {
@@ -148,9 +256,13 @@ public class Player : Character
                     Vector2 dir = (_targetCollider.transform.position - transform.position).normalized;
                     transform.Translate(dir * _moveSpeed * Time.deltaTime);
                 }
+                Vector2 dir = (_targetCollider.transform.position - transform.position).normalized;
+                transform.Translate(dir * _moveSpeed * Time.deltaTime);
             }
         }
     }
+        
+    }*/
 
     protected override void AttackStateAction()
     {
@@ -161,7 +273,7 @@ public class Player : Character
         }
 
         // 몬스터 전멸
-        if (BattleStateManager.Instance.CurrentState == BattleState.MonstersDefeated)
+        if (BattleStateManager.Instance.CurrentState == BattleState.Victory)
         {
             _curState = State.Move;
             return;

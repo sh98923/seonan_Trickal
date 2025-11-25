@@ -55,7 +55,11 @@ public class MonsterSpawn : MonoBehaviour
         int waveKey = GameManager.Instance.StageKey + _waveStep;
         StageData wave = StageManager.Instance.GetStageData(waveKey);
 
-        if (_waveStep >= wave.MaxWave) return;
+        if (_waveStep >= wave.MaxWave)
+        {
+            //BattleStateManager.Instance.SetState(BattleState.Victory);
+            return;
+        }
 
         Dictionary<int, WaveData> waveMonsters = WaveManager.Instance.GetWaveMonster(waveKey);
 
@@ -166,18 +170,18 @@ public class MonsterSpawn : MonoBehaviour
 
             _waveStep++;
             _spawned = false;
-            BattleStateManager.Instance.SetState(BattleState.Reroll);
+            BattleStateManager.Instance.SetState(BattleState.WaveAdvance);
 
             //StartCoroutine(MonsterSpawnDelay());
         }
     }
 
-    private IEnumerator MonsterSpawnDelay()
+    /*private IEnumerator MonsterSpawnDelay()
     {
         BattleStateManager.Instance.SetState(BattleState.Reroll);
 
         //BattleStateManager.Instance.RerollEvent();
         yield return new WaitForSeconds(4.0f);
         _spawned = false;
-    }
+    }*/
 }

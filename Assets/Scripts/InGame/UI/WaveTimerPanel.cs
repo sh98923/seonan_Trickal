@@ -40,7 +40,7 @@ public class WaveTimerPanel : MonoBehaviour
             HandleStateChange(currentState);
         }
 
-        if (currentState != BattleState.MonstersDefeated)
+        if (currentState != BattleState.Victory)
         { 
             UpdateTimer(currentState); 
         }

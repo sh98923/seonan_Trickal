@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class GameManager : Singleton<GameManager>
 {
@@ -44,31 +45,28 @@ public class GameManager : Singleton<GameManager>
         _waveCount = StageManager.Instance.GetWaveCount(_stageKey);
     }
 
-    public void SetDeckUnit(PlayerData data, Vector3 spawnPos)
+    public void AddUnit(PlayerData data, Vector3 spawnPos)
     {
         spawnPos.x += 3.33f;
 
-        PlayerUnitData unitData =
-            new PlayerUnitData
-            {
-                spawnPos = spawnPos,
-                playerData = data
-            };
-
-        // 이미 존재하면 갱신
-        if (_deckUnitDatas.ContainsKey(data.Key))
+        // 신규라면 추가
+        PlayerUnitData unitData = new PlayerUnitData
         {
-            _deckUnitDatas[data.Key] = unitData;
-        }
-        else
-        {
-            _deckUnitDatas.Add(data.Key, unitData);
-        }
+            spawnPos = spawnPos,
+            playerData = data
+        };
 
-        // _spawnablePlayerDatas는 중복 체크 필요하면 처리
+        _deckUnitDatas.Add(data.Key, unitData);
+
         if (!_spawnablePlayerDatas.Contains(data))
-        { 
             _spawnablePlayerDatas.Add(data);
-        }
+    }
+
+    public void RemoveUnit(PlayerData data)
+    {
+        _deckUnitDatas.Remove(data.Key);
+
+        if (_spawnablePlayerDatas.Contains(data))
+            _spawnablePlayerDatas.Remove(data);
     }
 }
