@@ -48,6 +48,7 @@ public class InGameCardPanel : CardPanel
         {
             // 아직 비활성화 상태 → 유닛 배치
             existingChild.gameObject.SetActive(true);
+            _spawnParent.SetActivePlayer(existingChild.gameObject);
             UpdateCardCostUI();
         }
         else

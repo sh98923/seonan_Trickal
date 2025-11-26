@@ -39,7 +39,7 @@ public class DamageReceiver : MonoBehaviour
         
         _curHp -= amount;
         _graphics?.ShowDamageText(amount);
-        print(name + " " + "체력: " + _curHp + "/" + _maxHp);
+        //print(name + " " + "체력: " + _curHp + "/" + _maxHp);
 
         if (_curHp <= 0.0f)
         {

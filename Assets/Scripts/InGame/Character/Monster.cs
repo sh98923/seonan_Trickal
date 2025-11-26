@@ -60,6 +60,6 @@ public class Monster : Character
         _atk = (atkLinear + atkExp) * 0.5f;
         _atk = Mathf.Round(_atk);
 
-        print("몬스터 : " + _data.EngName + " : " + _maxHp.ToString("F1") + ", " + _atk.ToString("F1"));
+        //print("몬스터 : " + _data.EngName + " : " + _maxHp.ToString("F1") + ", " + _atk.ToString("F1"));
     }
 }

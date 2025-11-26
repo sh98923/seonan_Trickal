@@ -79,7 +79,7 @@ public class CharacterBuff : CharacterAction
 
     private void Buff()
     {
-        _activePlayers = InGameManager.Instance.GetActiveUnits();
+        _activePlayers = transform.parent.GetComponent<InGamePlayerSpawn>().GetActivePlayers();
 
         string effectName = _character.Data.ActionImpact[(int)_type];
 

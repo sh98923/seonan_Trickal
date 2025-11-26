@@ -1,4 +1,6 @@
+using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.PackageManager;
 using UnityEngine;
 
 public class InGamePlayerSpawn : MonoBehaviour
@@ -9,7 +11,12 @@ public class InGamePlayerSpawn : MonoBehaviour
         get { return _deployableDatas; }
     }
 
-    private List<Player> _players = new List<Player>();
+    private List<Player> _registeredPlayers = new List<Player>();
+
+    private List<Player> _activePlayers = new List<Player>();
+
+    private int _nextWaveReadyCount = 0;
+    private int _totalCharacters = 0;
 
     private void Awake()
     {
@@ -21,8 +28,18 @@ public class InGamePlayerSpawn : MonoBehaviour
         for(int i = 0; i < transform.childCount; i++)
         {
             Player player = transform.GetChild(i).GetComponent<Player>();
-            _players.Add(player);
+            _registeredPlayers.Add(player);
         }
+    }
+
+    private void OnEnable()
+    {
+        BattleStateManager.Instance.OnWaveAdvance += CheckAlivePlayersCoroutine;
+    }
+
+    private void OnDisable()
+    {
+        BattleStateManager.Instance.OnWaveAdvance -= CheckAlivePlayersCoroutine;
     }
 
     private void LoadPlayerPos()
@@ -35,18 +52,66 @@ public class InGamePlayerSpawn : MonoBehaviour
         }
     }
 
+    public void SetActivePlayer(GameObject playerCharacter)
+    {
+        Player player = playerCharacter.GetComponent<Player>();
+
+        if(player != null)
+        {
+            _activePlayers.Add(player);
+        }
+        else
+        {
+            Debug.LogError("활성화된 플레이어 등록 실패");
+        }
+    }
+
     public List<Player> GetActivePlayers()
     {
-        List<Player> activePlayers = new List<Player>();
+        return _activePlayers;
+    }
 
-        for(int i = 0; i < _players.Count; i++)
+    private void CheckAlivePlayersCoroutine()
+    {
+        StartCoroutine(CheckTotalAlivePlayer());
+    }
+
+    private IEnumerator CheckTotalAlivePlayer()
+    {
+        yield return new WaitForSeconds(1.5f);
+
+        _totalCharacters = 0; 
+
+        foreach (Player player in _registeredPlayers)
         {
-            if (_players[i].gameObject.activeSelf)
-            {
-                activePlayers.Add(_players[i]);
-            }    
+            player.ResetArrivalState();
+
+            if (!player.gameObject.activeSelf)
+            { 
+                continue;
+            }
+
+            Collider2D collider = player.GetComponent<Collider2D>();
+            if (collider.enabled)
+            { 
+                _totalCharacters++;
+            }
         }
 
-        return activePlayers;
+        print("Total Alive : " + _totalCharacters);
+    }
+
+    public void CheckNextWaveReady()
+    {
+        _nextWaveReadyCount++;
+
+        // 모두 준비됐는지 검사
+        if (_nextWaveReadyCount >= _totalCharacters)
+        {
+            print("살아있는 캐릭 : " + _nextWaveReadyCount);
+            _nextWaveReadyCount = 0;
+            BattleStateManager.Instance.SetState(BattleState.Reroll);
+            Debug.Log("모든 캐릭터가 도착 → Reroll 상태 전환");
+        }
     }
 }

@@ -11,7 +11,7 @@ public class Player : Character
     private readonly float _nextWaveDist = 23.0f; // 배틀 → 리롤 이동 시 플레이어 이동 거리
 
     private float _atkBuff = 1.0f;
-
+    private bool _isArrived = false;
     public float AtkBuff
     {
         get { return _atkBuff; }
@@ -45,13 +45,13 @@ public class Player : Character
     private void OnEnable()
     {
         base.OnEnable();
-        BattleStateManager.Instance.OnReroll += MoveToNextWaypoint;
+        //BattleStateManager.Instance.OnReroll += MoveToNextWaypoint;
         BattleStateManager.Instance.OnWaveAdvance += MoveToNextWaypoint;
     }
 
     private void OnDisable()
     {
-        BattleStateManager.Instance.OnReroll -= MoveToNextWaypoint;
+        //BattleStateManager.Instance.OnReroll -= MoveToNextWaypoint;
         BattleStateManager.Instance.OnWaveAdvance -= MoveToNextWaypoint;
     }
 
@@ -90,6 +90,7 @@ public class Player : Character
     {
         // waypoint 이동
         _wayPoint.x += _nextWaveDist;
+        print("다음 위치 : " + _wayPoint.x);
 
         /*_scale.x = -Mathf.Abs(_scale.x);
         transform.localScale = _scale;
@@ -124,15 +125,22 @@ public class Player : Character
                 break;
         }
 
-        print(BattleStateManager.Instance.CurrentState);
+        //print(BattleStateManager.Instance.CurrentState);
     }
 
     private void HandleRerollMovement()
     {
-        if (Vector3.Distance(transform.position, _wayPoint) < 0.01f)
+        //print($"{gameObject.name} 준비완료");
+        /*if (Vector3.Distance(transform.position, _wayPoint) <  0.001f)
         {
             _curState = State.Idle;
         }
+        else
+        {
+            float a = Vector3.Distance(transform.position, _wayPoint);
+
+            print($"{gameObject.name} 거리 : {a}");
+        }*/
     }
     
     private void HandleBattleMovement()
@@ -169,6 +177,7 @@ public class Player : Character
                 print(dir + " : " + _moveSpeed);
             }
         }*/
+
         if (_targetCollider == null)
         {
             _targetCollider = FindTarget(_data.Target, _findTargetRange);
@@ -183,7 +192,7 @@ public class Player : Character
             return;
         }
 
-        if (Vector2.Distance(_targetCollider.transform.position, transform.position) <= _data.AtkRange)
+        if (Vector2.Distance(_targetCollider.transform.position, transform.position) - 0.5f <= _data.AtkRange)
         {
             _animator.SetBool("IdleState", true);
             _curState = State.Attack;
@@ -199,11 +208,14 @@ public class Player : Character
     {
         Vector3 dir = _wayPoint - transform.position;
         transform.Translate(dir.normalized * _moveSpeed * Time.deltaTime);
-
-        if (transform.position == _wayPoint)
+        
+        if (Vector3.Distance(transform.position, _wayPoint) < 0.001f && !_isArrived)
         {
-            if (_targetCollider == null)
-                BattleStateManager.Instance.SetState(BattleState.Reroll);
+            _isArrived = true;
+
+            print($"{gameObject.name} : 도착 보고");
+            InGamePlayerSpawn parent = transform.parent.GetComponent<InGamePlayerSpawn>();
+            parent.CheckNextWaveReady();
         }
     }
 
@@ -357,5 +369,10 @@ public class Player : Character
             _curMp += 10.0f;
             yield return new WaitForSeconds(1.0f);
         }
+    }
+
+    public void ResetArrivalState()
+    {
+        _isArrived = false;
     }
 }

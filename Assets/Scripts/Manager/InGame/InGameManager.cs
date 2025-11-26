@@ -80,9 +80,4 @@ public class InGameManager : Singleton<InGameManager>
             BattleUnitManager.Instance.RegisterUnit(characterData, player);
         }
     }
-
-    public List<Player> GetActiveUnits()
-    {
-        return _playerSpawnPoint.GetActivePlayers();
-    }
 }

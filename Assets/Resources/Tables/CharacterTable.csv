@@ -1,28 +1,28 @@
 Key,Type,EngName,KrName,PrefabPath,Layer,AttackType,ProjectilePath,SpawnLine,Hp,Atk,AtkRange,AtkCoolTime,CriRate
-0,Player,Diana,µğ¾Æ³ª,Prefabs/Elf/ElfPaladin,Front,Melee,,0,130,5,1.25,0.9,0.15
-1,Player,Gwin,±×À©,Prefabs/Elf/ElfKnight,Front,Melee,,0,120,6,1.25,1.2,0.15
-2,Player,Alette,¾Ë·¹Æ®,Prefabs/Elf/ElfDestroyer,Front,Melee,,0,110,7,1.25,1.5,0.15
-3,Player,Ed,ÀÌµå,Prefabs/Elf/ElfBishop,Middle,Range,,1,100,8,3.5,1,0
-4,Player,Lonan,·Î³­,Prefabs/Elf/ElfRuneBlade,Middle,Melee,,1,90,9,3.5,1,0.25
-5,Player,Jade,Á¦ÀÌµå,Prefabs/Elf/ElfMage,Middle,Range,Prefabs/Effect/ElfAttack,1,80,10,5,1,0.25
-6,Player,Levi,·¹ºñ,Prefabs/Elf/ElfAssassin,Back,Melee,,2,70,11,1.25,1,0.35
-7,Player,Erdin,¿¡¸£µò,Prefabs/Elf/ElfArcher,Back,Range,,2,60,12,3.5,1,0.3
-8,Player,Sylla,½Ç¶ó,Prefabs/Elf/ElfHunter,Back,Range,,2,50,13,5,1,0.3
-9,Player,Ornn,¿À¸¥,Prefabs/Human/HumanWarlord,Front,Melee,,0,130,5,1.25,1,0.15
-10,Player,Luke,·çÅ©,Prefabs/Human/HumanLancelot,Front,Melee,,0,120,6,1.25,1,0.15
-11,Player,Lethita,¸®½ÃÅ¸,Prefabs/Human/HumanGladiator,Front,Melee,,0,110,7,1.25,1,0.15
-12,Player,Eisen,¾ÆÀÌÁ¨,Prefabs/Human/HumanBerserker,Middle,Melee,,1,100,8,3.5,1,0
-13,Player,Sein,ÀÚÀÎ,Prefabs/Human/HumanDarkknight,Middle,Melee,,1,90,9,3.5,1,0.25
-14,Player,Chris,Å©¸®½º,Prefabs/Human/HumanSoldier,Middle,Melee,,1,80,10,5,1,0.25
-15,Player,Silphi,½ÇÇÇ,Prefabs/Human/HumanMarkman,Back,Range,,2,70,11,1.25,1,0.35
-16,Player,Hilde,Èúµ¥,Prefabs/Human/HumanHealer,Back,Range,,2,60,12,3.5,1,0.3
-17,Player,Elena,¿¤·¹³ª,Prefabs/Human/HumanSorceress,Back,Range,,2,50,13,5,1,0.3
-18,Monster,SkeltonMinion,¾øÀ½,Prefabs/Skelton/SkeltonMinion,Middle,Melee,,1,50,5,1.25,0.9,0.15
-19,Monster,SkeltonArcher,¾øÀ½,Prefabs/Skelton/SkeltonArcher,Back,Range,Prefabs/Effect/SkeltonArrow,2,30,7,3.5,1.5,0.15
-20,Monster,SkeltonDefender,¾øÀ½,Prefabs/Skelton/SkeltonDefender,Front,Melee,,0,70,3,1.25,0.9,0.15
-21,Monster,SkeltonWarrior,¾øÀ½,Prefabs/Skelton/SkeltonWarrior,Middle,Melee,,1,300,10,1.25,0.9,0.15
-22,Monster,SkeltonDestroyer,¾øÀ½,Prefabs/Skelton/SkeltonDestroyer,Front,Melee,,0,150,15,1.25,0.9,0.15
-23,Monster,SkeltonShaman,¾øÀ½,Prefabs/Skelton/SkeltonShaman,Middle,Range,Prefabs/Effect/SkeltonFlame,1,100,7,3.5,0.9,0.15
-24,Monster,SkeltonAssassin,¾øÀ½,Prefabs/Skelton/SkeltonAssassin,Back,Melee,,2,80,25,1.25,0.9,0.15
-25,Monster,SkeltonMage,¾øÀ½,Prefabs/Skelton/SkeltonMage,Back,Range,Prefabs/Effect/SkeltonFlame,2,250,35,5,0.9,0.15
-26,Monster,SkeltonKnight,¾øÀ½,Prefabs/Skelton/SkeltonKnight,Front,Melee,,0,500,50,2,0.9,0.15
+0,Player,Diana,ë””ì•„ë‚˜,Prefabs/Elf/ElfPaladin,Front,Melee,,0,130,5,1.25,0.9,0.15
+1,Player,Gwin,ê·¸ìœˆ,Prefabs/Elf/ElfKnight,Front,Melee,,0,120,6,1.25,1.2,0.15
+2,Player,Alette,ì•Œë ˆíŠ¸,Prefabs/Elf/ElfDestroyer,Front,Melee,,0,110,7,1.25,1.5,0.15
+3,Player,Ed,ì´ë“œ,Prefabs/Elf/ElfBishop,Middle,Range,,1,100,8,3.5,1,0
+4,Player,Lonan,ë¡œë‚œ,Prefabs/Elf/ElfRuneBlade,Middle,Melee,,1,90,9,3.5,1,0.25
+5,Player,Jade,ì œì´ë“œ,Prefabs/Elf/ElfMage,Middle,Range,Prefabs/Effect/ElfAttack,1,80,10,5,1,0.25
+6,Player,Levi,ë ˆë¹„,Prefabs/Elf/ElfAssassin,Back,Melee,,2,70,11,1.25,1,0.35
+7,Player,Erdin,ì—ë¥´ë”˜,Prefabs/Elf/ElfArcher,Back,Range,,2,60,12,3.5,1,0.3
+8,Player,Sylla,ì‹¤ë¼,Prefabs/Elf/ElfHunter,Back,Range,,2,50,13,5,1,0.3
+9,Player,Ornn,ì˜¤ë¥¸,Prefabs/Human/HumanWarlord,Front,Melee,,0,130,5,1.25,1,0.15
+10,Player,Luke,ë£¨í¬,Prefabs/Human/HumanLancelot,Front,Melee,,0,120,6,1.25,1,0.15
+11,Player,Lethita,ë¦¬ì‹œíƒ€,Prefabs/Human/HumanGladiator,Front,Melee,,0,110,7,1.25,1,0.15
+12,Player,Eisen,ì•„ì´ì  ,Prefabs/Human/HumanBerserker,Middle,Melee,,1,100,8,3.5,1,0
+13,Player,Sein,ìì¸,Prefabs/Human/HumanDarkknight,Middle,Melee,,1,90,9,3.5,1,0.25
+14,Player,Chris,í¬ë¦¬ìŠ¤,Prefabs/Human/HumanSoldier,Middle,Melee,,1,80,10,5,1,0.25
+15,Player,Silphi,ì‹¤í”¼,Prefabs/Human/HumanMarkman,Back,Range,,2,70,11,1.25,1,0.35
+16,Player,Hilde,íë°,Prefabs/Human/HumanHealer,Back,Range,,2,60,12,3.5,1,0.3
+17,Player,Elena,ì—˜ë ˆë‚˜,Prefabs/Human/HumanSorceress,Back,Range,,2,50,13,5,1,0.3
+18,Monster,SkeltonMinion,ì—†ìŒ,Prefabs/Skelton/SkeltonMinion,Middle,Melee,,1,50,5,1.25,0.9,0.15
+19,Monster,SkeltonArcher,ì—†ìŒ,Prefabs/Skelton/SkeltonArcher,Back,Range,Prefabs/Effect/SkeltonArrow,2,30,7,3.5,1.5,0.15
+20,Monster,SkeltonDefender,ì—†ìŒ,Prefabs/Skelton/SkeltonDefender,Front,Melee,,0,70,3,1.25,0.9,0.15
+21,Monster,SkeltonWarrior,ì—†ìŒ,Prefabs/Skelton/SkeltonWarrior,Middle,Melee,,1,300,10,1.25,0.9,0.15
+22,Monster,SkeltonDestroyer,ì—†ìŒ,Prefabs/Skelton/SkeltonDestroyer,Front,Melee,,0,150,15,1.25,0.9,0.15
+23,Monster,SkeltonShaman,ì—†ìŒ,Prefabs/Skelton/SkeltonShaman,Middle,Range,Prefabs/Effect/SkeltonFlame,1,100,7,3.5,0.9,0.15
+24,Monster,SkeltonAssassin,ì—†ìŒ,Prefabs/Skelton/SkeltonAssassin,Back,Melee,,2,80,25,1.25,0.9,0.15
+25,Monster,SkeltonMage,ì—†ìŒ,Prefabs/Skelton/SkeltonMage,Back,Range,Prefabs/Effect/SkeltonFlame,2,250,35,5,0.9,0.15
+26,Monster,SkeltonKnight,ì—†ìŒ,Prefabs/Skelton/SkeltonKnight,Front,Melee,,0,500,50,2,0.9,0.15
