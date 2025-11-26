@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.PackageManager;
 using UnityEngine;
 
 public class InGamePlayerSpawn : MonoBehaviour
@@ -30,6 +29,8 @@ public class InGamePlayerSpawn : MonoBehaviour
             Player player = transform.GetChild(i).GetComponent<Player>();
             _registeredPlayers.Add(player);
         }
+
+        InGameCam.Instance.RegisterPlayerCharacter(_registeredPlayers);
     }
 
     private void OnEnable()

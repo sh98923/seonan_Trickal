@@ -6,10 +6,10 @@ public class Player : Character
 {
     private SkillEffectController _skillEffectController;
 
-    private Vector3 _wayPoint;
+    private Vector3 _originalWayPoint = new Vector3();
+    private Vector3 _nextWayPoint = new Vector3();
 
-    private readonly float _nextWaveDist = 23.0f; // 배틀 → 리롤 이동 시 플레이어 이동 거리
-
+    private float _nextWaveDist = 0.0f; // 배틀 → 리롤 이동 시 플레이어 이동 거리 변수
     private float _atkBuff = 1.0f;
     private bool _isArrived = false;
     public float AtkBuff
@@ -33,12 +33,11 @@ public class Player : Character
 
         _scale.x *= -1;
         transform.localScale = _scale;
-
     }
 
     private void Start()
     {
-        _wayPoint = transform.position;
+        _originalWayPoint = transform.position;
         _animator.SetTrigger("Intro");
     }
 
@@ -89,8 +88,9 @@ public class Player : Character
     private void MoveToNextWaypoint()
     {
         // waypoint 이동
-        _wayPoint.x += _nextWaveDist;
-        print("다음 위치 : " + _wayPoint.x);
+        _nextWayPoint = _originalWayPoint;
+        _nextWayPoint.x += _nextWaveDist;
+        print("다음 위치 : " + _nextWayPoint.x);
 
         /*_scale.x = -Mathf.Abs(_scale.x);
         transform.localScale = _scale;
@@ -206,14 +206,14 @@ public class Player : Character
 
     private void HandleWaveAdvanceMovement()
     {
-        Vector3 dir = _wayPoint - transform.position;
+        Vector3 dir = _nextWayPoint - transform.position;
         transform.Translate(dir.normalized * _moveSpeed * Time.deltaTime);
         
-        if (Vector3.Distance(transform.position, _wayPoint) < 0.001f && !_isArrived)
+        if (Vector3.Distance(transform.position, _nextWayPoint) < 0.001f && !_isArrived)
         {
             _isArrived = true;
-
-            print($"{gameObject.name} : 도착 보고");
+            print($"{gameObject.name} 도착 지점 : {_originalWayPoint}");
+            print($"도착 위치 : {transform.position.x}");
             InGamePlayerSpawn parent = transform.parent.GetComponent<InGamePlayerSpawn>();
             parent.CheckNextWaveReady();
         }
@@ -369,6 +369,12 @@ public class Player : Character
             _curMp += 10.0f;
             yield return new WaitForSeconds(1.0f);
         }
+    }
+
+    public void SetNextWaveX(float dist)
+    {
+        _nextWaveDist = dist;
+        print("가야할 거리 : " + _nextWaveDist);
     }
 
     public void ResetArrivalState()

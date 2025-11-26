@@ -134,6 +134,8 @@ public class MonsterSpawn : MonoBehaviour
 
     private void SpawnWaveMonsters(Dictionary<int, WaveData> waveMonsters, int wave)
     {
+        List<Monster> monsters = new List<Monster>();
+
         _aliveMonsterCount = 0;
 
         foreach (WaveData data in waveMonsters.Values)
@@ -154,9 +156,15 @@ public class MonsterSpawn : MonoBehaviour
                 monster.SetCharacterData(fullData);
                 monster.WaveUpgrade(wave);
 
+                // 인게임에서 배틀 시 카메라 트래킹을 위한
+                // 이번 웨이브 몬스터 리스트에 추가
+                monsters.Add(monster);
+
                 _aliveMonsterCount++;
             }
         }
+
+        InGameCam.Instance.RegisterMonsters(monsters);
     }
 
     private void OnMonsterDie(Character ch)

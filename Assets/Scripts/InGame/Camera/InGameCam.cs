@@ -1,5 +1,7 @@
+using NUnit.Framework;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class InGameCam : MonoBehaviour
@@ -18,6 +20,9 @@ public class InGameCam : MonoBehaviour
         }
     }
 
+    // =========================
+    // 줌인아웃 모드 관련
+    // =========================
     private Camera _cam;
     private Coroutine _zoomCoroutine;
 
@@ -39,6 +44,17 @@ public class InGameCam : MonoBehaviour
 
     private bool _isFirstInit = true;
 
+    // =========================
+    // Tracking 모드 관련
+    // =========================
+    private List<Player> _players = new List<Player>();
+    private List<Monster> _monsters = new List<Monster>();
+
+    [SerializeField] private float _trackingLerpSpeed = 3.0f;
+    [SerializeField] private float _minX = -3.0f;
+    [SerializeField] private float _maxX = 15.0f;
+    private bool _isTrackingMode = false;
+
     private void Awake()
     {
         _instance = this;
@@ -56,8 +72,39 @@ public class InGameCam : MonoBehaviour
         BattleStateManager.Instance.OnBattle -= ZoomRerollToBattle;
     }
 
+    private void Update()
+    {
+        if (!_isTrackingMode)
+        {
+            return;
+        }
+
+        // WaveAdvance 목표 위치 미리 계산 후 플레이어에 전달
+        float nextWaveX = transform.position.x + _rightMoveX;
+        foreach (Player player in _players)
+        {
+            player.SetNextWaveX(nextWaveX);
+        }
+
+        if (BattleStateManager.Instance.CurrentState != BattleState.Battle)
+        {
+            return;
+        }
+
+        float centerX = GetBattleCenterX();
+        //centerX = Mathf.Clamp(centerX, _minX, _maxX);
+
+        Vector3 pos = transform.position;
+        pos.x = Mathf.Lerp(pos.x, centerX, Time.deltaTime * _trackingLerpSpeed);
+        transform.position = pos;
+
+        print("중점 : " + centerX);
+    }
+
     private void ZoomRerollToBattle()
     {
+        DisableTracking();  // Reroll → Battle 연출 동안 Tracking X
+
         if (_zoomCoroutine != null)
             StopCoroutine(_zoomCoroutine);
 
@@ -72,6 +119,8 @@ public class InGameCam : MonoBehaviour
             return;
         }*/
 
+        DisableTracking(); // Tracking 중단
+
         if (_zoomCoroutine != null)
             StopCoroutine(_zoomCoroutine);
 
@@ -85,6 +134,8 @@ public class InGameCam : MonoBehaviour
         // X축 -2
         yield return MoveXCoroutine(_leftMoveX, _leftDuration);
         _zoomCoroutine = null;
+
+        EnableTracking();  // 연출 후 Tracking ON
     }
 
     // Battle -> Reroll: 줌인 + X축 +10
@@ -93,7 +144,7 @@ public class InGameCam : MonoBehaviour
         yield return ZoomCoroutine(_zoomInSize, _rightMoveX, _rightDuration);
         _zoomCoroutine = null;
 
-        _onCameraMoveEnd?.Invoke(); // 배틀 상태가 리롤(준비) 상태일때 몬스터 스폰
+        _onCameraMoveEnd?.Invoke(); // 인게임에서 상태가 리롤(준비) 상태일때 몬스터 스폰
     }   
 
     // ======================================
@@ -135,5 +186,62 @@ public class InGameCam : MonoBehaviour
         }
 
         transform.position = targetPos;
+    }
+
+    // =======================
+    // Tracking 구간
+    // =======================
+    private void EnableTracking()
+    {
+        _isTrackingMode = true;
+    }
+
+    private void DisableTracking()
+    {
+        _isTrackingMode = false;
+    }
+
+
+    private float GetBattleCenterX()
+    {
+        Collider2D collider = null;
+        float left = float.MaxValue;
+        float right = float.MinValue;
+        bool found = false;
+
+        foreach (Player player in _players)
+        {
+            collider = player.GetComponent<Collider2D>();
+            if (collider.enabled)
+            {
+                found = true;
+                left = Mathf.Min(left, player.transform.position.x);
+            }
+        }
+
+        foreach (Monster monster in _monsters)
+        {
+            collider = monster.GetComponent<Collider2D>();
+            if (collider.enabled)
+            {
+                found = true;
+                right = Mathf.Max(right, monster.transform.position.x);
+            }
+        }
+
+        if (!found)
+            return transform.position.x;
+
+        return (left + right) * 0.5f;
+    }
+
+    public void RegisterPlayerCharacter(List<Player> players)
+    {
+        _players = players;
+    }
+
+    public void RegisterMonsters(List<Monster> monsters)
+    {
+        _monsters = monsters;
     }
 }
