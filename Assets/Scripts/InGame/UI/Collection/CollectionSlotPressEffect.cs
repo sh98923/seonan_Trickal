@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using System.Collections;
 
-public class CollectionSlotPressEffect : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+public class CollectionSlotPressEffect : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
 {
     public GameObject detailPanel;       // 상세 UI 연결
     public float pressedScale = 0.9f;    // 눌렸을 때 크기
@@ -11,6 +11,10 @@ public class CollectionSlotPressEffect : MonoBehaviour, IPointerDownHandler, IPo
     private Vector3 originalScale;
     private Coroutine currentCoroutine;
 
+    private bool isDragging = false;
+    private Vector2 pointerDownPos;
+    private const float dragThreshold = 10f; // 이 거리 이상 움직이면 드래그로 판단
+
     private void Awake()
     {
         originalScale = transform.localScale;
@@ -18,22 +22,34 @@ public class CollectionSlotPressEffect : MonoBehaviour, IPointerDownHandler, IPo
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        // 눌릴 때 Tween
+        pointerDownPos = eventData.position;
+        isDragging = false;
+
         if (currentCoroutine != null)
             StopCoroutine(currentCoroutine);
         currentCoroutine = StartCoroutine(ScaleTween(transform.localScale, originalScale * pressedScale, animDuration));
     }
 
+    public void OnDrag(PointerEventData eventData)
+    {
+        if (Vector2.Distance(pointerDownPos, eventData.position) > dragThreshold)
+            isDragging = true;
+    }
+
     public void OnPointerUp(PointerEventData eventData)
     {
-        // 떼면 원래 크기로 튀는 Tween
         if (currentCoroutine != null)
             StopCoroutine(currentCoroutine);
 
         currentCoroutine = StartCoroutine(ScaleTweenBounce(transform.localScale, originalScale, animDuration));
 
-        // 상세 UI 열기 (Tween과 동시에 열리거나, 끝나고 열리게 조절 가능)
-        detailPanel.SetActive(true);
+        // 드래그 상태라면 패널 열지 않음
+        if (isDragging)
+            return;
+
+        // 실제 클릭일 때만 패널 열기
+        if (detailPanel != null)
+            detailPanel.SetActive(true);
     }
 
     private IEnumerator ScaleTween(Vector3 from, Vector3 to, float duration)
@@ -54,9 +70,8 @@ public class CollectionSlotPressEffect : MonoBehaviour, IPointerDownHandler, IPo
         while (t < 1f)
         {
             t += Time.deltaTime / duration;
-            // SmoothStep로 약간 튀는 느낌
             float scaleT = Mathf.SmoothStep(0f, 1f, t);
-            transform.localScale = Vector3.Lerp(from, to * 1.05f, scaleT); // 살짝 크게 튀게
+            transform.localScale = Vector3.Lerp(from, to * 1.05f, scaleT);
             yield return null;
         }
         transform.localScale = to;
