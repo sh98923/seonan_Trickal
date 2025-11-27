@@ -4,16 +4,17 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
 
+public enum CharacterState
+{
+    Idle, Move, Attack, Dead
+}
+
 public class Character : MonoBehaviour
 {
     // Enum
     protected enum ActionCategory
     {
         Attack, Buff
-    }
-    protected enum State
-    {
-        Idle, Move, Attack, Dead
     }
 
     // 이벤트
@@ -56,7 +57,7 @@ public class Character : MonoBehaviour
     protected Vector3 _scale;
     protected Vector2 _moveDir;
     protected ActionSlot _actionType = ActionSlot.Base;
-    protected State _curState = State.Idle;
+    protected CharacterState _curState = CharacterState.Idle;
     protected readonly float _findTargetRange = 5.0f;
     protected float _maxHp = 0.0f;
     protected float _moveSpeed = 2.5f;
@@ -66,11 +67,7 @@ public class Character : MonoBehaviour
 
     private readonly float _colliderOffset = 0.5f;
     private float _animLengthRate = 1.0f;
-    private float _fadeDuration = 3.0f;
-    private float _attackCoolTimer = 0.0f;
     private readonly int _sortingScale = 100;
-    private Coroutine _slowCoroutine = null;
-
 
     protected void Awake()
     {
@@ -106,8 +103,7 @@ public class Character : MonoBehaviour
         _damageReceiver.Initialize(this, _data.Hp);
         //print(_data.EngName + " : " + _data.Hp);
 
-        _curState = State.Idle;
-        _attackCoolTimer = 0.0f;
+        _curState = CharacterState.Idle;
         _isAttacking = false;
         _isDead = false;
         _myCollider.enabled = true;
@@ -133,17 +129,17 @@ public class Character : MonoBehaviour
 
         switch (_curState)
         {
-            case State.Idle:
+            case CharacterState.Idle:
                 IdleStateAction();
                 break;
-            case State.Move:
+            case CharacterState.Move:
                 MoveStateAction();
                 break;
-            case State.Attack:
+            case CharacterState.Attack:
                 AttackStateAction();
                 AttackCoolTime();
                 break;
-            case State.Dead:
+            case CharacterState.Dead:
                 DeadStateAction();
                 break;
         }
@@ -170,7 +166,7 @@ public class Character : MonoBehaviour
     {
         _animator.SetBool("IdleState", true);
         if (BattleStateManager.Instance.IsBattle)
-            _curState = State.Move;
+            _curState = CharacterState.Move;
     }
 
     protected virtual void MoveStateAction()
@@ -186,7 +182,7 @@ public class Character : MonoBehaviour
         if (_targetCollider == null || !_targetCollider.enabled)
         {
             _targetCollider = null;
-            _curState = State.Move;
+            _curState = CharacterState.Move;
             return;
         }
 
@@ -254,7 +250,7 @@ public class Character : MonoBehaviour
 
     public void CharacterDeath()
     {
-        _curState = State.Dead;
+        _curState = CharacterState.Dead;
     }
 
     public void TakeDotDamage(float damage, float duration, float tickInterval)
@@ -305,10 +301,9 @@ public class Character : MonoBehaviour
     }
 
     // 캐릭터 세팅
-    public void SetCharacterData(CharacterData data)
+    public virtual void SetCharacterData(CharacterData data)
     {
         _data = data;
-        _damageReceiver.SetHp(data.Hp);
     }
 
     public void SetCharacterActionInit()

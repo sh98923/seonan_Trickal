@@ -30,7 +30,7 @@ public class Monster : Character
             else
             {
                 _animator.SetBool("IdleState", true);
-                _curState = State.Attack;
+                _curState = CharacterState.Attack;
             }
         }
     }
@@ -53,7 +53,7 @@ public class Monster : Character
         // 소수점 첫째자리까지 나오게 하기위한 수식
         _maxHp = Mathf.Round(_maxHp);
 
-        _damageReceiver.SetHp(_maxHp);
+        _damageReceiver.Initialize(this, _maxHp);
 
         float atkLinear = _data.Atk + _data.AtkPerWave * wave;
         float atkExp = _data.Atk * Mathf.Pow(_data.AtkGrowthRate, wave);

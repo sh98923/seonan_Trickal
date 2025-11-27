@@ -3441,6 +3441,7 @@ GameObject:
   - component: {fileID: -6011675698458806012}
   - component: {fileID: -7217851334599696414}
   - component: {fileID: 7835846113546967524}
+  - component: {fileID: 1685054240638014237}
   m_Layer: 6
   m_Name: ElfArcher
   m_TagString: Player
@@ -3596,6 +3597,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 60c6951522361ec469d332a85fadca1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1685054240638014237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6915536252060765902}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91d7f2abab05fac419c1f02c03a8bd97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &6986874256106499595

@@ -35,12 +35,23 @@ public class InGamePlayerSpawn : MonoBehaviour
 
     private void OnEnable()
     {
-        BattleStateManager.Instance.OnWaveAdvance += CheckAlivePlayersCoroutine;
+        BattleStateManager.Instance.OnReroll += RespawnActiveDeckPlayers;
+        BattleStateManager.Instance.OnWaveAdvance += SetAlivePlayersCount;
     }
 
     private void OnDisable()
     {
-        BattleStateManager.Instance.OnWaveAdvance -= CheckAlivePlayersCoroutine;
+        BattleStateManager.Instance.OnReroll -= RespawnActiveDeckPlayers;
+        BattleStateManager.Instance.OnWaveAdvance -= SetAlivePlayersCount;
+    }
+
+    private void OnDestroy()
+    {
+        if(BattleStateManager.Instance != null)
+        {
+            BattleStateManager.Instance.OnReroll -= RespawnActiveDeckPlayers;
+            BattleStateManager.Instance.OnWaveAdvance -= SetAlivePlayersCount;
+        }
     }
 
     private void LoadPlayerPos()
@@ -72,12 +83,55 @@ public class InGamePlayerSpawn : MonoBehaviour
         return _activePlayers;
     }
 
-    private void CheckAlivePlayersCoroutine()
+    private void RespawnActiveDeckPlayers()
     {
-        StartCoroutine(CheckTotalAlivePlayer());
+        float camPosX = InGameCam.Instance.transform.position.x;
+
+        foreach (Player player in _activePlayers)
+        {
+            if (!player.gameObject.activeSelf)
+            {
+                player.gameObject.SetActive(true);
+                player.ReviveAnim();
+                player.Health.ReviveHp();
+                player.RevivePlayer(camPosX);  // 상태 초기화
+
+                /*// 콜라이더도 필요하면 켜주기
+                Collider2D collider = player.GetComponent<Collider2D>();
+                if (collider != null)
+                {
+                    collider.enabled = true;
+                }*/
+            }
+        }
     }
 
-    private IEnumerator CheckTotalAlivePlayer()
+    private void SetAlivePlayersCount()
+    {
+        _totalCharacters = 0;
+
+        foreach (Player player in _registeredPlayers)
+        {
+            player.ResetArrivalState();
+
+            if (!player.gameObject.activeSelf)
+            {
+                continue;
+            }
+
+            // 이거 다시 봐야해 waveadvace때 충돌체 꺼버리는 바람에 이상해짐
+            Collider2D collider = player.GetComponent<Collider2D>();
+            if (collider.enabled)
+            {
+                _totalCharacters++;
+            }
+        }
+
+        print("Total Alive : " + _totalCharacters);
+        //StartCoroutine(CheckTotalAlivePlayer());
+    }
+
+    /*private IEnumerator CheckTotalAlivePlayer()
     {
         yield return new WaitForSeconds(1.5f);
 
@@ -92,6 +146,7 @@ public class InGamePlayerSpawn : MonoBehaviour
                 continue;
             }
 
+            // 이거 다시 봐야해 waveadvace때 충돌체 꺼버리는 바람에 이상해짐
             Collider2D collider = player.GetComponent<Collider2D>();
             if (collider.enabled)
             { 
@@ -100,7 +155,7 @@ public class InGamePlayerSpawn : MonoBehaviour
         }
 
         print("Total Alive : " + _totalCharacters);
-    }
+    }*/
 
     public void CheckNextWaveReady()
     {

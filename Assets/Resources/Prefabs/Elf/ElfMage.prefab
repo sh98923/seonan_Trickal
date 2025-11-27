@@ -3670,6 +3670,7 @@ GameObject:
   - component: {fileID: 8784949632053883083}
   - component: {fileID: -3282285199798519725}
   - component: {fileID: 8977475225632959539}
+  - component: {fileID: 4316354597945527903}
   m_Layer: 6
   m_Name: ElfMage
   m_TagString: Player
@@ -3825,6 +3826,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e750a4276c1574d468bb8cfcc43809f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4316354597945527903
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7804876337548311016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91d7f2abab05fac419c1f02c03a8bd97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &7971183601105534870

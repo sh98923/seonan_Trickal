@@ -4,6 +4,12 @@ using System;
 
 public class Player : Character
 {
+    private PlayerHealth _playerHealth;
+    public PlayerHealth Health
+    {
+        get { return _playerHealth; }
+    }
+
     private SkillEffectController _skillEffectController;
 
     private Vector3 _originalWayPoint = new Vector3();
@@ -23,6 +29,8 @@ public class Player : Character
     private void Awake()
     {
         base.Awake();
+
+        _playerHealth = GetComponent<PlayerHealth>();
 
         _skillEffectController = GetComponent<SkillEffectController>();
         _skillEffectController.Initialize(this);
@@ -44,14 +52,27 @@ public class Player : Character
     private void OnEnable()
     {
         base.OnEnable();
-        //BattleStateManager.Instance.OnReroll += MoveToNextWaypoint;
+
+        BattleStateManager.Instance.OnReroll += EnableCollider;
+        BattleStateManager.Instance.OnWaveAdvance += DisableCollider;
         BattleStateManager.Instance.OnWaveAdvance += MoveToNextWaypoint;
     }
 
     private void OnDisable()
     {
-        //BattleStateManager.Instance.OnReroll -= MoveToNextWaypoint;
+        BattleStateManager.Instance.OnReroll -= EnableCollider;
+        BattleStateManager.Instance.OnWaveAdvance -= DisableCollider;
         BattleStateManager.Instance.OnWaveAdvance -= MoveToNextWaypoint;
+    }
+
+    private void OnDestroy()
+    {
+        if (BattleStateManager.Instance != null)
+        {
+            BattleStateManager.Instance.OnReroll -= EnableCollider;
+            BattleStateManager.Instance.OnWaveAdvance -= DisableCollider;
+            BattleStateManager.Instance.OnWaveAdvance -= MoveToNextWaypoint;
+        }
     }
 
     private void Update()
@@ -90,7 +111,6 @@ public class Player : Character
         // waypoint 이동
         _nextWayPoint = _originalWayPoint;
         _nextWayPoint.x += _nextWaveDist;
-        print("다음 위치 : " + _nextWayPoint.x);
 
         /*_scale.x = -Mathf.Abs(_scale.x);
         transform.localScale = _scale;
@@ -195,7 +215,7 @@ public class Player : Character
         if (Vector2.Distance(_targetCollider.transform.position, transform.position) - 0.5f <= _data.AtkRange)
         {
             _animator.SetBool("IdleState", true);
-            _curState = State.Attack;
+            _curState = CharacterState.Attack;
         }
         else
         {
@@ -207,16 +227,34 @@ public class Player : Character
     private void HandleWaveAdvanceMovement()
     {
         Vector3 dir = _nextWayPoint - transform.position;
-        transform.Translate(dir.normalized * _moveSpeed * Time.deltaTime);
-        
-        if (Vector3.Distance(transform.position, _nextWayPoint) < 0.001f && !_isArrived)
+        float distanceCurFrame = _moveSpeed * Time.deltaTime;
+
+        if (dir.magnitude <= distanceCurFrame)
         {
-            _isArrived = true;
-            print($"{gameObject.name} 도착 지점 : {_originalWayPoint}");
-            print($"도착 위치 : {transform.position.x}");
-            InGamePlayerSpawn parent = transform.parent.GetComponent<InGamePlayerSpawn>();
-            parent.CheckNextWaveReady();
+            // 목표 위치까지 남은 거리가 이번 프레임 이동 거리보다 작으면 정확히 도착
+            transform.position = _nextWayPoint;
+            if (!_isArrived)
+            {
+                _isArrived = true;
+                InGamePlayerSpawn parent = transform.parent.GetComponent<InGamePlayerSpawn>();
+                parent.CheckNextWaveReady();
+            }
         }
+        else
+        {
+            // 아직 목표까지 멀면 계속 이동
+            transform.Translate(dir.normalized * distanceCurFrame);
+        }
+    }
+
+    private void EnableCollider()
+    {
+        GetComponent<Collider2D>().enabled = true;
+    }
+
+    private void DisableCollider()
+    {
+        GetComponent<Collider2D>().enabled = false;
     }
 
     /*protected override void MoveStateAction()
@@ -281,13 +319,13 @@ public class Player : Character
         if (!_targetCollider.enabled)
         {
             _targetCollider = null;
-            _curState = State.Move;
+            _curState = CharacterState.Move;
         }
 
         // 몬스터 전멸
         if (BattleStateManager.Instance.CurrentState == BattleState.Victory)
         {
-            _curState = State.Move;
+            _curState = CharacterState.Move;
             return;
         }
 
@@ -371,14 +409,72 @@ public class Player : Character
         }
     }
 
+    public CharacterState CurState()
+    {
+        return _curState; 
+    }
+
+    public override void SetCharacterData(CharacterData data)
+    { 
+        _data = data;
+        _damageReceiver.MaxHp = data.Hp;
+    }
+
     public void SetNextWaveX(float dist)
     {
         _nextWaveDist = dist;
-        print("가야할 거리 : " + _nextWaveDist);
     }
 
     public void ResetArrivalState()
     {
         _isArrived = false;
+    }
+
+    public void ReviveAnim()
+    {
+        _animator.SetTrigger("Intro");
+        StartCoroutine(CheckIntroEnd());
+    }
+
+    private IEnumerator CheckIntroEnd()
+    {
+        yield return null;
+
+        bool entered = false;
+
+        while (true)
+        {
+            AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
+
+            // Intro로 진입한 적 있는지 체크
+            if (stateInfo.IsName("Intro"))
+            {
+                entered = true;
+            }
+            else
+            {
+                // Intro 끝나면 move 상태로 변경
+                if (entered)
+                    break;
+            }
+
+            yield return null;
+        }
+
+        _curState = CharacterState.Move;
+    }
+
+    public void RevivePlayer(float camPosX)
+    {
+        // 1. 도착 상태 초기화
+        ResetArrivalState();
+
+        // 2. 원래 위치 + 카메라 X 좌표 조정
+        Vector3 spawnPos = _originalWayPoint;
+        spawnPos.x += camPosX; // 카메라 X 위치 만큼 더함
+        transform.position = spawnPos;
+
+        // 필요하다면 시각적 표시 초기화 등 추가 가능
+        //_graphics?.ResetVisuals();
     }
 }

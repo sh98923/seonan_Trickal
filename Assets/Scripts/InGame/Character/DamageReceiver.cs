@@ -7,11 +7,20 @@ public class DamageReceiver : MonoBehaviour
     private Character _owner;
     private CharacterGraphics _graphics;
 
-    private float _curHp = 0.0f;
-    private float _maxHp = 0.0f;
-
     private Coroutine _dotCoroutine = null;
     private Coroutine _slowCoroutine = null;
+    
+    private float _curHp = 0.0f;
+    public float CurHp
+    {
+        get { return _curHp; }
+    }
+    private float _maxHp = 0.0f;
+    public float MaxHp
+    {
+        get { return _maxHp; }
+        set {  _maxHp = value; }
+    }
 
     public void Initialize(Character owner, float initialHp)
     {
@@ -24,13 +33,11 @@ public class DamageReceiver : MonoBehaviour
         _maxHp = initialHp;
     }
 
-    public float CurrentHp => _curHp;
-    public float MaxHp => _maxHp;
-
     public void SetHp(float hp)
-    {
-        _maxHp = hp;
+    { 
         _curHp = hp;
+        // 필요하면 시각적 표시 초기화
+        //_graphics?.ResetVisuals();
     }
 
     public void TakeDamage(float amount)

@@ -8,15 +8,10 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     {
         get 
         {
-            if (_instance == null)
+            if (_instance == null && Application.isPlaying)
             {
                 GameObject obj = new GameObject(typeof(T).Name);
                 _instance = obj.AddComponent<T>();
-            }
-
-            if (!Application.isPlaying)
-            {
-                return null;
             }
 
             return _instance;

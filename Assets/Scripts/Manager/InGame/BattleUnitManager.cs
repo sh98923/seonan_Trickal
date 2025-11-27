@@ -4,35 +4,45 @@ using UnityEngine;
 public class BattleUnitManager : Singleton<BattleUnitManager>
 {
     private Dictionary<int, PlayerUnit> _activeUnits = new Dictionary<int, PlayerUnit>();
-
-    private int _alivePlayerCount = 0;
+    
+    private int _deadPlayerCount = 0;
     private int _curLevel;
     public int CurLevel
     {
         get { return _curLevel; }
     }
 
+    private void OnPlayerDie(Character ch)
+    {
+        _deadPlayerCount = 0;
+
+        foreach (KeyValuePair<int, PlayerUnit> player in _activeUnits)
+        {
+            Player character = player.Value.Unit;
+
+            if (character.CurState() == CharacterState.Dead)
+            {
+                _deadPlayerCount++;
+            }
+        }
+
+        if (_deadPlayerCount == _activeUnits.Count)
+        {
+            Debug.Log("All players defeated. Game Over.");
+            BattleStateManager.Instance.SetState(BattleState.GameOver);
+        }
+    }
+
     public void RegisterUnit(CharacterData data, GameObject instance)
     {
         Player player = instance.GetComponent<Player>();
         player.OnDie += OnPlayerDie;
-        _alivePlayerCount++;
 
         _activeUnits[data.PlayerKey] = new PlayerUnit(data, player);
 
         CharacterData a = _activeUnits[data.PlayerKey].CharacterInfo;
 
         Debug.Log(a.EngName + " " + a.Hp + " " + a.Mp + " " + a.Atk);
-    }
-
-    private void OnPlayerDie(Character ch)
-    {
-        _alivePlayerCount--;
-        if (_alivePlayerCount <= 0)
-        {
-            Debug.Log("All players defeated. Game Over.");
-            BattleStateManager.Instance.SetState(BattleState.GameOver);
-        }
     }
 
     public void UpgradeUnit(int key)
@@ -48,6 +58,10 @@ public class BattleUnitManager : Singleton<BattleUnitManager>
 public class PlayerUnit
 {
     private Player _unitObj;
+    public Player Unit
+    {
+        get { return _unitObj; }
+    }
 
     private CharacterData _data;
     public CharacterData CharacterInfo
@@ -88,6 +102,7 @@ public class PlayerUnit
         Debug.Log(_unitObj.name + " " + _data.Hp + " " + _data.Mp + " " + _data.Atk);
 
         _unitObj.SetCharacterData(_data);
+        _unitObj.GetComponent<PlayerHealth>().UpgradeHp();
         //curUnit.(_playerStat[levelUp]);
     }
 

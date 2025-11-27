@@ -2349,6 +2349,7 @@ GameObject:
   - component: {fileID: -8417628396775233942}
   - component: {fileID: 5762603166560674138}
   - component: {fileID: 8508687239805546598}
+  - component: {fileID: 3024961827170629}
   m_Layer: 6
   m_Name: ElfAssassin
   m_TagString: Player
@@ -2504,6 +2505,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e750a4276c1574d468bb8cfcc43809f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3024961827170629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4786874740262200511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91d7f2abab05fac419c1f02c03a8bd97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &4885216183659374122

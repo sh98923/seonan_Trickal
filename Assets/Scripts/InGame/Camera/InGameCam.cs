@@ -37,12 +37,11 @@ public class InGameCam : MonoBehaviour
     private readonly float _zoomOutSize = 5.0f;
 
     private readonly float _rightMoveX = 12.5f;   // 오른쪽으로 이동 거리
-    private readonly float _leftMoveX = -2.0f;   // 왼쪽으로 되돌아가는 이동 거리
 
     private readonly float _rightDuration = 3.0f;
     private readonly float _leftDuration = 1.25f;
 
-    private bool _isFirstInit = true;
+    //private bool _isFirstInit = true;
 
     // =========================
     // Tracking 모드 관련
@@ -50,9 +49,6 @@ public class InGameCam : MonoBehaviour
     private List<Player> _players = new List<Player>();
     private List<Monster> _monsters = new List<Monster>();
 
-    [SerializeField] private float _trackingLerpSpeed = 3.0f;
-    [SerializeField] private float _minX = -3.0f;
-    [SerializeField] private float _maxX = 15.0f;
     private bool _isTrackingMode = false;
 
     private void Awake()
@@ -62,14 +58,23 @@ public class InGameCam : MonoBehaviour
         _cam = GetComponent<Camera>();
         _cam.orthographicSize = _zoomInSize;
 
-        BattleStateManager.Instance.OnWaveAdvance += ZoomBattleToReroll;
         BattleStateManager.Instance.OnBattle += ZoomRerollToBattle;
+        BattleStateManager.Instance.OnWaveAdvance += ZoomBattleToReroll;
     }
 
     private void OnDisable()
     {
-        BattleStateManager.Instance.OnWaveAdvance -= ZoomBattleToReroll;
         BattleStateManager.Instance.OnBattle -= ZoomRerollToBattle;
+        BattleStateManager.Instance.OnWaveAdvance -= ZoomBattleToReroll;
+    }
+
+    private void OnDestroy()
+    {
+        if(BattleStateManager.Instance != null)
+        {
+            BattleStateManager.Instance.OnBattle -= ZoomRerollToBattle;
+            BattleStateManager.Instance.OnWaveAdvance -= ZoomBattleToReroll;
+        }
     }
 
     private void Update()
@@ -92,13 +97,10 @@ public class InGameCam : MonoBehaviour
         }
 
         float centerX = GetBattleCenterX();
-        //centerX = Mathf.Clamp(centerX, _minX, _maxX);
 
         Vector3 pos = transform.position;
-        pos.x = Mathf.Lerp(pos.x, centerX, Time.deltaTime * _trackingLerpSpeed);
+        pos.x = Mathf.Lerp(pos.x, centerX, Time.deltaTime);
         transform.position = pos;
-
-        print("중점 : " + centerX);
     }
 
     private void ZoomRerollToBattle()
@@ -127,20 +129,21 @@ public class InGameCam : MonoBehaviour
         _zoomCoroutine = StartCoroutine(ZoomInBattleToReroll());
     }
 
+    // Reroll -> Battle
     private IEnumerator ZoomOutRerollToBattle()
     {
-        // 줌아웃 + X축 +10
+        // 줌 아웃
         yield return ZoomCoroutine(_zoomOutSize, _rightMoveX, _rightDuration);
-        // X축 -2
-        yield return MoveXCoroutine(_leftMoveX, _leftDuration);
+
         _zoomCoroutine = null;
 
         EnableTracking();  // 연출 후 Tracking ON
     }
 
-    // Battle -> Reroll: 줌인 + X축 +10
+    // Battle -> Reroll
     private IEnumerator ZoomInBattleToReroll()
     {
+        // 줌 인
         yield return ZoomCoroutine(_zoomInSize, _rightMoveX, _rightDuration);
         _zoomCoroutine = null;
 
@@ -171,7 +174,7 @@ public class InGameCam : MonoBehaviour
     }
 
     // X축만 이동하는 보간
-    private IEnumerator MoveXCoroutine(float moveX, float duration)
+    /*private IEnumerator MoveXCoroutine(float moveX, float duration)
     {
         float elapsed = 0.0f;
         Vector3 startPos = transform.position;
@@ -186,7 +189,7 @@ public class InGameCam : MonoBehaviour
         }
 
         transform.position = targetPos;
-    }
+    }*/
 
     // =======================
     // Tracking 구간
@@ -201,7 +204,6 @@ public class InGameCam : MonoBehaviour
         _isTrackingMode = false;
     }
 
-
     private float GetBattleCenterX()
     {
         Collider2D collider = null;
@@ -211,6 +213,9 @@ public class InGameCam : MonoBehaviour
 
         foreach (Player player in _players)
         {
+            if(!player.gameObject.activeSelf)
+                continue;
+
             collider = player.GetComponent<Collider2D>();
             if (collider.enabled)
             {
@@ -221,6 +226,9 @@ public class InGameCam : MonoBehaviour
 
         foreach (Monster monster in _monsters)
         {
+            if (!monster.gameObject.activeSelf)
+                continue;
+
             collider = monster.GetComponent<Collider2D>();
             if (collider.enabled)
             {
