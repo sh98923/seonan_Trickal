@@ -2,8 +2,9 @@ using UnityEngine;
 
 public class CollectionManager : MonoBehaviour
 {
-    private GameObject _slotPrefab;  // 슬롯 프리팹
-    private Transform _content;      // ScrollView Content
+    public GameObject _slotPrefab;  // 슬롯 프리팹
+    public Transform _content;      // ScrollView Content
+    public GameObject detailPanel;
     private int _slotCount = 9;      // 자동 생성 개수
 
     private void Start()
@@ -29,8 +30,8 @@ public class CollectionManager : MonoBehaviour
             GameObject slot = Instantiate(_slotPrefab, _content);
 
             // detailPanel 연결도 여기서 해줄 수 있음
-            slot.GetComponent<CollectionSlotPressEffect>().detailPanel = // 패널 연결
-                GameObject.Find("Collection Info Panel");
+            var effect = slot.GetComponent<CollectionSlotPressEffect>();
+            effect.detailPanel = detailPanel;
         }
     }
 }
