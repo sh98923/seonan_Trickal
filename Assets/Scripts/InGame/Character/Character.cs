@@ -9,7 +9,7 @@ public enum CharacterState
     Idle, Move, Attack, Dead
 }
 
-public class Character : MonoBehaviour
+public class Character : MonoBehaviour, ITrackable
 {
     // Enum
     protected enum ActionCategory
@@ -40,10 +40,12 @@ public class Character : MonoBehaviour
     private Transform _centerPoint;
 
     // 속성
-    public int SortingIndex => _sortingGroup.sortingOrder;
     public CharacterData Data => _data;
+    public GameObject UnitObject => gameObject;
     public Transform AtkPoint => _atkPoint;
     public Transform CenterPoint => _centerPoint;
+    public int SortingIndex => _sortingGroup.sortingOrder;
+    public bool IsColliderEnable => _myCollider.enabled;
 
     // 임시/액션 관련 변수
     protected string _clipName = "";
@@ -165,7 +167,7 @@ public class Character : MonoBehaviour
     protected virtual void IdleStateAction()
     {
         _animator.SetBool("IdleState", true);
-        if (BattleStateManager.Instance.IsBattle)
+        if (BattleStateManager.Instance.IsEnteringBattle)
             _curState = CharacterState.Move;
     }
 

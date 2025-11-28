@@ -55,6 +55,8 @@ public class MonsterSpawn : MonoBehaviour
         int waveKey = GameManager.Instance.StageKey + _waveStep;
         StageData wave = StageManager.Instance.GetStageData(waveKey);
 
+        InGameManager.Instance.SetWaveText(_waveStep, wave.MaxWave);
+
         if (_waveStep >= wave.MaxWave)
         {
             //BattleStateManager.Instance.SetState(BattleState.Victory);
@@ -117,6 +119,8 @@ public class MonsterSpawn : MonoBehaviour
 
     private void RegisterMonsterEvents()
     {
+        List<ITrackable> trackables = new List<ITrackable>();
+
         foreach (CharacterData fullData in _monsterDatas.Values)
         {
             string key = fullData.EngName;
@@ -128,8 +132,15 @@ public class MonsterSpawn : MonoBehaviour
                 monster.SetCharacterData(fullData);
                 monster.SetCharacterActionInit();
                 monster.OnDie += OnMonsterDie;
+
+                // 몬스터의 위치 정보만 빼서 트래킹
+                ITrackable trackable = monster.GetComponent<ITrackable>();
+                trackables.Add(trackable);
             }
         }
+        
+        // 몬스터 위치 정보 등록
+        InGameManager.Instance.RegisterMonsterUnits(trackables);
     }
 
     private void SpawnWaveMonsters(Dictionary<int, WaveData> waveMonsters, int wave)
@@ -156,15 +167,9 @@ public class MonsterSpawn : MonoBehaviour
                 monster.SetCharacterData(fullData);
                 monster.WaveUpgrade(wave);
 
-                // 인게임에서 배틀 시 카메라 트래킹을 위한
-                // 이번 웨이브 몬스터 리스트에 추가
-                monsters.Add(monster);
-
                 _aliveMonsterCount++;
             }
         }
-
-        InGameCam.Instance.RegisterMonsters(monsters);
     }
 
     private void OnMonsterDie(Character ch)
@@ -178,7 +183,7 @@ public class MonsterSpawn : MonoBehaviour
 
             _waveStep++;
             _spawned = false;
-            BattleStateManager.Instance.SetState(BattleState.WaveAdvance);
+            BattleStateManager.Instance.SetState(BattleState.EnteringReroll);
 
             //StartCoroutine(MonsterSpawnDelay());
         }

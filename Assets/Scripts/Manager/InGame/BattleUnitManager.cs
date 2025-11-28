@@ -103,6 +103,7 @@ public class PlayerUnit
 
         _unitObj.SetCharacterData(_data);
         _unitObj.GetComponent<PlayerHealth>().UpgradeHp();
+        _unitObj.GetComponent<PlayerMp>().SetMpData(_data.Mp, _data.MpTickRate);
         //curUnit.(_playerStat[levelUp]);
     }
 

@@ -7,6 +7,7 @@ public struct PlayerStatData
     public string EngName;
     public float Hp;
     public float Mp;
+    public float MpTickRate;
     public float Atk;
     public float SkillRate;
     public float Ultimate;
@@ -48,13 +49,14 @@ public class PlayerStatManager : Singleton<PlayerStatManager>
             data.EngName = colData[1];
             data.Hp = float.Parse(colData[2]);
             data.Mp = float.Parse(colData[3]);
-            data.Atk = float.Parse(colData[4]);
-            data.SkillRate = float.Parse(colData[5]);
-            data.Ultimate = float.Parse(colData[6]);
-            data.CriRate = float.Parse(colData[7]);
-            data.AtkRange = float.Parse(colData[8]);
-            data.UltCoolTime = float.Parse(colData[9]);
-            data.CanUseUlt = bool.Parse(colData[10]);
+            data.MpTickRate = float.Parse(colData[4]);
+            data.Atk = float.Parse(colData[5]);
+            data.SkillRate = float.Parse(colData[6]);
+            data.Ultimate = float.Parse(colData[7]);
+            data.CriRate = float.Parse(colData[8]);
+            data.AtkRange = float.Parse(colData[9]);
+            data.UltCoolTime = float.Parse(colData[10]);
+            data.CanUseUlt = bool.Parse(colData[11]);
 
             _playerStatDatas.Add(data.Key, data);
         }

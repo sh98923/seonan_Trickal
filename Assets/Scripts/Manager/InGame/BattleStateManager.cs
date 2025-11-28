@@ -6,7 +6,8 @@ public enum BattleState
     None,
     Reroll,
     Battle,
-    WaveAdvance,
+    EnteringReroll,
+    EnteringBattle,
     // GameStatemanager를 따로 스크립트 만들어서
     // battleStatemanager처럼 클래스를 만들자
     Victory,
@@ -18,14 +19,7 @@ public class BattleStateManager : MonoBehaviour
     private static BattleStateManager _instance;
     public static BattleStateManager Instance
     {
-        get
-        {
-            if (_instance == null)
-            {
-                Debug.LogError("BattleStateManager가 씬에 존재하지 않습니다!");
-            }
-            return _instance;
-        }
+        get { return _instance;}
     }
 
     private event Action _onReroll;
@@ -40,11 +34,17 @@ public class BattleStateManager : MonoBehaviour
         add { _onBattle += value; } //print("구독 : " + value.Method.Name); }
         remove { _onBattle -= value; } //print("해제 : " + value.Method.Name); }
     }
-    private event Action _onWaveAdvance;
-    public event Action OnWaveAdvance
+    private event Action _onEnteringReroll;
+    public event Action OnEnteringReroll
     {
-        add { _onWaveAdvance += value; } //print("구독 : " + value.Method.Name); }
-        remove { _onWaveAdvance -= value; } //print("해제 : " + value.Method.Name); }
+        add { _onEnteringReroll += value; } //print("구독 : " + value.Method.Name); }
+        remove { _onEnteringReroll -= value; } //print("해제 : " + value.Method.Name); }
+    }
+    private event Action _onEnteringBattle;
+    public event Action OnEnteringBattle
+    {
+        add { _onEnteringBattle += value; } //print("구독 : " + value.Method.Name); }
+        remove { _onEnteringBattle -= value; } //print("해제 : " + value.Method.Name); }
     }
 
     private BattleState _currentState = BattleState.None;
@@ -74,10 +74,12 @@ public class BattleStateManager : MonoBehaviour
 
     public bool IsReroll
     {
-        get
-        {
-            return _currentState == BattleState.Reroll;
-        }
+        get { return _currentState == BattleState.Reroll; }
+    }
+
+    public bool IsEnteringBattle
+    {
+        get { return _currentState == BattleState.EnteringBattle; }
     }
 
     public bool IsGameOver
@@ -89,6 +91,8 @@ public class BattleStateManager : MonoBehaviour
     {
         _currentState = newState;
 
+        print("현재 배틀 상태 : " + _currentState);
+
         switch (_currentState)
         {
             case BattleState.Reroll:
@@ -97,10 +101,12 @@ public class BattleStateManager : MonoBehaviour
             case BattleState.Battle:
                 _onBattle?.Invoke();
                 break;
-            case BattleState.WaveAdvance:
-                _onWaveAdvance?.Invoke();
+            case BattleState.EnteringReroll:
+                _onEnteringReroll?.Invoke();
                 break;
-
+            case BattleState.EnteringBattle:
+                _onEnteringBattle?.Invoke();
+                break;
         }
     }
 

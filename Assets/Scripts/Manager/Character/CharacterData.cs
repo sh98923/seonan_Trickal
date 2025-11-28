@@ -127,6 +127,12 @@ public class CharacterData
         set => _playerStat.Mp = value;
     }
 
+    public float MpTickRate
+    {
+        get => _playerStat.MpTickRate;
+        set => _playerStat.MpTickRate = value;
+    }
+
     public float SkillRate
     {
         get => _playerStat.SkillRate;
@@ -286,6 +292,7 @@ public class CharacterData
         CriRate = data.CriRate;
 
         Mp = data.Mp;
+        MpTickRate = data.MpTickRate;
         SkillRate = data.SkillRate;
         Ultimate = data.Ultimate;
         UltCoolTime = data.UltCoolTime;

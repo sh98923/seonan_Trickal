@@ -2,6 +2,7 @@ using NUnit.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public class InGameCam : MonoBehaviour
@@ -46,9 +47,9 @@ public class InGameCam : MonoBehaviour
     // =========================
     // Tracking 모드 관련
     // =========================
-    private List<Player> _players = new List<Player>();
-    private List<Monster> _monsters = new List<Monster>();
+    private List<ITrackable> _trackedCharacters = new List<ITrackable>();
 
+    private readonly string _player = "Player";
     private bool _isTrackingMode = false;
 
     private void Awake()
@@ -58,22 +59,27 @@ public class InGameCam : MonoBehaviour
         _cam = GetComponent<Camera>();
         _cam.orthographicSize = _zoomInSize;
 
-        BattleStateManager.Instance.OnBattle += ZoomRerollToBattle;
-        BattleStateManager.Instance.OnWaveAdvance += ZoomBattleToReroll;
+        _trackedCharacters = InGameManager.Instance.Trackables;
+
+        BattleStateManager.Instance.OnEnteringBattle += ZoomRerollToBattle;
+        BattleStateManager.Instance.OnEnteringReroll += ZoomBattleToReroll;
+        BattleStateManager.Instance.OnEnteringReroll += MoveNextWave;
     }
 
     private void OnDisable()
     {
-        BattleStateManager.Instance.OnBattle -= ZoomRerollToBattle;
-        BattleStateManager.Instance.OnWaveAdvance -= ZoomBattleToReroll;
+        BattleStateManager.Instance.OnEnteringBattle -= ZoomRerollToBattle;
+        BattleStateManager.Instance.OnEnteringReroll -= ZoomBattleToReroll;
+        BattleStateManager.Instance.OnEnteringReroll -= MoveNextWave;
     }
 
     private void OnDestroy()
     {
         if(BattleStateManager.Instance != null)
         {
-            BattleStateManager.Instance.OnBattle -= ZoomRerollToBattle;
-            BattleStateManager.Instance.OnWaveAdvance -= ZoomBattleToReroll;
+            BattleStateManager.Instance.OnEnteringBattle -= ZoomRerollToBattle;
+            BattleStateManager.Instance.OnEnteringReroll -= ZoomBattleToReroll;
+            BattleStateManager.Instance.OnEnteringReroll -= MoveNextWave;
         }
     }
 
@@ -82,13 +88,6 @@ public class InGameCam : MonoBehaviour
         if (!_isTrackingMode)
         {
             return;
-        }
-
-        // WaveAdvance 목표 위치 미리 계산 후 플레이어에 전달
-        float nextWaveX = transform.position.x + _rightMoveX;
-        foreach (Player player in _players)
-        {
-            player.SetNextWaveX(nextWaveX);
         }
 
         if (BattleStateManager.Instance.CurrentState != BattleState.Battle)
@@ -101,6 +100,22 @@ public class InGameCam : MonoBehaviour
         Vector3 pos = transform.position;
         pos.x = Mathf.Lerp(pos.x, centerX, Time.deltaTime);
         transform.position = pos;
+    }
+
+    private void MoveNextWave()
+    {
+        // WaveAdvance 목표 위치 미리 계산 후 플레이어에 전달
+        float nextWaveX = transform.position.x + _rightMoveX;
+        foreach (ITrackable character in _trackedCharacters)
+        {
+            if (character.UnitObject.tag != _player)
+            {
+                continue;
+            }
+
+            Player player = character.UnitObject.GetComponent<Player>();
+            player.SetNextWaveX(nextWaveX);
+        }
     }
 
     private void ZoomRerollToBattle()
@@ -206,50 +221,27 @@ public class InGameCam : MonoBehaviour
 
     private float GetBattleCenterX()
     {
-        Collider2D collider = null;
         float left = float.MaxValue;
         float right = float.MinValue;
         bool found = false;
 
-        foreach (Player player in _players)
+        foreach (ITrackable character in _trackedCharacters)
         {
-            if(!player.gameObject.activeSelf)
-                continue;
-
-            collider = player.GetComponent<Collider2D>();
-            if (collider.enabled)
+            if (!character.UnitObject.activeSelf || !character.IsColliderEnable)
             {
-                found = true;
-                left = Mathf.Min(left, player.transform.position.x);
-            }
-        }
-
-        foreach (Monster monster in _monsters)
-        {
-            if (!monster.gameObject.activeSelf)
                 continue;
-
-            collider = monster.GetComponent<Collider2D>();
-            if (collider.enabled)
-            {
-                found = true;
-                right = Mathf.Max(right, monster.transform.position.x);
             }
+
+            float posX = character.UnitObject.transform.position.x;
+
+            found = true;
+            left = Mathf.Min(left, posX);
+            right = Mathf.Max(right, posX);
         }
 
         if (!found)
             return transform.position.x;
 
         return (left + right) * 0.5f;
-    }
-
-    public void RegisterPlayerCharacter(List<Player> players)
-    {
-        _players = players;
-    }
-
-    public void RegisterMonsters(List<Monster> monsters)
-    {
-        _monsters = monsters;
     }
 }

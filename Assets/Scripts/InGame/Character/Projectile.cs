@@ -19,7 +19,7 @@ public class ProjectileData
 
 public class Projectile : MonoBehaviour
 {
-    protected readonly float _lifeTime = 3.0f;
+    protected readonly float _lifeTime = 2.0f;
 
     protected SpriteRenderer _sprite;
     protected ProjectileData _data;

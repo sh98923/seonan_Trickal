@@ -9,7 +9,8 @@ public class MoveBG : MonoBehaviour
 
     private Camera _mainCam;
 
-    private float _screenWidthWorld;
+    private readonly float _screenEdgeBuffer = 1.2f;
+    private float _screenHalfWidth;
 
     private bool _isInit = false;
 
@@ -20,8 +21,7 @@ public class MoveBG : MonoBehaviour
         _mapBG = GetComponent<InGameBG>();
         _mainCam = Camera.main;
 
-        float screenHalfWidth = 5.0f * _mainCam.aspect;
-        _screenWidthWorld = screenHalfWidth;
+        _screenHalfWidth = _mainCam.orthographicSize * _mainCam.aspect;
     }
 
     private void OnEnable()
@@ -45,8 +45,8 @@ public class MoveBG : MonoBehaviour
 
     private void MoveLoop(SpriteRenderer[] sprites)
     {
-        float camLeftX = _mainCam.transform.position.x - _screenWidthWorld;
-        float camRightX = _mainCam.transform.position.x + _screenWidthWorld;
+        float camLeftX = _mainCam.transform.position.x - _screenHalfWidth * _screenEdgeBuffer;
+        float camRightX = _mainCam.transform.position.x + _screenHalfWidth * _screenEdgeBuffer;
 
         foreach (SpriteRenderer sprite in sprites)
         {

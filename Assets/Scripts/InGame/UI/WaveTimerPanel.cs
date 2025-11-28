@@ -12,6 +12,7 @@ public class WaveTimerPanel : MonoBehaviour
     private Image _timerImage;
     private Transform[] _waveTimerChildren;
     private TextMeshProUGUI _timerText;
+    private TextMeshProUGUI _waveText;
     private InGameUIPanel _inGameUIPanel;
 
     private BattleState _prevState = BattleState.None;
@@ -21,14 +22,35 @@ public class WaveTimerPanel : MonoBehaviour
     private readonly float _minute = 60.0f;
     private float _curDuration;
     private float _timer;
+    private int _waveStep = 0;
+    private int _maxWave = 0;
     private bool IsTimerRunning => _timer > 0.0f;
 
     private void Awake()
     {
         _inGameUIPanel = GetComponentInParent<InGameUIPanel>();
         _waveTimerChildren = GetComponentsInChildren<Transform>();
+        _waveText = _waveTimerChildren[(int)WaveTimerUI.WaveText].GetComponent<TextMeshProUGUI>();
         _timerImage = _waveTimerChildren[(int)WaveTimerUI.TimerImage].GetComponent<Image>();
         _timerText = _waveTimerChildren[(int)WaveTimerUI.TimerText].GetComponent<TextMeshProUGUI>();
+    }
+
+    private void OnEnable()
+    {
+        BattleStateManager.Instance.OnReroll += UpdateWaveText;
+    }
+
+    private void OnDisable()
+    {
+        BattleStateManager.Instance.OnReroll -= UpdateWaveText;
+    }
+
+    private void OnDestroy()
+    {
+        if(BattleStateManager.Instance != null)
+        {
+            BattleStateManager.Instance.OnReroll -= UpdateWaveText;
+        }
     }
 
     private void Update()
@@ -95,5 +117,13 @@ public class WaveTimerPanel : MonoBehaviour
         {
             BattleStateManager.Instance.SetState(BattleState.Reroll);
         }
+    }
+
+    private void UpdateWaveText()
+    {
+        _waveStep = InGameManager.Instance.WaveStep;
+        _maxWave = InGameManager.Instance.MaxWave;
+
+        _waveText.text = $"{_waveStep}/{_maxWave}";
     }
 }

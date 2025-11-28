@@ -61,7 +61,7 @@ public class InGameUIPanel : MonoBehaviour
                     ShowRerollUI(); // 리롤 상태일 때의 UI
                     break;
 
-                case BattleState.Battle:
+                case BattleState.EnteringBattle:
                     ShowBattleUI(); // 배틀 상태일 때의 UI
                     break;
             }

@@ -1,6 +1,5 @@
-using UnityEngine;
 using System.Collections;
-using System;
+using UnityEngine;
 
 public class Player : Character
 {
@@ -9,6 +8,8 @@ public class Player : Character
     {
         get { return _playerHealth; }
     }
+
+    private PlayerMp _playerMp;
 
     private SkillEffectController _skillEffectController;
 
@@ -31,6 +32,7 @@ public class Player : Character
         base.Awake();
 
         _playerHealth = GetComponent<PlayerHealth>();
+        _playerMp = GetComponent<PlayerMp>();
 
         _skillEffectController = GetComponent<SkillEffectController>();
         _skillEffectController.Initialize(this);
@@ -54,15 +56,15 @@ public class Player : Character
         base.OnEnable();
 
         BattleStateManager.Instance.OnReroll += EnableCollider;
-        BattleStateManager.Instance.OnWaveAdvance += DisableCollider;
-        BattleStateManager.Instance.OnWaveAdvance += MoveToNextWaypoint;
+        BattleStateManager.Instance.OnEnteringReroll += DisableCollider;
+        BattleStateManager.Instance.OnEnteringReroll += MoveToNextWaypoint;
     }
 
     private void OnDisable()
     {
         BattleStateManager.Instance.OnReroll -= EnableCollider;
-        BattleStateManager.Instance.OnWaveAdvance -= DisableCollider;
-        BattleStateManager.Instance.OnWaveAdvance -= MoveToNextWaypoint;
+        BattleStateManager.Instance.OnEnteringReroll -= DisableCollider;
+        BattleStateManager.Instance.OnEnteringReroll -= MoveToNextWaypoint;
     }
 
     private void OnDestroy()
@@ -70,8 +72,8 @@ public class Player : Character
         if (BattleStateManager.Instance != null)
         {
             BattleStateManager.Instance.OnReroll -= EnableCollider;
-            BattleStateManager.Instance.OnWaveAdvance -= DisableCollider;
-            BattleStateManager.Instance.OnWaveAdvance -= MoveToNextWaypoint;
+            BattleStateManager.Instance.OnEnteringReroll -= DisableCollider;
+            BattleStateManager.Instance.OnEnteringReroll -= MoveToNextWaypoint;
         }
     }
 
@@ -111,14 +113,14 @@ public class Player : Character
         // waypoint 이동
         _nextWayPoint = _originalWayPoint;
         _nextWayPoint.x += _nextWaveDist;
-
+        print("다음 목적지 : " + _nextWayPoint);
         /*_scale.x = -Mathf.Abs(_scale.x);
         transform.localScale = _scale;
 
         print(gameObject.name + " : " + _scale.x);*/
     }
 
-    protected override void IdleStateAction()
+    /*protected override void IdleStateAction()
     {
         base.IdleStateAction();
 
@@ -126,7 +128,7 @@ public class Player : Character
         {
             StartCoroutine(RegenerateMp());
         }
-    }
+    }*/
 
     protected override void MoveStateAction()
     {
@@ -135,20 +137,23 @@ public class Player : Character
         switch (BattleStateManager.Instance.CurrentState)
         {
             case BattleState.Reroll:
-                HandleRerollMovement();
+                RerollMovement();
                 break;
             case BattleState.Battle:
-                HandleBattleMovement();
+                BattleMovement();
                 break;
-            case BattleState.WaveAdvance:
-                HandleWaveAdvanceMovement();
+            case BattleState.EnteringReroll:
+                EnteringRerollMovement();
+                break;
+            case BattleState.EnteringBattle:
+                EnteringBattleMovement();
                 break;
         }
 
         //print(BattleStateManager.Instance.CurrentState);
     }
 
-    private void HandleRerollMovement()
+    private void RerollMovement()
     {
         //print($"{gameObject.name} 준비완료");
         /*if (Vector3.Distance(transform.position, _wayPoint) <  0.001f)
@@ -162,47 +167,26 @@ public class Player : Character
             print($"{gameObject.name} 거리 : {a}");
         }*/
     }
-    
-    private void HandleBattleMovement()
+
+    private void EnteringBattleMovement()
     {
-        /*if (_targetCollider == null)
-        {
-            _targetCollider = FindTarget(_data.Target, _findTargetRange);
-            transform.Translate(_moveDir * _moveSpeed * Time.deltaTime);
-            print(_moveDir + " : " + _moveSpeed);
-        }
-        else
-        {
-            Character targetCharacter = _targetCollider.GetComponent<Character>();
-            if (targetCharacter == null)
-            {
-                //BattleStateManager.Instance.SetState(BattleState.Reroll);
-                _curState = State.Idle;
-                _targetCollider = null;
-                return;
-            }
-
-            int sortingDiff = Mathf.Abs(_sortingGroup.sortingOrder - targetCharacter.SortingIndex);
-
-            if (Vector2.Distance(_targetCollider.transform.position, transform.position) <= _data.AtkRange)
-            //&& sortingDiff <= 20) // SortingOrder 차이 20 이내
-            {
-                _animator.SetBool("IdleState", true);
-                _curState = State.Attack;
-            }
-            else
-            {
-                Vector2 dir = (_targetCollider.transform.position - transform.position).normalized;
-                transform.Translate(dir * _moveSpeed * Time.deltaTime);
-                print(dir + " : " + _moveSpeed);
-            }
-        }*/
-
         if (_targetCollider == null)
         {
             _targetCollider = FindTarget(_data.Target, _findTargetRange);
             transform.Translate(_moveDir * _moveSpeed * Time.deltaTime);
-            return;
+        }
+        else
+        {
+            BattleStateManager.Instance.SetState(BattleState.Battle);
+        }
+    }
+
+    private void BattleMovement()
+    {
+        if (_targetCollider == null)
+        {
+            _targetCollider = FindTarget(_data.Target, _findTargetRange);
+            transform.Translate(_moveDir * _moveSpeed * Time.deltaTime);
         }
 
         Character targetCharacter = _targetCollider.GetComponent<Character>();
@@ -224,7 +208,7 @@ public class Player : Character
         }
     }
 
-    private void HandleWaveAdvanceMovement()
+    private void EnteringRerollMovement()
     {
         Vector3 dir = _nextWayPoint - transform.position;
         float distanceCurFrame = _moveSpeed * Time.deltaTime;
@@ -334,12 +318,13 @@ public class Player : Character
 
         _isAttacking = true;
 
-        if (_curMp >= _data.Mp)
+        if (_playerMp.GetCurMp() >= _data.Mp)
         {
             _actionType = ActionSlot.Skill;
             _animator.SetTrigger("Skill");
         }
-        else if (Input.GetKeyDown(KeyCode.S))
+        // 궁극기는 업그레이드 3레벨, battle 상태일 때 UI 터치 시 발동 (쿨타임 있음)
+        else if (Input.GetKeyDown(KeyCode.S)) 
         {
             _actionType = ActionSlot.Ult;
             _animator.SetTrigger("Ult");
@@ -353,11 +338,20 @@ public class Player : Character
 
     public void OnSoloBuff()
     {
+        if (_actionType == ActionSlot.Skill)
+        {
+            _playerMp.UseMp();
+        }
+
         _action[(int)ActionCategory.Buff].Excute();
     }
 
     public void OnAllBuff()
     {
+        if(_actionType == ActionSlot.Skill)
+        {
+            _playerMp.UseMp();
+        }
         _clipName = _data.ClipName[(int)_actionType];
         _duration = _data.Duration[(int)_actionType];
 
@@ -375,7 +369,7 @@ public class Player : Character
                 finalDamage = _data.Atk * _atkBuff;
                 break;
             case ActionSlot.Skill:
-                _curMp -= _data.Mp;
+                _playerMp.UseMp();
                 finalDamage = _data.Atk * _data.SkillRate * _atkBuff;
                 break;
             case ActionSlot.Ult:
@@ -394,21 +388,6 @@ public class Player : Character
         base.OnAttack();
     }
 
-    private IEnumerator RegenerateMp()
-    {
-        while (BattleStateManager.Instance.IsBattle)
-        {
-            if (_curMp >= _data.Mp)
-            {
-                yield return new WaitForSeconds(1.0f);
-                continue;
-            }
-
-            _curMp += 10.0f;
-            yield return new WaitForSeconds(1.0f);
-        }
-    }
-
     public CharacterState CurState()
     {
         return _curState; 
@@ -418,6 +397,7 @@ public class Player : Character
     { 
         _data = data;
         _damageReceiver.MaxHp = data.Hp;
+        _playerMp.SetMpData(_data.Mp, _data.MpTickRate);
     }
 
     public void SetNextWaveX(float dist)

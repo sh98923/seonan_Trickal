@@ -40,8 +40,8 @@ public class BattleSetupPanel : MonoBehaviour
             _cardBtns[i].onClick.AddListener(() => OnClickCard(index));
         }
 
-        _cardBtns[(int)CardRerollUI.RerollBtn].onClick.AddListener(OnClickReroll);
-        _cardBtns[(int)CardRerollUI.BattleBtn].onClick.AddListener(OnClickBattle);
+        _cardBtns[(int)CardRerollUI.RerollBtn].onClick.AddListener(OnClickCardReroll);
+        _cardBtns[(int)CardRerollUI.BattleBtn].onClick.AddListener(OnClickEnteringBattle);
     }
 
     private void InitRerollUI()
@@ -72,7 +72,7 @@ public class BattleSetupPanel : MonoBehaviour
         _cardBtns = buttonList.ToArray();
     }
 
-    private void OnClickReroll()
+    private void OnClickCardReroll()
     {
         if (!InGameManager.Instance.TrySpendCoin(_rerollCost))
         {
@@ -83,9 +83,9 @@ public class BattleSetupPanel : MonoBehaviour
         _setupAnimator.Play("CardRoll", 0, 0f);
     }
 
-    private void OnClickBattle()
+    private void OnClickEnteringBattle()
     {
-        BattleStateManager.Instance.SetState(BattleState.Battle);
+        BattleStateManager.Instance.SetState(BattleState.EnteringBattle);
     }
 
     private void OnClickCard(int index)

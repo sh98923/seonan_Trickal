@@ -29,20 +29,18 @@ public class InGamePlayerSpawn : MonoBehaviour
             Player player = transform.GetChild(i).GetComponent<Player>();
             _registeredPlayers.Add(player);
         }
-
-        InGameCam.Instance.RegisterPlayerCharacter(_registeredPlayers);
     }
 
     private void OnEnable()
     {
         BattleStateManager.Instance.OnReroll += RespawnActiveDeckPlayers;
-        BattleStateManager.Instance.OnWaveAdvance += SetAlivePlayersCount;
+        BattleStateManager.Instance.OnEnteringReroll += SetAlivePlayersCount;
     }
 
     private void OnDisable()
     {
         BattleStateManager.Instance.OnReroll -= RespawnActiveDeckPlayers;
-        BattleStateManager.Instance.OnWaveAdvance -= SetAlivePlayersCount;
+        BattleStateManager.Instance.OnEnteringReroll -= SetAlivePlayersCount;
     }
 
     private void OnDestroy()
@@ -50,7 +48,7 @@ public class InGamePlayerSpawn : MonoBehaviour
         if(BattleStateManager.Instance != null)
         {
             BattleStateManager.Instance.OnReroll -= RespawnActiveDeckPlayers;
-            BattleStateManager.Instance.OnWaveAdvance -= SetAlivePlayersCount;
+            BattleStateManager.Instance.OnEnteringReroll -= SetAlivePlayersCount;
         }
     }
 
