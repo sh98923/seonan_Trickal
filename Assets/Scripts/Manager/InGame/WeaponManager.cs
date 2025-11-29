@@ -1,8 +1,45 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 public class WeaponManager : Singleton<WeaponManager>
 {
+    private List<GameObject> _firedProjectiles = new List<GameObject>();
+
+    private void OnEnable()
+    {
+        BattleStateManager.Instance.OnEnteringReroll += InitFiredList; 
+        BattleStateManager.Instance.OnEnteringReroll += DisableFiredProjectiles;
+    }
+
+    private void OnDisable()
+    {
+        BattleStateManager.Instance.OnEnteringReroll -= InitFiredList;
+        BattleStateManager.Instance.OnEnteringReroll -= DisableFiredProjectiles;
+    }
+
+    private void OnDestroy()
+    {
+        if(BattleStateManager.Instance != null)
+        { 
+            BattleStateManager.Instance.OnEnteringReroll -= InitFiredList;
+            BattleStateManager.Instance.OnEnteringReroll -= DisableFiredProjectiles;
+        }
+    }
+
+    private void InitFiredList()
+    {
+        _firedProjectiles.Clear();
+    }
+
+    private void DisableFiredProjectiles()
+    {
+        foreach(GameObject projectile in _firedProjectiles)
+        {
+            projectile.SetActive(false);
+        }
+    }
+
     public void CreateWeapon()
     {
         int startKey = WeaponDataManager.Instance.WeaponStartKey;
@@ -20,6 +57,7 @@ public class WeaponManager : Singleton<WeaponManager>
     public void Fire(ProjectileData data)
     {
         GameObject projectile = PoolingManager.Instance.Pop(data.Key);
+        _firedProjectiles.Add(projectile);
 
         // 발사 될 방향으로 스프라이트, 콜라이더 회전
         Vector3 scale = projectile.transform.localScale;

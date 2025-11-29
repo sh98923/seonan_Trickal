@@ -37,9 +37,9 @@ public class InGameCam : MonoBehaviour
     private readonly float _zoomInSize = 4.5f;
     private readonly float _zoomOutSize = 5.0f;
 
-    private readonly float _rightMoveX = 12.5f;   // 오른쪽으로 이동 거리
+    private readonly float _rightMoveX = 11.5f;   // 오른쪽으로 이동 거리
 
-    private readonly float _rightDuration = 3.0f;
+    private readonly float _rightDuration = 2.3f;
     private readonly float _leftDuration = 1.25f;
 
     //private bool _isFirstInit = true;
@@ -108,12 +108,12 @@ public class InGameCam : MonoBehaviour
         float nextWaveX = transform.position.x + _rightMoveX;
         foreach (ITrackable character in _trackedCharacters)
         {
-            if (character.UnitObject.tag != _player)
+            if (character.Object.tag != _player)
             {
                 continue;
             }
 
-            Player player = character.UnitObject.GetComponent<Player>();
+            Player player = character.Object.GetComponent<Player>();
             player.SetNextWaveX(nextWaveX);
         }
     }
@@ -212,6 +212,8 @@ public class InGameCam : MonoBehaviour
     private void EnableTracking()
     {
         _isTrackingMode = true;
+
+        BattleStateManager.Instance.SetState(BattleState.Battle);
     }
 
     private void DisableTracking()
@@ -227,12 +229,12 @@ public class InGameCam : MonoBehaviour
 
         foreach (ITrackable character in _trackedCharacters)
         {
-            if (!character.UnitObject.activeSelf || !character.IsColliderEnable)
+            if (!character.Object.activeSelf || !character.IsColliderEnable)
             {
                 continue;
             }
 
-            float posX = character.UnitObject.transform.position.x;
+            float posX = character.Object.transform.position.x;
 
             found = true;
             left = Mathf.Min(left, posX);

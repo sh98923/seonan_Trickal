@@ -92,7 +92,8 @@ public class WaveTimerPanel : MonoBehaviour
     {
         if (IsTimerRunning)
         {
-            _timer -= Time.deltaTime;
+            _timer -= Time.deltaTime; 
+            _timer = Mathf.Max(_timer, 0f);
 
             float normalizedTime = Mathf.Clamp01(_timer / _curDuration);
             _timerImage.fillAmount = normalizedTime;
@@ -109,13 +110,22 @@ public class WaveTimerPanel : MonoBehaviour
 
     private void HandleTimerEnd(BattleState currentState)
     {
-        if (currentState == BattleState.Reroll)
+        switch (currentState)
         {
-            BattleStateManager.Instance.SetState(BattleState.Battle);
-        }
-        else if (currentState == BattleState.Battle)
-        {
-            BattleStateManager.Instance.SetState(BattleState.Reroll);
+            case BattleState.Reroll:
+                BattleStateManager.Instance.SetState(BattleState.Battle);
+                break;
+            case BattleState.Battle:
+                CheckBattleResultState();
+                break;
+           /* case BattleState.EnteringReroll:
+                break;
+            case BattleState.EnteringBattle:
+                break;
+            case BattleState.Victory:
+                break;*/
+            case BattleState.GameOver:
+                break;
         }
     }
 
@@ -125,5 +135,23 @@ public class WaveTimerPanel : MonoBehaviour
         _maxWave = InGameManager.Instance.MaxWave;
 
         _waveText.text = $"{_waveStep}/{_maxWave}";
+    }
+
+    private void CheckBattleResultState()
+    {
+        foreach (ITrackable unit in InGameManager.Instance.Monsters)
+        {
+            if (!unit.IsColliderEnable)
+            { 
+                continue;
+            }
+
+            BattleStateManager.Instance.SetState(BattleState.GameOver);
+            print("게임 오버");
+            return; // 몬스터가 하나라도 있으면 바로 종료
+        }
+
+        // 몬스터가 없음 → 리롤
+        BattleStateManager.Instance.SetState(BattleState.Reroll);
     }
 }
