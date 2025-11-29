@@ -56,8 +56,7 @@ public class CollectionDataManager : Singleton<CollectionDataManager>
 
             string[] colData = rowData[i].Split("\t");
 
-            if (rowData[i] == "") continue;
-            if (colData.Length <= 1) continue;
+            if (colData.Length < 10) continue;
 
             CollectionData data;
 

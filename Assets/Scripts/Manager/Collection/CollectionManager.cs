@@ -2,36 +2,37 @@ using UnityEngine;
 
 public class CollectionManager : MonoBehaviour
 {
-    public GameObject _slotPrefab;  // 슬롯 프리팹
-    public Transform _content;      // ScrollView Content
+    public GameObject slotPrefab;
+    public Transform content;
     public GameObject detailPanel;
-    private int _slotCount = 9;      // 자동 생성 개수
 
-    private void Start()
+    void Start()
     {
-        ClearSlots();
         CreateSlots();
     }
 
-    // 기존 슬롯 제거
-    private void ClearSlots()
-    {
-        for (int i = _content.childCount - 1; i >= 0; i--)
-        {
-            Destroy(_content.GetChild(i).gameObject);
-        }
-    }
-
-    // 신규 슬롯 생성
     private void CreateSlots()
     {
-        for (int i = 0; i < _slotCount; i++)
-        {
-            GameObject slot = Instantiate(_slotPrefab, _content);
+        foreach (Transform child in content)
+            Destroy(child.gameObject);
 
-            // detailPanel 연결도 여기서 해줄 수 있음
-            var effect = slot.GetComponent<CollectionSlotPressEffect>();
-            effect.detailPanel = detailPanel;
+        // CSV 로드 데이터 사용
+        for (int i = 0; i < CollectionDataManager.Instance.CollectionCount; i++)
+        {
+            int key = CollectionDataManager.Instance.CollectionStartKey + i;
+            CollectionData data = CollectionDataManager.Instance.GetCollectionData(key);
+
+            GameObject slot = Instantiate(slotPrefab, content);
+
+            // 슬롯 클릭 → 디테일 패널 오픈
+            slot.GetComponent<CollectionSlotPressEffect>().detailPanel = detailPanel;
+
+            // 슬롯 UI 반영
+            Sprite sprite = Resources.Load<Sprite>(data.CharacterSpritePath);
+            slot.GetComponent<CollectionSlotDisplay>().SetData(sprite, data.KrName);
+
+            // Detail Panel에서 정보를 다시 찾기 위해 key 저장
+            slot.AddComponent<CollectionSlotDataHolder>().key = key;
         }
     }
 }
