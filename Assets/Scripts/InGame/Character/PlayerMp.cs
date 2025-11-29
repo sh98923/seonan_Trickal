@@ -62,6 +62,8 @@ public class PlayerMp : MonoBehaviour
     {
         while (true)
         {
+            yield return new WaitForSeconds(_tickInterval);
+
             if (_curMp < _maxMp)
             {
                 _curMp += _mpPerTick;
@@ -70,9 +72,8 @@ public class PlayerMp : MonoBehaviour
                 { 
                     _curMp = _maxMp;
                 }
+                print($"MP : {_curMp}/{_maxMp}");
             }
-            print($"MP : {_curMp}/{_maxMp}");
-            yield return new WaitForSeconds(_tickInterval);
         }
     }
 

@@ -16,6 +16,12 @@ public class InGameManager : Singleton<InGameManager>
         get { return _trackables; }
     }
 
+    private List<ITrackable> _monsters = new List<ITrackable>();
+    public List<ITrackable> Monsters
+    {
+        get { return _monsters; }
+    }
+
     private int _maxWave = 0;
     public int MaxWave
     {
@@ -111,6 +117,7 @@ public class InGameManager : Singleton<InGameManager>
     {
         foreach(ITrackable trackable in trackables)
         {
+            _monsters.Add(trackable);
             _trackables.Add(trackable);
         }
     }

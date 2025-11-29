@@ -41,7 +41,7 @@ public class Character : MonoBehaviour, ITrackable
 
     // 속성
     public CharacterData Data => _data;
-    public GameObject UnitObject => gameObject;
+    public GameObject Object => gameObject;
     public Transform AtkPoint => _atkPoint;
     public Transform CenterPoint => _centerPoint;
     public int SortingIndex => _sortingGroup.sortingOrder;
@@ -62,7 +62,7 @@ public class Character : MonoBehaviour, ITrackable
     protected CharacterState _curState = CharacterState.Idle;
     protected readonly float _findTargetRange = 5.0f;
     protected float _maxHp = 0.0f;
-    protected float _moveSpeed = 2.5f;
+    protected float _moveSpeed = 4.0f;
 
     protected bool _isAttacking = false;
     private bool _isDead = false;
@@ -139,7 +139,6 @@ public class Character : MonoBehaviour, ITrackable
                 break;
             case CharacterState.Attack:
                 AttackStateAction();
-                AttackCoolTime();
                 break;
             case CharacterState.Dead:
                 DeadStateAction();
@@ -178,16 +177,56 @@ public class Character : MonoBehaviour, ITrackable
 
     protected virtual void AttackStateAction()
     {
-        if (_isAttacking) return;
-        _isAttacking = true;
+        // 타겟 상태 체크
+        CheckTargetStatus();
 
-        if (_targetCollider == null || !_targetCollider.enabled)
+        // 공격 중이면 애니메이션 끝났는지 체크
+        if (CheckAttackAnimation())
         {
-            _targetCollider = null;
-            _curState = CharacterState.Move;
             return;
         }
 
+        // 공격 시작
+        StartAttack();
+    }
+
+    protected void CheckTargetStatus()
+    {
+        // 타겟 없거나 죽었으면 _targetCollider는 null로 초기화
+        if (_targetCollider != null && !_targetCollider.enabled)
+        { 
+            _targetCollider = null;
+        }
+    }
+
+    protected bool CheckAttackAnimation()
+    {
+        if (!_isAttacking)
+            return false;
+
+        AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
+        bool hasAnimationEnded = stateInfo.normalizedTime >= 0.9f;
+
+        // 애니메이션 끝났는데 타겟이 없다면 이동 상태로
+        if (hasAnimationEnded)
+        {
+            _isAttacking = false;
+
+            if (_targetCollider == null)
+            { 
+                _curState = CharacterState.Move; 
+            }
+        }
+
+        return true; // 공격 중이었음
+    }
+
+    protected virtual void StartAttack()
+    {
+        if (!_targetCollider.enabled)
+            return;
+
+        _isAttacking = true;
         _animator.SetTrigger("Attack");
     }
 
@@ -288,18 +327,6 @@ public class Character : MonoBehaviour, ITrackable
     public virtual void OnAttack()
     {
         _action[(int)ActionCategory.Attack].Excute();
-    }
-
-    private void AttackCoolTime()
-    {
-        if (!_isAttacking) return;
-
-        AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
-        bool isNotTransitioning = !_animator.IsInTransition(0);
-        bool hasAnimationEnded = stateInfo.normalizedTime >= 1.0f;
-
-        if (isNotTransitioning && hasAnimationEnded)
-            _isAttacking = false;
     }
 
     // 캐릭터 세팅

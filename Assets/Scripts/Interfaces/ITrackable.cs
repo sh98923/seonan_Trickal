@@ -3,6 +3,6 @@ using UnityEngine;
 
 public interface ITrackable
 {
-    GameObject UnitObject { get; }
+    GameObject Object { get; }
     bool IsColliderEnable { get; }
 }

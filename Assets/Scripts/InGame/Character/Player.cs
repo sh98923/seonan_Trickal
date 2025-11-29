@@ -11,21 +11,23 @@ public class Player : Character
 
     private PlayerMp _playerMp;
 
+    private Collider2D _attackTarget;
     private SkillEffectController _skillEffectController;
 
     private Vector3 _originalWayPoint = new Vector3();
     private Vector3 _nextWayPoint = new Vector3();
 
+    private float _curMp = 0.0f;
     private float _nextWaveDist = 0.0f; // 배틀 → 리롤 이동 시 플레이어 이동 거리 변수
     private float _atkBuff = 1.0f;
-    private bool _isArrived = false;
     public float AtkBuff
     {
         get { return _atkBuff; }
         set { _atkBuff = value; }
     }
 
-    private float _curMp = 0.0f;
+    private bool _isArrived = false;
+    private bool _isInBattle = false;
 
     private void Awake()
     {
@@ -36,11 +38,9 @@ public class Player : Character
 
         _skillEffectController = GetComponent<SkillEffectController>();
         _skillEffectController.Initialize(this);
-
         _skillEffectController.Stop();
 
         _moveDir = Vector2.right;
-
         _scale.x *= -1;
         transform.localScale = _scale;
     }
@@ -136,57 +136,91 @@ public class Player : Character
 
         switch (BattleStateManager.Instance.CurrentState)
         {
-            case BattleState.Reroll:
+           /* case BattleState.Reroll:
                 RerollMovement();
-                break;
+                break;*/
             case BattleState.Battle:
-                BattleMovement();
+            case BattleState.EnteringBattle:
+                CheckForTargetAndEnterBattle();
                 break;
             case BattleState.EnteringReroll:
                 EnteringRerollMovement();
                 break;
-            case BattleState.EnteringBattle:
-                EnteringBattleMovement();
-                break;
         }
-
-        //print(BattleStateManager.Instance.CurrentState);
     }
 
-    private void RerollMovement()
+    private void CheckForTargetAndEnterBattle()
     {
-        //print($"{gameObject.name} 준비완료");
-        /*if (Vector3.Distance(transform.position, _wayPoint) <  0.001f)
+        if (!_isInBattle)
         {
-            _curState = State.Idle;
+            TryFindTargetOrKeepMoving();
         }
         else
         {
-            float a = Vector3.Distance(transform.position, _wayPoint);
-
-            print($"{gameObject.name} 거리 : {a}");
-        }*/
+            BattleMovement();
+        }
     }
 
-    private void EnteringBattleMovement()
+    private void TryFindTargetOrKeepMoving()
     {
-        if (_targetCollider == null)
+        _targetCollider = FindTarget(_data.Target, _findTargetRange);
+
+        // 타겟을 발견한 순간
+        if (_targetCollider != null)
         {
-            _targetCollider = FindTarget(_data.Target, _findTargetRange);
-            transform.Translate(_moveDir * _moveSpeed * Time.deltaTime);
+            _isInBattle = true;
+
+            // 전체 전역 스테이트 전환은 한번만
+            if (BattleStateManager.Instance.CurrentState != BattleState.Battle)
+                BattleStateManager.Instance.SetState(BattleState.Battle);
+
+            return; // 발견한 프레임에서 BattleMovement 실행 X
         }
-        else
-        {
-            BattleStateManager.Instance.SetState(BattleState.Battle);
-        }
+
+        // 조우 전까지 계속 이동 (후열 캐릭터 움직임 유지)
+        transform.Translate(_moveDir * _moveSpeed * Time.deltaTime);
     }
 
     private void BattleMovement()
     {
-        if (_targetCollider == null)
+        // 이미 전투 상태인데 타겟이 죽거나 null이면 재탐색
+        if (_targetCollider == null || !_targetCollider.enabled)
+        {
+            _targetCollider = FindTarget(_data.Target, _findTargetRange);
+
+            if (_targetCollider == null)
+            {
+                // 타겟 잃으면 다시 전진하며 재탐색
+                transform.Translate(_moveDir * _moveSpeed * Time.deltaTime);
+                return;
+            }
+        }
+
+        Character targetCharacter = _targetCollider.GetComponent<Character>();
+        if (targetCharacter == null)
+        {
+            _targetCollider = null;
+            return;
+        }
+
+        float dist = Vector2.Distance(_targetCollider.transform.position, transform.position);
+
+        if (dist <= _data.AtkRange)
+        {
+            _animator.SetBool("IdleState", true);
+            _curState = CharacterState.Attack;
+        }
+        else
+        {
+            Vector2 dir = (_targetCollider.transform.position - transform.position).normalized;
+            transform.Translate(dir * _moveSpeed * Time.deltaTime);
+        }
+
+        /*if (_targetCollider == null)
         {
             _targetCollider = FindTarget(_data.Target, _findTargetRange);
             transform.Translate(_moveDir * _moveSpeed * Time.deltaTime);
+            print(gameObject.name + " : " + BattleStateManager.Instance.CurrentState);
         }
 
         Character targetCharacter = _targetCollider.GetComponent<Character>();
@@ -205,7 +239,22 @@ public class Player : Character
         {
             Vector2 dir = (_targetCollider.transform.position - transform.position).normalized;
             transform.Translate(dir * _moveSpeed * Time.deltaTime);
+        }*/
+    }
+
+    private void RerollMovement()
+    {
+        //print($"{gameObject.name} 준비완료");
+        /*if (Vector3.Distance(transform.position, _wayPoint) <  0.001f)
+        {
+            _curState = State.Idle;
         }
+        else
+        {
+            float a = Vector3.Distance(transform.position, _wayPoint);
+
+            print($"{gameObject.name} 거리 : {a}");
+        }*/
     }
 
     private void EnteringRerollMovement()
@@ -300,20 +349,31 @@ public class Player : Character
 
     protected override void AttackStateAction()
     {
-        if (!_targetCollider.enabled)
+        // 타겟 상태 체크
+        CheckTargetStatus();
+
+        // 공격 중이면 애니메이션 끝났는지 체크
+        if (CheckAttackAnimation())
+        {
+            return;
+        }
+
+        // 공격 시작
+        StartAttack();
+        /*if (!_targetCollider.enabled)
         {
             _targetCollider = null;
             _curState = CharacterState.Move;
-        }
+        }*/
 
-        // 몬스터 전멸
+        /*// 몬스터 전멸
         if (BattleStateManager.Instance.CurrentState == BattleState.Victory)
         {
             _curState = CharacterState.Move;
             return;
-        }
+        }*/
 
-        if (_isAttacking)
+        /*if (_isAttacking)
             return;
 
         _isAttacking = true;
@@ -325,6 +385,33 @@ public class Player : Character
         }
         // 궁극기는 업그레이드 3레벨, battle 상태일 때 UI 터치 시 발동 (쿨타임 있음)
         else if (Input.GetKeyDown(KeyCode.S)) 
+        {
+            _actionType = ActionSlot.Ult;
+            _animator.SetTrigger("Ult");
+        }
+        else
+        {
+            _actionType = ActionSlot.Base;
+            _animator.SetTrigger("Attack");
+        }*/
+    }
+
+    protected override void StartAttack()
+    {
+        if (!_targetCollider.enabled)
+            return;
+
+        _isAttacking = true;
+
+        _attackTarget = _targetCollider;
+
+        if (_playerMp.GetCurMp() >= _data.Mp)
+        {
+            _actionType = ActionSlot.Skill;
+            _animator.SetTrigger("Skill");
+        }
+        // 궁극기는 업그레이드 3레벨, battle 상태일 때 UI 터치 시 발동 (쿨타임 있음)
+        else if (Input.GetKeyDown(KeyCode.S))
         {
             _actionType = ActionSlot.Ult;
             _animator.SetTrigger("Ult");
@@ -361,6 +448,11 @@ public class Player : Character
 
     public override void OnAttack()
     {
+        if(BattleStateManager.Instance.CurrentState == BattleState.EnteringReroll)
+        {
+            return;
+        }
+
         float finalDamage = 0.0f;
 
         switch (_actionType)
@@ -383,7 +475,7 @@ public class Player : Character
             _duration = _data.Duration[(int)_actionType];
         }
 
-        _action[(int)ActionCategory.Attack].SetAttackInfo(_targetCollider, _actionType, _clipName, _duration, finalDamage);
+        _action[(int)ActionCategory.Attack].SetAttackInfo(_attackTarget, _actionType, _clipName, _duration, finalDamage);
 
         base.OnAttack();
     }
