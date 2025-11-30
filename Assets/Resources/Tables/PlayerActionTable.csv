@@ -1,9 +1,9 @@
 Key,EngName,ProjectileKey,BaseSpritePath,SkillSpritePath,UltSpritePath,BaseActionImpact,SkillActionImpact,UltActionImpact,BaseBuff,SkillBuff,UltBuff,BaseSpeed,SkillSpeed,UltSpeed,BaseDuration,SkillDuration,UltDuration,EffectValue,DotDamageRate,BaseClip,SkillClip,UltClip,IsBaseRange,IsSkillRange,IsUltRange,IsBaseEffectFront,IsSkillEffectFront,IsUltEffectFront,IsRotationProjectile
-4000,Diana,None,None,None,None,Damage,Damage,AllBuff,None,None,AttackPower,0,0,0,0,10,20,1.5,0.2,None,None,AllPowerUp,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE
-4001,Gwin,None,None,None,None,Damage,Damage,Damage,None,None,None,0,0,0,0,0,0,2,0.2,None,None,None,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE
-4002,Alette,None,None,None,None,SoloBuff,PartialBuff,AllBuff,None,None,None,0,0,0,0,0,0,2,0.2,None,None,None,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE
-4003,Ed,None,None,None,None,Damage,Dot,Slow,None,None,None,0,0,0,0,0,0,2,0.2,None,None,None,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE
-4004,Lonan,None,None,None,None,Damage,Damage,Damage,None,None,None,0,0,0,0,0,0,2,0.2,None,None,None,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE
+4000,Diana,None,None,None,None,Damage,Damage,AllBuff,None,None,AttackPower,0,0,0,0,0,20,1.5,0.2,None,None,AllPowerUp,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE
+4001,Gwin,None,None,None,None,Damage,Damage,Damage,None,None,None,0,0,0,0,0,0,0,0.2,None,None,None,FALSE,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE
+4002,Alette,None,None,None,None,Damage,SoloBuff,AllBuff,None,DamageReduction,None,0,0,0,0,15,0,0.6,0.2,None,DamageReduction,None,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE
+4003,Ed,None,None,None,None,Damage,Dot,Slow,None,None,None,0,0,0,0,2,3,2,0.2,None,None,None,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE
+4004,Lonan,None,None,None,None,Damage,PartialBuff,Damage,None,None,None,0,0,0,0,0,0,2,0.2,None,None,None,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE
 4005,Jade,None,None,None,None,Damage,Damage,Damage,None,None,None,0,0,0,0,0,0,2,0.2,None,None,None,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE
 4006,Levi,Shuriken,None,Sprites/Attack/Projectile/AssassinSkill,None,Damage,Damage,Dot,None,None,None,0,12,0,0,0,5,0.33,0.35,None,None,AssassinUlt,FALSE,TRUE,FALSE,FALSE,FALSE,TRUE,TRUE
 4007,Erdin,Arrow,Sprites/Attack/Projectile/ArcherBase,Sprites/Attack/Projectile/ArcherSkill,Sprites/Attack/Projectile/ArcherUlt,Damage,Damage,Slow,None,None,None,8,15,15,0,0,8,0.65,0.2,None,None,None,TRUE,TRUE,TRUE,FALSE,FALSE,FALSE,FALSE

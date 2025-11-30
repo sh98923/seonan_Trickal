@@ -44,7 +44,12 @@ public class Character : MonoBehaviour, ITrackable
     public GameObject Object => gameObject;
     public Transform AtkPoint => _atkPoint;
     public Transform CenterPoint => _centerPoint;
-    public int SortingIndex => _sortingGroup.sortingOrder;
+
+    public int SortingIndex
+    {
+        get { return _sortingGroup.sortingOrder; }
+        set {  _sortingGroup.sortingOrder = value; }
+    }
     public bool IsColliderEnable => _myCollider.enabled;
 
     // 임시/액션 관련 변수
@@ -322,7 +327,6 @@ public class Character : MonoBehaviour, ITrackable
         _animator.speed = 1.0f;
         _slowCoroutine = null;
     }*/
-
     // 공격 이벤트
     public virtual void OnAttack()
     {

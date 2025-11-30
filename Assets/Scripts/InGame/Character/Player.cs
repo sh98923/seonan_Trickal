@@ -17,19 +17,26 @@ public class Player : Character
     private Vector3 _originalWayPoint = new Vector3();
     private Vector3 _nextWayPoint = new Vector3();
 
-    private float _curMp = 0.0f;
     private float _nextWaveDist = 0.0f; // 배틀 → 리롤 이동 시 플레이어 이동 거리 변수
     private float _atkBuff = 1.0f;
+    private float _damageReduction = 1.0f;
+
     public float AtkBuff
     {
         get { return _atkBuff; }
         set { _atkBuff = value; }
     }
 
+    public float DamageReduction
+    {
+        get { return _damageReduction; }
+        set { _damageReduction = value; }
+    }
+
     private bool _isArrived = false;
     private bool _isInBattle = false;
 
-    private void Awake()
+    protected void Awake()
     {
         base.Awake();
 
@@ -37,7 +44,6 @@ public class Player : Character
         _playerMp = GetComponent<PlayerMp>();
 
         _skillEffectController = GetComponent<SkillEffectController>();
-        _skillEffectController.Initialize(this);
         _skillEffectController.Stop();
 
         _moveDir = Vector2.right;
@@ -45,13 +51,13 @@ public class Player : Character
         transform.localScale = _scale;
     }
 
-    private void Start()
+    protected void Start()
     {
         _originalWayPoint = transform.position;
         _animator.SetTrigger("Intro");
     }
 
-    private void OnEnable()
+    protected void OnEnable()
     {
         base.OnEnable();
 
@@ -60,14 +66,14 @@ public class Player : Character
         BattleStateManager.Instance.OnEnteringReroll += MoveToNextWaypoint;
     }
 
-    private void OnDisable()
+    protected void OnDisable()
     {
         BattleStateManager.Instance.OnReroll -= EnableCollider;
         BattleStateManager.Instance.OnEnteringReroll -= DisableCollider;
         BattleStateManager.Instance.OnEnteringReroll -= MoveToNextWaypoint;
     }
 
-    private void OnDestroy()
+    protected void OnDestroy()
     {
         if (BattleStateManager.Instance != null)
         {
@@ -77,7 +83,7 @@ public class Player : Character
         }
     }
 
-    private void Update()
+    protected void Update()
     {
         base.Update();
 
@@ -100,6 +106,14 @@ public class Player : Character
 
     private void SkillEffectOn()
     {
+        if(!_targetCollider.enabled)
+        {
+            return;
+        }
+
+        Character target = _targetCollider.GetComponent<Character>();
+
+        _skillEffectController.Initialize(target);
         _skillEffectController.Play(_data.IsEffectInFront[(int)_actionType]);
     }
 
@@ -170,10 +184,6 @@ public class Player : Character
         {
             _isInBattle = true;
 
-            // 전체 전역 스테이트 전환은 한번만
-            if (BattleStateManager.Instance.CurrentState != BattleState.Battle)
-                BattleStateManager.Instance.SetState(BattleState.Battle);
-
             return; // 발견한 프레임에서 BattleMovement 실행 X
         }
 
@@ -183,6 +193,12 @@ public class Player : Character
 
     private void BattleMovement()
     {
+        // 전체 전역 스테이트 전환은 한번만
+        if (BattleStateManager.Instance.CurrentState != BattleState.Battle)
+        { 
+            BattleStateManager.Instance.SetState(BattleState.Battle);
+        }
+
         // 이미 전투 상태인데 타겟이 죽거나 null이면 재탐색
         if (_targetCollider == null || !_targetCollider.enabled)
         {
@@ -269,6 +285,7 @@ public class Player : Character
             if (!_isArrived)
             {
                 _isArrived = true;
+                _isInBattle = false;
                 InGamePlayerSpawn parent = transform.parent.GetComponent<InGamePlayerSpawn>();
                 parent.CheckNextWaveReady();
             }
@@ -423,22 +440,13 @@ public class Player : Character
         }
     }
 
-    public void OnSoloBuff()
+    public void OnBuff()
     {
         if (_actionType == ActionSlot.Skill)
         {
             _playerMp.UseMp();
         }
 
-        _action[(int)ActionCategory.Buff].Excute();
-    }
-
-    public void OnAllBuff()
-    {
-        if(_actionType == ActionSlot.Skill)
-        {
-            _playerMp.UseMp();
-        }
         _clipName = _data.ClipName[(int)_actionType];
         _duration = _data.Duration[(int)_actionType];
 
@@ -548,5 +556,10 @@ public class Player : Character
 
         // 필요하다면 시각적 표시 초기화 등 추가 가능
         //_graphics?.ResetVisuals();
+    }
+
+    public void ApplyDamageReduction(float damageReduction)
+    {
+        _damageReceiver.UpdateDamageReduction(damageReduction);
     }
 }
