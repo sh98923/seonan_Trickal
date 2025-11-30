@@ -7,12 +7,17 @@ public struct CollectionData
     public string KrName;
     public string CharacterSpritePath;
     public string CharacterPrefabPath;
-    public string Explanation;
     public string Sentence;
+    public string Explanation;
+    public string Favorite;
+    public string Hate;
     public string Layer;
     public string AtkType;
     public int Hp;
+    public int Mp;
     public int Atk;
+    public string Skill;
+    public string Ult;
 }
 
 public class CollectionDataManager : Singleton<CollectionDataManager>
@@ -64,13 +69,18 @@ public class CollectionDataManager : Singleton<CollectionDataManager>
             data.KrName = colData[1];
             data.CharacterSpritePath = colData[2];
             data.CharacterPrefabPath = colData[3];
-            data.Explanation = colData[4];
-            data.Sentence = colData[5];
-            data.Layer = colData[6];
-            data.AtkType = colData[7];
-            data.Hp = int.Parse(colData[8]);
-            data.Atk = int.Parse(colData[9]);
-
+            data.Sentence = colData[4];
+            data.Explanation = colData[5];
+            data.Favorite = colData[6];
+            data.Hate = colData[7];
+            data.Layer = colData[8];
+            data.AtkType = colData[9];
+            data.Hp = int.Parse(colData[10]);
+            data.Mp = int.Parse(colData[11]);
+            data.Atk = int.Parse(colData[12]);
+            data.Skill = colData[13];
+            data.Ult = colData[14];
+            
             if(!_isCollectionFirstKey)
             {
                 _isCollectionFirstKey = true;
