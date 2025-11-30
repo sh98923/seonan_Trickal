@@ -4,7 +4,8 @@ using System;
 
 public class DamageReceiver : MonoBehaviour
 {
-    private Character _owner;
+    private Character _character;
+    private Collider2D _targetCollider;
     private CharacterGraphics _graphics;
 
     private Coroutine _dotCoroutine = null;
@@ -21,13 +22,23 @@ public class DamageReceiver : MonoBehaviour
         get { return _maxHp; }
         set {  _maxHp = value; }
     }
-
-    public void Initialize(Character owner, float initialHp)
+    private float _damageReduction = 1.0f;
+    public float DamageReduction
     {
-        _owner = owner;
-        _graphics = owner.GetComponent<CharacterGraphics>();
+        get { return _damageReduction; }
+        set { _damageReduction = value; }
+    }
+
+    public void Initialize(Character character, float initialHp)
+    {
+        _character = character;
+        _targetCollider = character.GetComponent<Collider2D>();
+        _graphics = character.GetComponent<CharacterGraphics>();
         if (_graphics == null)
-            _graphics = owner.gameObject.AddComponent<CharacterGraphics>(); // 안전장치
+        {
+            // 안전장치
+            _graphics = character.gameObject.AddComponent<CharacterGraphics>();
+        } 
 
         _curHp = initialHp;
         _maxHp = initialHp;
@@ -42,42 +53,60 @@ public class DamageReceiver : MonoBehaviour
 
     public void TakeDamage(float amount)
     {
-        if (_owner == null) return;
-        
-        _curHp -= amount;
-        _graphics?.ShowDamageText(amount);
+        if (_character == null || !_targetCollider.enabled)
+        { 
+            return;
+        }
+
+        float finalDamage = amount * _damageReduction;
+
+        _curHp -= finalDamage;
+        _graphics?.ShowDamageText(finalDamage);
         //print(name + " " + "체력: " + _curHp + "/" + _maxHp);
 
         if (_curHp <= 0.0f)
         {
             _curHp = 0.0f;
             // 사망 처리 요청
-            _owner.CharacterDeath();
+            _character.CharacterDeath();
         }
+    }
+
+    public void UpdateDamageReduction(float damageReduction)
+    {
+        _damageReduction = damageReduction;
     }
 
     public void TakeDotDamage(float damagePerTick, float duration, float tickInterval)
     {
-        if (_dotCoroutine != null) StopCoroutine(_dotCoroutine);
+        if (_dotCoroutine != null)
+        { 
+            StopCoroutine(_dotCoroutine);
+        }
+
         _dotCoroutine = StartCoroutine(DotCoroutine(damagePerTick, duration, tickInterval));
     }
 
-    private IEnumerator DotCoroutine(float dmg, float duration, float tick)
+    private IEnumerator DotCoroutine(float damage, float duration, float tick)
     {
         float elapsed = 0.0f;
 
         while (elapsed < duration)
         {
             yield return new WaitForSeconds(tick);
-            if (_owner == null) yield break;
 
-            _curHp -= dmg;
-            _graphics?.ShowDotText(dmg);
+            if (!_targetCollider.enabled)
+            {
+                yield break;
+            }
+
+            _curHp -= damage;
+            _graphics?.ShowDotText(damage);
 
             if (_curHp <= 0.0f)
             {
                 _curHp = 0.0f;
-                _owner.CharacterDeath();
+                _character.CharacterDeath();
                 yield break;
             }
 
@@ -98,16 +127,16 @@ public class DamageReceiver : MonoBehaviour
 
     private IEnumerator SlowCoroutine(float duration, float speedFactor)
     {
-        if (_owner != null)
+        if (_character != null)
         {
-            _owner.SetAnimatorSpeed(speedFactor);
+            _character.SetAnimatorSpeed(speedFactor);
         }
 
         yield return new WaitForSeconds(duration);
 
-        if (_owner != null)
+        if (_character != null)
         {
-            _owner.SetAnimatorSpeed(1.0f);
+            _character.SetAnimatorSpeed(1.0f);
         }
 
         _slowCoroutine = null;

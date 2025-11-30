@@ -2,13 +2,13 @@ using UnityEngine;
 
 public class SkillEffectController : MonoBehaviour
 {
+    private Character _target;
     private GameObject _effectObj;
     private SpriteRenderer _renderer;
-    private Character _owner;
 
-    public void Initialize(Character owner)
+    public void Initialize(Character target)
     {
-        _owner = owner;
+        _target = target;
         _effectObj = transform.Find("SkillEffect").gameObject;
         _renderer = _effectObj.GetComponent<SpriteRenderer>();
     }
@@ -16,7 +16,8 @@ public class SkillEffectController : MonoBehaviour
     public void Play(bool isFront)
     {
         if (_renderer == null) return;
-        int sortNum = isFront ? _owner.SortingIndex + 1 : -101;
+
+        int sortNum = isFront ? _target.SortingIndex + 1 : -101;
         _renderer.sortingOrder = sortNum;
         _effectObj.SetActive(true);
     }
@@ -24,6 +25,7 @@ public class SkillEffectController : MonoBehaviour
     public void Stop()
     {
         if (_effectObj == null) return;
+
         _effectObj.SetActive(false);
     }
 }

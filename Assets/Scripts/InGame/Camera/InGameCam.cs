@@ -1,8 +1,7 @@
-using NUnit.Framework;
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
 
 public class InGameCam : MonoBehaviour
@@ -37,10 +36,15 @@ public class InGameCam : MonoBehaviour
     private readonly float _zoomInSize = 4.5f;
     private readonly float _zoomOutSize = 5.0f;
 
-    private readonly float _rightMoveX = 11.5f;   // 오른쪽으로 이동 거리
+    private readonly float _moveDuration = 2.0f;
+    private readonly float _zoomDuration = 1.0f;
 
-    private readonly float _rightDuration = 2.3f;
-    private readonly float _leftDuration = 1.25f;
+    private readonly float _rerollToBattleMoveX = 13.0f;
+    private readonly float _battleToRerollMoveX = 9.0f;
+
+    private readonly float _camMoveSecond = 0.6f;
+
+    //private readonly float _rightDuration = 2.3f;
 
     //private bool _isFirstInit = true;
 
@@ -50,6 +54,7 @@ public class InGameCam : MonoBehaviour
     private List<ITrackable> _trackedCharacters = new List<ITrackable>();
 
     private readonly string _player = "Player";
+
     private bool _isTrackingMode = false;
 
     private void Awake()
@@ -61,6 +66,7 @@ public class InGameCam : MonoBehaviour
 
         _trackedCharacters = InGameManager.Instance.Trackables;
 
+        BattleStateManager.Instance.OnBattle += EnableTracking;
         BattleStateManager.Instance.OnEnteringBattle += ZoomRerollToBattle;
         BattleStateManager.Instance.OnEnteringReroll += ZoomBattleToReroll;
         BattleStateManager.Instance.OnEnteringReroll += MoveNextWave;
@@ -68,6 +74,7 @@ public class InGameCam : MonoBehaviour
 
     private void OnDisable()
     {
+        BattleStateManager.Instance.OnBattle -= EnableTracking;
         BattleStateManager.Instance.OnEnteringBattle -= ZoomRerollToBattle;
         BattleStateManager.Instance.OnEnteringReroll -= ZoomBattleToReroll;
         BattleStateManager.Instance.OnEnteringReroll -= MoveNextWave;
@@ -77,6 +84,7 @@ public class InGameCam : MonoBehaviour
     {
         if(BattleStateManager.Instance != null)
         {
+            BattleStateManager.Instance.OnBattle -= EnableTracking;
             BattleStateManager.Instance.OnEnteringBattle -= ZoomRerollToBattle;
             BattleStateManager.Instance.OnEnteringReroll -= ZoomBattleToReroll;
             BattleStateManager.Instance.OnEnteringReroll -= MoveNextWave;
@@ -97,7 +105,7 @@ public class InGameCam : MonoBehaviour
 
         float centerX = GetBattleCenterX();
 
-        Vector3 pos = transform.position;
+        Vector3 pos = transform.position; 
         pos.x = Mathf.Lerp(pos.x, centerX, Time.deltaTime);
         transform.position = pos;
     }
@@ -105,7 +113,7 @@ public class InGameCam : MonoBehaviour
     private void MoveNextWave()
     {
         // WaveAdvance 목표 위치 미리 계산 후 플레이어에 전달
-        float nextWaveX = transform.position.x + _rightMoveX;
+        float nextWaveX = transform.position.x + _battleToRerollMoveX;
         foreach (ITrackable character in _trackedCharacters)
         {
             if (character.Object.tag != _player)
@@ -148,18 +156,16 @@ public class InGameCam : MonoBehaviour
     private IEnumerator ZoomOutRerollToBattle()
     {
         // 줌 아웃
-        yield return ZoomCoroutine(_zoomOutSize, _rightMoveX, _rightDuration);
+        yield return ZoomCoroutine(_zoomOutSize, _rerollToBattleMoveX);
 
         _zoomCoroutine = null;
-
-        EnableTracking();  // 연출 후 Tracking ON
     }
 
     // Battle -> Reroll
     private IEnumerator ZoomInBattleToReroll()
     {
         // 줌 인
-        yield return ZoomCoroutine(_zoomInSize, _rightMoveX, _rightDuration);
+        yield return ZoomCoroutine(_zoomInSize, _battleToRerollMoveX);
         _zoomCoroutine = null;
 
         _onCameraMoveEnd?.Invoke(); // 인게임에서 상태가 리롤(준비) 상태일때 몬스터 스폰
@@ -168,24 +174,64 @@ public class InGameCam : MonoBehaviour
     // ======================================
     // 공용 보간 함수
     // ======================================
-    private IEnumerator ZoomCoroutine(float targetSize, float moveX, float duration)
+    private IEnumerator ZoomCoroutine(float targetSize, float moveX)
     {
         float elapsed = 0.0f;
-        float startSize = _cam.orthographicSize;
+        float camSize = _cam.orthographicSize;
+
         Vector3 startPos = transform.position;
         Vector3 targetPos = new Vector3(startPos.x + moveX, startPos.y, startPos.z);
 
-        while (elapsed < duration)
+        while (elapsed < _moveDuration)
         {
             elapsed += Time.deltaTime;
-            float t = elapsed / duration;
-            _cam.orthographicSize = Mathf.Lerp(startSize, targetSize, t);
-            transform.position = Vector3.Lerp(startPos, targetPos, t);
+
+            float moveT = Mathf.Clamp01(elapsed / _moveDuration);
+            float zoomT = Mathf.Clamp01(elapsed / _zoomDuration);
+
+            // Battle 상태이면 줌만 목표값으로 즉시 변경
+            if (BattleStateManager.Instance.CurrentState == BattleState.Battle)
+            {
+                _cam.orthographicSize = targetSize;
+
+                float remainingDuration = Mathf.Max(0, _moveDuration - elapsed);
+
+                // Battle 상태를 인지한 시점에서 0.5초 정도 보간 유지
+                yield return StartCoroutine(MoveCameraPositionOverTime(transform.position, targetPos, remainingDuration));
+
+                yield break;
+            }
+            else
+            {
+                _cam.orthographicSize = Mathf.Lerp(camSize, targetSize, zoomT);
+                transform.position = Vector3.Lerp(startPos, targetPos, moveT);
+            }
+
             yield return null;
         }
 
+        // 연출 정상 종료 시 최종값 보정
         _cam.orthographicSize = targetSize;
         transform.position = targetPos;
+    }
+
+    private IEnumerator MoveCameraPositionOverTime(Vector3 startPos, Vector3 endPos, float duration)
+    {
+        float timer = 0.0f;
+
+        while (timer < duration)
+        {
+            timer += Time.deltaTime;
+
+            if (timer >= _camMoveSecond)
+            {
+                yield break;
+            }
+
+            float t = Mathf.Clamp01(timer / duration);
+            transform.position = Vector3.Lerp(startPos, endPos, t);
+            yield return null;
+        }
     }
 
     // X축만 이동하는 보간
@@ -212,8 +258,6 @@ public class InGameCam : MonoBehaviour
     private void EnableTracking()
     {
         _isTrackingMode = true;
-
-        BattleStateManager.Instance.SetState(BattleState.Battle);
     }
 
     private void DisableTracking()

@@ -1,25 +1,46 @@
 fileFormatVersion: 2
-guid: ab69c001a0a3abc42acae5394df8ba28
+guid: 4fc6a7f451bde1842bfa8c0298df7ead
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1424618829465984313
-    second: Time & weather_0
+      213: 2068440285350173690
+    second: DamageReduction_0
   - first:
-      213: 5842763577583815578
-    second: Time & weather_1
+      213: 458213378257102243
+    second: DamageReduction_1
   - first:
-      213: -5195500187139546994
-    second: Time & weather_2
+      213: -60932302858694105
+    second: DamageReduction_2
   - first:
-      213: 5104677172394890368
-    second: Time & weather_3
+      213: -4310418732188740928
+    second: DamageReduction_3
   - first:
-      213: -4663780142773140147
-    second: Time & weather_4
+      213: 114491387955175049
+    second: DamageReduction_4
   - first:
-      213: 1987090121973398385
-    second: Time & weather_5
+      213: -3559943726517796543
+    second: DamageReduction_5
+  - first:
+      213: 2415934647458909356
+    second: DamageReduction_6
+  - first:
+      213: -6346218777875348891
+    second: DamageReduction_7
+  - first:
+      213: -71412274019592088
+    second: DamageReduction_8
+  - first:
+      213: 1084948144687943626
+    second: DamageReduction_9
+  - first:
+      213: -2716598223507035353
+    second: DamageReduction_10
+  - first:
+      213: -2882457648187806278
+    second: DamageReduction_11
+  - first:
+      213: -3568030268326069301
+    second: DamageReduction_12
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -66,7 +87,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 40
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -124,150 +145,181 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: iOS
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Time & weather_0
+      name: DamageReduction_0
       rect:
         serializedVersion: 2
-        x: 149
-        y: 320
-        width: 33
-        height: 12
+        x: 0
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 93d17a6074345c310800000000000000
-      internalID: 1424618829465984313
+      spriteID: 46c708eb03e4f504ab95354bb38623dd
+      internalID: -1244572755
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Time & weather_1
+      name: DamageReduction_1
       rect:
         serializedVersion: 2
-        x: 15
-        y: 173
-        width: 146
-        height: 146
+        x: 64
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: a9b497c748aa51150800000000000000
-      internalID: 5842763577583815578
+      spriteID: 9033de3c873362e45896f96d48e63cf1
+      internalID: 1941712568
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Time & weather_2
+      name: DamageReduction_2
       rect:
         serializedVersion: 2
-        x: 175
-        y: 173
-        width: 146
-        height: 146
+        x: 128
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: e8062135b10e5e7b0800000000000000
-      internalID: -5195500187139546994
+      spriteID: 43e5919f9b141544d80c45089258bb36
+      internalID: -438264883
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Time & weather_3
+      name: DamageReduction_3
       rect:
         serializedVersion: 2
-        x: 143
-        y: 160
-        width: 49
-        height: 12
+        x: 192
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 08494a1b7d477d640800000000000000
-      internalID: 5104677172394890368
+      spriteID: 41f31fe99c7dabd4eb9d1e9c49dd7a03
+      internalID: -1611539329
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Time & weather_4
+      name: DamageReduction_4
       rect:
         serializedVersion: 2
-        x: 15
-        y: 13
-        width: 146
-        height: 146
+        x: 256
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: d458c7f7bace64fb0800000000000000
-      internalID: -4663780142773140147
+      spriteID: 8e7f13d115549f642ac163cae0ff0a02
+      internalID: -354040523
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Time & weather_5
+      name: DamageReduction_5
       rect:
         serializedVersion: 2
-        x: 175
-        y: 13
-        width: 146
-        height: 146
+        x: 320
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 17b79e810ff839b10800000000000000
-      internalID: 1987090121973398385
+      spriteID: 0788182f4dd8a164697147bad72c7881
+      internalID: 1634762727
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DamageReduction_6
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 25fd9013b4486f8438a23ca70e8a887d
+      internalID: 1515560950
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DamageReduction_7
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 322f2397baa3d8549bc3004970684c45
+      internalID: -1841433594
       vertices: []
       indices: 
       edges: []
@@ -276,7 +328,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 2fbbb6cce213fc145860a61b7b2cfed8
     internalID: 0
     vertices: []
     indices: 
@@ -286,12 +338,14 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Time & weather_0: 1424618829465984313
-      Time & weather_1: 5842763577583815578
-      Time & weather_2: -5195500187139546994
-      Time & weather_3: 5104677172394890368
-      Time & weather_4: -4663780142773140147
-      Time & weather_5: 1987090121973398385
+      DamageReduction_0: -1244572755
+      DamageReduction_1: 1941712568
+      DamageReduction_2: -438264883
+      DamageReduction_3: -1611539329
+      DamageReduction_4: -354040523
+      DamageReduction_5: 1634762727
+      DamageReduction_6: 1515560950
+      DamageReduction_7: -1841433594
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
