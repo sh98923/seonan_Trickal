@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SkillEffectController : MonoBehaviour
@@ -27,5 +28,24 @@ public class SkillEffectController : MonoBehaviour
         if (_effectObj == null) return;
 
         _effectObj.SetActive(false);
+    }
+
+    public Vector2 GetPosition()
+    {
+        if (_effectObj == null)
+            return Vector2.zero;
+
+        return _effectObj.transform.localPosition;
+    }
+
+    public Vector2 GetSize()
+    {
+        if (_renderer == null)
+            return Vector2.zero;
+
+        Vector2 localSize = _renderer.transform.localScale;
+        Vector2 finalSize = localSize * _renderer.size;
+
+        return finalSize;
     }
 }

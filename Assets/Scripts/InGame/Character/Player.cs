@@ -1,24 +1,32 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : Character
 {
+    public enum TargetCount
+    {
+        None,      // 타겟 없음
+        Single,    // 단일 타겟
+        Multiple   // 다중 타겟
+    }
+
     private PlayerHealth _playerHealth;
     public PlayerHealth Health
     {
         get { return _playerHealth; }
     }
 
-    private PlayerMp _playerMp;
-
-    private Collider2D _attackTarget;
-    private SkillEffectController _skillEffectController;
+    // 이건 다시 private으로 ㄱ
+    protected PlayerMp _playerMp;
+    protected Collider2D _attackTarget;
+    protected SkillEffectController _skillEffectController;
 
     private Vector3 _originalWayPoint = new Vector3();
     private Vector3 _nextWayPoint = new Vector3();
 
     private float _nextWaveDist = 0.0f; // 배틀 → 리롤 이동 시 플레이어 이동 거리 변수
-    private float _atkBuff = 1.0f;
+    protected float _atkBuff = 1.0f;
     private float _damageReduction = 1.0f;
 
     public float AtkBuff
@@ -127,7 +135,7 @@ public class Player : Character
         // waypoint 이동
         _nextWayPoint = _originalWayPoint;
         _nextWayPoint.x += _nextWaveDist;
-        print("다음 목적지 : " + _nextWayPoint);
+        //print("다음 목적지 : " + _nextWayPoint);
         /*_scale.x = -Mathf.Abs(_scale.x);
         transform.localScale = _scale;
 
@@ -424,8 +432,8 @@ public class Player : Character
 
         if (_playerMp.GetCurMp() >= _data.Mp)
         {
-            _actionType = ActionSlot.Skill;
-            _animator.SetTrigger("Skill");
+            _actionType = ActionSlot.Ult;
+            _animator.SetTrigger("Ult");
         }
         // 궁극기는 업그레이드 3레벨, battle 상태일 때 UI 터치 시 발동 (쿨타임 있음)
         else if (Input.GetKeyDown(KeyCode.S))
@@ -456,7 +464,65 @@ public class Player : Character
 
     public override void OnAttack()
     {
-        if(BattleStateManager.Instance.CurrentState == BattleState.EnteringReroll)
+        if (BattleStateManager.Instance.CurrentState == BattleState.EnteringReroll)
+            return;
+
+        // clip, duration 세팅 (기존 동작 유지)
+        if (tag == "Player")
+        {
+            _clipName = _data.ClipName[(int)_actionType];
+            _duration = _data.Duration[(int)_actionType];
+        }
+
+        // 공통 전처리(콤보 카운트, 쿨다운 등)를 자식에 위임
+        PreHit(_actionType);
+        
+        // 타겟 가져오기
+        Collider2D[] targets = GetTargets(_actionType);
+
+        // 데미지 계산
+        float finalDamage = CalculateDamage(_actionType);
+
+        TargetCount targetCount;
+
+        switch (targets.Length)
+        {
+            case 0:
+                targetCount = TargetCount.None;
+                break;
+            case 1:
+                targetCount = TargetCount.Single;
+                break;
+            default: // 2 이상
+                targetCount = TargetCount.Multiple;
+                break;
+        }
+
+        switch (targetCount)
+        {
+            case TargetCount.None:
+                // 빈 타겟이면 기본 동작: 단일 타겟이 있으면 그걸 사용
+                if (_attackTarget != null)
+                {
+                    _action[(int)ActionCategory.Attack].SetAttackInfo(_attackTarget, _actionType, _clipName, _duration, finalDamage);
+                }
+                else
+                {
+                    // 타겟이 아예 없으면 그래도 호출해 둠(기존 흐름 유지)
+                    _action[(int)ActionCategory.Attack].SetAttackInfo((Collider2D)null, _actionType, _clipName, _duration, finalDamage);
+                }
+                break;
+            case TargetCount.Single:
+                _action[(int)ActionCategory.Attack].SetAttackInfo(targets[0], _actionType, _clipName, _duration, finalDamage);
+                break;
+            case TargetCount.Multiple:
+                // 다중 타겟용 오버로드가 있을 경우 배열 전달 (기존 Destroyer 코드와 호환)
+                _action[(int)ActionCategory.Attack].SetAttackInfo(targets, _actionType, _clipName, _duration, finalDamage);
+                break;
+        }
+
+        base.OnAttack();
+        /*if(BattleStateManager.Instance.CurrentState == BattleState.EnteringReroll)
         {
             return;
         }
@@ -485,7 +551,46 @@ public class Player : Character
 
         _action[(int)ActionCategory.Attack].SetAttackInfo(_attackTarget, _actionType, _clipName, _duration, finalDamage);
 
-        base.OnAttack();
+        base.OnAttack();*/
+    }
+
+    // ---------------------------
+    // --- 확장 포인트(자식 오버라이드) ---
+    // ---------------------------
+    protected virtual float CalculateDamage(ActionSlot slot)
+    {
+        // 기본(기존 Player.OnAttack 동작 재현)
+        float finalDamage = 0.0f;
+
+        switch (slot)
+        {
+            case ActionSlot.Base:
+                finalDamage = _data.Atk * _atkBuff;
+                break;
+            case ActionSlot.Skill:
+                _playerMp.UseMp();
+                finalDamage = _data.Atk * _data.SkillRate * _atkBuff;
+                break;
+            case ActionSlot.Ult:
+                finalDamage = _data.Atk * _data.Ultimate * _atkBuff;
+                break;
+        }
+
+        return finalDamage;
+    }
+
+    protected virtual Collider2D[] GetTargets(ActionSlot slot)
+    {
+        // 기본은 단일 타겟(타겟이 없으면 빈 배열 반환)
+        if (_attackTarget != null)
+            return new Collider2D[] { _attackTarget };
+
+        return new Collider2D[0];
+    }
+
+    protected virtual void PreHit(ActionSlot slot)
+    {
+        // 기본 후처리 없음. 캐릭터별로 오버라이드해서 콤보/위상/카운트 처리
     }
 
     public CharacterState CurState()

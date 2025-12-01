@@ -72,7 +72,6 @@ public class PlayerMp : MonoBehaviour
                 { 
                     _curMp = _maxMp;
                 }
-                print($"MP : {_curMp}/{_maxMp}");
             }
         }
     }

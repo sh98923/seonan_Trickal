@@ -7,7 +7,7 @@ public class DamageTextManager : MonoBehaviour
 
     private void Start()
     {
-        PoolingManager.Instance.Add("DamageText", 10, _damageTextPrefab, transform);
-        PoolingManager.Instance.Add("DotText", 10, _dotTextPrefab, transform);
+        PoolingManager.Instance.Add("DamageText", 50, _damageTextPrefab, transform);
+        PoolingManager.Instance.Add("DotText", 50, _dotTextPrefab, transform);
     }
 }

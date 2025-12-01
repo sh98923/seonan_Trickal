@@ -8,7 +8,8 @@ public enum AtkEffectType
 
 public class CharacterAttack : CharacterAction
 {
-    private Character _target;
+    private Character _target = null;
+    private List<Character> _targets = new List<Character>();
     private List<Sprite> _sprites = new List<Sprite>();
 
     private AtkEffectType _effectType;
@@ -33,13 +34,33 @@ public class CharacterAttack : CharacterAction
         }
     }
 
+    public override void SetAttackInfo(Collider2D target, ActionSlot type, float damage)
+    {
+        _type = type;
+        _damage = damage;
+        _targets = new List<Character>();
+
+        if (target != null)
+        {
+            _target = target.GetComponent<Character>();
+        }
+
+        _isRange = _data.IsRangeAtk[(int)type];
+    }
+
     public override void SetAttackInfo(Collider2D target, ActionSlot type, string clipName, float time, float damage)
     {
         _type = type; 
         _timer = time;
         _damage = damage;
-        _clipName = clipName;
-        _target = target.GetComponent<Character>();
+        _clipName = clipName; 
+        _targets = new List<Character>();
+
+        if (target != null)
+        {
+            _target = target.GetComponent<Character>();
+        }
+
         _isRange = _data.IsRangeAtk[(int)type];
 
         _dotDamage = _damage * _data.DotDamageRate;
@@ -47,44 +68,62 @@ public class CharacterAttack : CharacterAction
         _duration = _data.Duration[(int)type];
     }
 
-    public override void SetAttackInfo(Collider2D target, ActionSlot type, float damage)
+    public override void SetAttackInfo(Collider2D[] targets, ActionSlot type, string clipName, float time, float damage)
     {
         _type = type;
+        _timer = time;
         _damage = damage;
-        _target = target.GetComponent<Character>();
+        _clipName = clipName;
+        _targets = new List<Character>();
+
+        // Collider2D 배열 -> Character 리스트로 변환
+        foreach (Collider2D target in targets)
+        {
+            Character character = target.GetComponent<Character>();
+            if (character != null)
+            { 
+                _targets.Add(character); 
+            }
+        }
+
         _isRange = _data.IsRangeAtk[(int)type];
+        _dotDamage = _damage * _data.DotDamageRate;
+        _effectValue = _data.EffectValue;
+        _duration = _data.Duration[(int)type];
     }
 
-    private void MeleeAttack(string effectName)
+    private void MeleeAttack(Character target, string effectName)
     {
-        if (_target != null)
+        target.TakeDamage(_damage);
+        
+        if(gameObject.tag == "Player")
         {
-            _target.TakeDamage(_damage);
+            //print($"{target.name} 데미지 입음");
+        }
 
-            _effectType = GetEffectType<AtkEffectType>(effectName, out _isValid);
+        _effectType = GetEffectType<AtkEffectType>(effectName, out _isValid);
 
-            if (!_isValid) return;
+        if (!_isValid) return;
 
-            switch(_effectType)
-            {
-                case AtkEffectType.Dot:
-                    _target.TakeDotDamage(_dotDamage, _duration, _effectValue);
-                    break;
-                case AtkEffectType.Slow:
-                    _target.ApplyAttackSlow(_duration, _effectValue);
-                    break;
-            }
+        switch(_effectType)
+        {
+            case AtkEffectType.Dot:
+                target.TakeDotDamage(_dotDamage, _duration, _effectValue);
+                break;
+            case AtkEffectType.Slow:
+                target.ApplyAttackSlow(_duration, _effectValue);
+                break;
         }
     }
 
-    private void RangeAttack(string effectName)
+    private void RangeAttack(Character target, string effectName)
     {
         _effectType = GetEffectType<AtkEffectType>(effectName, out _isValid);
 
         if (!_isValid) return;
 
         float atkSpeed = _data.AtkSpeed[(int)_type];
-        Vector2 dir = _target.CenterPoint.position - _character.CenterPoint.position;
+        Vector2 dir = target.CenterPoint.position - _character.CenterPoint.position;
 
         if (_character.transform.localScale.x < 0)
         {
@@ -94,7 +133,7 @@ public class CharacterAttack : CharacterAction
         ProjectileData data = new ProjectileData
         {
             // 기본 공격 정보
-            Name = _target.name,
+            Name = target.name,
             Key = _data.ProjectileKey,
             StartPos = _character.AtkPoint.position,
             Direction = dir,
@@ -118,19 +157,33 @@ public class CharacterAttack : CharacterAction
 
     private void Attack()
     {
-        if (_target == null) return;
+        List<Character> attackTargets = new List<Character>();
 
-        string effectName = _character.Data.ActionImpact[(int)_type];
-
-        PlayEffect(_target.transform);
-
-        if (_isRange)
+        if (_targets.Count > 0)
         {
-            RangeAttack(effectName);
+            // 다중 타겟
+            attackTargets.AddRange(_targets); 
         }
-        else
+        else if (_target != null)
+        { 
+            // 단일 타겟
+            attackTargets.Add(_target);
+        }
+
+        foreach (Character target in attackTargets)
         {
-            MeleeAttack(effectName);
+            string effectName = _character.Data.ActionImpact[(int)_type];
+
+            PlayEffect(target.transform);
+
+            if (_isRange)
+            {
+                RangeAttack(target, effectName);
+            }
+            else
+            {
+                MeleeAttack(target, effectName);
+            }
         }
     }
 

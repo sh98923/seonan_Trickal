@@ -153,7 +153,7 @@ public class Character : MonoBehaviour, ITrackable
         _sortingGroup.sortingOrder = Mathf.RoundToInt(-transform.position.y * _sortingScale);
     }
 
-    private void OnDrawGizmosSelected()
+    protected virtual void OnDrawGizmosSelected()
     {
         if (_data == null) return;
 
@@ -210,7 +210,7 @@ public class Character : MonoBehaviour, ITrackable
             return false;
 
         AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
-        bool hasAnimationEnded = stateInfo.normalizedTime >= 0.9f;
+        bool hasAnimationEnded = stateInfo.normalizedTime >= 1.0f;
 
         // 애니메이션 끝났는데 타겟이 없다면 이동 상태로
         if (hasAnimationEnded)

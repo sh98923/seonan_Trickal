@@ -7,7 +7,7 @@ public class EffectManager : Singleton<EffectManager>
 
     public void CreateEffect()
     {
-        GameObject prefab = Resources.Load<GameObject>("Effect/Effect");
+        GameObject prefab = Resources.Load<GameObject>("Prefabs/Effect");
 
         PoolingManager.Instance.Add(_key, _poolSize, prefab);
     }
