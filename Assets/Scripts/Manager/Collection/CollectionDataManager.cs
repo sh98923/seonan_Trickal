@@ -16,7 +16,9 @@ public struct CollectionData
     public int Hp;
     public int Mp;
     public int Atk;
+    public string SkillSpritePath;
     public string Skill;
+    public string UltSpritePath;
     public string Ult;
 }
 
@@ -78,8 +80,10 @@ public class CollectionDataManager : Singleton<CollectionDataManager>
             data.Hp = int.Parse(colData[10]);
             data.Mp = int.Parse(colData[11]);
             data.Atk = int.Parse(colData[12]);
-            data.Skill = colData[13];
-            data.Ult = colData[14];
+            data.SkillSpritePath = colData[13];
+            data.Skill = colData[14];
+            data.UltSpritePath = colData[15];
+            data.Ult = colData[16];
             
             if(!_isCollectionFirstKey)
             {

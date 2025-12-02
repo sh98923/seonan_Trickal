@@ -32,7 +32,7 @@ public class CollectionManager : MonoBehaviour
             slot.GetComponent<CollectionSlotDisplay>().SetData(sprite, data.KrName);
 
             // Detail Panel에서 정보를 다시 찾기 위해 key 저장
-            slot.AddComponent<CollectionSlotDataHolder>().key = key;
+            slot.GetComponent<CollectionSlotDataHolder>().key = key;
         }
     }
 }

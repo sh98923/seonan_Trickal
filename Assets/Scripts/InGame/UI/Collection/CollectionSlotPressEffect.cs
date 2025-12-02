@@ -49,7 +49,14 @@ public class CollectionSlotPressEffect : MonoBehaviour, IPointerDownHandler, IPo
 
         // 실제 클릭일 때만 패널 열기
         if (detailPanel != null)
+        {
             detailPanel.SetActive(true);
+
+            //  여기서 상세 패널로 데이터 전달
+            var holder = GetComponent<CollectionSlotDataHolder>();
+            var data = CollectionDataManager.Instance.GetCollectionData(holder.key);
+            detailPanel.GetComponentInChildren<CollectionDetailPanel>().SetData(data);
+        }
     }
 
     private IEnumerator ScaleTween(Vector3 from, Vector3 to, float duration)
