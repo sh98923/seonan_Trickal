@@ -20,6 +20,10 @@ public class SkillEffectController : MonoBehaviour
 
         int sortNum = isFront ? _target.SortingIndex + 1 : -101;
         _renderer.sortingOrder = sortNum;
+    }
+
+    public void OnActiveSkillEffect()
+    {
         _effectObj.SetActive(true);
     }
 

@@ -61,8 +61,10 @@ public class DamageReceiver : MonoBehaviour
         float finalDamage = amount * _damageReduction;
 
         _curHp -= finalDamage;
-        _graphics?.ShowDamageText(finalDamage);
-        //print(name + " " + "체력: " + _curHp + "/" + _maxHp);
+
+        _graphics.PlayFlashHit();
+        _graphics.ShowDamageText(finalDamage);
+        print(name + " " + "체력: " + _curHp + "/" + _maxHp);
 
         if (_curHp <= 0.0f)
         {

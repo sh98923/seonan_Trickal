@@ -502,7 +502,7 @@ public class Player : Character
         {
             case TargetCount.None:
                 // 빈 타겟이면 기본 동작: 단일 타겟이 있으면 그걸 사용
-                if (_attackTarget != null)
+                if (_attackTarget != null && _curState != CharacterState.Dead)
                 {
                     _action[(int)ActionCategory.Attack].SetAttackInfo(_attackTarget, _actionType, _clipName, _duration, finalDamage);
                 }
