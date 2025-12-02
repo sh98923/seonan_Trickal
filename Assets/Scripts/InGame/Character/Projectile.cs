@@ -5,6 +5,7 @@ public class ProjectileData
     public Sprite Sprite;
     public Vector3 StartPos;
     public Vector3 Direction;
+    public HitType HitType;
     public AtkEffectType EffectType;
     public float Damage;
     public float DotDamage;
@@ -91,7 +92,7 @@ public class Projectile : MonoBehaviour
 
     protected void ApplyDot(Character target)
     {
-        target.TakeDotDamage(_data.DotDamage, _data.Duration, _data.EffectValue);
+        target.TakeDotDamage(_data.HitType, _data.DotDamage, _data.Duration, _data.EffectValue);
     }
 
     protected void ApplySlow(Character target)

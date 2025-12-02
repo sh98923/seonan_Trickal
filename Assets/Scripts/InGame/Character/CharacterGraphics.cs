@@ -2,16 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum HitType
+{
+    Normal,     // 일반 피격
+    Fire,       // 화염
+    Poison,     // 독
+    Cold        // 추워짐 (느려짐)
+}
+
 public class CharacterGraphics : MonoBehaviour
 {
     private const float _fadeDuration = 0.5f;
-    private const float _flashHitDuration = 0.1f;
     
     private Character _character;
     private SpriteRenderer[] _spriteRenderers;
     private SpriteRenderer _shadowSprite;
 
-    private Color _red = new Color(1f, 0.41f, 0.38f);
+    private Color _normalHitColor = new Color(1.0f, 0.41f, 0.38f); // 빨간색 계열
+    private Color _fireHitColor = new Color(1.0f, 0.56f, 0.32f);   // 주황색 계열
+    private Color _poisonHitColor = new Color(0.45f, 0.9f, 0.45f); // 초록색 계열
+    private Color _coldHitColor = new Color(0.5f, 0.8f, 1.0f);      // 파란색 계열
+
     private Color[] _originalColors;
 
     private int _hitCount = 0;
@@ -41,19 +52,42 @@ public class CharacterGraphics : MonoBehaviour
 
     public void PlayFlashHit()
     {
-        _hitCount++;
-        StartCoroutine(FlashHitColor());
+        PlayFlashHit(HitType.Normal);
     }
 
-    private IEnumerator FlashHitColor()
+    public void PlayFlashHit(HitType hitType, float duration = 0.1f)
     {
+        _hitCount++;
+        StartCoroutine(FlashHitColor(hitType, duration));
+    }
+
+    private IEnumerator FlashHitColor(HitType hitType, float duration)
+    {
+        Color flashColor = _normalHitColor;
+
+        switch (hitType)
+        {
+            case HitType.Fire:
+                flashColor = _fireHitColor;
+                break;
+            case HitType.Poison:
+                flashColor = _poisonHitColor;
+                break;
+            case HitType.Cold:
+                flashColor = _coldHitColor;
+                break;
+            default:
+                print(hitType.ToString());
+                break;
+        }
+
         // 바로 빨강으로 변경
         foreach (SpriteRenderer sprite in _spriteRenderers)
         {
-            sprite.color = _red;
+            sprite.color = flashColor;
         }
 
-        yield return new WaitForSeconds(_flashHitDuration);
+        yield return new WaitForSeconds(duration);
 
         // 마지막 피격이 끝나야 색 복구
         _hitCount--;

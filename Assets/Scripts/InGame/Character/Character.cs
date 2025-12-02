@@ -300,9 +300,9 @@ public class Character : MonoBehaviour, ITrackable
         _curState = CharacterState.Dead;
     }
 
-    public void TakeDotDamage(float damage, float duration, float tickInterval)
+    public void TakeDotDamage(HitType type, float damage, float duration, float tickInterval)
     {
-        _damageReceiver.TakeDotDamage(damage, duration, tickInterval);
+        _damageReceiver.TakeDotDamage(type, damage, duration, tickInterval);
     }
 
     // 버프, 디버프 관련

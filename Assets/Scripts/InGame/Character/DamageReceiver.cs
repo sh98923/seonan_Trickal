@@ -64,7 +64,7 @@ public class DamageReceiver : MonoBehaviour
 
         _graphics.PlayFlashHit();
         _graphics.ShowDamageText(finalDamage);
-        print(name + " " + "체력: " + _curHp + "/" + _maxHp);
+        //print(name + " " + "체력: " + _curHp + "/" + _maxHp);
 
         if (_curHp <= 0.0f)
         {
@@ -79,19 +79,24 @@ public class DamageReceiver : MonoBehaviour
         _damageReduction = damageReduction;
     }
 
-    public void TakeDotDamage(float damagePerTick, float duration, float tickInterval)
+    public void TakeDotDamage(HitType type, float damagePerTick, float duration, float tickInterval)
     {
-        if (_dotCoroutine != null)
-        { 
+        /*if (_dotCoroutine != null)
+        {
             StopCoroutine(_dotCoroutine);
-        }
 
-        _dotCoroutine = StartCoroutine(DotCoroutine(damagePerTick, duration, tickInterval));
+            _dotCoroutine = null;
+        }*/
+
+        // 중첩 허용
+        StartCoroutine(DotCoroutine(type, damagePerTick, duration, tickInterval));
     }
 
-    private IEnumerator DotCoroutine(float damage, float duration, float tick)
+    private IEnumerator DotCoroutine(HitType type, float damage, float duration, float tick)
     {
         float elapsed = 0.0f;
+
+        _graphics.PlayFlashHit(type, duration);
 
         while (elapsed < duration)
         {
