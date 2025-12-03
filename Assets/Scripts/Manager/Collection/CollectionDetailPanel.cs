@@ -5,24 +5,24 @@ using TMPro;
 public class CollectionDetailPanel : MonoBehaviour
 {
     [Header("Introduction Panel")]
-    public TextMeshProUGUI sentenceText;
-    public TextMeshProUGUI explanationText;
-    public TextMeshProUGUI favoriteText;
-    public TextMeshProUGUI hateText;
+    [SerializeField] private TextMeshProUGUI _sentenceText;
+    [SerializeField] private TextMeshProUGUI _explanationText;
+    [SerializeField] private TextMeshProUGUI _favoriteText;
+    [SerializeField] private TextMeshProUGUI _hateText;
 
     [Header("Information Panel")]
-    public TextMeshProUGUI nameText;
-    public Image layerImage;
-    public Image typeImage;
-    public TextMeshProUGUI hpText;
-    public TextMeshProUGUI mpText;
-    public TextMeshProUGUI atkText;
+    [SerializeField] private TextMeshProUGUI _nameText;
+    [SerializeField] private Image _layerImage;
+    [SerializeField] private Image _typeImage;
+    [SerializeField] private TextMeshProUGUI _hpText;
+    [SerializeField] private TextMeshProUGUI _mpText;
+    [SerializeField] private TextMeshProUGUI _atkText;
 
     [Header("Skill Panel")]
-    public Image skillImage;
-    public TextMeshProUGUI skillText;
-    public Image ultImage;
-    public TextMeshProUGUI ultText;
+    [SerializeField] private Image _skillImage;
+    [SerializeField] private TextMeshProUGUI _skillText;
+    [SerializeField] private Image _ultImage;
+    [SerializeField] private TextMeshProUGUI _ultText;
     private string FixNewLine(string s)
     {
         return s?.Replace("\\n", "\n");
@@ -30,24 +30,24 @@ public class CollectionDetailPanel : MonoBehaviour
     public void SetData(CollectionData data)
     {
         // Text 직접 채우기
-        nameText.text = data.KrName;
+        _nameText.text = data.KrName;
 
-        sentenceText.text = FixNewLine(data.Sentence);
-        explanationText.text = FixNewLine(data.Explanation);
+        _sentenceText.text = FixNewLine(data.Sentence);
+        _explanationText.text = FixNewLine(data.Explanation);
 
-        favoriteText.text = data.Favorite;
-        hateText.text = data.Hate;
-        hpText.text = data.Hp.ToString();
-        mpText.text = data.Mp.ToString();
-        atkText.text = data.Atk.ToString();
+        _favoriteText.text = data.Favorite;
+        _hateText.text = data.Hate;
+        _hpText.text = data.Hp.ToString();
+        _mpText.text = data.Mp.ToString();
+        _atkText.text = data.Atk.ToString();
 
-        skillText.text = FixNewLine(data.Skill);
-        ultText.text = FixNewLine(data.Ult);
+        _skillText.text = FixNewLine(data.Skill);
+        _ultText.text = FixNewLine(data.Ult);
 
         // 아이콘 로드 (선택)
-        layerImage.sprite = Resources.Load<Sprite>(data.Layer);     // ex: Icons/Position/Front
-        typeImage.sprite = Resources.Load<Sprite>(data.AtkType);    // ex: Icons/AttackType/Melee
-        skillImage.sprite = Resources.Load<Sprite>(data.SkillSpritePath);
-        ultImage.sprite = Resources.Load<Sprite>(data.UltSpritePath);
+        _layerImage.sprite = Resources.Load<Sprite>(data.Layer);     // ex: Icons/Position/Front
+        _typeImage.sprite = Resources.Load<Sprite>(data.AtkType);    // ex: Icons/AttackType/Melee
+        _skillImage.sprite = Resources.Load<Sprite>(data.SkillSpritePath);
+        _ultImage.sprite = Resources.Load<Sprite>(data.UltSpritePath);
     }
 }
