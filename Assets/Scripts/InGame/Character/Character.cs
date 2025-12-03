@@ -33,7 +33,7 @@ public class Character : MonoBehaviour, ITrackable
     protected DamageReceiver _damageReceiver;
 
     private CharacterGraphics _characterVisual;
-    private Collider2D _myCollider;
+    private CircleCollider2D _myCollider;
     private SpriteRenderer _shadowSprite;
     private SpriteRenderer[] _spriteRenderers;
     private Transform _atkPoint;
@@ -83,7 +83,8 @@ public class Character : MonoBehaviour, ITrackable
         _centerPoint = transform.Find("CenterPos");
         _action = GetComponents<CharacterAction>();
         _animator = GetComponent<Animator>();
-        _myCollider = GetComponent<Collider2D>();
+        _myCollider = GetComponent<CircleCollider2D>();
+        _myCollider.radius = 0.35f;
         _sortingGroup = GetComponent<SortingGroup>();
         _spriteRenderers = GetComponentsInChildren<SpriteRenderer>(true);
 
@@ -239,12 +240,12 @@ public class Character : MonoBehaviour, ITrackable
     {
         if (_isDead) return;
 
-        _isDead = true;
+        _isDead = true; 
         _targetCollider = null;
         _onDie?.Invoke(this);
         _animator.SetTrigger("Dead");
         _myCollider.enabled = false;
-        _sortingGroup.sortingOrder = -10000;
+        //_sortingGroup.sortingOrder = -10000;
 
         FadeOutAndInactive();
     }
@@ -252,7 +253,7 @@ public class Character : MonoBehaviour, ITrackable
     // 타겟 위치에 맞게 Flip
     private void FlipToTarget()
     {
-        if (_targetCollider == null)
+        if (_targetCollider == null || _isDead)
         {
             return;
         }
@@ -299,9 +300,9 @@ public class Character : MonoBehaviour, ITrackable
         _curState = CharacterState.Dead;
     }
 
-    public void TakeDotDamage(float damage, float duration, float tickInterval)
+    public void TakeDotDamage(HitType type, float damage, float duration, float tickInterval)
     {
-        _damageReceiver.TakeDotDamage(damage, duration, tickInterval);
+        _damageReceiver.TakeDotDamage(type, damage, duration, tickInterval);
     }
 
     // 버프, 디버프 관련

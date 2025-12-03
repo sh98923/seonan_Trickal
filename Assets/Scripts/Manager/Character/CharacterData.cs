@@ -157,6 +157,11 @@ public class CharacterData
         set => _playerStat.CanUseUlt = value;
     }
 
+    public string[] FlashHit
+    {
+        get => _playerAction.FlashHit;
+    }
+
     public string[] BuffEffect
     {
         get => _playerAction.BuffEffect;
@@ -171,7 +176,8 @@ public class CharacterData
     {
         get => _playerAction.DotDamageRate;
     }
-    public float EffectValue
+
+    public float[] EffectValue
     {
         get => _playerAction.EffectValue;
     }

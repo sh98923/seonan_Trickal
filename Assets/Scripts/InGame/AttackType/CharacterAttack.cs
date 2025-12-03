@@ -12,6 +12,7 @@ public class CharacterAttack : CharacterAction
     private List<Character> _targets = new List<Character>();
     private List<Sprite> _sprites = new List<Sprite>();
 
+    private HitType _hitType;
     private AtkEffectType _effectType;
 
     private float _damage;
@@ -37,12 +38,17 @@ public class CharacterAttack : CharacterAction
     public override void SetAttackInfo(Collider2D target, ActionSlot type, float damage)
     {
         _type = type;
+        _target = null;
         _damage = damage;
         _targets = new List<Character>();
 
         if (target != null)
         {
             _target = target.GetComponent<Character>();
+        }
+        else
+        {
+            _target = null;
         }
 
         _isRange = _data.IsRangeAtk[(int)type];
@@ -60,11 +66,15 @@ public class CharacterAttack : CharacterAction
         {
             _target = target.GetComponent<Character>();
         }
+        else
+        {
+            _target = null;
+        }
 
         _isRange = _data.IsRangeAtk[(int)type];
 
         _dotDamage = _damage * _data.DotDamageRate;
-        _effectValue = _data.EffectValue;
+        _effectValue = _data.EffectValue[(int)type];
         _duration = _data.Duration[(int)type];
     }
 
@@ -88,11 +98,11 @@ public class CharacterAttack : CharacterAction
 
         _isRange = _data.IsRangeAtk[(int)type];
         _dotDamage = _damage * _data.DotDamageRate;
-        _effectValue = _data.EffectValue;
+        _effectValue = _data.EffectValue[(int)type];
         _duration = _data.Duration[(int)type];
     }
 
-    private void MeleeAttack(Character target, string effectName)
+    private void MeleeAttack(Character target, string atkEffectName, string hitEffectName)
     {
         target.TakeDamage(_damage);
         
@@ -101,14 +111,15 @@ public class CharacterAttack : CharacterAction
             //print($"{target.name} 데미지 입음");
         }
 
-        _effectType = GetEffectType<AtkEffectType>(effectName, out _isValid);
+        _hitType = GetEffectType<HitType>(hitEffectName, out _isValid);
+        _effectType = GetEffectType<AtkEffectType>(atkEffectName, out _isValid);
 
         if (!_isValid) return;
 
         switch(_effectType)
         {
             case AtkEffectType.Dot:
-                target.TakeDotDamage(_dotDamage, _duration, _effectValue);
+                target.TakeDotDamage(_hitType, _dotDamage, _duration, _effectValue);
                 break;
             case AtkEffectType.Slow:
                 target.ApplyAttackSlow(_duration, _effectValue);
@@ -116,9 +127,15 @@ public class CharacterAttack : CharacterAction
         }
     }
 
-    private void RangeAttack(Character target, string effectName)
+    private void RangeAttack(Character target, string atkEffectName, string hitEffectName)
     {
-        _effectType = GetEffectType<AtkEffectType>(effectName, out _isValid);
+        _hitType = GetEffectType<HitType>(hitEffectName, out _isValid);
+        _effectType = GetEffectType<AtkEffectType>(atkEffectName, out _isValid);
+
+        if(_hitType == HitType.Fire)
+        {
+            print("");
+        }
 
         if (!_isValid) return;
 
@@ -143,6 +160,7 @@ public class CharacterAttack : CharacterAction
             DotDamage = _dotDamage,
 
             // 상태/효과 정보
+            HitType = _hitType,
             EffectType = _effectType,
             EffectValue = _effectValue,
 
@@ -172,17 +190,23 @@ public class CharacterAttack : CharacterAction
 
         foreach (Character target in attackTargets)
         {
-            string effectName = _character.Data.ActionImpact[(int)_type];
+            string hitEffectName = _character.Data.FlashHit[(int)_type];
+            string atkEffectName = _character.Data.ActionImpact[(int)_type];
 
             PlayEffect(target.transform);
 
+            if(target.tag == "Monster")
+            {
+                print("");
+            }
+
             if (_isRange)
             {
-                RangeAttack(target, effectName);
+                RangeAttack(target, atkEffectName, hitEffectName);
             }
             else
             {
-                MeleeAttack(target, effectName);
+                MeleeAttack(target, atkEffectName, hitEffectName);
             }
         }
     }

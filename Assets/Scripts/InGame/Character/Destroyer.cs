@@ -22,7 +22,7 @@ public class Destroyer : Player
 
     private const float _yOffsetLimitWeakPhase = 0.6f; 
     private const float _yOffsetLimitMidPhase = 0.8f;
-    private const float _yOffsetLimitStrongPhase = 1.3f;
+    private const float _yOffsetLimitStrongPhase = 1.15f;
 
     private float _ultPhasePower = 0.0f;
     private float _yOffsetLimit = 0.0f;
@@ -37,37 +37,6 @@ public class Destroyer : Player
         _ultPhasePower = _ultWeakPhase;
         _yOffsetLimit = _yOffsetLimitWeakPhase;
     }
-
-    /*public override void OnAttack()
-    {
-        // 기본 공격일 때 타겟을 넣지 않아서 null 뜸 이따 해결 ㄱ
-
-        if (BattleStateManager.Instance.CurrentState == BattleState.EnteringReroll)
-        {
-            return;
-        }
-
-        switch (_actionType)
-        {
-            case ActionSlot.Base:
-                _finalDamage = _data.Atk * _atkBuff;
-                break;
-            case ActionSlot.Ult:
-                _playerMp.UseMp();
-                UltSpikeHit();
-                _finalDamage = _data.Atk * _data.Ultimate * _ultPhasePower * _atkBuff;
-                break;
-        }
-
-        if (tag == "Player")
-        {
-            _clipName = _data.ClipName[(int)_actionType];
-            _duration = _data.Duration[(int)_actionType];
-        }
-
-        _action[(int)ActionCategory.Attack].SetAttackInfo(_attackTargets, _actionType, _clipName, _duration, _finalDamage);
-        _action[(int)ActionCategory.Attack].Excute();
-    }*/
 
     // CalculateDamage는 데미지 담당
     protected override float CalculateDamage(ActionSlot slot)
@@ -167,55 +136,6 @@ public class Destroyer : Player
         }
     }
 
-    private void UltSpikeHit()
-    {
-        // Player 월드 위치
-        Vector2 worldPos = transform.position;
-        // 스킬 이펙트 로컬 위치
-        Vector2 localPos = _skillEffectController.GetPosition();
-        localPos.x *= transform.localScale.x;
-        // 실제 스킬 이펙트 위치
-        Vector2 position = worldPos + localPos;
-        Vector2 size = _skillEffectController.GetSize();
-
-        _attackTargets = Physics2D.OverlapBoxAll(position, size, 0.0f, LayerMask.GetMask("Monster"));
-
-        _hitCount++;
-
-        switch ((HitCount)_hitCount)
-        {
-            case HitCount.First:
-            case HitCount.Second:
-            case HitCount.Third:
-                _ultPhasePower = _ultWeakPhase;
-                break;
-            case HitCount.Fourth:
-                _ultPhasePower = _ultMidPhase;
-                break;
-            case HitCount.Fifth:
-                _ultPhasePower = _ultStrongPhase;
-                _hitCount = 0;
-                break;
-        }
-
-        UltHitTargets(_attackTargets);
-    }
-
-    private void UltHitTargets(Collider2D[] targets)
-    {
-        List<Collider2D> targetList = new List<Collider2D>();
-
-        foreach (Collider2D target in targets)
-        {
-            if (Mathf.Abs(target.transform.position.y - transform.position.y) <= _yOffsetLimitWeakPhase)
-            {
-                targetList.Add(target);
-            }
-        }
-
-        _attackTargets = targetList.ToArray();
-    }
-
     protected override void OnDrawGizmosSelected()
     {
         base.OnDrawGizmosSelected();
@@ -231,12 +151,6 @@ public class Destroyer : Player
         Vector2 position = worldPos + localPos;
         // 스킬 이펙트 로컬 크기
         Vector2 size = _skillEffectController.GetSize();
-
-        /*// 부모 스케일 반영
-        Vector3 lossyScale = _skillEffectController.transform.lossyScale;
-        Vector2 worldSize = new Vector2(localSize.x * lossyScale.x, localSize.y * lossyScale.y);*/
-
-        //print("기즈모 : " + position + " " + size);
 
         // 기즈모 색상
         Gizmos.color = Color.black;

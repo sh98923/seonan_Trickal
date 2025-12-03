@@ -432,8 +432,8 @@ public class Player : Character
 
         if (_playerMp.GetCurMp() >= _data.Mp)
         {
-            _actionType = ActionSlot.Ult;
-            _animator.SetTrigger("Ult");
+            _actionType = ActionSlot.Skill;
+            _animator.SetTrigger("Skill");
         }
         // 궁극기는 업그레이드 3레벨, battle 상태일 때 UI 터치 시 발동 (쿨타임 있음)
         else if (Input.GetKeyDown(KeyCode.S))
@@ -458,7 +458,7 @@ public class Player : Character
         _clipName = _data.ClipName[(int)_actionType];
         _duration = _data.Duration[(int)_actionType];
 
-        _action[(int)ActionCategory.Buff].SetBuffInfo(_actionType, _clipName, _data.EffectValue, _duration);
+        _action[(int)ActionCategory.Buff].SetBuffInfo(_actionType, _clipName, _data.EffectValue[(int)_actionType], _duration);
         _action[(int)ActionCategory.Buff].Excute();
     }
 
@@ -502,7 +502,7 @@ public class Player : Character
         {
             case TargetCount.None:
                 // 빈 타겟이면 기본 동작: 단일 타겟이 있으면 그걸 사용
-                if (_attackTarget != null)
+                if (_attackTarget != null && _curState != CharacterState.Dead)
                 {
                     _action[(int)ActionCategory.Attack].SetAttackInfo(_attackTarget, _actionType, _clipName, _duration, finalDamage);
                 }
