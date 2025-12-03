@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 9201738940646720836}
   - component: {fileID: -6181098566227231254}
   m_Layer: 5
-  m_Name: DotText
+  m_Name: PosionHitText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -80,10 +80,10 @@ MonoBehaviour:
   m_enableVertexGradient: 1
   m_colorMode: 2
   m_fontColorGradient:
-    topLeft: {r: 0.764151, g: 0.01913552, b: 0.0036044943, a: 1}
-    topRight: {r: 0.764151, g: 0.01913552, b: 0.0036044943, a: 1}
-    bottomLeft: {r: 0, g: 0.6415094, b: 0.054036446, a: 1}
-    bottomRight: {r: 0, g: 0.6415094, b: 0.054036446, a: 1}
+    topLeft: {r: 0.5903996, g: 0.13679248, b: 1, a: 1}
+    topRight: {r: 0.5903996, g: 0.13679248, b: 1, a: 1}
+    bottomLeft: {r: 0.81149685, g: 0.5990566, b: 1, a: 1}
+    bottomRight: {r: 0.81149685, g: 0.5990566, b: 1, a: 1}
   m_fontColorGradientPreset: {fileID: 0}
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
@@ -149,8 +149,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd23775bc652c454e8a9fdde99d35b1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  riseSpeed: 1.5
-  lifeTime: 1
-  jumpPower: 1.2
-  jumpFrequency: 10
-  textMesh: {fileID: 9201738940646720836}
+  _text: {fileID: 0}

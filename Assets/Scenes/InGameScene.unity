@@ -2215,7 +2215,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: b570b57ccbd475d49bc9532ae1a3ad7e, type: 3}
+  m_Sprite: {fileID: -6945175888210753609, guid: 5fea268898d31e64a9a7732f67e413d5, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3026,7 +3026,7 @@ GameObject:
   - component: {fileID: 1859117858}
   - component: {fileID: 1859117861}
   - component: {fileID: 1859117860}
-  - component: {fileID: 1859117859}
+  - component: {fileID: 1859117862}
   m_Layer: 5
   m_Name: DamageTextPanel
   m_TagString: Untagged
@@ -3053,20 +3053,6 @@ RectTransform:
   m_AnchoredPosition: {x: -960, y: -540}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1859117859
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1859117857}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f77939c2c97f4c42b9799a0072c376f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _damageTextPrefab: {fileID: 1734880134487354382, guid: f606ef94f0cf51a49bdc86745b7769cf, type: 3}
-  _dotTextPrefab: {fileID: 1734880134487354382, guid: 314c1549da2bb9b43aa3dee1250168b1, type: 3}
 --- !u!114 &1859117860
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3105,6 +3091,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1859117857}
   m_CullTransparentMesh: 1
+--- !u!114 &1859117862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1859117857}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d81187e7adfec3540aa243f256475d57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1943922575
 GameObject:
   m_ObjectHideFlags: 0

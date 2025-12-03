@@ -21,6 +21,7 @@ public struct MonsterData
     public string Target;
     public string ProjectileKey;
     public string[] ActionImpact;
+    public string[] FlashHit;
     public string[] ProjectileSpritePath;
     public bool[] IsRange;
 }
@@ -69,6 +70,7 @@ public class MonsterManager : Singleton<MonsterManager>
             data.IsRange = new bool[1];
             data.AtkSpeed = new float[1];
             data.ActionImpact = new string[1];
+            data.FlashHit = new string[1];
             data.ProjectileSpritePath = new string[1];
 
             data.Key = int.Parse(colData[0]);
@@ -85,17 +87,19 @@ public class MonsterManager : Singleton<MonsterManager>
 
             data.ActionImpact[0] = colData[9];
 
-            data.AtkSpeed[0] = float.Parse(colData[10]);
+            data.FlashHit[0] = colData[10];
 
-            data.SpawnLine = int.Parse(colData[11]);
-            data.Hp = float.Parse(colData[12]);
-            data.HpPerWave = float.Parse(colData[13]);
-            data.HpGrowthRate = float.Parse(colData[14]);
-            data.Atk = float.Parse(colData[15]);
-            data.AtkPerWave = float.Parse(colData[16]);
-            data.AtkGrowthRate = float.Parse(colData[17]);
-            data.AtkRange = float.Parse(colData[18]);
-            data.CriRate = float.Parse(colData[19]);
+            data.AtkSpeed[0] = float.Parse(colData[11]);
+
+            data.SpawnLine = int.Parse(colData[12]);
+            data.Hp = float.Parse(colData[13]);
+            data.HpPerWave = float.Parse(colData[14]);
+            data.HpGrowthRate = float.Parse(colData[15]);
+            data.Atk = float.Parse(colData[16]);
+            data.AtkPerWave = float.Parse(colData[17]);
+            data.AtkGrowthRate = float.Parse(colData[18]);
+            data.AtkRange = float.Parse(colData[19]);
+            data.CriRate = float.Parse(colData[20]);
 
             _monsterDatas.Add(data.Key, data);
         }

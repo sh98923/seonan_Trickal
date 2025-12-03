@@ -1,19 +1,10 @@
 fileFormatVersion: 2
-guid: c463746ff9d0b4e49b6893cded1f1e0f
+guid: c1eeb68ff5d9d274c8d9960329753f9e
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7518720852333461994
-    second: sprAttackSwing_0
-  - first:
-      213: -3488802046462159034
-    second: sprAttackSwing_1
-  - first:
-      213: -3025079218725334836
-    second: sprAttackSwing_2
-  - first:
-      213: -7016304068290132839
-    second: sprAttackSwing_3
+      213: -8027014674561810115
+    second: sprAttackLarge_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -55,7 +46,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -118,30 +109,17 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: iOS
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: sprAttackSwing_0
+      name: sprAttackLarge_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 11
-        height: 20
+        width: 15
+        height: 36
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -150,74 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ae188a087ccd75860800000000000000
-      internalID: 7518720852333461994
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: sprAttackSwing_1
-      rect:
-        serializedVersion: 2
-        x: 9
-        y: 0
-        width: 12
-        height: 20
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 64797f0f509459fc0800000000000000
-      internalID: -3488802046462159034
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: sprAttackSwing_2
-      rect:
-        serializedVersion: 2
-        x: 19
-        y: 0
-        width: 12
-        height: 20
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: cc0d5766a72c406d0800000000000000
-      internalID: -3025079218725334836
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: sprAttackSwing_3
-      rect:
-        serializedVersion: 2
-        x: 29
-        y: 0
-        width: 11
-        height: 20
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 9944075bf9411ae90800000000000000
-      internalID: -7016304068290132839
+      spriteID: d3145e3bea05a9090800000000000000
+      internalID: -8027014674561810115
       vertices: []
       indices: 
       edges: []
@@ -226,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -236,10 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      sprAttackSwing_0: 7518720852333461994
-      sprAttackSwing_1: -3488802046462159034
-      sprAttackSwing_2: -3025079218725334836
-      sprAttackSwing_3: -7016304068290132839
+      sprAttackLarge_0: -8027014674561810115
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

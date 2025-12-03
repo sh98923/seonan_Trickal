@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class DamageTextManager : MonoBehaviour
+public class HitTextSpawner : MonoBehaviour
 {
     private GameObject _normalHitPrefab;
     private GameObject _fireTextPrefab;
@@ -21,18 +21,5 @@ public class DamageTextManager : MonoBehaviour
         PoolingManager.Instance.Add("NormalHitText", _normalHitSize, _normalHitPrefab, transform);
         PoolingManager.Instance.Add("FireHitText", _dotHitSize, _fireTextPrefab, transform);
         PoolingManager.Instance.Add("PosionHitText", _dotHitSize, _posionTextPrefab, transform);
-    }
-
-    public string GetHitText(HitType type = HitType.Normal)
-    {
-        switch (type)
-        {
-            case HitType.Fire:
-                return "FireHitText";
-            case HitType.Posion:
-                return "PosionHitText";
-            default:
-                return "NormalHitText";
-        }
     }
 }

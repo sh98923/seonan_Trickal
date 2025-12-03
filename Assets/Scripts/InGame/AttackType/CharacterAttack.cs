@@ -3,7 +3,7 @@ using UnityEngine;
 
 public enum AtkEffectType
 {
-    Damage, Dot, Slow
+    Damage, Dot, Status
 }
 
 public class CharacterAttack : CharacterAction
@@ -106,9 +106,9 @@ public class CharacterAttack : CharacterAction
     {
         target.TakeDamage(_damage);
         
-        if(gameObject.tag == "Player")
+        if(target.tag == "Monster")
         {
-            //print($"{target.name} 데미지 입음");
+            print($"{target.name} 데미지 입음");
         }
 
         _hitType = GetEffectType<HitType>(hitEffectName, out _isValid);
@@ -121,8 +121,8 @@ public class CharacterAttack : CharacterAction
             case AtkEffectType.Dot:
                 target.TakeDotDamage(_hitType, _dotDamage, _duration, _effectValue);
                 break;
-            case AtkEffectType.Slow:
-                target.ApplyAttackSlow(_duration, _effectValue);
+            case AtkEffectType.Status:
+                target.ApplyAttackSlow(_hitType, _duration, _effectValue);
                 break;
         }
     }
@@ -194,11 +194,6 @@ public class CharacterAttack : CharacterAction
             string atkEffectName = _character.Data.ActionImpact[(int)_type];
 
             PlayEffect(target.transform);
-
-            if(target.tag == "Monster")
-            {
-                print("");
-            }
 
             if (_isRange)
             {

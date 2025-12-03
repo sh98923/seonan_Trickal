@@ -10,6 +10,7 @@ public class CharacterData
         public string Target;
         public string ProjectileKey;
         public string[] ActionImpact;
+        public string[] FlashHit;
         public string[] ProjectileSpritePath;
         public float Hp;
         public float Atk;
@@ -99,6 +100,11 @@ public class CharacterData
         get { return _shared.ActionImpact; }
     }
 
+    public string[] FlashHit
+    {
+        get { return _shared.FlashHit; }
+    }
+
     public int[] PoolSize
     {
         get { return _shared.ProjectilePool; }
@@ -155,11 +161,6 @@ public class CharacterData
     {
         get => _playerStat.CanUseUlt;
         set => _playerStat.CanUseUlt = value;
-    }
-
-    public string[] FlashHit
-    {
-        get => _playerAction.FlashHit;
     }
 
     public string[] BuffEffect
@@ -251,6 +252,7 @@ public class CharacterData
             IsRange = _playerAction.IsRange,
             AtkSpeed = _playerAction.AtkSpeed,
             ActionImpact = _playerAction.ActionImpact,
+            FlashHit = _playerAction.FlashHit,
             ProjectileKey = _playerAction.ProjectileKey,
             ProjectileSpritePath = _playerAction.ProjectileSpritePath,
         };
@@ -283,6 +285,7 @@ public class CharacterData
             IsRange = monsterData.IsRange,
             AtkSpeed = monsterData.AtkSpeed,
             ActionImpact = monsterData.ActionImpact,
+            FlashHit = monsterData.FlashHit,
             ProjectileKey = monsterData.ProjectileKey,
             ProjectileSpritePath = monsterData.ProjectileSpritePath,
         };

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 9201738940646720836}
   - component: {fileID: 7507791577295668551}
   m_Layer: 5
-  m_Name: DamageText
+  m_Name: NormalHitText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

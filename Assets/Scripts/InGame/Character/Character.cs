@@ -65,6 +65,10 @@ public class Character : MonoBehaviour, ITrackable
     protected Vector2 _moveDir;
     protected ActionSlot _actionType = ActionSlot.Base;
     protected CharacterState _curState = CharacterState.Idle;
+    public CharacterState CurState
+    {
+        get { return _curState; }
+    }
     protected readonly float _findTargetRange = 5.0f;
     protected float _maxHp = 0.0f;
     protected float _moveSpeed = 4.0f;
@@ -306,9 +310,9 @@ public class Character : MonoBehaviour, ITrackable
     }
 
     // 버프, 디버프 관련
-    public void ApplyAttackSlow(float duration, float speed)
+    public void ApplyAttackSlow(HitType type, float duration, float speed)
     {
-        _damageReceiver.ApplyAttackSlow(duration, speed);
+        _characterVisual.PlayStatusColor(type, duration, speed);
     }
 
     public void SetAnimatorSpeed(float speed)

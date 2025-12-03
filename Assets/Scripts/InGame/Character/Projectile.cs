@@ -97,7 +97,7 @@ public class Projectile : MonoBehaviour
 
     protected void ApplySlow(Character target)
     {
-        target.ApplyAttackSlow(_data.Duration, _data.EffectValue);
+        target.ApplyAttackSlow(_data.HitType, _data.Duration, _data.EffectValue);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -115,7 +115,7 @@ public class Projectile : MonoBehaviour
                 case AtkEffectType.Dot:
                     ApplyDot(target);
                     break;
-                case AtkEffectType.Slow:
+                case AtkEffectType.Status:
                     ApplySlow(target);
                     break;
             }

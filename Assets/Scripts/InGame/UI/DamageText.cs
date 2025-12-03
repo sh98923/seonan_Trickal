@@ -15,6 +15,11 @@ public class DamageText : MonoBehaviour
 
     private void Update()
     {
+        if (Time.timeScale == 0.0f)
+        {
+            return;
+        }
+
         transform.Translate(new Vector3(_dirX, _moveSpeed * Time.deltaTime, 0)); // �ؽ�Ʈ ��ġ
 
         _alpha.a = Mathf.Lerp(_alpha.a, 0, Time.deltaTime * _alphaSpeed); // �ؽ�Ʈ ���İ�

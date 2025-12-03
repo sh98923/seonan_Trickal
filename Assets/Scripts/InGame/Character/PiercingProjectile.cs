@@ -42,7 +42,7 @@ public class PiercingProjectile : Projectile
                 case AtkEffectType.Dot:
                     ApplyDot(target);
                     break;
-                case AtkEffectType.Slow:
+                case AtkEffectType.Status:
                     ApplySlow(target);
                     break;
             }

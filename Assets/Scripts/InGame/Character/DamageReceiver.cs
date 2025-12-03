@@ -1,16 +1,14 @@
 using System.Collections;
 using UnityEngine;
-using System;
+using UnityEngine.SceneManagement;
 
 public class DamageReceiver : MonoBehaviour
 {
     private Character _character;
     private Collider2D _targetCollider;
     private CharacterGraphics _graphics;
+    private DamageTextManager _hitText;
 
-    private Coroutine _dotCoroutine = null;
-    private Coroutine _slowCoroutine = null;
-    
     private float _curHp = 0.0f;
     public float CurHp
     {
@@ -27,6 +25,14 @@ public class DamageReceiver : MonoBehaviour
     {
         get { return _damageReduction; }
         set { _damageReduction = value; }
+    }
+
+    private void Awake()
+    {
+        if (SceneManager.GetActiveScene().name == "InGameScene")
+        {
+            _hitText = GameObject.Find("DamageTextPanel").GetComponent<DamageTextManager>();
+        }
     }
 
     public void Initialize(Character character, float initialHp)
@@ -62,8 +68,10 @@ public class DamageReceiver : MonoBehaviour
 
         _curHp -= finalDamage;
 
+        string textKey = _hitText.GetHitText();
+
         _graphics.PlayFlashHit();
-        _graphics.ShowDamageText(finalDamage);
+        _graphics.ShowDamageText(textKey, finalDamage);
         //print(name + " " + "체력: " + _curHp + "/" + _maxHp);
 
         if (_curHp <= 0.0f)
@@ -81,13 +89,6 @@ public class DamageReceiver : MonoBehaviour
 
     public void TakeDotDamage(HitType type, float damagePerTick, float duration, float tickInterval)
     {
-        /*if (_dotCoroutine != null)
-        {
-            StopCoroutine(_dotCoroutine);
-
-            _dotCoroutine = null;
-        }*/
-
         // 중첩 허용
         StartCoroutine(DotCoroutine(type, damagePerTick, duration, tickInterval));
     }
@@ -95,8 +96,7 @@ public class DamageReceiver : MonoBehaviour
     private IEnumerator DotCoroutine(HitType type, float damage, float duration, float tick)
     {
         float elapsed = 0.0f;
-
-        _graphics.PlayFlashHit(type, duration);
+        string textKey = _hitText.GetHitText(type);
 
         while (elapsed < duration)
         {
@@ -108,7 +108,8 @@ public class DamageReceiver : MonoBehaviour
             }
 
             _curHp -= damage;
-            _graphics?.ShowDotText(damage);
+            _graphics.PlayFlashHit(type);
+            _graphics?.ShowDotText(textKey, damage);
 
             if (_curHp <= 0.0f)
             {
@@ -119,33 +120,5 @@ public class DamageReceiver : MonoBehaviour
 
             elapsed += tick;
         }
-        _dotCoroutine = null;
-    }
-
-    /// <summary>
-    /// 느려짐(애니메이터 속도 변경)을 적용하고 duration 후에 복구.
-    /// speedFactor: 예) 0.7f = 70% 속도 ( 느려지는 경우 ) -> animator.speed = speedFactor
-    /// </summary>
-    public void ApplyAttackSlow(float duration, float speedFactor)
-    {
-        if (_slowCoroutine != null) StopCoroutine(_slowCoroutine);
-        _slowCoroutine = StartCoroutine(SlowCoroutine(duration, speedFactor));
-    }
-
-    private IEnumerator SlowCoroutine(float duration, float speedFactor)
-    {
-        if (_character != null)
-        {
-            _character.SetAnimatorSpeed(speedFactor);
-        }
-
-        yield return new WaitForSeconds(duration);
-
-        if (_character != null)
-        {
-            _character.SetAnimatorSpeed(1.0f);
-        }
-
-        _slowCoroutine = null;
     }
 }
