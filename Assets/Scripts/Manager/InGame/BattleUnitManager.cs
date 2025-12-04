@@ -97,7 +97,7 @@ public class PlayerUnit
         // 이 조건문이 달성되면 그 카드는 제외시켜야함
         if (_level >= maxLevel) return;
 
-        SetCharacterFullData();
+        _data.UpdatePlayerStats(_level);
 
         Debug.Log(_unitObj.name + " " + _data.Hp + " " + _data.Mp + " " + _data.Atk);
 
@@ -105,14 +105,5 @@ public class PlayerUnit
         _unitObj.GetComponent<PlayerHealth>().UpgradeHp();
         _unitObj.GetComponent<PlayerMp>().SetMpData(_data.Mp, _data.MpTickRate);
         //curUnit.(_playerStat[levelUp]);
-    }
-
-    private void SetCharacterFullData()
-    {
-        int startKey = _data.UpgradeKey;
-        int curKey = startKey + _level;
-
-        _upgradeData = PlayerStatManager.Instance.GetPlayerStatData(curKey);
-        _data.UpdatePlayerStat(_upgradeData);
     }
 }

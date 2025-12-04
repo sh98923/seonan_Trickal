@@ -5,7 +5,8 @@ public struct PlayerData
 {
     public int Key;
     public int AtkKey;
-    public int UpgradeKey;
+    public int SkillUpgradeKey;
+    public int StatUpgradeKey;
     public int SpawnLine;
     public int UpgradeCost;
     public int MaxLevel;
@@ -62,18 +63,19 @@ public class PlayerManager : Singleton<PlayerManager>
             PlayerData data;
 
             data.Key = int.Parse(colData[0]);
-            data.AtkKey = int.Parse(colData[1]);
-            data.UpgradeKey = int.Parse(colData[2]);
-            data.EngName = colData[3];
-            data.KrName = colData[4];
-            data.CharacterSpritePath = colData[5];
-            data.CharacterPrefabPath = colData[6];
-            data.Layer = colData[7];
-            data.AtkType = colData[8];
-            data.Target = colData[9];
-            data.SpawnLine = int.Parse(colData[10]);
-            data.UpgradeCost = int.Parse(colData[11]);
-            data.MaxLevel = int.Parse(colData[12]);
+            data.StatUpgradeKey = int.Parse(colData[1]);
+            data.AtkKey = int.Parse(colData[2]);
+            data.SkillUpgradeKey = int.Parse(colData[3]);
+            data.EngName = colData[4];
+            data.KrName = colData[5];
+            data.CharacterSpritePath = colData[6];
+            data.CharacterPrefabPath = colData[7];
+            data.Layer = colData[8];
+            data.AtkType = colData[9];
+            data.Target = colData[10];
+            data.SpawnLine = int.Parse(colData[11]);
+            data.UpgradeCost = int.Parse(colData[12]);
+            data.MaxLevel = int.Parse(colData[13]);
 
             if (!_isPlayerFirstkey)
             {

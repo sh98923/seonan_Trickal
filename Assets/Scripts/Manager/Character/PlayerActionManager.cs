@@ -8,12 +8,9 @@ public struct PlayerActionData
     public string ProjectileKey;
     public string[] ProjectileSpritePath;
     public string[] ActionImpact;
-    public string[] FlashHit;
+    public string[] Hittype;
     public string[] BuffEffect;
-    public float[] AtkSpeed;
-    public float[] Duration;
-    public float[] EffectValue;
-    public float DotDamageRate;
+    public float[] ProjectileSpeed;
     public string[] ClipName;
     public bool[] IsRange;
     public bool[] IsEffectInFront;
@@ -50,11 +47,9 @@ public class PlayerActionManager : Singleton<PlayerActionManager>
             PlayerActionData data;
             data.IsRange = new bool[3];
             data.IsEffectInFront = new bool[3];
-            data.AtkSpeed = new float[3];
-            data.Duration = new float[3];
-            data.EffectValue = new float[3];
+            data.ProjectileSpeed = new float[3];
             data.ActionImpact = new string[3];
-            data.FlashHit = new string[3];
+            data.Hittype = new string[3];
             data.BuffEffect = new string[3];
             data.ClipName = new string[3];
             data.ProjectileSpritePath = new string[3];
@@ -71,41 +66,31 @@ public class PlayerActionManager : Singleton<PlayerActionManager>
             data.ActionImpact[1] = colData[7];
             data.ActionImpact[2] = colData[8];
 
-            data.FlashHit[0] = colData[9];
-            data.FlashHit[1] = colData[10];
-            data.FlashHit[2] = colData[11];
+            data.Hittype[0] = colData[9];
+            data.Hittype[1] = colData[10];
+            data.Hittype[2] = colData[11];
 
             data.BuffEffect[0] = colData[12];
             data.BuffEffect[1] = colData[13];
             data.BuffEffect[2] = colData[14];
 
-            data.AtkSpeed[0] = float.Parse(colData[15]);
-            data.AtkSpeed[1] = float.Parse(colData[16]);
-            data.AtkSpeed[2] = float.Parse(colData[17]);
+            data.ClipName[0] = colData[15];
+            data.ClipName[1] = colData[16];
+            data.ClipName[2] = colData[17];
 
-            data.Duration[0] = float.Parse(colData[18]);
-            data.Duration[1] = float.Parse(colData[19]);
-            data.Duration[2] = float.Parse(colData[20]);
+            data.ProjectileSpeed[0] = float.Parse(colData[18]);
+            data.ProjectileSpeed[1] = float.Parse(colData[19]);
+            data.ProjectileSpeed[2] = float.Parse(colData[20]);
 
-            data.EffectValue[0] = float.Parse(colData[21]);
-            data.EffectValue[1] = float.Parse(colData[22]);
-            data.EffectValue[2] = float.Parse(colData[23]);
+            data.IsRange[0] = bool.Parse(colData[21]);
+            data.IsRange[1] = bool.Parse(colData[22]);
+            data.IsRange[2] = bool.Parse(colData[23]);
 
-            data.DotDamageRate = float.Parse(colData[24]);
+            data.IsEffectInFront[0] = bool.Parse(colData[24]);
+            data.IsEffectInFront[1] = bool.Parse(colData[25]);
+            data.IsEffectInFront[2] = bool.Parse(colData[26]);
 
-            data.ClipName[0] = colData[25];
-            data.ClipName[1] = colData[26];
-            data.ClipName[2] = colData[27];
-
-            data.IsRange[0] = bool.Parse(colData[28]);
-            data.IsRange[1] = bool.Parse(colData[29]);
-            data.IsRange[2] = bool.Parse(colData[30]);
-
-            data.IsEffectInFront[0] = bool.Parse(colData[31]);
-            data.IsEffectInFront[1] = bool.Parse(colData[32]);
-            data.IsEffectInFront[2] = bool.Parse(colData[33]);
-
-            data.IsRotationProjectile = bool.Parse(colData[34]);
+            data.IsRotationProjectile = bool.Parse(colData[27]);
 
             _playerAtkDatas.Add(data.Key, data);
         }

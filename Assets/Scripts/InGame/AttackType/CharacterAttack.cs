@@ -132,10 +132,10 @@ public class CharacterAttack : CharacterAction
         _hitType = GetEffectType<HitType>(hitEffectName, out _isValid);
         _effectType = GetEffectType<AtkEffectType>(atkEffectName, out _isValid);
 
-        if(_hitType == HitType.Fire)
+        /*if(_hitType == HitType.Fire)
         {
             print("");
-        }
+        }*/
 
         if (!_isValid) return;
 

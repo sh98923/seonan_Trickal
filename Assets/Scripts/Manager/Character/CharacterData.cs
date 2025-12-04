@@ -1,6 +1,13 @@
+using UnityEngine;
+
 public class CharacterData
 {
-    private struct SharedStats
+    /* ───────────────────────────────────────────────
+     *  공통으로 사용되는 데이터 분류
+     *  ConstantInfo = 생성 후 절대 변하지 않는 값
+     *  Stats        = 레벨업/업데이트로 변할 수 있는 값
+     * ─────────────────────────────────────────────── */
+    private struct ConstantInfo
     {
         public string Type;
         public string Layer;
@@ -12,114 +19,57 @@ public class CharacterData
         public string[] ActionImpact;
         public string[] FlashHit;
         public string[] ProjectileSpritePath;
+    }
+
+    private struct Stats
+    {
         public float Hp;
         public float Atk;
         public float CriRate;
         public float AtkRange;
-        public float AtkCoolTime;
+
+        // 변할 수도 있는 공격 데이터
         public float[] AtkSpeed;
-        public int[] ProjectilePool;
         public bool[] IsRange;
     }
 
-    private SharedStats _shared;
+    private ConstantInfo _constant;
+    private Stats _stats;
+
     private PlayerData _playerInfo;
-    private PlayerStatData _playerStat;
-    private PlayerActionData _playerAction;
+    private PlayerStatData _playerStatData;
+    private PlayerActionData _playerActionData;
+    private PlayerSkillUpgradeData _playerSkillData;
+
     private MonsterData _monsterInfo;
 
-    // 공통 정보
-    public float Hp
-    {
-        get => _shared.Hp;
-        set => _shared.Hp = value;
-    }
 
-    public float Atk
-    {
-        get => _shared.Atk;
-        set => _shared.Atk = value;
-    }
+    /* ─────────────────────────────
+     *  외부로 제공되는 public Getter
+     * ───────────────────────────── */
+    public float Hp => _stats.Hp;
+    public float Atk => _stats.Atk;
+    public float CriRate => _stats.CriRate;
+    public float AtkRange => _stats.AtkRange;
+    public float[] AtkSpeed => _stats.AtkSpeed;
+    public bool[] IsRangeAtk => _stats.IsRange;
 
-    public float AtkRange
-    {
-        get => _shared.AtkRange;
-        set => _shared.AtkRange = value;
-    }
-
-    public float AtkCoolTime
-    {
-        get => _shared.AtkCoolTime;
-        set => _shared.AtkCoolTime = value;
-    }
-
-    public float CriRate
-    {
-        get => _shared.CriRate;
-        set => _shared.CriRate = value;
-    }
-
-    public float[] AtkSpeed
-    {
-        get => _shared.AtkSpeed;
-    }
-
-    public string AtkType
-    {
-        get => _shared.AtkType;
-        set => _shared.AtkType = value;
-    }
-    public string Target
-    {
-        get { return _shared.Target; }
-    }
-
-    public string Layer => _shared.Layer;
-    public string EngName => _shared.EngName;
-    public string PrefabPath => _shared.PrefabPath;
-
-    public string Type
-    {
-        get => _shared.Type;
-        set => _shared.Type = value;
-    }
-
-    public string ProjectileKey
-    {
-        get => _shared.ProjectileKey;
-        set => _shared.ProjectileKey = value;
-    }
-
-    public string[] ProjectileSpritePath
-    {
-        get { return _shared.ProjectileSpritePath; }
-    }
-
-    public string[] ActionImpact
-    {
-        get { return _shared.ActionImpact; }
-    }
-
-    public string[] FlashHit
-    {
-        get { return _shared.FlashHit; }
-    }
-
-    public int[] PoolSize
-    {
-        get { return _shared.ProjectilePool; }
-    }
-
-    public bool[] IsRangeAtk
-    {
-        get { return _shared.IsRange; }
-    }
+    public string Layer => _constant.Layer;
+    public string EngName => _constant.EngName;
+    public string PrefabPath => _constant.PrefabPath;
+    public string Type => _constant.Type;
+    public string AtkType => _constant.AtkType;
+    public string Target => _constant.Target;
+    public string ProjectileKey => _constant.ProjectileKey;
+    public string[] ProjectileSpritePath => _constant.ProjectileSpritePath;
+    public string[] ActionImpact => _constant.ActionImpact;
+    public string[] FlashHit => _constant.FlashHit;
 
     // 플레이어 전용
     public PlayerData PlayerInfo => _playerInfo;
     public int PlayerKey => _playerInfo.Key;
     public int MaxLevel => _playerInfo.MaxLevel;
-    public int UpgradeKey => _playerInfo.UpgradeKey;
+    public int UpgradeKey => _playerInfo.StatUpgradeKey;
 
     public int UpgradeCost
     {
@@ -127,184 +77,125 @@ public class CharacterData
         set => _playerInfo.UpgradeCost = value;
     }
 
-    public float Mp
-    {
-        get => _playerStat.Mp;
-        set => _playerStat.Mp = value;
-    }
-
-    public float MpTickRate
-    {
-        get => _playerStat.MpTickRate;
-        set => _playerStat.MpTickRate = value;
-    }
-
-    public float SkillRate
-    {
-        get => _playerStat.SkillRate;
-        set => _playerStat.SkillRate = value;
-    }
-
-    public float Ultimate
-    {
-        get => _playerStat.Ultimate;
-        set => _playerStat.Ultimate = value;
-    }
-
-    public float UltCoolTime
-    {
-        get => _playerStat.UltCoolTime;
-        set => _playerStat.UltCoolTime = value;
-    }
+    public float Mp => _playerStatData.Mp;
+    public float MpTickRate => _playerStatData.MpTickRate;
+    public float SkillRate => _playerStatData.SkillRate;
+    public float Ultimate => _playerStatData.Ultimate;
+    public float UltCoolTime => _playerStatData.UltCoolTime;
 
     public bool CanUseUlt
     {
-        get => _playerStat.CanUseUlt;
-        set => _playerStat.CanUseUlt = value;
+        get => _playerStatData.CanUseUlt;
+        set => _playerStatData.CanUseUlt = value;
     }
 
-    public string[] BuffEffect
-    {
-        get => _playerAction.BuffEffect;
-    }
+    public string[] BuffEffect => _playerActionData.BuffEffect;
+    public string[] ClipName => _playerActionData.ClipName;
 
-    public string[] ClipName
-    {
-        get => _playerAction.ClipName;
-    }
+    public float DotDamageRate => _playerSkillData.DotDamageRate;
+    public float[] EffectValue => _playerSkillData.EffectValue;
+    public float[] Duration => _playerSkillData.Duration;
 
-    public float DotDamageRate
-    {
-        get => _playerAction.DotDamageRate;
-    }
-
-    public float[] EffectValue
-    {
-        get => _playerAction.EffectValue;
-    }
-
-    public float[] Duration
-    {
-        get => _playerAction.Duration;
-    }
-
-    public bool IsRotationProjectile
-    {
-        get => _playerAction.IsRotationProjectile;
-    }
-
-    public bool[] IsEffectInFront
-    {
-        get => _playerAction.IsEffectInFront;
-    }
+    public bool IsRotationProjectile => _playerActionData.IsRotationProjectile;
+    public bool[] IsEffectInFront => _playerActionData.IsEffectInFront;
 
     // 몬스터 전용
     public MonsterData MonsterInfo => _monsterInfo;
+    public float HpPerWave => _monsterInfo.HpPerWave;
+    public float HpGrowthRate => _monsterInfo.HpGrowthRate;
+    public float AtkPerWave => _monsterInfo.AtkPerWave;
+    public float AtkGrowthRate => _monsterInfo.AtkGrowthRate;
 
-    public float HpPerWave
-    {
-        get => _monsterInfo.HpPerWave;
-        set => _monsterInfo.HpPerWave = value;
-    }
 
-    public float HpGrowthRate
-    {
-        get => _monsterInfo.HpGrowthRate;
-        set => _monsterInfo.HpGrowthRate = value;
-    }
-
-    public float AtkPerWave
-    {
-        get => _monsterInfo.AtkPerWave;
-        set => _monsterInfo.AtkPerWave = value;
-    }
-
-    public float AtkGrowthRate
-    {
-        get => _monsterInfo.AtkGrowthRate;
-        set => _monsterInfo.AtkGrowthRate = value;
-    }
-
-    // 생성자 - 플레이어용
+    /* ─────────────────────────────
+     *        생성자 - 플레이어
+     * ───────────────────────────── */
     public CharacterData(PlayerData playerData)
     {
         _playerInfo = playerData;
 
-        // 공격 데이터 가져오기
-        _playerAction = PlayerActionManager.Instance.GetPlayerActionData(playerData.AtkKey);
+        _playerActionData = PlayerActionManager.Instance.GetPlayerActionData(playerData.AtkKey);
 
-        // 공통 Stats 초기화
-        _shared = new SharedStats
+        UpdatePlayerStats(); // 스탯 먼저 갱신
+
+        _constant = new ConstantInfo
         {
-            Hp = _playerStat.Hp,
-            Atk = _playerStat.Atk,
-            CriRate = _playerStat.CriRate,
-            AtkRange = _playerStat.AtkRange,
-
             Type = "Player",
             Layer = playerData.Layer,
-            Target = playerData.Target,
             EngName = playerData.EngName,
-            AtkType = playerData.AtkType,
             PrefabPath = playerData.CharacterPrefabPath,
+            AtkType = playerData.AtkType,
+            Target = playerData.Target,
+            ProjectileKey = _playerActionData.ProjectileKey,
 
-            // 공격 관련 데이터
-            IsRange = _playerAction.IsRange,
-            AtkSpeed = _playerAction.AtkSpeed,
-            ActionImpact = _playerAction.ActionImpact,
-            FlashHit = _playerAction.FlashHit,
-            ProjectileKey = _playerAction.ProjectileKey,
-            ProjectileSpritePath = _playerAction.ProjectileSpritePath,
+            ActionImpact = _playerActionData.ActionImpact,
+            FlashHit = _playerActionData.Hittype,
+            ProjectileSpritePath = _playerActionData.ProjectileSpritePath
         };
-
-        // 플레이어 스탯 업그레이드 적용
-        UpdatePlayerStat(PlayerStatManager.Instance.GetPlayerStatData(playerData.UpgradeKey));
     }
 
-    // 생성자 - 몬스터용
+
+    /* ──────────────────────────
+     *       생성자 - 몬스터
+     * ────────────────────────── */
     public CharacterData(MonsterData monsterData)
     {
         _monsterInfo = monsterData;
 
-        // 공통 Stats 초기화
-        _shared = new SharedStats
+        _stats = new Stats
         {
             Hp = monsterData.Hp,
             Atk = monsterData.Atk,
             CriRate = monsterData.CriRate,
             AtkRange = monsterData.AtkRange,
+            AtkSpeed = monsterData.AtkSpeed,
+            IsRange = monsterData.IsRange
+        };
 
+        _constant = new ConstantInfo
+        {
             Type = "Monster",
             Layer = monsterData.Layer,
             EngName = monsterData.EngName,
-            AtkType = monsterData.AtkType,
             PrefabPath = monsterData.PrefabPath,
-
-            // 공격 관련 데이터
+            AtkType = monsterData.AtkType,
             Target = monsterData.Target,
-            IsRange = monsterData.IsRange,
-            AtkSpeed = monsterData.AtkSpeed,
+            ProjectileKey = monsterData.ProjectileKey,
+
             ActionImpact = monsterData.ActionImpact,
             FlashHit = monsterData.FlashHit,
-            ProjectileKey = monsterData.ProjectileKey,
-            ProjectileSpritePath = monsterData.ProjectileSpritePath,
+            ProjectileSpritePath = monsterData.ProjectileSpritePath
         };
     }
 
-    public void UpdatePlayerStat(PlayerStatData data)
+
+    /* ───────────────────────────
+     *    Stats 적용 (플레이어용)
+     * ─────────────────────────── */
+    private void ApplyPlayerStats()
     {
-        _playerStat = data;
+        _stats.Hp = _playerStatData.Hp;
+        _stats.Atk = _playerStatData.Atk;
+        _stats.CriRate = _playerStatData.CriRate;
+        _stats.AtkRange = _playerStatData.AtkRange;
 
-        Hp = data.Hp;
-        Atk = data.Atk;
-        AtkRange = data.AtkRange;
-        CriRate = data.CriRate;
+        // 변할 수도 있는 데이터
+        _stats.AtkSpeed = _playerActionData.ProjectileSpeed;
+        _stats.IsRange = _playerActionData.IsRange;
+    }
 
-        Mp = data.Mp;
-        MpTickRate = data.MpTickRate;
-        SkillRate = data.SkillRate;
-        Ultimate = data.Ultimate;
-        UltCoolTime = data.UltCoolTime;
-        CanUseUlt = data.CanUseUlt;
+
+    /* ───────────────────────────
+     *     레벨업 / 스탯 재계산
+     * ─────────────────────────── */
+    public void UpdatePlayerStats(int level = 0)
+    {
+        int statKey = _playerInfo.StatUpgradeKey + level;
+        int skillKey = _playerInfo.SkillUpgradeKey + level;
+
+        _playerStatData = PlayerStatManager.Instance.GetPlayerStatData(statKey);
+        _playerSkillData = PlayerSkillUpgradeManager.Instance.GetPlayerSkillUpgradeData(skillKey);
+
+        ApplyPlayerStats();
     }
 }

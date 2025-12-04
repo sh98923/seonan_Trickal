@@ -191,6 +191,7 @@ public class Player : Character
         if (_targetCollider != null)
         {
             _isInBattle = true;
+            print(_data.Target + " 발견");
 
             return; // 발견한 프레임에서 BattleMovement 실행 X
         }
