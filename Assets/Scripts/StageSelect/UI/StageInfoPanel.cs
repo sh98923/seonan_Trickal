@@ -52,6 +52,7 @@ public class StageInfoPanel : MonoBehaviour
     private void OnClickDeckSetup()
     {
         _mapBG.gameObject.SetActive(true);
+        _mapBG.SetMapBG();
         _mapBG.SetMapBGEvent();
 
         _deckPanel.SetActive(true);

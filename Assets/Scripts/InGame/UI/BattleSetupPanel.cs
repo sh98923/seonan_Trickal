@@ -85,6 +85,7 @@ public class BattleSetupPanel : MonoBehaviour
 
     private void OnClickEnteringBattle()
     {
+        InGameManager.Instance.IsGameStart = true;
         BattleStateManager.Instance.SetState(BattleState.EnteringBattle);
     }
 

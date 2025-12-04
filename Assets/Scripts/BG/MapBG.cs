@@ -6,7 +6,7 @@ public class MapBG : MonoBehaviour
 {
     private enum BG
     {
-        LeftSky, RightSky, LeftGround, RightGround
+        LeftBG, MiddleBG, RightBG
     }
 
     private SpriteRenderer[] _sprites;
@@ -38,17 +38,15 @@ public class MapBG : MonoBehaviour
     {
         _data = BGManager.Instance.GetBGData(_startIndex + index);
 
-        string skyPath = _data.SkyPath;
-        string groundPath = _data.GroundPath;
-        bool isFlip = _data.Flip;
+        string bgPath = _data.BGPath;
 
-        Sprite skySprite = Resources.Load<Sprite>(skyPath);
-        Sprite groundSprite = Resources.Load<Sprite>(groundPath);
+        Sprite bgSprite = Resources.Load<Sprite>(bgPath);
 
-        _sprites[(int)BG.LeftSky].sprite = skySprite;
-        _sprites[(int)BG.RightSky].sprite = skySprite;
-        _sprites[(int)BG.RightSky].flipX = isFlip;
-        _sprites[(int)BG.LeftGround].sprite = groundSprite;
-        _sprites[(int)BG.RightGround].sprite = groundSprite;
+        for(int i = 0; i < _sprites.Length; i++)
+        {
+            _sprites[i].sprite = bgSprite;
+        }
+
+        _sprites[(int)BG.MiddleBG].flipX = true;
     }
 }

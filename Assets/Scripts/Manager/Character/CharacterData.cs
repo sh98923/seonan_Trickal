@@ -43,7 +43,6 @@ public class CharacterData
 
     private MonsterData _monsterInfo;
 
-
     /* ─────────────────────────────
      *  외부로 제공되는 public Getter
      * ───────────────────────────── */

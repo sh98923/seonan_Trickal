@@ -45,6 +45,20 @@ public class InGameManager : Singleton<InGameManager>
         get { return _canPayCoin; }
     }
 
+    private bool _isGameStart = false;
+    public bool IsGameStart
+    {
+        get { return _isGameStart; }
+        set { _isGameStart = value; }
+    }
+
+    private bool _canBGMove = false;
+    public bool CanBGMove
+    {
+        get { return _canBGMove; }
+        set { _canBGMove = value; }
+    }
+
     private void Awake()
     {
         _inGameCoin = 106;

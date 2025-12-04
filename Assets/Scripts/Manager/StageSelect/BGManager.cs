@@ -4,9 +4,7 @@ using UnityEngine;
 public struct BGData
 {
     public int Key;
-    public string SkyPath;
-    public string GroundPath;
-    public bool Flip;
+    public string BGPath;
 }
 
 public class BGManager : Singleton<BGManager>
@@ -45,9 +43,7 @@ public class BGManager : Singleton<BGManager>
 
             BGData data;
             data.Key = int.Parse(colData[0]);
-            data.SkyPath = colData[1];
-            data.GroundPath = colData[2];
-            data.Flip = bool.Parse(colData[3]);
+            data.BGPath = colData[1];
 
             if(_firstBGKey == i)
             {
