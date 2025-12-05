@@ -132,10 +132,10 @@ public class CharacterAttack : CharacterAction
         _hitType = GetEffectType<HitType>(hitEffectName, out _isValid);
         _effectType = GetEffectType<AtkEffectType>(atkEffectName, out _isValid);
 
-        /*if(_hitType == HitType.Fire)
+        if (target.tag == "Monster")
         {
             print("");
-        }*/
+        }
 
         if (!_isValid) return;
 
@@ -151,7 +151,7 @@ public class CharacterAttack : CharacterAction
         {
             // 기본 공격 정보
             Name = target.name,
-            Key = _data.ProjectileKey,
+            Key = _data.ProjectileKey[(int)_type],
             StartPos = _character.AtkPoint.position,
             Direction = dir,
             Speed = atkSpeed,

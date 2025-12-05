@@ -19,7 +19,7 @@ public struct MonsterData
     public string Layer;
     public string AtkType;
     public string Target;
-    public string ProjectileKey;
+    public string[] ProjectileKey;
     public string[] ActionImpact;
     public string[] FlashHit;
     public string[] ProjectileSpritePath;
@@ -69,6 +69,7 @@ public class MonsterManager : Singleton<MonsterManager>
             MonsterData data;
             data.IsRange = new bool[1];
             data.AtkSpeed = new float[1];
+            data.ProjectileKey = new string[1];
             data.ActionImpact = new string[1];
             data.FlashHit = new string[1];
             data.ProjectileSpritePath = new string[1];
@@ -76,7 +77,7 @@ public class MonsterManager : Singleton<MonsterManager>
             data.Key = int.Parse(colData[0]);
             data.EngName = colData[1];
             data.PrefabPath = colData[2];
-            data.ProjectileKey = colData[3];
+            data.ProjectileKey[0] = colData[3];
             data.Layer = colData[4];
             data.AtkType = colData[5];
             data.Target = colData[6];

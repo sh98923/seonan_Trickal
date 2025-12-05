@@ -1,4 +1,4 @@
-Key,StatUpgradeKey,AttackKey,SkillUpgradeKey,EngName,KrName,CharacterSpritePath,CharacterPrefabPath,Layer,AttackType,Target,SpawnLine,UpgradeCost,MaxLevel
+Key,StatKey,AttackKey,SkillKey,EngName,KrName,CharacterSpritePath,CharacterPrefabPath,Layer,AttackType,Target,SpawnLine,UpgradeCost,MaxLevel
 100,300,4000,6000,Diana,디아나,Sprites/CardInfo/ElfPaladin,Prefabs/Elf/ElfPaladin,Front,Melee,Monster,0,5,5
 101,305,4001,6005,Gwin,그윈,Sprites/CardInfo/ElfKnight,Prefabs/Elf/ElfKnight,Front,Melee,Monster,0,5,5
 102,310,4002,6010,Alette,알레트,Sprites/CardInfo/ElfDestroyer,Prefabs/Elf/ElfDestroyer,Front,Melee,Monster,0,5,5

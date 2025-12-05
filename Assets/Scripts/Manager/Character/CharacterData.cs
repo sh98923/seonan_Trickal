@@ -15,7 +15,7 @@ public class CharacterData
         public string PrefabPath;
         public string AtkType;
         public string Target;
-        public string ProjectileKey;
+        public string[] ProjectileKey;
         public string[] ActionImpact;
         public string[] FlashHit;
         public string[] ProjectileSpritePath;
@@ -59,7 +59,7 @@ public class CharacterData
     public string Type => _constant.Type;
     public string AtkType => _constant.AtkType;
     public string Target => _constant.Target;
-    public string ProjectileKey => _constant.ProjectileKey;
+    public string[] ProjectileKey => _constant.ProjectileKey;
     public string[] ProjectileSpritePath => _constant.ProjectileSpritePath;
     public string[] ActionImpact => _constant.ActionImpact;
     public string[] FlashHit => _constant.FlashHit;

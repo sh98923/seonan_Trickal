@@ -182,6 +182,7 @@ public class InGameCam : MonoBehaviour
         Vector3 startPos = transform.position;
         Vector3 targetPos = new Vector3(startPos.x + moveX, startPos.y, startPos.z);
 
+        // BG는 무조건 일단 멈춤
         InGameManager.Instance.CanBGMove = false;
 
         while (elapsed < _moveDuration)
@@ -215,7 +216,12 @@ public class InGameCam : MonoBehaviour
         // 연출 정상 종료 시 최종값 보정
         _cam.orthographicSize = targetSize;
         transform.position = targetPos;
-        InGameManager.Instance.CanBGMove = true;
+
+        // 리롤 정비 상태로 가는 중이라면 BG를 움직임
+        if(BattleStateManager.Instance.CurrentState == BattleState.EnteringReroll)
+        {
+            InGameManager.Instance.CanBGMove = true;
+        }
     }
 
     private IEnumerator MoveCameraPositionOverTime(Vector3 startPos, Vector3 endPos, float duration)

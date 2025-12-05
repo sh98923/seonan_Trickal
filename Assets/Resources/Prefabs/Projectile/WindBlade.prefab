@@ -10,11 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 2767340984756934891}
   - component: {fileID: 3048888863384797016}
-  - component: {fileID: 4729975481474491864}
+  - component: {fileID: 1115107154293494182}
   - component: {fileID: -7094308000992389973}
-  - component: {fileID: -1945730183378485369}
+  - component: {fileID: 5512786728684142939}
   m_Layer: 0
-  m_Name: Shuriken
+  m_Name: WindBlade
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.48, y: 0.465, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -79,19 +79,19 @@ SpriteRenderer:
   m_SortingLayerID: 2107782463
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 8623398651843282923, guid: e38dfe3637444724abe898d580290247, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 5.8, y: 4.3}
+  m_Size: {x: 0.41, y: 1.02}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!58 &4729975481474491864
-CircleCollider2D:
+--- !u!70 &1115107154293494182
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -120,12 +120,13 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Radius: 0.6
+  m_Offset: {x: 0.015, y: 0.003}
+  m_Size: {x: 0.145, y: 0.997}
+  m_Direction: 0
 --- !u!50 &-7094308000992389973
 Rigidbody2D:
   serializedVersion: 5
@@ -153,7 +154,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &-1945730183378485369
+--- !u!114 &5512786728684142939
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

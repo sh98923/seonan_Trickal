@@ -1,3 +1,5 @@
 Key,Name,PrefabPath,PoolSize
 5000,Arrow,Prefabs/Projectile/Arrow,50
 5001,Shuriken,Prefabs/Projectile/Shuriken,10
+5002,WindCut,Prefabs/Projectile/WindCut,10
+5003,WindBlade,Prefabs/Projectile/WindBlade,10

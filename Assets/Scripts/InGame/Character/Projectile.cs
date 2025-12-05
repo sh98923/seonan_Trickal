@@ -20,17 +20,17 @@ public class ProjectileData
 
 public class Projectile : MonoBehaviour
 {
-    protected readonly float _lifeTime = 2.0f;
+    protected const float _lifeTime = 2.0f;
+    protected const float _rotationSpeed = 750.0f;
+
+    protected const int _sortingOffset = 75;
+    protected const int _sortingScale = 100;
 
     protected SpriteRenderer _sprite;
     protected ProjectileData _data;
 
     protected Vector2 _direction;
 
-    protected readonly int _sortingOffset = 75;
-    protected readonly int _sortingScale = 100;
-
-    protected readonly float _rotationSpeed = 750.0f;
     protected float _lifeTimer;
 
     private void Awake()
