@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 11dba15307d59d84fadc49f3ff121bc1
+guid: 1c746383a8d58654c9b3a83f8cba47c1
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 6964671805384931777
-    second: RuneBladeBase_0
+      213: 5903488338387660287
+    second: RuneBladeBase1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: RuneBladeBase_0
+      name: RuneBladeBase1_0
       rect:
         serializedVersion: 2
-        x: 44
-        y: 13
+        x: 43
+        y: 32
         width: 41
-        height: 102
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1c9b5294b1c77a060800000000000000
-      internalID: 6964671805384931777
+      spriteID: ffde141ad576de150800000000000000
+      internalID: 5903488338387660287
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      RuneBladeBase_0: 6964671805384931777
+      RuneBladeBase1_0: 5903488338387660287
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
