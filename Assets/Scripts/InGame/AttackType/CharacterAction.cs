@@ -3,7 +3,7 @@ using UnityEngine;
 
 public enum ActionSlot
 {
-    Base, Skill, Ult
+    Attack, Skill, Ult
 }
 
 public abstract class CharacterAction : MonoBehaviour

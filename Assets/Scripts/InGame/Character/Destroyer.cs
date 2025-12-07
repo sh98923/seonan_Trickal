@@ -14,8 +14,6 @@ public class Destroyer : Player
         Fifth    // 5타
     }
 
-    private Collider2D[] _attackTargets;
-
     private const float _ultWeakPhase = 0.82f;
     private const float _ultMidPhase = 0.9f;
     private const float _ultStrongPhase = 1.0f;
@@ -43,11 +41,10 @@ public class Destroyer : Player
     {
         switch (slot)
         {
-            case ActionSlot.Base:
+            case ActionSlot.Attack:
                 return _data.Atk * _atkBuff;
             case ActionSlot.Ult:
                 _playerMp.UseMp();
-                // 위상 파워가 AfterHit에서 관리되므로 여기선 적용
                 return _data.Atk * _data.Ultimate * _ultPhasePower * _atkBuff;
         }
 
@@ -57,62 +54,53 @@ public class Destroyer : Player
     // GetTargets는 스킬 타입에 따라 타겟 수집 방식 변경
     protected override Collider2D[] GetTargets(ActionSlot slot)
     {
-        if (slot == ActionSlot.Base)
+        switch(slot) 
         {
-            // 기본 공격은 단일 타겟 (Player가 이미 _attackTarget에 넣어둠)
-            if (_attackTarget != null)
+            case ActionSlot.Attack:
+                return base.GetTargets(slot);
+
+            case ActionSlot.Ult:
+                return GetUltTargets();
+
+            default:
+                return new Collider2D[0];
+        }
+    }
+
+    // 최종 궁극기의 데미지를 받을 타겟을 고르는 함수
+    private Collider2D[] GetUltTargets()
+    {
+        Vector2 position = GetUltHitBoxCenter();
+        Vector2 size = _skillEffectController.GetSize();
+
+        Collider2D[] overlapped = Physics2D.OverlapBoxAll(position, size, 0.0f);
+        List<Collider2D> result = new List<Collider2D>();
+
+        foreach (Collider2D target in overlapped)
+        {
+            if (!IsMonster(target)) //몬스터가 아니면 건너뜀
+                continue;
+
+            // Y값 오차 범위 내에 있는 적만 타겟으로 리스트에 넣음
+            if (IsWithinYOffset(target.transform.position.y, _yOffsetLimit)) 
             {
-                return new Collider2D[] { _attackTarget };
+                print("디트 궁 타겟 : " + target.gameObject.name);
+                result.Add(target);
             }
-
-            return new Collider2D[0];
         }
-        else if (slot == ActionSlot.Ult)
-        {
-            // 기존 UltSpikeHit의 OverlapBox 로직을 재사용해서 범위 내 몬스터만 반환
-            Vector2 worldPos = transform.position;
-            Vector2 localPos = _skillEffectController.GetPosition();
-            localPos.x *= transform.localScale.x;
 
-            Vector2 position = worldPos + localPos;
-            Vector2 size = _skillEffectController.GetSize();
-
-            // OverlapBoxAll은 Collider2D[]를 반환
-            Collider2D[] targets = Physics2D.OverlapBoxAll(position, size, 0.0f);
-
-            // y-offset 필터 적용 (기존 UltHitTargets의 동작)
-            List<Collider2D> finalTargets = new List<Collider2D>();
-
-            foreach (Collider2D target in targets)
-            {
-                if(target.tag != "Monster")
-                {
-                    continue;
-                }
-
-                if (Mathf.Abs(target.transform.position.y - transform.position.y) <= _yOffsetLimit)
-                {
-                    print("디트 궁 타겟 : " + target.gameObject.name);
-
-                    finalTargets.Add(target);
-                }
-            }
-
-            return finalTargets.ToArray();
-        }
-        else // Skill (범위 스킬 등)
-        {
-            // 기본 구현: 단일 타겟 또는 targeting logic 추가 가능
-            if (_attackTarget != null)
-                return new Collider2D[] { _attackTarget };
-            return new Collider2D[0];
-        }
+        return result.ToArray();
     }
 
     // AfterHit는 히트 카운트 증가와 위상(phase) 변경 처리
     protected override void PreHit(ActionSlot slot)
     {
-        if (slot != ActionSlot.Ult) return;
+        //base.PreHit(slot);
+
+        if (slot != ActionSlot.Ult)
+        {
+            return;
+        }
 
         _hitCount++;
 

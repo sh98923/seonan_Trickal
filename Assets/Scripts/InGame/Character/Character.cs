@@ -18,8 +18,8 @@ public class Character : MonoBehaviour, ITrackable
     }
 
     // 이벤트
-    protected event Action<Character> _onDie;
-    public event Action<Character> OnDie
+    protected event Action _onDie;
+    public event Action OnDie
     {
         add { _onDie += value; }
         remove { _onDie -= value; }
@@ -63,7 +63,7 @@ public class Character : MonoBehaviour, ITrackable
     protected CharacterData _data;
     protected Vector3 _scale;
     protected Vector2 _moveDir;
-    protected ActionSlot _actionType = ActionSlot.Base;
+    protected ActionSlot _actionType = ActionSlot.Attack;
     protected CharacterState _curState = CharacterState.Idle;
     public CharacterState CurState
     {
@@ -246,7 +246,7 @@ public class Character : MonoBehaviour, ITrackable
 
         _isDead = true; 
         _targetCollider = null;
-        _onDie?.Invoke(this);
+        _onDie?.Invoke();
         _animator.SetTrigger("Dead");
         _myCollider.enabled = false;
         //_sortingGroup.sortingOrder = -10000;

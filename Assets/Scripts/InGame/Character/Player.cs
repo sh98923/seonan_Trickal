@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class Player : Character
 {
@@ -52,7 +53,6 @@ public class Player : Character
         _playerMp = GetComponent<PlayerMp>();
 
         _skillEffectController = GetComponent<SkillEffectController>();
-        _skillEffectController.Stop();
 
         _moveDir = Vector2.right;
         _scale.x *= -1;
@@ -102,7 +102,7 @@ public class Player : Character
         }
         if (Input.GetKeyDown(KeyCode.A))
         {
-            _actionType = ActionSlot.Base;
+            _actionType = ActionSlot.Attack;
             _animator.SetTrigger("Attack");
         }
         if (Input.GetKeyDown(KeyCode.D))
@@ -110,24 +110,6 @@ public class Player : Character
             _actionType = ActionSlot.Skill;
             _animator.SetTrigger("Skill");
         }
-    }
-
-    private void SkillEffectOn()
-    {
-        if(!_targetCollider.enabled)
-        {
-            return;
-        }
-
-        Character target = _targetCollider.GetComponent<Character>();
-
-        _skillEffectController.Initialize(target);
-        _skillEffectController.Play(_data.IsEffectInFront[(int)_actionType]);
-    }
-
-    private void SkillEffectOff()
-    {
-        _skillEffectController.Stop();
     }
 
     private void MoveToNextWaypoint()
@@ -190,6 +172,9 @@ public class Player : Character
         // 타겟을 발견한 순간
         if (_targetCollider != null)
         {
+            Character target = _targetCollider.GetComponent<Character>();
+            _skillEffectController.Initialize(target);
+
             _isInBattle = true;
             print(_data.Target + " 발견");
 
@@ -428,25 +413,24 @@ public class Player : Character
             return;
 
         _isAttacking = true;
-
         _attackTarget = _targetCollider;
 
         if (_playerMp.GetCurMp() >= _data.Mp)
         {
             _actionType = ActionSlot.Skill;
-            _animator.SetTrigger("Skill");
         }
-        // 궁극기는 업그레이드 3레벨, battle 상태일 때 UI 터치 시 발동 (쿨타임 있음)
         else if (Input.GetKeyDown(KeyCode.S))
         {
             _actionType = ActionSlot.Ult;
-            _animator.SetTrigger("Ult");
         }
         else
         {
-            _actionType = ActionSlot.Base;
-            _animator.SetTrigger("Attack");
+            _actionType = ActionSlot.Attack;
         }
+
+        // 트리거 실행 전에 항상 이펙트 정렬 세팅
+        _skillEffectController.SetSortingPosition(_data.IsEffectInFront[(int)_actionType]);
+        _animator.SetTrigger(_actionType.ToString());
     }
 
     public void OnBuff()
@@ -565,7 +549,7 @@ public class Player : Character
 
         switch (slot)
         {
-            case ActionSlot.Base:
+            case ActionSlot.Attack:
                 finalDamage = _data.Atk * _atkBuff;
                 break;
             case ActionSlot.Skill:
@@ -591,7 +575,29 @@ public class Player : Character
 
     protected virtual void PreHit(ActionSlot slot)
     {
-        // 기본 후처리 없음. 캐릭터별로 오버라이드해서 콤보/위상/카운트 처리
+        // 기본 전처리 없음. 캐릭터별로 오버라이드해서 콤보/위상/카운트 처리
+    }
+
+    // 실제 이펙트가 있는 위치를 반환
+    protected Vector2 GetUltHitBoxCenter()
+    {
+        Vector2 worldPos = transform.position;
+        Vector2 localPos = _skillEffectController.GetPosition();
+
+        // 방향 고려
+        localPos.x *= transform.localScale.x;
+
+        return worldPos + localPos;
+    }
+
+    protected bool IsMonster(Collider2D target)
+    {
+        return target.CompareTag("Monster");
+    }
+
+    protected bool IsWithinYOffset(float targetY, float yOffsetLimit)
+    {
+        return Mathf.Abs(targetY - transform.position.y) <= yOffsetLimit;
     }
 
     public CharacterState CurState()

@@ -172,7 +172,7 @@ public class MonsterSpawn : MonoBehaviour
         }
     }
 
-    private void OnMonsterDie(Character ch)
+    private void OnMonsterDie()
     {
         _aliveMonsterCount--;
 

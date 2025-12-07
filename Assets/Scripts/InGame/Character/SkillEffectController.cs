@@ -7,14 +7,19 @@ public class SkillEffectController : MonoBehaviour
     private GameObject _effectObj;
     private SpriteRenderer _renderer;
 
+    private void Awake()
+    {
+        _effectObj = transform.Find("SkillEffect").gameObject;
+        _effectObj.SetActive(false);
+    }
+
     public void Initialize(Character target)
     {
         _target = target;
-        _effectObj = transform.Find("SkillEffect").gameObject;
         _renderer = _effectObj.GetComponent<SpriteRenderer>();
     }
 
-    public void Play(bool isFront)
+    public void SetSortingPosition(bool isFront)
     {
         if (_renderer == null) return;
 
@@ -22,12 +27,12 @@ public class SkillEffectController : MonoBehaviour
         _renderer.sortingOrder = sortNum;
     }
 
-    public void OnActiveSkillEffect()
+    public void OnSkillEffectActivate()
     {
         _effectObj.SetActive(true);
     }
 
-    public void Stop()
+    public void OnSkillEffectDeactivate()
     {
         if (_effectObj == null) return;
 

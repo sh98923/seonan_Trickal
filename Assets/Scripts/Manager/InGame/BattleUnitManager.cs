@@ -12,7 +12,7 @@ public class BattleUnitManager : Singleton<BattleUnitManager>
         get { return _curLevel; }
     }
 
-    private void OnPlayerDie(Character ch)
+    private void OnPlayerDie()
     {
         _deadPlayerCount = 0;
 
