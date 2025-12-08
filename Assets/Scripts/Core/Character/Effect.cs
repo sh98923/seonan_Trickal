@@ -3,9 +3,8 @@ using UnityEngine;
 public class Effect : MonoBehaviour
 {
     private Animator _animator;
-    private Transform _characterTransform;
+    private Character _character;
     private SpriteRenderer _sprite;
-    private Collider2D _collider;
 
     private readonly Vector3 _posOffset = new Vector3(0.0f, 0.3f, 0.0f);
 
@@ -24,12 +23,12 @@ public class Effect : MonoBehaviour
     {
         if (_timer >= 0.0f)
         {
-            transform.position = _characterTransform.position + _posOffset;
+            transform.position = _character.RootPos + _posOffset;
 
             _timer -= Time.deltaTime;
 
             // 타이머 종료 시 이펙트 or 캐릭터가 죽었을 경우 (충돌체 Off 일때) 비활성화
-            if (_timer <= 0.0f || !_collider.enabled)
+            if (_timer <= 0.0f || !_character.IsColliderEnable)
             {
                 gameObject.SetActive(false);
             }
@@ -40,9 +39,7 @@ public class Effect : MonoBehaviour
 
     public void Play(Transform characterTransform, string clipName, float time = 0.0f)
     {
-        _characterTransform = characterTransform;
-
-        _collider = _characterTransform.GetComponent<Collider2D>();
+        _character = characterTransform.GetComponent<Character>();
 
         _animator.Play(clipName);
 

@@ -150,7 +150,7 @@ public class StageCardPanel : CardPanel
 
     private void Update()
     {
-        base.Update();
+        //base.Update();
 
         _hue += Time.deltaTime * _speed;
 

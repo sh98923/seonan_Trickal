@@ -1,7 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 public class Player : Character
 {
@@ -22,6 +20,8 @@ public class Player : Character
     protected PlayerMp _playerMp;
     protected Collider2D _attackTarget;
     protected SkillEffectController _skillEffectController;
+
+    private PlayerMovement _playerMovement;
 
     private Vector3 _originalWayPoint = new Vector3();
     private Vector3 _nextWayPoint = new Vector3();
@@ -54,13 +54,13 @@ public class Player : Character
 
         _skillEffectController = GetComponent<SkillEffectController>();
 
-        _moveDir = Vector2.right;
         _scale.x *= -1;
         transform.localScale = _scale;
     }
 
     protected void Start()
     {
+        _playerMovement = _movement as PlayerMovement;
         _originalWayPoint = transform.position;
         _animator.SetTrigger("Intro");
     }
@@ -140,7 +140,7 @@ public class Player : Character
 
         switch (BattleStateManager.Instance.CurrentState)
         {
-           /* case BattleState.Reroll:
+            /*case BattleState.Reroll:
                 RerollMovement();
                 break;*/
             case BattleState.Battle:
@@ -167,12 +167,13 @@ public class Player : Character
 
     private void TryFindTargetOrKeepMoving()
     {
-        _targetCollider = FindTarget(_data.Target, _findTargetRange);
+        _movement.SetMovementActive(true);
+        //_targetCollider = FindTarget(_data.Target, _findTargetRange);
 
-        // 타겟을 발견한 순간
-        if (_targetCollider != null)
+        // 타겟이 있다면
+        if (_movement.HasTarget)
         {
-            Character target = _targetCollider.GetComponent<Character>();
+            Character target = _movement.Target;
             _skillEffectController.Initialize(target);
 
             _isInBattle = true;
@@ -182,7 +183,7 @@ public class Player : Character
         }
 
         // 조우 전까지 계속 이동 (후열 캐릭터 움직임 유지)
-        transform.Translate(_moveDir * _moveSpeed * Time.deltaTime);
+        //transform.Translate(_moveDir * _moveSpeed * Time.deltaTime);
     }
 
     private void BattleMovement()
@@ -194,7 +195,7 @@ public class Player : Character
         }
 
         // 이미 전투 상태인데 타겟이 죽거나 null이면 재탐색
-        if (_targetCollider == null || !_targetCollider.enabled)
+        /*if (!_movement.HasTarget || !_movement.TargetColliderEnable)
         {
             _targetCollider = FindTarget(_data.Target, _findTargetRange);
 
@@ -204,27 +205,29 @@ public class Player : Character
                 transform.Translate(_moveDir * _moveSpeed * Time.deltaTime);
                 return;
             }
-        }
+        }*/
 
-        Character targetCharacter = _targetCollider.GetComponent<Character>();
+        /*Character targetCharacter = _targetCollider.GetComponent<Character>();
         if (targetCharacter == null)
         {
             _targetCollider = null;
             return;
-        }
+        }*/
 
-        float dist = Vector2.Distance(_targetCollider.transform.position, transform.position);
+        // 타겟이 사거리 안에 들어오면 공격 상태로
+        float dist = Vector2.Distance(transform.position, _movement.Target.transform.position);
 
         if (dist <= _data.AtkRange)
         {
-            _animator.SetBool("IdleState", true);
+            _animator.SetIdle(true);
+            _movement.SetMovementActive(false);
             _curState = CharacterState.Attack;
         }
-        else
+        /*else
         {
             Vector2 dir = (_targetCollider.transform.position - transform.position).normalized;
             transform.Translate(dir * _moveSpeed * Time.deltaTime);
-        }
+        }*/
 
         /*if (_targetCollider == null)
         {
@@ -269,25 +272,14 @@ public class Player : Character
 
     private void EnteringRerollMovement()
     {
-        Vector3 dir = _nextWayPoint - transform.position;
-        float distanceCurFrame = _moveSpeed * Time.deltaTime;
+        _playerMovement.EnteringRerollMovement(_nextWayPoint);
 
-        if (dir.magnitude <= distanceCurFrame)
+        if (_playerMovement.IsArrived())
         {
-            // 목표 위치까지 남은 거리가 이번 프레임 이동 거리보다 작으면 정확히 도착
-            transform.position = _nextWayPoint;
-            if (!_isArrived)
-            {
-                _isArrived = true;
-                _isInBattle = false;
-                InGamePlayerSpawn parent = transform.parent.GetComponent<InGamePlayerSpawn>();
-                parent.CheckNextWaveReady();
-            }
-        }
-        else
-        {
-            // 아직 목표까지 멀면 계속 이동
-            transform.Translate(dir.normalized * distanceCurFrame);
+            _isArrived = true;
+            _isInBattle = false;
+            InGamePlayerSpawn parent = transform.parent.GetComponent<InGamePlayerSpawn>();
+            parent.CheckNextWaveReady();
         }
     }
 
@@ -361,7 +353,7 @@ public class Player : Character
     protected override void AttackStateAction()
     {
         // 타겟 상태 체크
-        CheckTargetStatus();
+        //CheckTargetStatus();
 
         // 공격 중이면 애니메이션 끝났는지 체크
         if (CheckAttackAnimation())
@@ -409,11 +401,14 @@ public class Player : Character
 
     protected override void StartAttack()
     {
-        if (!_targetCollider.enabled)
+        if (_movement.Target == null)//!_movement.TargetColliderEnable)
+        {
+            _curState = CharacterState.Move;
             return;
+        }
 
         _isAttacking = true;
-        _attackTarget = _targetCollider;
+        _attackTarget = _movement.Target.GetComponent<Collider2D>();
 
         if (_playerMp.GetCurMp() >= _data.Mp)
         {
@@ -636,18 +631,10 @@ public class Player : Character
 
         while (true)
         {
-            AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
-
-            // Intro로 진입한 적 있는지 체크
-            if (stateInfo.IsName("Intro"))
+            // Intro를 진입했다가 빠져나온 순간
+            if (_animator.HasEnteredThenExited("Intro", ref entered))
             {
-                entered = true;
-            }
-            else
-            {
-                // Intro 끝나면 move 상태로 변경
-                if (entered)
-                    break;
+                break;
             }
 
             yield return null;

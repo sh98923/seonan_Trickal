@@ -1,8 +1,6 @@
 using System;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
-using UnityEngine.UI;
 
 public enum CharacterState
 {
@@ -26,9 +24,9 @@ public class Character : MonoBehaviour, ITrackable
     }
 
     // 컴포넌트
-    protected Animator _animator;
+    protected CharacterMovement _movement;
+    protected CharacterAnimator _animator;
     protected CharacterAction[] _action;
-    protected Collider2D _targetCollider;
     protected SortingGroup _sortingGroup;
     protected DamageReceiver _damageReceiver;
 
@@ -36,6 +34,11 @@ public class Character : MonoBehaviour, ITrackable
     private CircleCollider2D _myCollider;
     private Transform _atkPoint;
     private Transform _centerPoint;
+    private Transform _rootPoint;
+    public Vector3 RootPos
+    {
+        get { return _rootPoint.transform.position; }
+    }
 
     // 속성
     public CharacterData Data => _data;
@@ -57,7 +60,7 @@ public class Character : MonoBehaviour, ITrackable
     // 스탯
     protected CharacterData _data;
     protected Vector3 _scale;
-    protected Vector2 _moveDir;
+    //protected Vector2 _moveDir;
     protected ActionSlot _actionType = ActionSlot.Attack;
     protected CharacterState _curState = CharacterState.Idle;
     public CharacterState CurState
@@ -66,7 +69,7 @@ public class Character : MonoBehaviour, ITrackable
     }
     protected readonly float _findTargetRange = 5.0f;
     protected float _maxHp = 0.0f;
-    protected float _moveSpeed = 4.0f;
+   // protected float _moveSpeed = 4.0f;
 
     protected bool _isAttacking = false;
     private bool _isDead = false;
@@ -80,12 +83,14 @@ public class Character : MonoBehaviour, ITrackable
         _scale = transform.localScale;
         _atkPoint = transform.Find("AtkPos");
         _centerPoint = transform.Find("CenterPos");
+        _rootPoint = transform.Find("Root");
         _action = GetComponents<CharacterAction>();
-        _animator = GetComponent<Animator>();
         _myCollider = GetComponent<CircleCollider2D>();
         _myCollider.radius = 0.35f;
         _sortingGroup = GetComponent<SortingGroup>();
 
+        _movement = GetComponent<CharacterMovement>();
+        _animator = GetComponent<CharacterAnimator>();
         _characterVisual = GetComponent<CharacterGraphics>();
 
         _damageReceiver = GetComponent<DamageReceiver>();
@@ -106,7 +111,13 @@ public class Character : MonoBehaviour, ITrackable
 
     protected void Update()
     {
-        FlipToTarget();
+        if(_movement.HasTarget || !_isDead)
+        {
+            if (_movement.Target != null)
+            {
+                _characterVisual.FlipTo(transform, _movement.Target.transform);
+            }
+        }
 
         switch (_curState)
         {
@@ -144,20 +155,20 @@ public class Character : MonoBehaviour, ITrackable
     // FSM 상태 관련 함수
     protected virtual void IdleStateAction()
     {
-        _animator.SetBool("IdleState", true);
+        _animator.SetIdle(true);
         if (BattleStateManager.Instance.IsEnteringBattle)
             _curState = CharacterState.Move;
     }
 
     protected virtual void MoveStateAction()
     {
-        _animator.SetBool("IdleState", false);
+        _animator.SetIdle(false);
     }
 
     protected virtual void AttackStateAction()
     {
         // 타겟 상태 체크
-        CheckTargetStatus();
+        //CheckTargetStatus();
 
         // 공격 중이면 애니메이션 끝났는지 체크
         if (CheckAttackAnimation())
@@ -169,29 +180,29 @@ public class Character : MonoBehaviour, ITrackable
         StartAttack();
     }
 
-    protected void CheckTargetStatus()
+    /*protected void CheckTargetStatus()
     {
         // 타겟 없거나 죽었으면 _targetCollider는 null로 초기화
+        if(!_movement.HasTarget && !_movement.TargetColliderEnable)
         if (_targetCollider != null && !_targetCollider.enabled)
         { 
             _targetCollider = null;
         }
-    }
+    }*/
 
     protected bool CheckAttackAnimation()
     {
         if (!_isAttacking)
             return false;
 
-        AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
-        bool hasAnimationEnded = stateInfo.normalizedTime >= 1.0f;
-
         // 애니메이션 끝났는데 타겟이 없다면 이동 상태로
-        if (hasAnimationEnded)
+        if (_animator.IsAnimationFinished())
         {
             _isAttacking = false;
 
-            if (_targetCollider == null)
+            float dist = Vector2.Distance(transform.position, _movement.Target.transform.position);
+
+            if (dist > _data.AtkRange)
             { 
                 _curState = CharacterState.Move; 
             }
@@ -202,8 +213,11 @@ public class Character : MonoBehaviour, ITrackable
 
     protected virtual void StartAttack()
     {
-        if (!_targetCollider.enabled)
+        if (!_movement.TargetColliderEnable)
+        {
+            _curState = CharacterState.Move;
             return;
+        }
 
         _isAttacking = true;
         _animator.SetTrigger("Attack");
@@ -214,7 +228,7 @@ public class Character : MonoBehaviour, ITrackable
         if (_isDead) return;
 
         _isDead = true; 
-        _targetCollider = null;
+
         _onDie?.Invoke();
         _animator.SetTrigger("Dead");
         _myCollider.enabled = false;
@@ -223,22 +237,7 @@ public class Character : MonoBehaviour, ITrackable
         Despawn();
     }
 
-    // 타겟 위치에 맞게 Flip
-    private void FlipToTarget()
-    {
-        if (_targetCollider == null || _isDead)
-        {
-            return;
-        }
-
-        _scale.x = (_targetCollider.transform.position.x < transform.position.x)
-            ? Mathf.Abs(_scale.x)
-            : -Mathf.Abs(_scale.x);
-
-        transform.localScale = _scale;
-    }
-
-    protected Collider2D FindTarget(string targetTag, float range)
+    /*protected Collider2D FindTarget(string targetTag, float range)
     {
         Vector3 pos = transform.position;
         pos.y += _colliderOffset;
@@ -260,7 +259,7 @@ public class Character : MonoBehaviour, ITrackable
         }
 
         return closestTarget;
-    }
+    }*/
 
     // 공격 처리
     public void TakeDamage(float damage)
@@ -287,20 +286,8 @@ public class Character : MonoBehaviour, ITrackable
     public void SetAnimatorSpeed(float speed)
     {
         _animLengthRate = 1 / speed;
-        _animator.speed = speed;
+        _animator.SetSpeed(speed);
     }
-
-    /*private IEnumerator SlowAttackCoroutine(float duration, float speed)
-    {
-        _animLengthRate = 1 / speed;
-        _animator.speed = speed;
-
-        yield return new WaitForSeconds(duration);
-
-        _animLengthRate = 1.0f;
-        _animator.speed = 1.0f;
-        _slowCoroutine = null;
-    }*/
 
     // 공격 이벤트
     public virtual void OnAttack()

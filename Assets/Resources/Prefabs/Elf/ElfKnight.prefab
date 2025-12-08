@@ -490,6 +490,8 @@ GameObject:
   - component: {fileID: 8275459922140057098}
   - component: {fileID: -8788914241172359463}
   - component: {fileID: -8813530395880660044}
+  - component: {fileID: -6923786334858024652}
+  - component: {fileID: 3947615557269300174}
   m_Layer: 6
   m_Name: ElfKnight
   m_TagString: Player
@@ -669,6 +671,30 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f261416a9d0f4cb44b29179ec8ba336c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-6923786334858024652
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1195749144708485587}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03b3481c0a041864eb22aeba831e8252, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3947615557269300174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1195749144708485587}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f3f1571115a194408dfc539fd171c2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1197137325883799076

@@ -652,6 +652,8 @@ GameObject:
   - component: {fileID: 2376626467169044744}
   - component: {fileID: -5058305545766615022}
   - component: {fileID: -3853790529594078264}
+  - component: {fileID: 2825864857891770140}
+  - component: {fileID: 2550188912190707201}
   m_Layer: 7
   m_Name: SkeltonWarrior
   m_TagString: Monster
@@ -794,6 +796,30 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 83dc95816ca11784797797fa8d5bbe05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2825864857891770140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2076918015233806498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03b3481c0a041864eb22aeba831e8252, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2550188912190707201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2076918015233806498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee337a5874a58e4409a65d623dd6e9c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2096287467192207827

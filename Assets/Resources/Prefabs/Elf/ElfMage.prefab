@@ -3672,6 +3672,8 @@ GameObject:
   - component: {fileID: 8977475225632959539}
   - component: {fileID: 4316354597945527903}
   - component: {fileID: 610296830897352181}
+  - component: {fileID: 6409167159803147899}
+  - component: {fileID: -5424353666471762303}
   m_Layer: 6
   m_Name: ElfMage
   m_TagString: Player
@@ -3851,6 +3853,30 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f261416a9d0f4cb44b29179ec8ba336c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6409167159803147899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7804876337548311016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03b3481c0a041864eb22aeba831e8252, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-5424353666471762303
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7804876337548311016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f3f1571115a194408dfc539fd171c2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &7971183601105534870

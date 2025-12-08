@@ -35,16 +35,15 @@ public class CharacterAttack : CharacterAction
         }
     }
 
-    public override void SetAttackInfo(Collider2D target, ActionSlot type, float damage)
+    public override void SetAttackInfo(Character target, ActionSlot type, float damage)
     {
         _type = type;
         _target = null;
         _damage = damage;
-        _targets = new List<Character>();
 
         if (target != null)
         {
-            _target = target.GetComponent<Character>();
+            _target = target;
         }
         else
         {

@@ -3660,6 +3660,9 @@ GameObject:
   - component: {fileID: 2852010732049309946}
   - component: {fileID: 3473778145120600839}
   - component: {fileID: 4320296803695186080}
+  - component: {fileID: -4930722250891099116}
+  - component: {fileID: -8615806810498262230}
+  - component: {fileID: 8331557571009850560}
   m_Layer: 7
   m_Name: SkeltonArcher
   m_TagString: Monster
@@ -3802,6 +3805,42 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e750a4276c1574d468bb8cfcc43809f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-4930722250891099116
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7798869750781486092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03b3481c0a041864eb22aeba831e8252, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-8615806810498262230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7798869750781486092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee337a5874a58e4409a65d623dd6e9c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8331557571009850560
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7798869750781486092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd0fe78b3186e06489a13f0419a3a629, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &7812298233483762025

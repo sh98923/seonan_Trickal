@@ -132,7 +132,7 @@ public class CharacterBuff : CharacterAction
 
     private void SoloBuff()
     {
-        Player player = this.GetComponent<Player>();
+        Player player = GetComponent<Player>();
 
         ApplyBuff(player);
     }

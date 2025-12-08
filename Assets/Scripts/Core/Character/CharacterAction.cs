@@ -46,7 +46,7 @@ public abstract class CharacterAction : MonoBehaviour
     {
     }
 
-    public virtual void SetAttackInfo(Collider2D target, ActionSlot type, float damage)
+    public virtual void SetAttackInfo(Character target, ActionSlot type, float damage)
     {
     }
 

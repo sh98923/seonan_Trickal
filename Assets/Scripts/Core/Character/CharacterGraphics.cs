@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
 
 public enum HitType
 {
@@ -33,43 +31,67 @@ public class CharacterGraphics : MonoBehaviour
     private Dictionary<HitType, StatusEffectData> _statusEndTimes = new Dictionary<HitType, StatusEffectData>();
 
     private Character _character;
-    private SpriteRenderer[] _spriteRenderers;
-    private SpriteRenderer _shadowSprite; 
     private Coroutine _statusRoutine;
+    private SpriteRenderer _shadowSprite;
+    private SpriteRenderer[] _spriteRenderers;
 
-    private Color _normalHitColor = new Color(1.0f, 0.41f, 0.38f);      // 빨간색 계열
-    private Color _fireHitColor = new Color(1.0f, 0.56f, 0.32f);        // 주황색 계열
-    private Color _poisonHitColor = new Color(0.72f, 0.45f, 1.0f);      // 보라색 계열
-    private Color _coldHitColor = new Color(0.5f, 0.8f, 1.0f);          // 파란색 계열
-    private Color _stoneHitColor = new Color(0.6f, 0.6f, 0.6f);         // 회색 계열
+    private readonly Color _normalHitColor = new Color(1.0f, 0.41f, 0.38f);      // 빨간색 계열
+    private readonly Color _fireHitColor = new Color(1.0f, 0.56f, 0.32f);        // 주황색 계열
+    private readonly Color _poisonHitColor = new Color(0.72f, 0.45f, 1.0f);      // 보라색 계열
+    private readonly Color _coldHitColor = new Color(0.5f, 0.8f, 1.0f);          // 파란색 계열
+    private readonly Color _stoneHitColor = new Color(0.6f, 0.6f, 0.6f);         // 회색 계열
 
     private Color _currentColor = new Color();
-    private Color[] _originalColors;
-
-    // 색상
     private Color _shadowOriginalColor = Color.white;
+    private Color[] _originalColors;
 
     private int _hitCount = 0;
     private bool _isStatusActive = false;
 
     private void Awake()
     {
+        CacheComponents();
+        FilterVisibleSprites();
+        CacheOriginalColors();
+    }
+
+    private void OnEnable()
+    {
+        RevertSpriteColor();
+    }
+
+    private void CacheComponents()
+    {
         _character = GetComponent<Character>();
         _spriteRenderers = GetComponentsInChildren<SpriteRenderer>(true);
 
-        List<SpriteRenderer> spritesWithoutShadow = new List<SpriteRenderer>();
+        foreach (SpriteRenderer sprite in _spriteRenderers)
+        {
+            if (sprite.name == "Shadow")
+            {
+                _shadowSprite = sprite;
+                break;
+            }
+        }
+    }
+
+    private void FilterVisibleSprites()
+    {
+        List<SpriteRenderer> result = new List<SpriteRenderer>();
 
         foreach (SpriteRenderer sprite in _spriteRenderers)
         {
-            if (sprite != _shadowSprite && sprite.name != "SkillEffect")
-            {
-                spritesWithoutShadow.Add(sprite);
-            }
+            if (sprite.name == "SkillEffect")
+                continue;
+
+            result.Add(sprite);
         }
 
-        _spriteRenderers = spritesWithoutShadow.ToArray();
+        _spriteRenderers = result.ToArray();
+    }
 
-        // 스프라이트 원본 색상 저장
+    private void CacheOriginalColors()
+    {
         _originalColors = new Color[_spriteRenderers.Length];
 
         for (int i = 0; i < _spriteRenderers.Length; i++)
@@ -78,29 +100,7 @@ public class CharacterGraphics : MonoBehaviour
         }
     }
 
-    private void OnEnable()
-    {
-        /*foreach (SpriteRenderer sprite in _spriteRenderers)
-        {
-            Color color = sprite.color;
-
-            if (sprite.name == "Shadow")
-            {
-                sprite.color = _shadowOriginalColor;
-                continue;
-            }
-
-            color.a = 1.0f;
-            sprite.color = color;
-        }*/
-    }
-
-    public void PlayFlashHit()
-    {
-        PlayFlashHit(HitType.Normal);
-    }
-
-    public void PlayFlashHit(HitType hitType, float duration = 0.15f)
+    public void PlayFlashHit(HitType hitType = HitType.Normal, float duration = 0.15f)
     {
         _hitCount++;
         StartCoroutine(FlashHitColor(hitType, duration));
@@ -126,16 +126,15 @@ public class CharacterGraphics : MonoBehaviour
         yield return new WaitForSeconds(duration);
 
         // 마지막 피격이 끝나야 색 복구
-        _hitCount--;
+        _hitCount = Mathf.Max(0, _hitCount - 1);
+
         if (_hitCount <= 0)
         {
-            _hitCount = 0;
-
             // Cold 유지 중이면 flash 후 cold 색 복귀
             if (_isStatusActive)
             {
                 Color curColor = GetCurrentColor();
-                SetSpriteColor(curColor);
+                SetSpriteColor(_currentColor);
             }
             else
             {
@@ -243,6 +242,9 @@ public class CharacterGraphics : MonoBehaviour
     {
         foreach (SpriteRenderer sprite in _spriteRenderers)
         {
+            if (sprite == _shadowSprite)
+                continue;
+
             sprite.color = hitColor;
         }
     }
@@ -269,12 +271,27 @@ public class CharacterGraphics : MonoBehaviour
         dotText.GetComponent<DotText>().Initialize(damage, worldPos);
     }
 
+    /* ───────────────────────────
+     *        타겟에게 플립
+     * ─────────────────────────── */
+    public void FlipTo(Transform self, Transform target)
+    {
+        if (target == null) return;
+
+        Vector3 scale = self.localScale;
+        scale.x = (target.position.x < self.position.x)
+            ? Mathf.Abs(scale.x)
+            : -Mathf.Abs(scale.x);
+
+        self.localScale = scale;
+    }
+
+    /* ───────────────────────────
+     *         페이드 아웃
+     * ─────────────────────────── */
     public void StartFadeOutAndDisable()
     {
-        if (_character != null)
-        { 
-            StartCoroutine(FadeOutAndDisable());
-        }
+        StartCoroutine(FadeOutAndDisable());
     }
 
     private IEnumerator FadeOutAndDisable()
@@ -282,35 +299,23 @@ public class CharacterGraphics : MonoBehaviour
         yield return new WaitForSeconds(2.0f);
 
         float timer = 0.0f;
-        Color shadowOriginalColor = _shadowSprite != null ? _shadowSprite.color : Color.white;
+        Color shadowOriginal = _shadowSprite ? _shadowSprite.color : Color.white;
 
         while (timer < _fadeDuration)
         {
             timer += Time.deltaTime;
+            float time = Mathf.Clamp01(timer / _fadeDuration);
+
             foreach (SpriteRenderer sprite in _spriteRenderers)
             {
-                UpdateSpriteAlpha(sprite, shadowOriginalColor, timer);
+                Color newColor = sprite.color;
+                newColor.a = Mathf.Lerp(1.0f, 0.0f, time);
+                sprite.color = newColor;
             }
+
             yield return null;
         }
 
         gameObject.SetActive(false);
-    }
-
-    private void UpdateSpriteAlpha(SpriteRenderer sprite, Color shadowColor, float timer)
-    {
-        Color color = sprite.color;
-        float progress = Mathf.Clamp01(timer / _fadeDuration);
-
-        if (sprite == _shadowSprite)
-        {
-            color.a = Mathf.Lerp(shadowColor.a, 0.0f, progress);
-        }
-        else
-        {
-            color.a = Mathf.Lerp(1.0f, 0.0f, progress);
-        }
-
-        sprite.color = color;
     }
 }

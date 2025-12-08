@@ -4,40 +4,31 @@ public class Monster : Character
 {
     private float _atk = 0.0f;
 
-    private void Awake()
-    {
-        base.Awake();
-        _moveDir = Vector2.left;
-    }
-
     // Idle 상태면 Battle모드일 때 move로 넘어옴
     protected override void MoveStateAction()
     {
         base.MoveStateAction();
 
-        if (_targetCollider == null)
+        if (_movement.HasTarget)
         {
-            _targetCollider = FindTarget(_data.Target, _findTargetRange);
-            transform.Translate(_moveDir * _moveSpeed * Time.deltaTime);
+            // 타겟이 사거리 안에 들어오면 공격 상태로
+            float dist = Vector2.Distance(transform.position, _movement.Target.transform.position);
+            if (dist <= _data.AtkRange)
+            {
+                _animator.SetIdle(true);
+                _movement.SetMovementActive(false);
+                _curState = CharacterState.Attack;
+            }
         }
         else
         {
-            if (FindTarget(_data.Target, _data.AtkRange) == null)
-            {
-                Vector2 dir = _targetCollider.transform.position - transform.position;
-                transform.Translate(dir.normalized * _moveSpeed * Time.deltaTime);
-            }
-            else
-            {
-                _animator.SetBool("IdleState", true);
-                _curState = CharacterState.Attack;
-            }
+            _movement.SetMovementActive(true);
         }
     }
 
     public override void OnAttack()
     {
-        _action[(int)ActionCategory.Attack].SetAttackInfo(_targetCollider, _actionType, _atk);
+        _action[(int)ActionCategory.Attack].SetAttackInfo(_movement.Target, _actionType, _atk);
 
         base.OnAttack();
     }

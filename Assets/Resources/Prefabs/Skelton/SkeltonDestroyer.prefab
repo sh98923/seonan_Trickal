@@ -3877,6 +3877,8 @@ GameObject:
   - component: {fileID: 1752963833904088602}
   - component: {fileID: -5654117201104659125}
   - component: {fileID: -8554927239819622707}
+  - component: {fileID: 9160177068392092525}
+  - component: {fileID: -7032481435988424570}
   m_Layer: 7
   m_Name: SkeltonDestroyer
   m_TagString: Monster
@@ -4019,6 +4021,30 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 83dc95816ca11784797797fa8d5bbe05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &9160177068392092525
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8651998618274096369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03b3481c0a041864eb22aeba831e8252, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-7032481435988424570
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8651998618274096369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee337a5874a58e4409a65d623dd6e9c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &8813396988767804597

@@ -1,6 +1,6 @@
 Key,EngName,PrefabPath,ProjectileKey,Layer,AttackType,Target,BaseSpritePath,IsRangeAttack,BaseAttackEffect,BaseFlashHit,BaseSpeed,SpawnLine,Hp,HpPerWave,HpGrowthRate,Atk,AtkPerWave,AtkGrowthRate,AtkRange,CriRate
 200,SkeltonMinion,Prefabs/Skelton/SkeltonMinion,,Middle,Melee,Player,,FALSE,Damage,Normal,0,1,70,20,1.1,5,3,1.1,1.35,0.15
-201,SkeltonArcher,Prefabs/Skelton/SkeltonArcher,Arrow,Back,Range,Player,Sprites/Attack/Arrows/SkeltonBaseAtk,TRUE,Damage,Normal,8,2,100000,20,1.1,7,3,1.1,4,0.15
+201,SkeltonArcher,Prefabs/Skelton/SkeltonArcher,Arrow,Back,Range,Player,Sprites/Attack/Arrows/SkeltonBaseAtk,TRUE,Damage,Normal,8,2,80,20,1.1,7,3,1.1,4,0.15
 202,SkeltonDefender,Prefabs/Skelton/SkeltonDefender,,Front,Melee,Player,,FALSE,Damage,Normal,0,0,150,20,1.1,3,3,1.1,1.35,0.15
 203,SkeltonWarrior,Prefabs/Skelton/SkeltonWarrior,,Middle,Melee,Player,,FALSE,Damage,Normal,0,1,300,20,1.1,10,3,1.1,1.35,0.15
 204,SkeltonDestroyer,Prefabs/Skelton/SkeltonDestroyer,,Front,Melee,Player,,FALSE,Damage,Normal,0,0,150,20,1.1,15,3,1.1,1.35,0.15
