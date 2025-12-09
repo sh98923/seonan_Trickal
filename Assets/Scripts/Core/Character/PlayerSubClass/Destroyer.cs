@@ -34,6 +34,10 @@ public class Destroyer : Player
         _hitCount = 0;
         _ultPhasePower = _ultWeakPhase;
         _yOffsetLimit = _yOffsetLimitWeakPhase;
+
+        _targets[(int)ActionSlot.Attack] = GetComponent<NearestTargetSelector>();
+        _targets[(int)ActionSlot.Skill] = GetComponent<NearestTargetSelector>();
+        _targets[(int)ActionSlot.Ult] = GetComponent<NearestTargetSelector>();
     }
 
     // CalculateDamage는 데미지 담당

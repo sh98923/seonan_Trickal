@@ -3,11 +3,6 @@ using System.Collections.Generic;
 
 public class NearestTargetSelector : TargetSelector
 {
-    private void Awake()
-    {
-        _characters = InGameManager.Instance.Trackables;
-    }
-
     public override Character GetTarget(Character self)
     {
         Character target = GetCurrentTarget();
@@ -30,9 +25,9 @@ public class NearestTargetSelector : TargetSelector
 
             float dist = Vector2.Distance(self.transform.position, _characters[i].Object.transform.position);
             
-            // 거리 5 이하인 경우만 고려
+           /* // 거리 8 이하인 경우만 고려
             if (dist > _findTargetRange)
-                continue;
+                continue;*/
 
             if (dist < nearestDist)
             {

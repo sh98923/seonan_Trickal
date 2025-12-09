@@ -3586,6 +3586,7 @@ GameObject:
   - component: {fileID: 3626154135425162225}
   - component: {fileID: 5871105513782503003}
   - component: {fileID: 8882364615140691472}
+  - component: {fileID: 773135660478736773}
   m_Layer: 6
   m_Name: ElfDestroyer
   m_TagString: Player
@@ -3801,6 +3802,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8f3f1571115a194408dfc539fd171c2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &773135660478736773
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8043560565578099387}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd0fe78b3186e06489a13f0419a3a629, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &8045668472857019429

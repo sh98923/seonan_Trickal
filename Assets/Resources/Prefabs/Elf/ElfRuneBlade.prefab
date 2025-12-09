@@ -3086,7 +3086,7 @@ GameObject:
   - component: {fileID: 4577053302281662716}
   - component: {fileID: 5342872654464154698}
   - component: {fileID: 2152792260088006906}
-  - component: {fileID: 9134281922181241209}
+  - component: {fileID: 374742232437723753}
   m_Layer: 6
   m_Name: ElfRuneBlade
   m_TagString: Player
@@ -3292,7 +3292,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f3f1571115a194408dfc539fd171c2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &9134281922181241209
+--- !u!114 &374742232437723753
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3301,7 +3301,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6587182555845784622}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd0fe78b3186e06489a13f0419a3a629, type: 3}
+  m_Script: {fileID: 11500000, guid: 83711b0386c37214cb889e2efecb3d55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &6686995577533898971

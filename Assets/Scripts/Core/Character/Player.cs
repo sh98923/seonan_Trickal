@@ -20,7 +20,6 @@ public class Player : Character
     protected PlayerMp _playerMp;
     protected Collider2D _attackTarget;
     protected SkillEffectController _skillEffectController;
-
     private PlayerMovement _playerMovement;
 
     private Vector3 _originalWayPoint = new Vector3();
@@ -92,7 +91,7 @@ public class Player : Character
     }
 
     protected void Update()
-    {
+    { 
         base.Update();
 
         if (Input.GetKeyDown(KeyCode.S))
@@ -188,12 +187,6 @@ public class Player : Character
 
     private void BattleMovement()
     {
-        // 전체 전역 스테이트 전환은 한번만
-        if (BattleStateManager.Instance.CurrentState != BattleState.Battle)
-        { 
-            BattleStateManager.Instance.SetState(BattleState.Battle);
-        }
-
         // 이미 전투 상태인데 타겟이 죽거나 null이면 재탐색
         /*if (!_movement.HasTarget || !_movement.TargetColliderEnable)
         {
@@ -218,7 +211,13 @@ public class Player : Character
         float dist = Vector2.Distance(transform.position, _movement.Target.transform.position);
 
         if (dist <= _data.AtkRange)
-        {
+        {   
+            // 전체 전역 스테이트 전환은 한번만
+            if (BattleStateManager.Instance.CurrentState != BattleState.Battle)
+            {
+                BattleStateManager.Instance.SetState(BattleState.Battle);
+            }
+
             _animator.SetIdle(true);
             _movement.SetMovementActive(false);
             _curState = CharacterState.Attack;
@@ -227,9 +226,9 @@ public class Player : Character
         {
             Vector2 dir = (_targetCollider.transform.position - transform.position).normalized;
             transform.Translate(dir * _moveSpeed * Time.deltaTime);
-        }*/
+        }
 
-        /*if (_targetCollider == null)
+        if (_targetCollider == null)
         {
             _targetCollider = FindTarget(_data.Target, _findTargetRange);
             transform.Translate(_moveDir * _moveSpeed * Time.deltaTime);
@@ -274,7 +273,7 @@ public class Player : Character
     {
         _playerMovement.EnteringRerollMovement(_nextWayPoint);
 
-        if (_playerMovement.IsArrived())
+        if (!_isArrived && _playerMovement.IsArrived())
         {
             _isArrived = true;
             _isInBattle = false;
@@ -350,65 +349,9 @@ public class Player : Character
         
     }*/
 
-    protected override void AttackStateAction()
-    {
-        // 타겟 상태 체크
-        //CheckTargetStatus();
-
-        // 공격 중이면 애니메이션 끝났는지 체크
-        if (CheckAttackAnimation())
-        {
-            return;
-        }
-
-        // 공격 시작
-        StartAttack();
-        /*if (!_targetCollider.enabled)
-        {
-            _targetCollider = null;
-            _curState = CharacterState.Move;
-        }*/
-
-        /*// 몬스터 전멸
-        if (BattleStateManager.Instance.CurrentState == BattleState.Victory)
-        {
-            _curState = CharacterState.Move;
-            return;
-        }*/
-
-        /*if (_isAttacking)
-            return;
-
-        _isAttacking = true;
-
-        if (_playerMp.GetCurMp() >= _data.Mp)
-        {
-            _actionType = ActionSlot.Skill;
-            _animator.SetTrigger("Skill");
-        }
-        // 궁극기는 업그레이드 3레벨, battle 상태일 때 UI 터치 시 발동 (쿨타임 있음)
-        else if (Input.GetKeyDown(KeyCode.S)) 
-        {
-            _actionType = ActionSlot.Ult;
-            _animator.SetTrigger("Ult");
-        }
-        else
-        {
-            _actionType = ActionSlot.Base;
-            _animator.SetTrigger("Attack");
-        }*/
-    }
-
     protected override void StartAttack()
     {
-        if (_movement.Target == null)//!_movement.TargetColliderEnable)
-        {
-            _curState = CharacterState.Move;
-            return;
-        }
-
         _isAttacking = true;
-        _attackTarget = _movement.Target.GetComponent<Collider2D>();
 
         if (_playerMp.GetCurMp() >= _data.Mp)
         {
@@ -423,10 +366,31 @@ public class Player : Character
             _actionType = ActionSlot.Attack;
         }
 
+        _attackTarget = _targets[(int)_actionType].GetTarget(this).GetComponent<Collider2D>();
         // 트리거 실행 전에 항상 이펙트 정렬 세팅
         _skillEffectController.SetSortingPosition(_data.IsEffectInFront[(int)_actionType]);
         _animator.SetTrigger(_actionType.ToString());
     }
+
+    /*_isAttacking = true;
+    _attackTarget = _movement.Target.GetComponent<Collider2D>();
+
+    if (_playerMp.GetCurMp() >= _data.Mp)
+    {
+        _actionType = ActionSlot.Skill;
+    }
+    else if (Input.GetKeyDown(KeyCode.S))
+    {
+        _actionType = ActionSlot.Ult;
+    }
+    else
+    {
+        _actionType = ActionSlot.Attack;
+    }
+
+    // 트리거 실행 전에 항상 이펙트 정렬 세팅
+    _skillEffectController.SetSortingPosition(_data.IsEffectInFront[(int)_actionType]);
+    _animator.SetTrigger(_actionType.ToString());*/
 
     public void OnBuff()
     {

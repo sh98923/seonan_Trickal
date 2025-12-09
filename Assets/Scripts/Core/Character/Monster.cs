@@ -4,6 +4,13 @@ public class Monster : Character
 {
     private float _atk = 0.0f;
 
+    private void Awake()
+    {
+        base.Awake();
+
+        _targets[(int)ActionSlot.Attack] = GetComponent<NearestTargetSelector>();
+    }
+
     // Idle 상태면 Battle모드일 때 move로 넘어옴
     protected override void MoveStateAction()
     {

@@ -1,7 +1,5 @@
-using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using static UnityEngine.GraphicsBuffer;
 
 public class CharacterMovement : MonoBehaviour
 {
@@ -37,7 +35,12 @@ public class CharacterMovement : MonoBehaviour
         }
 
         _self = GetComponent<Character>();
-        _targetSelector = GetComponent<TargetSelector>();
+    }
+
+    private void Start()
+    {
+        _targetSelector = _self.GetSelector(ActionSlot.Attack);
+        print(_self.name + " : " + _targetSelector.GetType().Name);
     }
 
     protected void Update()
@@ -47,14 +50,14 @@ public class CharacterMovement : MonoBehaviour
 
         if (BattleStateManager.Instance.CurrentState == BattleState.EnteringReroll)
         {
-            HandleEnteringRerollState();
+            ResetForReroll();
             return;
         }
 
-        HandleBattleState();
+        UpdateCombatMovement();
     }
 
-    private void HandleBattleState()
+    private void UpdateCombatMovement()
     {
         switch (_self.CurState)
         {
@@ -67,7 +70,6 @@ public class CharacterMovement : MonoBehaviour
                 break;
 
             case CharacterState.Attack:
-                // 공격 중에는 이동 멈춤
                 _isMoving = false;
 
                 // 공격 중 타겟이 죽었으면 타겟 초기화 후 이동 가능하게 설정
@@ -104,7 +106,7 @@ public class CharacterMovement : MonoBehaviour
         }
     }
 
-    private void HandleEnteringRerollState()
+    private void ResetForReroll()
     {
         _target = null;
         _isMoving = true;
@@ -134,27 +136,4 @@ public class CharacterMovement : MonoBehaviour
     {
         _isMoving = active;
     }
-
-    /*private void EnteringRerollMovement()
-    {
-        Vector3 dir = _nextWayPoint - transform.position;
-        float distanceCurFrame = _moveSpeed * Time.deltaTime;
-
-        if (dir.magnitude <= distanceCurFrame)
-        {
-            transform.position = _nextWayPoint;
-            if (!_isArrived)
-            {
-                _isArrived = true;
-                _isEnteringReroll = false;
-                _isInBattle = false;
-                InGamePlayerSpawn parent = transform.parent.GetComponent<InGamePlayerSpawn>();
-                parent.CheckNextWaveReady();
-            }
-        }
-        else
-        {
-            transform.Translate(dir.normalized * distanceCurFrame);
-        }
-    }*/
 }

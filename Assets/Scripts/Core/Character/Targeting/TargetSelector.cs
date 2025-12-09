@@ -4,9 +4,14 @@ using UnityEngine;
 public abstract class TargetSelector : MonoBehaviour
 {
     protected List<ITrackable> _characters;
-    protected Character _currentTarget;
+    protected Character _currentTarget = null;
 
-    protected const float _findTargetRange = 5.0f;
+    protected const float _findTargetRange = 8.0f;
+
+    private void Awake()
+    {
+        _characters = InGameManager.Instance.Trackables;
+    }
 
     // 현재 타겟이 유효한지 확인하고 반환
     protected Character GetCurrentTarget()

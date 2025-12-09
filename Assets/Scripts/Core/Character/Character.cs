@@ -29,6 +29,7 @@ public class Character : MonoBehaviour, ITrackable
     protected CharacterAction[] _action;
     protected SortingGroup _sortingGroup;
     protected DamageReceiver _damageReceiver;
+    protected TargetSelector[] _targets = new TargetSelector[3];
 
     private CharacterGraphics _characterVisual;
     private CircleCollider2D _myCollider;
@@ -167,11 +168,8 @@ public class Character : MonoBehaviour, ITrackable
 
     protected virtual void AttackStateAction()
     {
-        // 타겟 상태 체크
-        //CheckTargetStatus();
-
         // 공격 중이면 애니메이션 끝났는지 체크
-        if (CheckAttackAnimation())
+        if (CheckAttackAnimationState())
         {
             return;
         }
@@ -180,17 +178,7 @@ public class Character : MonoBehaviour, ITrackable
         StartAttack();
     }
 
-    /*protected void CheckTargetStatus()
-    {
-        // 타겟 없거나 죽었으면 _targetCollider는 null로 초기화
-        if(!_movement.HasTarget && !_movement.TargetColliderEnable)
-        if (_targetCollider != null && !_targetCollider.enabled)
-        { 
-            _targetCollider = null;
-        }
-    }*/
-
-    protected bool CheckAttackAnimation()
+    protected bool CheckAttackAnimationState()
     {
         if (!_isAttacking)
             return false;
@@ -199,6 +187,12 @@ public class Character : MonoBehaviour, ITrackable
         if (_animator.IsAnimationFinished())
         {
             _isAttacking = false;
+
+            if(_movement.Target == null)
+            {
+                _curState = CharacterState.Move;
+                return true;
+            }
 
             float dist = Vector2.Distance(transform.position, _movement.Target.transform.position);
 
@@ -313,5 +307,10 @@ public class Character : MonoBehaviour, ITrackable
     private void Despawn()
     {
         _characterVisual.StartFadeOutAndDisable();
+    }
+
+    public TargetSelector GetSelector(ActionSlot slot)
+    {
+        return _targets[(int)slot];
     }
 }

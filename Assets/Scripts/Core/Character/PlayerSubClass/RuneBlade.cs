@@ -8,6 +8,15 @@ public class RuneBlade : Player
     private float _yOffsetLimit = 0.8f;     // Y 오차 범위
     private bool _canDamaged = false;
 
+    private void Awake()
+    {
+        base.Awake();
+
+        _targets[(int)ActionSlot.Attack] = GetComponent<FarthestTargetSelector>();
+        _targets[(int)ActionSlot.Skill] = GetComponent<FarthestTargetSelector>();
+        _targets[(int)ActionSlot.Ult] = GetComponent<FarthestTargetSelector>();
+    }
+
     protected void Update()
     {
         base.Update();
