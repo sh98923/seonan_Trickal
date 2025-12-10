@@ -1,10 +1,8 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 public class InGameCardPanel : CardPanel
 {
-    private BattleSetupPanel _parentPanel; 
-    private InGamePlayerSpawn _spawnParent;
+    private BattleSetupPanel _parentPanel;
 
     private void Awake()
     {
@@ -14,8 +12,6 @@ public class InGameCardPanel : CardPanel
         {
             this.enabled = false;
         }
-
-        _spawnParent = GameObject.Find("SpawnPlayer").GetComponent<InGamePlayerSpawn>();
     }
 
     protected override void InitUI()
@@ -36,19 +32,17 @@ public class InGameCardPanel : CardPanel
     {
         int cost = _playerData.UpgradeCost;
         string characterName = _playerData.EngName;
-        Transform existingChild = _spawnParent.transform.Find(characterName);
-        
+
         if (!InGameManager.Instance.TrySpendCoin(cost))
         {
             Debug.LogWarning("코인이 부족합니다.");
             return;
         }
 
-        if (!existingChild.gameObject.activeSelf)
+        if (InGamePlayerSpawn.Instance.IsPlayerInactive(characterName))
         {
             // 아직 비활성화 상태 → 유닛 배치
-            existingChild.gameObject.SetActive(true);
-            _spawnParent.SetActivePlayer(existingChild.gameObject);
+            InGamePlayerSpawn.Instance.SetActivePlayer(characterName);
             UpdateCardCostUI();
         }
         else

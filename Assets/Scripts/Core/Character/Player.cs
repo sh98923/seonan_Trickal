@@ -22,10 +22,9 @@ public class Player : Character
     protected SkillEffectController _skillEffectController;
     private PlayerMovement _playerMovement;
 
-    private Vector3 _originalWayPoint = new Vector3();
     private Vector3 _nextWayPoint = new Vector3();
 
-    private float _nextWaveDist = 0.0f; // 배틀 → 리롤 이동 시 플레이어 이동 거리 변수
+    private float _nextDestX = 0.0f; // 배틀 → 리롤 이동 시 플레이어 이동 거리 변수
     protected float _atkBuff = 1.0f;
     private float _damageReduction = 1.0f;
 
@@ -53,6 +52,8 @@ public class Player : Character
 
         _skillEffectController = GetComponent<SkillEffectController>();
 
+        //_nextWayPoint.y = transform.position.y;
+
         _scale.x *= -1;
         transform.localScale = _scale;
     }
@@ -60,7 +61,6 @@ public class Player : Character
     protected void Start()
     {
         _playerMovement = _movement as PlayerMovement;
-        _originalWayPoint = transform.position;
         _animator.SetTrigger("Intro");
     }
 
@@ -70,14 +70,14 @@ public class Player : Character
 
         BattleStateManager.Instance.OnReroll += EnableCollider;
         BattleStateManager.Instance.OnEnteringReroll += DisableCollider;
-        BattleStateManager.Instance.OnEnteringReroll += MoveToNextWaypoint;
+        //BattleStateManager.Instance.OnEnteringReroll += MoveToNextWaypoint;
     }
 
     protected void OnDisable()
     {
         BattleStateManager.Instance.OnReroll -= EnableCollider;
         BattleStateManager.Instance.OnEnteringReroll -= DisableCollider;
-        BattleStateManager.Instance.OnEnteringReroll -= MoveToNextWaypoint;
+        //BattleStateManager.Instance.OnEnteringReroll -= MoveToNextWaypoint;
     }
 
     protected void OnDestroy()
@@ -86,7 +86,7 @@ public class Player : Character
         {
             BattleStateManager.Instance.OnReroll -= EnableCollider;
             BattleStateManager.Instance.OnEnteringReroll -= DisableCollider;
-            BattleStateManager.Instance.OnEnteringReroll -= MoveToNextWaypoint;
+            //BattleStateManager.Instance.OnEnteringReroll -= MoveToNextWaypoint;
         }
     }
 
@@ -113,9 +113,10 @@ public class Player : Character
 
     private void MoveToNextWaypoint()
     {
+        /*_nextWayPoint = _originalWayPoint;
+        _nextWayPoint.x += _nextWaveDist;*/
         // waypoint 이동
-        _nextWayPoint = _originalWayPoint;
-        _nextWayPoint.x += _nextWaveDist;
+        //_nextWayPoint.x = _nextDestX;
         //print("다음 목적지 : " + _nextWayPoint);
         /*_scale.x = -Mathf.Abs(_scale.x);
         transform.localScale = _scale;
@@ -271,14 +272,13 @@ public class Player : Character
 
     private void EnteringRerollMovement()
     {
-        _playerMovement.EnteringRerollMovement(_nextWayPoint);
+        _playerMovement.EnteringRerollMovement();
 
         if (!_isArrived && _playerMovement.IsArrived())
         {
             _isArrived = true;
             _isInBattle = false;
-            InGamePlayerSpawn parent = transform.parent.GetComponent<InGamePlayerSpawn>();
-            parent.CheckNextWaveReady();
+            InGamePlayerSpawn.Instance.CheckNextWaveReady();
         }
     }
 
@@ -571,9 +571,18 @@ public class Player : Character
         _playerMp.SetMpData(_data.Mp, _data.MpTickRate);
     }
 
-    public void SetNextWaveX(float dist)
+    public void UpdateNextDestX(float destX)
     {
-        _nextWaveDist = dist;
+        Vector2 updatePos = transform.position;
+        updatePos.x += destX;
+        _nextDestX = destX;
+    }
+
+    public void UpdateSpawnX(float destX)
+    {
+        Vector2 updatePos = transform.position;
+        updatePos.x += destX;
+        transform.position = updatePos;
     }
 
     public void ResetArrivalState()
@@ -581,10 +590,14 @@ public class Player : Character
         _isArrived = false;
     }
 
-    public void ReviveAnim()
+    public void PlayEnterAnim()
     {
         _animator.SetTrigger("Intro");
-        StartCoroutine(CheckIntroEnd());
+
+        if (InGameManager.Instance.IsGameStart)
+        {
+            StartCoroutine(CheckIntroEnd());
+        }
     }
 
     private IEnumerator CheckIntroEnd()
@@ -613,7 +626,7 @@ public class Player : Character
         ResetArrivalState();
 
         // 2. 원래 위치 + 카메라 X 좌표 조정
-        Vector3 spawnPos = _originalWayPoint;
+        Vector3 spawnPos = transform.position;//_originalWayPoint;
         spawnPos.x += camPosX; // 카메라 X 위치 만큼 더함
         transform.position = spawnPos;
 

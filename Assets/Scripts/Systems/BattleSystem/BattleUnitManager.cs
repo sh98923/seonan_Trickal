@@ -3,8 +3,9 @@ using UnityEngine;
 
 public class BattleUnitManager : Singleton<BattleUnitManager>
 {
+    private Dictionary<string, Vector3> _unitsPos = new Dictionary<string, Vector3>();
     private Dictionary<int, PlayerUnit> _activeUnits = new Dictionary<int, PlayerUnit>();
-    
+
     private int _deadPlayerCount = 0;
     private int _curLevel;
     public int CurLevel
@@ -33,11 +34,25 @@ public class BattleUnitManager : Singleton<BattleUnitManager>
         }
     }
 
+    public Vector3 GetOriginalPos(string unitName)
+    {
+        foreach (KeyValuePair<string, Vector3> player in _unitsPos)
+        {
+            if(player.Key == unitName)
+            {
+                return player.Value;
+            }
+        }
+
+        return Vector3.zero;
+    }
+
     public void RegisterUnit(CharacterData data, GameObject instance)
     {
         Player player = instance.GetComponent<Player>();
         player.OnDie += OnPlayerDie;
 
+        _unitsPos[data.EngName] = instance.transform.position;
         _activeUnits[data.PlayerKey] = new PlayerUnit(data, player);
 
         CharacterData a = _activeUnits[data.PlayerKey].CharacterInfo;

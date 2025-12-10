@@ -1,9 +1,21 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class InGamePlayerSpawn : MonoBehaviour
 {
+    private static InGamePlayerSpawn _instance;
+    public static InGamePlayerSpawn Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                Debug.LogError("InGamePlayerSpawn Instance is missing in the scene!");
+            }
+            return _instance;
+        }
+    }
+
     private List<PlayerData> _deployableDatas = new List<PlayerData>();
     public List<PlayerData> DeployableData
     {
@@ -19,6 +31,8 @@ public class InGamePlayerSpawn : MonoBehaviour
 
     private void Awake()
     {
+        _instance = this;
+
         LoadPlayerPos();
 
         // 룰렛 만들게되면 룰렛에 나온 애들만 스폰
@@ -28,6 +42,18 @@ public class InGamePlayerSpawn : MonoBehaviour
         {
             Player player = transform.GetChild(i).GetComponent<Player>();
             _registeredPlayers.Add(player);
+        }
+    }
+
+    private void Start()
+    {
+        foreach (Player player in _registeredPlayers)
+        {
+            PlayerMovement movement = player.GetComponent<PlayerMovement>();
+            if (movement != null)
+            {
+                movement.InitWavePosition();
+            }
         }
     }
 
@@ -62,12 +88,34 @@ public class InGamePlayerSpawn : MonoBehaviour
         }
     }
 
-    public void SetActivePlayer(GameObject playerCharacter)
+    private Player FindPlayer(string characterName)
     {
-        Player player = playerCharacter.GetComponent<Player>();
-
-        if(player != null)
+        for (int i = 0; i < _registeredPlayers.Count; i++)
         {
+            if (_registeredPlayers[i].name == characterName)
+            {
+                return _registeredPlayers[i];
+            }
+        }
+
+        return null;
+    }
+
+    public bool IsPlayerInactive(string characterName)
+    {
+        Player player = FindPlayer(characterName);
+
+        return player == null || !player.gameObject.activeSelf;
+    }
+
+    public void SetActivePlayer(string characterName)
+    {
+        Player player = FindPlayer(characterName);
+
+        if (player != null)
+        {
+            player.gameObject.SetActive(true);
+            player.PlayEnterAnim();
             _activePlayers.Add(player);
         }
         else
@@ -90,7 +138,7 @@ public class InGamePlayerSpawn : MonoBehaviour
             if (!player.gameObject.activeSelf)
             {
                 player.gameObject.SetActive(true);
-                player.ReviveAnim();
+                player.PlayEnterAnim();
                 player.Health.ReviveHp();
                 player.RevivePlayer(camPosX);  // 상태 초기화
 

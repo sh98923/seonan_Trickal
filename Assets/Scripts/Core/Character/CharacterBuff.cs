@@ -139,7 +139,7 @@ public class CharacterBuff : CharacterAction
 
     private void ApplyBuffToAll()
     {
-        _activePlayers = transform.parent.GetComponent<InGamePlayerSpawn>().GetActivePlayers();
+        _activePlayers = InGamePlayerSpawn.Instance.GetActivePlayers();
 
         foreach (Player player in _activePlayers)
         {

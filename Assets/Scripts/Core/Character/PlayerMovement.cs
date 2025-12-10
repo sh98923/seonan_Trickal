@@ -3,18 +3,73 @@ using UnityEngine;
 public class PlayerMovement : CharacterMovement
 {
     private Vector3 _dir;
+
+    private Vector3 _playerPos = new Vector3();
+    private Vector3 _nextWayPoint = new Vector3();
+
+    private float _camPosX = 0.0f;
+    private float _nextWaveOffsetPosX = 0.0f;
+
     private float _distanceCurFrame;
+    private float _nextDestX = 0.0f; // 배틀 → 리롤 이동 시 플레이어 이동 거리 변수
+
     private bool _isArrived = false;
 
-    public void EnteringRerollMovement(Vector3 nextWayPoint)
+    private void OnEnable()
     {
-        _dir = nextWayPoint - transform.position;
+        BattleStateManager.Instance.OnEnteringReroll += MoveToNextWaypoint;
+    }
+
+    private void OnDisable()
+    {
+        BattleStateManager.Instance.OnEnteringReroll -= MoveToNextWaypoint;
+    }
+
+    private void OnDestroy()
+    {
+        if (BattleStateManager.Instance != null)
+        {
+            BattleStateManager.Instance.OnEnteringReroll -= MoveToNextWaypoint;
+        }
+    }
+
+    public void InitWavePosition()
+    {
+        _camPosX = InGameCam.Instance.CamOriginalPosX;
+        _playerPos = BattleUnitManager.Instance.GetOriginalPos(gameObject.name);
+
+        _nextWayPoint.y = _playerPos.y;
+        _nextWaveOffsetPosX = _playerPos.x - _camPosX;
+    }
+
+    private void MoveToNextWaypoint()
+    {
+        _nextWayPoint.x = _nextWaveOffsetPosX + _nextDestX;
+    }
+
+    public void UpdateNextDestX(float destX)
+    {
+        _nextDestX = destX;
+    }
+
+    public void UpdateSpawnX(float destX)
+    {
+        _nextDestX = destX;
+
+        Vector2 updatePos = transform.position;
+        updatePos.x = _nextWaveOffsetPosX + destX;
+        transform.position = updatePos;
+    }
+
+    public void EnteringRerollMovement()
+    {
+        _dir = _nextWayPoint - transform.position;
         _distanceCurFrame = _moveSpeed * Time.deltaTime;
 
         if (_dir.magnitude <= _distanceCurFrame)
         {
             // 목표 위치 도착
-            transform.position = nextWayPoint;
+            transform.position = _nextWayPoint;
             _isArrived = true;
         }
         else

@@ -8,12 +8,27 @@ public struct PlayerUnitData
 
 public class InGameManager : Singleton<InGameManager>
 {
-    private InGamePlayerSpawn _playerSpawnPoint;
-
     private List<ITrackable> _trackables = new List<ITrackable>();
     public List<ITrackable> Trackables
     {
         get { return _trackables; }
+    }
+
+    private List<ITrackable> _players = new List<ITrackable>();
+    public List<ITrackable> Players
+    {
+        get
+        {
+            foreach (ITrackable trackable in Trackables)
+            {
+                if (trackable.Object.tag == "Player")
+                {
+                    _players.Add(trackable);
+                }
+            }
+
+            return _players;
+        }
     }
 
     private List<ITrackable> _monsters = new List<ITrackable>();
@@ -114,8 +129,6 @@ public class InGameManager : Singleton<InGameManager>
 
     public void RegisterDeckUnits(Transform inGameSpawnPoint)
     {
-        _playerSpawnPoint = inGameSpawnPoint.GetComponent<InGamePlayerSpawn>();
-
         Dictionary<int, PlayerUnitData> deckUnitDatas = GameManager.Instance.DeckUnitDatas;
 
         foreach (PlayerUnitData data in deckUnitDatas.Values)
