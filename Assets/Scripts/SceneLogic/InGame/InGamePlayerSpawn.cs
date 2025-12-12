@@ -115,6 +115,7 @@ public class InGamePlayerSpawn : MonoBehaviour
         if (player != null)
         {
             player.gameObject.SetActive(true);
+            player.Data.IsDeployed = true;
             player.PlayEnterAnim();
             _activePlayers.Add(player);
         }

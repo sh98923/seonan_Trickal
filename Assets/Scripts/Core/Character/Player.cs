@@ -351,6 +351,11 @@ public class Player : Character
 
     protected override void StartAttack()
     {
+        if(_movement.Target == null)
+        {
+            return;
+        }
+
         _isAttacking = true;
 
         if (_playerMp.GetCurMp() >= _data.Mp)
@@ -625,10 +630,10 @@ public class Player : Character
         // 1. 도착 상태 초기화
         ResetArrivalState();
 
-        // 2. 원래 위치 + 카메라 X 좌표 조정
+       /* // 2. 원래 위치 + 카메라 X 좌표 조정
         Vector3 spawnPos = transform.position;//_originalWayPoint;
         spawnPos.x += camPosX; // 카메라 X 위치 만큼 더함
-        transform.position = spawnPos;
+        transform.position = spawnPos;*/
 
         // 필요하다면 시각적 표시 초기화 등 추가 가능
         //_graphics?.ResetVisuals();

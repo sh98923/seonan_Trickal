@@ -82,6 +82,12 @@ public class CharacterData
     public float Ultimate => _playerStatData.Ultimate;
     public float UltCoolTime => _playerStatData.UltCoolTime;
 
+    public bool IsDeployed
+    {
+        get => _playerInfo.IsDeployed;
+        set => _playerInfo.IsDeployed = value;
+    }
+
     public bool CanUseUlt
     {
         get => _playerStatData.CanUseUlt;

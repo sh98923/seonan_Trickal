@@ -17,6 +17,7 @@ public struct PlayerData
     public string Layer;
     public string AtkType;
     public string Target;
+    public bool IsDeployed;
 }
 
 public class PlayerManager : Singleton<PlayerManager>
@@ -76,6 +77,7 @@ public class PlayerManager : Singleton<PlayerManager>
             data.SpawnLine = int.Parse(colData[11]);
             data.UpgradeCost = int.Parse(colData[12]);
             data.MaxLevel = int.Parse(colData[13]);
+            data.IsDeployed = false;
 
             if (!_isPlayerFirstkey)
             {

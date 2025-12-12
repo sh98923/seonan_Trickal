@@ -107,7 +107,7 @@ public class CharacterAttack : CharacterAction
         
         if(target.tag == "Monster")
         {
-            print($"{target.name} 데미지 입음");
+            //print($"{target.name} 데미지 입음");
         }
 
         _hitType = GetEffectType<HitType>(hitEffectName, out _isValid);
@@ -133,7 +133,7 @@ public class CharacterAttack : CharacterAction
 
         if (target.tag == "Monster")
         {
-            print("");
+            //print("");
         }
 
         if (!_isValid) return;

@@ -17,16 +17,19 @@ public class PlayerMovement : CharacterMovement
 
     private void OnEnable()
     {
+        base.OnEnable();
         BattleStateManager.Instance.OnEnteringReroll += MoveToNextWaypoint;
     }
 
     private void OnDisable()
     {
+        base.OnDisable();
         BattleStateManager.Instance.OnEnteringReroll -= MoveToNextWaypoint;
     }
 
     private void OnDestroy()
     {
+        base.OnDestroy();
         if (BattleStateManager.Instance != null)
         {
             BattleStateManager.Instance.OnEnteringReroll -= MoveToNextWaypoint;
@@ -54,10 +57,14 @@ public class PlayerMovement : CharacterMovement
 
     public void UpdateSpawnX(float destX)
     {
-        _nextDestX = destX;
+        if (!_self.Data.IsDeployed)
+        { 
+            _nextDestX = destX;
+        }
 
         Vector2 updatePos = transform.position;
         updatePos.x = _nextWaveOffsetPosX + destX;
+        updatePos.y = _playerPos.y;
         transform.position = updatePos;
     }
 

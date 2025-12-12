@@ -57,7 +57,7 @@ public class BattleUnitManager : Singleton<BattleUnitManager>
 
         CharacterData a = _activeUnits[data.PlayerKey].CharacterInfo;
 
-        Debug.Log(a.EngName + " " + a.Hp + " " + a.Mp + " " + a.Atk);
+        //Debug.Log(a.EngName + " " + a.Hp + " " + a.Mp + " " + a.Atk);
     }
 
     public void UpgradeUnit(int key)
@@ -114,7 +114,7 @@ public class PlayerUnit
 
         _data.UpdatePlayerStats(_level);
 
-        Debug.Log(_unitObj.name + " " + _data.Hp + " " + _data.Mp + " " + _data.Atk);
+        //Debug.Log(_unitObj.name + " " + _data.Hp + " " + _data.Mp + " " + _data.Atk);
 
         _unitObj.SetCharacterData(_data);
         _unitObj.GetComponent<PlayerHealth>().UpgradeHp();

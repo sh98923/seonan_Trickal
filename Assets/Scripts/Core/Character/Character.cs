@@ -222,6 +222,7 @@ public class Character : MonoBehaviour, ITrackable
         if (_isDead) return;
 
         _isDead = true; 
+        _curState = CharacterState.Dead;
 
         _onDie?.Invoke();
         _animator.SetTrigger("Dead");

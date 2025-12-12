@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class CharacterMovement : MonoBehaviour
 {
-    private Character _self;
+    protected Character _self;
     private Character _target;
     public Character Target
     {
@@ -40,18 +40,39 @@ public class CharacterMovement : MonoBehaviour
     private void Start()
     {
         _targetSelector = _self.GetSelector(ActionSlot.Attack);
-        print(_self.name + " : " + _targetSelector.GetType().Name);
+       // print(_self.name + " : " + _targetSelector.GetType().Name);
+    }
+
+    protected void OnEnable()
+    {
+        _target = null;
+        if (_self.CompareTag("Monster"))
+        {
+            print($"{_self.name} 의 타겟: {(_target == null ? "null" : _target.name)}");
+        }
+        BattleStateManager.Instance.OnEnteringReroll += ResetForReroll;
+    }
+
+    protected void OnDisable()
+    {
+        BattleStateManager.Instance.OnEnteringReroll -= ResetForReroll;
+    }
+
+    protected void OnDestroy()
+    {
+        if (BattleStateManager.Instance != null)
+        {
+            BattleStateManager.Instance.OnEnteringReroll -= ResetForReroll;
+        }
     }
 
     protected void Update()
     {
-        if (BattleStateManager.Instance.CurrentState == BattleState.Reroll)
-            return;
-
-        if (BattleStateManager.Instance.CurrentState == BattleState.EnteringReroll)
+        switch(BattleStateManager.Instance.CurrentState)
         {
-            ResetForReroll();
-            return;
+            case BattleState.Reroll:
+            case BattleState.EnteringReroll:
+                return;
         }
 
         UpdateCombatMovement();
@@ -62,6 +83,7 @@ public class CharacterMovement : MonoBehaviour
         switch (_self.CurState)
         {
             case CharacterState.Idle:
+            case CharacterState.Dead:
                 _isMoving = false;
                 break;
 
@@ -79,11 +101,6 @@ public class CharacterMovement : MonoBehaviour
                     _isMoving = true; // 다시 이동 상태로 전환 가능
                 }
                 break;
-
-            case CharacterState.Dead:
-                _target = null;
-                _isMoving = false;
-                return; // Dead면 이후 처리 필요 없음
         }
 
         // 전투 상태가 아니거나 이동 불가면 처리 종료
