@@ -7,7 +7,7 @@ public class GameManager : Singleton<GameManager>
     private List<PlayerData> _spawnablePlayerDatas = new List<PlayerData>();
     public List<PlayerData> SpawnablePlayerDatas
     {
-        get { return _spawnablePlayerDatas; }
+        get { return SetSpawnablePlayerData(); }
     }
 
     private Dictionary<int, PlayerUnitData> _deckUnitDatas = new Dictionary<int, PlayerUnitData>();
@@ -39,10 +39,26 @@ public class GameManager : Singleton<GameManager>
         DontDestroyOnLoad(gameObject);
     }
 
+    private List<PlayerData> SetSpawnablePlayerData()
+    {
+        foreach (KeyValuePair<int, PlayerUnitData> deckUnitData in _deckUnitDatas)
+        {
+            _spawnablePlayerDatas.Add(deckUnitData.Value.playerData);
+        }
+
+        return _spawnablePlayerDatas;
+    }
+
     public void SetStageKey(int stageKey)
     {
         _stageKey = stageKey; 
         _waveCount = StageManager.Instance.GetWaveCount(_stageKey);
+    }
+
+    public bool CanStartGame()
+    {
+        // 덱 편성을 통해 최소 1명이상의 캐릭터가 편성됬다면 true
+        return _deckUnitDatas.Count > 0;
     }
 
     public void AddUnit(PlayerData data, Vector3 spawnPos)
@@ -57,16 +73,10 @@ public class GameManager : Singleton<GameManager>
         };
 
         _deckUnitDatas.Add(data.Key, unitData);
-
-        if (!_spawnablePlayerDatas.Contains(data))
-            _spawnablePlayerDatas.Add(data);
     }
 
     public void RemoveUnit(PlayerData data)
     {
         _deckUnitDatas.Remove(data.Key);
-
-        if (_spawnablePlayerDatas.Contains(data))
-            _spawnablePlayerDatas.Remove(data);
     }
 }

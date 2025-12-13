@@ -2036,7 +2036,7 @@ GameObject:
   - component: {fileID: 7820334193759758826}
   - component: {fileID: 7507691968125569746}
   - component: {fileID: 2803088149836909991}
-  - component: {fileID: 2728623975998819732}
+  - component: {fileID: 1005588917542836562}
   m_Layer: 7
   m_Name: SkeltonMinion
   m_TagString: Monster
@@ -2205,7 +2205,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee337a5874a58e4409a65d623dd6e9c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2728623975998819732
+--- !u!114 &1005588917542836562
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2214,7 +2214,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3826926431532235412}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd0fe78b3186e06489a13f0419a3a629, type: 3}
+  m_Script: {fileID: 11500000, guid: f8e35a302e645394f9d476545ac84b3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &3849026662741145065

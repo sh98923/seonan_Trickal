@@ -1,5 +1,5 @@
 Key,EngName,Hp,Mp,MpTickRate,Atk,SkillAtkRate,UltAtkRate,CriRate,AtkRange,UltCoolTime,CanUseUlt
-300,Diana,200,100,1,20,1.2,0,15,1.75,0,FALSE
+300,Diana,120,100,1,20,1.2,0,15,1.75,0,FALSE
 301,Diana,300,100,4,25,1.25,0,17,1.75,0,FALSE
 302,Diana,400,100,3,30,1.3,1.5,19,1.75,30,TRUE
 303,Diana,500,100,2,35,1.35,1.59,21,1.75,30,TRUE

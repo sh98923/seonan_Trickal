@@ -40,16 +40,11 @@ public class CharacterMovement : MonoBehaviour
     private void Start()
     {
         _targetSelector = _self.GetSelector(ActionSlot.Attack);
-       // print(_self.name + " : " + _targetSelector.GetType().Name);
     }
 
     protected void OnEnable()
     {
         _target = null;
-        if (_self.CompareTag("Monster"))
-        {
-            print($"{_self.name} 의 타겟: {(_target == null ? "null" : _target.name)}");
-        }
         BattleStateManager.Instance.OnEnteringReroll += ResetForReroll;
     }
 
@@ -111,7 +106,7 @@ public class CharacterMovement : MonoBehaviour
         _target = _targetSelector.GetTarget(_self);
 
         // 타겟이 존재하면 타겟 방향으로 이동, 없으면 앞으로 이동
-        if (_target != null)
+        if (_target != null && _isMoving)
         {
             _isMoving = false; // 타겟이 생기면 이동 멈춤
             MoveToward(_target.transform.position);

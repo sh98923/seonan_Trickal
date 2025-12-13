@@ -2922,6 +2922,7 @@ GameObject:
   - component: {fileID: -8176535651198647693}
   - component: {fileID: 427254248513712958}
   - component: {fileID: -9137406629021803708}
+  - component: {fileID: 7778755127426798575}
   m_Layer: 0
   m_Name: ElfHunter
   m_TagString: Player
@@ -3137,6 +3138,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8f3f1571115a194408dfc539fd171c2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7778755127426798575
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6109238830773685142}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83711b0386c37214cb889e2efecb3d55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &6236649674323748767

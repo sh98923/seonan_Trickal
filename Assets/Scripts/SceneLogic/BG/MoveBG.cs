@@ -3,16 +3,13 @@ using UnityEngine.UIElements;
 
 public class MoveBG : MonoBehaviour
 {
+    private Camera _mainCam;
+    private InGameBG _mapBG;
     private SpriteRenderer[] _inGameBGSprites = new SpriteRenderer[3];
 
-    private InGameBG _mapBG;
-
-    private Camera _mainCam;
-
     private Vector2 _left = Vector2.left;
-    private Vector3 _lastCamPos;
 
-    private const float _moveSpeed = 0.8f;
+    private const float _moveSpeed = 1.2f;
     private float _screenWidth;
 
     private bool _isInit = false;
@@ -45,9 +42,11 @@ public class MoveBG : MonoBehaviour
 
         if(InGameManager.Instance.CanBGMove)
         {
-            for(int i = 0; i < _inGameBGSprites.Length; i++)
+            for (int i = 0; i < _inGameBGSprites.Length; i++)
             {
-                _inGameBGSprites[i].transform.Translate(_left * _moveSpeed * Time.deltaTime);
+                Vector3 pos = _inGameBGSprites[i].transform.position;
+                pos.x += _left.x * _moveSpeed * Time.deltaTime;
+                _inGameBGSprites[i].transform.position = pos;
             }
         }
     }
@@ -61,40 +60,50 @@ public class MoveBG : MonoBehaviour
         {
             SpriteRenderer sprite = sprites[i];
 
-            float width = sprite.bounds.size.x;
+            float width = RoundPos(sprite.bounds.size.x);
             float half = width * 0.5f;
 
-            float left = sprite.transform.position.x - half;
-            float right = sprite.transform.position.x + half;
+            float left = RoundPos(sprite.transform.position.x - half);
+            float right = RoundPos(sprite.transform.position.x + half);
 
-            // BG가 왼쪽으로 벗어났을 때 → 오른쪽 끝으로 이동
+            // 왼쪽으로 벗어났을 때 → 오른쪽 끝으로
             if (right < camLeftX)
             {
                 float rightMost = sprites[0].transform.position.x;
 
                 for (int j = 1; j < sprites.Length; j++)
                 {
-                    float posX = sprites[j].transform.position.x;
-                    if (posX > rightMost)
-                        rightMost = posX;
+                    float x = sprites[j].transform.position.x;
+                    if (x > rightMost)
+                        rightMost = x;
                 }
 
-                sprite.transform.position = new Vector3(rightMost + width, sprite.transform.position.y, sprite.transform.position.z);
+                sprite.transform.position = new Vector3(
+                    RoundPos(rightMost + width),
+                    sprite.transform.position.y,
+                    sprite.transform.position.z
+                );
+
                 sprite.flipX = !sprite.flipX;
             }
-            // BG가 오른쪽으로 벗어났을 때 → 왼쪽 끝으로 이동
+            // 오른쪽으로 벗어났을 때 → 왼쪽 끝으로
             else if (left > camRightX)
             {
                 float leftMost = sprites[0].transform.position.x;
 
                 for (int j = 1; j < sprites.Length; j++)
                 {
-                    float posX = sprites[j].transform.position.x;
-                    if (posX < leftMost)
-                        leftMost = posX;
+                    float x = sprites[j].transform.position.x;
+                    if (x < leftMost)
+                        leftMost = x;
                 }
 
-                sprite.transform.position = new Vector3(leftMost - width, sprite.transform.position.y, sprite.transform.position.z);
+                sprite.transform.position = new Vector3(
+                    RoundPos(leftMost - width),
+                    sprite.transform.position.y,
+                    sprite.transform.position.z
+                );
+
                 sprite.flipX = !sprite.flipX;
             }
         }
@@ -112,6 +121,11 @@ public class MoveBG : MonoBehaviour
         }
 
         _screenWidth = _inGameBGSprites[0].sprite.bounds.size.x;
-        _lastCamPos = _mainCam.transform.position; // 초기 카메라 위치 기록
+    }
+
+    // 0.1 단위 반올림
+    private float RoundPos(float value)
+    {
+        return Mathf.Round(value * 10.0f) * 0.1f;
     }
 }

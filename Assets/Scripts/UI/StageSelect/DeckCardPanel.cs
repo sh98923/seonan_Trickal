@@ -68,10 +68,13 @@ public class DeckCardPanel : MonoBehaviour
 
     private void OnClickStart()
     {
-        SceneManager.LoadScene("InGameScene");
-
-        /*gameObject.SetActive(false);
-        BattleStateManager.Instance.SetState(BattleState.Reroll);
-        BattleStateManager.Instance.RerollEvent();*/
+        if (GameManager.Instance.CanStartGame())
+        {
+            SceneManager.LoadScene("InGameScene");
+        }
+        else
+        {
+            print("덱을 편성해 주세요");
+        }
     }
 }

@@ -22,9 +22,6 @@ public class Player : Character
     protected SkillEffectController _skillEffectController;
     private PlayerMovement _playerMovement;
 
-    private Vector3 _nextWayPoint = new Vector3();
-
-    private float _nextDestX = 0.0f; // 배틀 → 리롤 이동 시 플레이어 이동 거리 변수
     protected float _atkBuff = 1.0f;
     private float _damageReduction = 1.0f;
 
@@ -52,8 +49,6 @@ public class Player : Character
 
         _skillEffectController = GetComponent<SkillEffectController>();
 
-        //_nextWayPoint.y = transform.position.y;
-
         _scale.x *= -1;
         transform.localScale = _scale;
     }
@@ -70,14 +65,12 @@ public class Player : Character
 
         BattleStateManager.Instance.OnReroll += EnableCollider;
         BattleStateManager.Instance.OnEnteringReroll += DisableCollider;
-        //BattleStateManager.Instance.OnEnteringReroll += MoveToNextWaypoint;
     }
 
     protected void OnDisable()
     {
         BattleStateManager.Instance.OnReroll -= EnableCollider;
         BattleStateManager.Instance.OnEnteringReroll -= DisableCollider;
-        //BattleStateManager.Instance.OnEnteringReroll -= MoveToNextWaypoint;
     }
 
     protected void OnDestroy()
@@ -86,7 +79,6 @@ public class Player : Character
         {
             BattleStateManager.Instance.OnReroll -= EnableCollider;
             BattleStateManager.Instance.OnEnteringReroll -= DisableCollider;
-            //BattleStateManager.Instance.OnEnteringReroll -= MoveToNextWaypoint;
         }
     }
 
@@ -111,38 +103,12 @@ public class Player : Character
         }
     }
 
-    private void MoveToNextWaypoint()
-    {
-        /*_nextWayPoint = _originalWayPoint;
-        _nextWayPoint.x += _nextWaveDist;*/
-        // waypoint 이동
-        //_nextWayPoint.x = _nextDestX;
-        //print("다음 목적지 : " + _nextWayPoint);
-        /*_scale.x = -Mathf.Abs(_scale.x);
-        transform.localScale = _scale;
-
-        print(gameObject.name + " : " + _scale.x);*/
-    }
-
-    /*protected override void IdleStateAction()
-    {
-        base.IdleStateAction();
-
-        if (BattleStateManager.Instance.IsBattle)
-        {
-            StartCoroutine(RegenerateMp());
-        }
-    }*/
-
     protected override void MoveStateAction()
     {
         base.MoveStateAction();
 
         switch (BattleStateManager.Instance.CurrentState)
         {
-            /*case BattleState.Reroll:
-                RerollMovement();
-                break;*/
             case BattleState.Battle:
             case BattleState.EnteringBattle:
                 CheckForTargetAndEnterBattle();
@@ -188,26 +154,6 @@ public class Player : Character
 
     private void BattleMovement()
     {
-        // 이미 전투 상태인데 타겟이 죽거나 null이면 재탐색
-        /*if (!_movement.HasTarget || !_movement.TargetColliderEnable)
-        {
-            _targetCollider = FindTarget(_data.Target, _findTargetRange);
-
-            if (_targetCollider == null)
-            {
-                // 타겟 잃으면 다시 전진하며 재탐색
-                transform.Translate(_moveDir * _moveSpeed * Time.deltaTime);
-                return;
-            }
-        }*/
-
-        /*Character targetCharacter = _targetCollider.GetComponent<Character>();
-        if (targetCharacter == null)
-        {
-            _targetCollider = null;
-            return;
-        }*/
-
         // 타겟이 사거리 안에 들어오면 공격 상태로
         float dist = Vector2.Distance(transform.position, _movement.Target.transform.position);
 
@@ -223,51 +169,6 @@ public class Player : Character
             _movement.SetMovementActive(false);
             _curState = CharacterState.Attack;
         }
-        /*else
-        {
-            Vector2 dir = (_targetCollider.transform.position - transform.position).normalized;
-            transform.Translate(dir * _moveSpeed * Time.deltaTime);
-        }
-
-        if (_targetCollider == null)
-        {
-            _targetCollider = FindTarget(_data.Target, _findTargetRange);
-            transform.Translate(_moveDir * _moveSpeed * Time.deltaTime);
-            print(gameObject.name + " : " + BattleStateManager.Instance.CurrentState);
-        }
-
-        Character targetCharacter = _targetCollider.GetComponent<Character>();
-        if (targetCharacter == null)
-        {
-            _targetCollider = null;
-            return;
-        }
-
-        if (Vector2.Distance(_targetCollider.transform.position, transform.position) - 0.5f <= _data.AtkRange)
-        {
-            _animator.SetBool("IdleState", true);
-            _curState = CharacterState.Attack;
-        }
-        else
-        {
-            Vector2 dir = (_targetCollider.transform.position - transform.position).normalized;
-            transform.Translate(dir * _moveSpeed * Time.deltaTime);
-        }*/
-    }
-
-    private void RerollMovement()
-    {
-        //print($"{gameObject.name} 준비완료");
-        /*if (Vector3.Distance(transform.position, _wayPoint) <  0.001f)
-        {
-            _curState = State.Idle;
-        }
-        else
-        {
-            float a = Vector3.Distance(transform.position, _wayPoint);
-
-            print($"{gameObject.name} 거리 : {a}");
-        }*/
     }
 
     private void EnteringRerollMovement()
@@ -292,61 +193,13 @@ public class Player : Character
         GetComponent<Collider2D>().enabled = false;
     }
 
-    /*protected override void MoveStateAction()
+    /*int sortingDiff = Mathf.Abs(_sortingGroup.sortingOrder - targetCharacter.SortingIndex);
+
+    if (Vector2.Distance(_targetCollider.transform.position, transform.position) <= _data.AtkRange
+        && sortingDiff <= 20) // SortingOrder 차이 20 이내
     {
-        
-        if (_targetCollider == null)
-        {
-            _targetCollider = FindTarget(_data.Target, _findTargetRange);
-            transform.Translate(_moveDir * _moveSpeed * Time.deltaTime);
-        }
-        else
-        {
-            Character targetCharacter = _targetCollider.GetComponent<Character>();
-            if (targetCharacter == null)
-            {
-                _targetCollider = null;
-                return;
-            }
-
-            int sortingDiff = Mathf.Abs(_sortingGroup.sortingOrder - targetCharacter.SortingIndex);
-
-            if (Vector2.Distance(_targetCollider.transform.position, transform.position) <= _data.AtkRange)
-                //&& sortingDiff <= 20) // SortingOrder 차이 20 이내
-            {
-                _targetCollider = FindTarget(_data.Target, _findTargetRange);
-                transform.Translate(_moveDir * _moveSpeed * Time.deltaTime);
-                _animator.SetBool("IdleState", true);
-                _curState = State.Attack;
-            }
-            else
-            {
-                Character targetCharacter = _targetCollider.GetComponent<Character>();
-                if (targetCharacter == null)
-                {
-                    _targetCollider = null;
-                    return;
-                }
-
-                int sortingDiff = Mathf.Abs(_sortingGroup.sortingOrder - targetCharacter.SortingIndex);
-
-                if (Vector2.Distance(_targetCollider.transform.position, transform.position) <= _data.AtkRange
-                    && sortingDiff <= 20) // SortingOrder 차이 20 이내
-                {
-                    _animator.SetBool("IdleState", true);
-                    _curState = State.Attack;
-                }
-                else
-                {
-                    Vector2 dir = (_targetCollider.transform.position - transform.position).normalized;
-                    transform.Translate(dir * _moveSpeed * Time.deltaTime);
-                }
-                Vector2 dir = (_targetCollider.transform.position - transform.position).normalized;
-                transform.Translate(dir * _moveSpeed * Time.deltaTime);
-            }
-        }
-    }
-        
+        _animator.SetBool("IdleState", true);
+        _curState = State.Attack;
     }*/
 
     protected override void StartAttack()
@@ -376,26 +229,6 @@ public class Player : Character
         _skillEffectController.SetSortingPosition(_data.IsEffectInFront[(int)_actionType]);
         _animator.SetTrigger(_actionType.ToString());
     }
-
-    /*_isAttacking = true;
-    _attackTarget = _movement.Target.GetComponent<Collider2D>();
-
-    if (_playerMp.GetCurMp() >= _data.Mp)
-    {
-        _actionType = ActionSlot.Skill;
-    }
-    else if (Input.GetKeyDown(KeyCode.S))
-    {
-        _actionType = ActionSlot.Ult;
-    }
-    else
-    {
-        _actionType = ActionSlot.Attack;
-    }
-
-    // 트리거 실행 전에 항상 이펙트 정렬 세팅
-    _skillEffectController.SetSortingPosition(_data.IsEffectInFront[(int)_actionType]);
-    _animator.SetTrigger(_actionType.ToString());*/
 
     public void OnBuff()
     {
@@ -471,36 +304,6 @@ public class Player : Character
         }
 
         base.OnAttack();
-        /*if(BattleStateManager.Instance.CurrentState == BattleState.EnteringReroll)
-        {
-            return;
-        }
-
-        float finalDamage = 0.0f;
-
-        switch (_actionType)
-        {
-            case ActionSlot.Base:
-                finalDamage = _data.Atk * _atkBuff;
-                break;
-            case ActionSlot.Skill:
-                _playerMp.UseMp();
-                finalDamage = _data.Atk * _data.SkillRate * _atkBuff;
-                break;
-            case ActionSlot.Ult:
-                finalDamage = _data.Atk * _data.Ultimate * _atkBuff;
-                break;
-        }
-
-        if (tag == "Player")
-        {
-            _clipName = _data.ClipName[(int)_actionType];
-            _duration = _data.Duration[(int)_actionType];
-        }
-
-        _action[(int)ActionCategory.Attack].SetAttackInfo(_attackTarget, _actionType, _clipName, _duration, finalDamage);
-
-        base.OnAttack();*/
     }
 
     // ---------------------------
@@ -574,20 +377,6 @@ public class Player : Character
         _data = data;
         _damageReceiver.MaxHp = data.Hp;
         _playerMp.SetMpData(_data.Mp, _data.MpTickRate);
-    }
-
-    public void UpdateNextDestX(float destX)
-    {
-        Vector2 updatePos = transform.position;
-        updatePos.x += destX;
-        _nextDestX = destX;
-    }
-
-    public void UpdateSpawnX(float destX)
-    {
-        Vector2 updatePos = transform.position;
-        updatePos.x += destX;
-        transform.position = updatePos;
     }
 
     public void ResetArrivalState()

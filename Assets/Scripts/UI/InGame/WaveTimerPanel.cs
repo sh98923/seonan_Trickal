@@ -113,7 +113,8 @@ public class WaveTimerPanel : MonoBehaviour
         switch (currentState)
         {
             case BattleState.Reroll:
-                BattleStateManager.Instance.SetState(BattleState.Battle);
+                InGameManager.Instance.IsGameStart = true;
+                BattleStateManager.Instance.SetState(BattleState.EnteringBattle);
                 break;
             case BattleState.Battle:
                 CheckBattleResultState();

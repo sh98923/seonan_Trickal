@@ -8,7 +8,16 @@ public class Monster : Character
     {
         base.Awake();
 
-        _targets[(int)ActionSlot.Attack] = GetComponent<NearestTargetSelector>();
+        TargetSelector melee = GetComponent<MonsterTargetSelector>();
+
+        if (melee != null)
+        {
+            _targets[(int)ActionSlot.Attack] = melee;
+        }
+        else
+        {
+            Debug.LogError($"{name} : 몬스터 타겟팅 스크립트 없음");
+        }
     }
 
     // Idle 상태면 Battle모드일 때 move로 넘어옴

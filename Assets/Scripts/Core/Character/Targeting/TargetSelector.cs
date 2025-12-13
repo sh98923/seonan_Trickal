@@ -5,12 +5,47 @@ public abstract class TargetSelector : MonoBehaviour
 {
     protected List<ITrackable> _characters;
     protected Character _currentTarget = null;
+    public Character Target
+    { 
+        get { return _currentTarget; } 
+    }
 
     protected const float _findTargetRange = 8.0f;
 
     private void Awake()
     {
         _characters = InGameManager.Instance.Trackables;
+    }
+
+    private void OnEnable()
+    {
+        if(_currentTarget != null)
+        {
+            if (_currentTarget.tag == "Monster")
+            { 
+                _currentTarget = null;
+            }
+        }
+    }
+
+    protected bool IsTargetable(ITrackable trackable, string tag)
+    {
+        if (!trackable.IsColliderEnable)
+        {
+            return false;
+        }
+
+        if (!trackable.Object.activeSelf)
+        {
+            return false;
+        }
+
+        if (trackable.Object.tag == tag)
+        {
+            return false;
+        }
+
+        return true;
     }
 
     // 현재 타겟이 유효한지 확인하고 반환

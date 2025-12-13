@@ -4088,6 +4088,7 @@ GameObject:
   - component: {fileID: -4874431313289587736}
   - component: {fileID: 7786525633181119628}
   - component: {fileID: 4683722798138767372}
+  - component: {fileID: 1648869893187015411}
   m_Layer: 7
   m_Name: SkeltonKnight
   m_TagString: Monster
@@ -4254,6 +4255,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ee337a5874a58e4409a65d623dd6e9c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1648869893187015411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8504700360622106869}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8e35a302e645394f9d476545ac84b3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &8582243681058064900

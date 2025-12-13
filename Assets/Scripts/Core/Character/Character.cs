@@ -44,6 +44,7 @@ public class Character : MonoBehaviour, ITrackable
     // 속성
     public CharacterData Data => _data;
     public GameObject Object => gameObject;
+    public Character Self => gameObject.GetComponent<Character>();
     public Transform AtkPoint => _atkPoint;
     public Transform CenterPoint => _centerPoint;
 

@@ -1,6 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum BattleLine
+{
+    Front, Middle, Back
+}
 
 public class StagePlayerSpawn : MonoBehaviour
 {
@@ -12,17 +16,12 @@ public class StagePlayerSpawn : MonoBehaviour
         public bool IsOccupied;
     }
 
-    private enum FormationLayer
-    {
-        Front, Middle, Back
-    }
-
     // 각 슬롯을 키:SlotIndex 형태로 저장, 각 슬롯 안에 PlayerData와 GameObject 포함
     private Dictionary<int, FormationSlot[]> _deployedCharacters = new Dictionary<int, FormationSlot[]>
     {
-        { (int)FormationLayer.Front, new FormationSlot[3] },
-        { (int)FormationLayer.Middle, new FormationSlot[3] },
-        { (int)FormationLayer.Back, new FormationSlot[3] }
+        { (int)BattleLine.Front, new FormationSlot[3] },
+        { (int)BattleLine.Middle, new FormationSlot[3] },
+        { (int)BattleLine.Back, new FormationSlot[3] }
     };
 
     private int _startPlayerIndex;

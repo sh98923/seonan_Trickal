@@ -3445,8 +3445,8 @@ GameObject:
   - component: {fileID: -7217851334599696414}
   - component: {fileID: 7835846113546967524}
   - component: {fileID: -2992156858851499980}
+  - component: {fileID: -4701186479726225996}
   - component: {fileID: -6132904742050167996}
-  - component: {fileID: 3491414027538983784}
   m_Layer: 6
   m_Name: ElfArcher
   m_TagString: Player
@@ -3652,6 +3652,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbe5882fc7e76cc4ca9f0b67f3e48038, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-4701186479726225996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6915536252060765902}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd0fe78b3186e06489a13f0419a3a629, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &-6132904742050167996
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3662,18 +3674,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 83711b0386c37214cb889e2efecb3d55, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &3491414027538983784
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6915536252060765902}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd0fe78b3186e06489a13f0419a3a629, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &6986874256106499595

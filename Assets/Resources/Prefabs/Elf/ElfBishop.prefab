@@ -523,6 +523,7 @@ GameObject:
   - component: {fileID: -8848487352831073601}
   - component: {fileID: 1659629537237169111}
   - component: {fileID: 3363226084564369875}
+  - component: {fileID: -8964828892504913514}
   m_Layer: 6
   m_Name: ElfBishop
   m_TagString: Player
@@ -726,6 +727,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8f3f1571115a194408dfc539fd171c2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-8964828892504913514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1432887398413912192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd0fe78b3186e06489a13f0419a3a629, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1933119268406751913

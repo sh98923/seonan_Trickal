@@ -9,6 +9,7 @@ public class CharacterData
      * ─────────────────────────────────────────────── */
     private struct ConstantInfo
     {
+        public int SpawnLine;
         public string Type;
         public string Layer;
         public string EngName;
@@ -53,6 +54,7 @@ public class CharacterData
     public float[] AtkSpeed => _stats.AtkSpeed;
     public bool[] IsRangeAtk => _stats.IsRange;
 
+    public int SpawnLine => _constant.SpawnLine;
     public string Layer => _constant.Layer;
     public string EngName => _constant.EngName;
     public string PrefabPath => _constant.PrefabPath;
@@ -125,6 +127,7 @@ public class CharacterData
 
         _constant = new ConstantInfo
         {
+            SpawnLine = playerData.SpawnLine,
             Type = "Player",
             Layer = playerData.Layer,
             EngName = playerData.EngName,
@@ -159,6 +162,7 @@ public class CharacterData
 
         _constant = new ConstantInfo
         {
+            SpawnLine = monsterData.SpawnLine,
             Type = "Monster",
             Layer = monsterData.Layer,
             EngName = monsterData.EngName,
