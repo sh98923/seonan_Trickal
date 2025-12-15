@@ -45,6 +45,10 @@ public class PlayerHealth : MonoBehaviour
 
     public void UpgradeHp()
     {
+        // 이것도 다시 해야함 풀피인 경우
+        // 업그레이드 했을 때 풀피여야하는데
+        // 지금은 그렇지 않음
+        // 디아나로 해보셈 그럼 알거임
         float newHp = _damageReceiver.CurHp + _damageReceiver.MaxHp * _upgradeHpRatio;
         newHp = Mathf.Clamp(newHp, 0, _damageReceiver.MaxHp);
         _damageReceiver.SetHp(newHp);

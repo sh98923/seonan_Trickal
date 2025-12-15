@@ -6,8 +6,14 @@ public struct PlayerUnitData
     public PlayerData playerData;
 }
 
-public class InGameManager : Singleton<InGameManager>
+public class InGameManager : MonoBehaviour
 {
+    private static InGameManager _instance;
+    public static InGameManager Instance
+    {
+        get { return _instance; }
+    }
+
     private List<ITrackable> _trackables = new List<ITrackable>();
     public List<ITrackable> Trackables
     {
@@ -19,6 +25,8 @@ public class InGameManager : Singleton<InGameManager>
     {
         get
         {
+            _players.Clear();
+
             foreach (ITrackable trackable in Trackables)
             {
                 if (trackable.Object.tag == "Player")
@@ -34,9 +42,11 @@ public class InGameManager : Singleton<InGameManager>
     private List<ITrackable> _monsters = new List<ITrackable>();
     public List<ITrackable> Monsters
     {
-        get 
-        { 
-            foreach(ITrackable trackable in  Trackables)
+        get
+        {
+            _monsters.Clear();
+
+            foreach (ITrackable trackable in Trackables)
             {
                 if (trackable.Object.tag == "Monster")
                 {
@@ -44,7 +54,7 @@ public class InGameManager : Singleton<InGameManager>
                 }
             }
 
-            return _monsters; 
+            return _monsters;
         }
     }
 
@@ -53,6 +63,7 @@ public class InGameManager : Singleton<InGameManager>
     {
         get { return _maxWave; }
     }
+
     private int _waveStep = 0;
     public int WaveStep
     {
@@ -63,6 +74,7 @@ public class InGameManager : Singleton<InGameManager>
     public int InGameCoin
     {
         get { return _inGameCoin; }
+        set { _inGameCoin = value; }
     }
 
     private bool _canPayCoin = false;
@@ -87,13 +99,20 @@ public class InGameManager : Singleton<InGameManager>
 
     private void Awake()
     {
-        _inGameCoin = 106;
+        if (_instance != null && _instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
 
-        BattleStart();
+        _instance = this;
+
+        _inGameCoin = 106;
     }
 
     private void Start()
     {
+        BattleStart();
         WeaponManager.Instance.CreateWeapon();
         EffectManager.Instance.CreateEffect();
     }
@@ -105,15 +124,18 @@ public class InGameManager : Singleton<InGameManager>
 
     public bool TrySpendCoin(int amount)
     {
-        _canPayCoin = _inGameCoin >= amount;
+        return _canPayCoin = (_inGameCoin >= amount);
+    }
 
-        if (_canPayCoin)
+    public int SpendCoin(int amount)
+    {
+        if (!_canPayCoin)
         {
-            _inGameCoin -= amount;
-            return true;
+            return _inGameCoin;
         }
 
-        return false;
+        _inGameCoin -= amount;
+        return _inGameCoin;
     }
 
     public void SetWaveText(int waveStep, int maxWave)
@@ -153,7 +175,7 @@ public class InGameManager : Singleton<InGameManager>
 
     public void RegisterMonsterUnits(List<ITrackable> trackables)
     {
-        foreach(ITrackable trackable in trackables)
+        foreach (ITrackable trackable in trackables)
         {
             _trackables.Add(trackable);
         }

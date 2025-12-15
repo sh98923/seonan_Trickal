@@ -8,7 +8,7 @@ public class InGameCardPanel : CardPanel
     {
         base.Awake();
 
-        if(_curScene != "InGameScene")
+        if (_curScene != "InGameScene")
         {
             this.enabled = false;
         }
@@ -30,35 +30,62 @@ public class InGameCardPanel : CardPanel
 
     protected override void HandleClick()
     {
+        if (IsBlocked())
+            return;
+
+        if (!CanPayCost())
+            return;
+
+        ExecuteCardAction();
+        UpdateAfterAction();
+    }
+
+    private bool IsBlocked()
+    {
+        return _parentPanel.IsSelectedCardAnimating;
+    }
+
+    private bool CanPayCost()
+    {
         int cost = _playerData.UpgradeCost;
-        string characterName = _playerData.EngName;
 
         if (!InGameManager.Instance.TrySpendCoin(cost))
         {
             Debug.LogWarning("코인이 부족합니다.");
-            return;
+            return false;
         }
+
+        return true;
+    }
+
+    private void ExecuteCardAction()
+    {
+        string characterName = _playerData.EngName;
 
         if (InGamePlayerSpawn.Instance.IsPlayerInactive(characterName))
         {
-            // 아직 비활성화 상태 → 유닛 배치
-            InGamePlayerSpawn.Instance.SetActivePlayer(characterName);
-            UpdateCardCostUI();
+            DeployPlayer(characterName);
         }
         else
         {
-            // 이미 배치됨 → 업그레이드
             UpgradePlayer();
         }
+    }
 
-        _parentPanel.UpdateCoinUI();
+    private void DeployPlayer(string characterName)
+    {
+        InGamePlayerSpawn.Instance.SetActivePlayer(characterName);
     }
 
     private void UpgradePlayer()
     {
         BattleUnitManager.Instance.UpgradeUnit(_playerData.Key);
+    }
 
+    private void UpdateAfterAction()
+    {
         UpdateCardCostUI();
+        _parentPanel.UpdateCoinUI(_playerData.UpgradeCost);
     }
 
     private void UpdateCardCostUI()
@@ -72,7 +99,7 @@ public class InGameCardPanel : CardPanel
         //Button deployBtn = _cardChildren[(int)CardUI.CardButton].GetComponent<Button>();
         bool isCardLocked = InGameManager.Instance.InGameCoin < _playerData.UpgradeCost;
 
-        if(isCardLocked)
+        if (isCardLocked)
         {
             _color = Color.gray;
         }

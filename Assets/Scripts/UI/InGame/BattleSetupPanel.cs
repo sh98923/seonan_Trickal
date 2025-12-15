@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using TMPro;
+using System.Collections;
 
 public class BattleSetupPanel : MonoBehaviour
 {
@@ -15,14 +16,22 @@ public class BattleSetupPanel : MonoBehaviour
     private TextMeshProUGUI _coinText;
     private Transform[] _rerollChildren;
     private InGameUIPanel _inGameUIPanel;
+    private Coroutine _coinSpendCoroutine;
     private List<PlayerData> _rerollCandidates = new List<PlayerData>();
 
     private readonly int _rerollCost = 5;
-    private int CurCoin => InGameManager.Instance.InGameCoin; 
+    private int _curCoin = InGameManager.Instance.InGameCoin;
     private int _cardCount = (int)CardRerollUI.CardCount;
 
-    private void Awake() 
-    { 
+    private bool _isRerollAnimating = false;
+    private bool _isSelectedCardAnimating = false;
+    public bool IsSelectedCardAnimating
+    {
+        get { return _isSelectedCardAnimating; }
+    }
+
+    private void Awake()
+    {
         _setupAnimator = GetComponent<Animator>();
         _inGameUIPanel = GetComponentInParent<InGameUIPanel>();
 
@@ -63,7 +72,7 @@ public class BattleSetupPanel : MonoBehaviour
             {
                 // 이건 CoinText임 (필요하면 저장)
                 _coinText = child.GetComponentInChildren<TextMeshProUGUI>();
-                _coinText.text = CurCoin.ToString();
+                _coinText.text = _curCoin.ToString();
             }
         }
 
@@ -73,13 +82,16 @@ public class BattleSetupPanel : MonoBehaviour
 
     private void OnClickCardReroll()
     {
-        if (!InGameManager.Instance.TrySpendCoin(_rerollCost))
-        {
-            return; 
-        }
+        if (_isRerollAnimating)
+            return;
 
-        UpdateCoinUI();
-        _setupAnimator.Play("CardRoll", 0, 0f);
+        if (!InGameManager.Instance.TrySpendCoin(_rerollCost))
+            return;
+
+        UpdateCoinUI(_rerollCost);
+
+        _isRerollAnimating = true;
+        _setupAnimator.Play("CardRoll", 0, 0.0f);
     }
 
     private void OnClickEnteringBattle()
@@ -90,8 +102,13 @@ public class BattleSetupPanel : MonoBehaviour
 
     private void OnClickCard(int index)
     {
-        if (!InGameManager.Instance.CanPayCoin) return;
+        if (_isSelectedCardAnimating)
+            return;
 
+        if (!InGameManager.Instance.CanPayCoin) 
+            return;
+
+        _isSelectedCardAnimating = true;
         _setupAnimator.SetTrigger("SelectedCard" + index);
     }
 
@@ -103,6 +120,18 @@ public class BattleSetupPanel : MonoBehaviour
             _rerollChildren[i].GetComponent<InGameCardPanel>()
                 .SetPlayerUnit(_rerollCandidates[randomIndex]);
         }
+    }
+
+    private IEnumerator PlayCoinSpend(int targetCoin)
+    {
+        while (_curCoin > targetCoin)
+        {
+            _curCoin--;
+            yield return new WaitForSeconds(0.05f);
+            _coinText.text = _curCoin.ToString();
+        }
+
+        _coinSpendCoroutine = null;
     }
 
     public void CardCostUpdate(int key, int curLevel)
@@ -121,8 +150,28 @@ public class BattleSetupPanel : MonoBehaviour
         }
     }
 
-    public void UpdateCoinUI()
+    public void UpdateCoinUI(int cost)
     {
-        _coinText.text = CurCoin.ToString();
+        int targetCoin = InGameManager.Instance.SpendCoin(cost);
+
+        if (_curCoin == targetCoin)
+            return;
+
+        if (_coinSpendCoroutine != null)
+        {
+            StopCoroutine(_coinSpendCoroutine);
+        }
+
+        _coinSpendCoroutine = StartCoroutine(PlayCoinSpend(targetCoin));
+    }
+
+    public void OnRerollAnimationEnd()
+    {
+        _isRerollAnimating = false;
+    }
+
+    public void OnSelectedCardAnimationEnd()
+    {
+        _isSelectedCardAnimating = false;
     }
 }
