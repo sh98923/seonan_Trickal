@@ -1,6 +1,16 @@
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
+
+public enum SceneName
+{
+    CharacterScene,
+    CollectionScene,
+    InGameScene,
+    LobbyScene,
+    StageSelectScene
+}
 
 public class GameManager : Singleton<GameManager>
 {
@@ -78,5 +88,18 @@ public class GameManager : Singleton<GameManager>
     public void RemoveUnit(PlayerData data)
     {
         _deckUnitDatas.Remove(data.Key);
+    }
+
+    public void EnableInScenes(MonoBehaviour target, params SceneName[] sceneNames)
+    {
+        string curScene = SceneManager.GetActiveScene().name;
+
+        foreach (SceneName scene in sceneNames)
+        {
+            if (curScene == scene.ToString())
+                return; // 허용된 씬
+        }
+
+        target.enabled = false;
     }
 }

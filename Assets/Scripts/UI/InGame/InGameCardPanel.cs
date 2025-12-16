@@ -8,10 +8,7 @@ public class InGameCardPanel : CardPanel
     {
         base.Awake();
 
-        if (_curScene != "InGameScene")
-        {
-            this.enabled = false;
-        }
+        GameManager.Instance.EnableInScenes(this, SceneName.InGameScene);
     }
 
     protected override void InitUI()

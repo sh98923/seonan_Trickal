@@ -20,7 +20,7 @@ public class BattleSetupPanel : MonoBehaviour
     private List<PlayerData> _rerollCandidates = new List<PlayerData>();
 
     private readonly int _rerollCost = 5;
-    private int _curCoin = InGameManager.Instance.InGameCoin;
+    private int _curCoin = 0;
     private int _cardCount = (int)CardRerollUI.CardCount;
 
     private bool _isRerollAnimating = false;
@@ -34,12 +34,12 @@ public class BattleSetupPanel : MonoBehaviour
     {
         _setupAnimator = GetComponent<Animator>();
         _inGameUIPanel = GetComponentInParent<InGameUIPanel>();
-
-        InitRerollUI();
     }
 
     private void Start()
     {
+        InitRerollUI();
+
         _rerollCandidates = _inGameUIPanel.SetRerollCandidates();
 
         for (int i = 0; i < _cardCount; i++)
@@ -54,6 +54,8 @@ public class BattleSetupPanel : MonoBehaviour
 
     private void InitRerollUI()
     {
+        _curCoin = InGameManager.Instance.InGameCoin;
+
         List<Transform> childList = new List<Transform>();
         List<Button> buttonList = new List<Button>();
 

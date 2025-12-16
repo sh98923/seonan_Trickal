@@ -28,7 +28,7 @@ public class SpawnManager : Singleton<SpawnManager>
     }
     
     private void Awake()
-    { 
+    {
         LoadSpawnPosData();
     }
 

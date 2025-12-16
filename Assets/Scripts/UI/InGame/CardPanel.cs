@@ -21,12 +21,10 @@ public class CardPanel : MonoBehaviour
     protected PlayerData _playerData;
     protected Color _color = Color.white;
 
-    protected string _curScene;
     private bool _wasRerollActive = false;
 
     protected void Awake()
     {
-        _curScene = SceneManager.GetActiveScene().name;
         _cardChildren = GetComponentsInChildren<Transform>();
     }
 

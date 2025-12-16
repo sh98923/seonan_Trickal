@@ -29,10 +29,12 @@ public class DamageReceiver : MonoBehaviour
 
     private void Awake()
     {
-        if (SceneManager.GetActiveScene().name == "InGameScene")
-        {
-            _hitText = GameObject.Find("DamageTextPanel").GetComponent<DamageTextManager>();
-        }
+        GameManager.Instance.EnableInScenes(this, SceneName.InGameScene);
+    }
+
+    private void Start()
+    {
+        _hitText = GameObject.Find("DamageTextPanel").GetComponent<DamageTextManager>();
     }
 
     public void Initialize(Character character, float initialHp)

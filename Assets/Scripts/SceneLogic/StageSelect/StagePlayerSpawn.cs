@@ -26,6 +26,11 @@ public class StagePlayerSpawn : MonoBehaviour
 
     private int _startPlayerIndex;
 
+    private void Awake()
+    {
+        GameManager.Instance.EnableInScenes(this, SceneName.InGameScene, SceneName.StageSelectScene);
+    }
+
     private void Start()
     {
         _startPlayerIndex = SpawnManager.Instance.StartPlayerSpawnKey;

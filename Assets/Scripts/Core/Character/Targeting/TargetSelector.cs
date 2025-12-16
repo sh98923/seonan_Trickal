@@ -14,6 +14,11 @@ public abstract class TargetSelector : MonoBehaviour
 
     private void Awake()
     {
+        GameManager.Instance.EnableInScenes(this, SceneName.InGameScene);
+    }
+
+    private void Start()
+    {
         _characters = InGameManager.Instance.Trackables;
     }
 
