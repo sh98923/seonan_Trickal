@@ -103,6 +103,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -150,6 +151,7 @@ GameObject:
   - component: {fileID: 6478093740731311489}
   - component: {fileID: -8758257991856352619}
   - component: {fileID: 1687991340966879204}
+  - component: {fileID: 412234330479977324}
   m_Layer: 5
   m_Name: CardPanel
   m_TagString: Untagged
@@ -230,6 +232,7 @@ SortingGroup:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_SortAtRoot: 0
+  m_Sort3DAs2D: 0
 --- !u!114 &-8758257991856352619
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -254,6 +257,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 709e3b63f067d19488edd1d218f98492, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &412234330479977324
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1183110660281338629}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b61f83ee39576c147b5875612d306570, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OutLineLight
 --- !u!1 &2608365727940812727
 GameObject:
   m_ObjectHideFlags: 0
@@ -629,6 +644,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0

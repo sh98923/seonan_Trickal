@@ -1,51 +1,26 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 public class StageCardPanel : CardPanel
 {
+    private DeckCardPanel _deckCardPanel;
     private StagePlayerSpawn _spawnParent;
-
-    private Image _outlineImage;
-
-    private const float _maxHue = 1.0f;
-
-    private float _hue = 0.0f;
-    private float _speed = 0.35f; // 무지개 속도
-    private float _saturation = 0.5f; // 채도 낮춰 파스텔
-    private float _value = 0.95f;     // 밝기 높여 부드럽게
-
-    // 녹색 HSV 값
-    /*private const float GreenHue = 0.33f;    // 녹색
-    private const float GreenSaturation = 0.7f;
-    private const float GreenValue = 0.7f;*/
+    private OutLineLight _outline;
 
     private void Awake()
     {
         base.Awake();
 
         GameManager.Instance.EnableInScenes(this, SceneName.StageSelectScene);
-        // 녹색 적용
-        //_outlineImage.color = Color.HSVToRGB(GreenHue, GreenSaturation, GreenValue);
     }
 
     private void Start()
     {
         base.Start();
 
+        _deckCardPanel = GetComponentInParent<DeckCardPanel>();
         _spawnParent = GameObject.Find("SpawnPlayer").GetComponent<StagePlayerSpawn>();
-        _outlineImage = _cardChildren[(int)CardUI.OutLineColorImage].GetComponent<Image>();
-    }
-
-    private void Update()
-    {
-        _hue += Time.deltaTime * _speed;
-
-        if (_hue > _maxHue)
-        {
-            _hue -= _maxHue;
-        }
-
-        _outlineImage.color = Color.HSVToRGB(_hue, _saturation, _value);
+        _outline = GetComponent<OutLineLight>();
+        _outline.InitImage(_cardChildren[(int)CardUI.OutLineColorImage]);
     }
 
     protected override void InitUI()
@@ -56,22 +31,20 @@ public class StageCardPanel : CardPanel
 
     protected override void HandleClick()
     {
-        if (!CanDeploy(out Vector3 spawnPos))
+        if (CanDeploy(out Vector3 spawnPos))
         {
-            OutLineActive(false);
-            return;
+            _outline.OutLineActive(true);
+
+            _spawnParent.SpawnPlayerAtPosition(_playerData, spawnPos);
+
+            GameManager.Instance.AddUnit(_playerData, spawnPos);
+        }
+        else
+        {
+            _outline.OutLineActive(false);
         }
 
-        OutLineActive(true);
-
-        _spawnParent.SpawnPlayerAtPosition(_playerData, spawnPos);
-
-        GameManager.Instance.AddUnit(_playerData, spawnPos);
-    }
-
-    private void OutLineActive(bool isActive)
-    {
-        _outlineImage.gameObject.SetActive(isActive);
+        _deckCardPanel.SetSlotCount();
     }
 
     private bool CanDeploy(out Vector3 spawnPos)
@@ -83,6 +56,12 @@ public class StageCardPanel : CardPanel
         {
             GameManager.Instance.RemoveUnit(_playerData);
             Debug.LogWarning($"{_playerData.EngName}를 제거함.");
+            return false;
+        }
+
+        if (GameManager.Instance.IsDeckFull())
+        {
+            Debug.LogWarning("덱이 가득 찼습니다.");
             return false;
         }
 

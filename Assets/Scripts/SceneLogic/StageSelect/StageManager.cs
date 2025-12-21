@@ -135,7 +135,7 @@ public class StageManager : Singleton<StageManager>
 
     // 언락 상태 조회
     public bool IsStageUnlocked(int stageNumber)
-    {
+    { 
         if (_stageUnlockStatus.TryGetValue(stageNumber, out bool unlocked))
         {
             return unlocked;
@@ -151,5 +151,20 @@ public class StageManager : Singleton<StageManager>
         {
             _stageUnlockStatus[nextStage] = true;
         }
+    }
+
+    public int HighestStageOutLineOn()
+    {
+        int highestStageKey = 0;
+
+        foreach(KeyValuePair<int, bool> stageUnlock in _stageUnlockStatus)
+        {
+            if(stageUnlock.Value)
+            {
+                highestStageKey = stageUnlock.Key;
+            }
+        }
+
+        return highestStageKey;
     }
 }

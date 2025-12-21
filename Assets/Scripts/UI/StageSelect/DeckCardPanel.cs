@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -8,17 +7,22 @@ public class DeckCardPanel : MonoBehaviour
 {
     private enum DeckUI
     {
-        StageName = 1, StartBtn = 2, DeckContent = 5
+        StageName = 1, 
+        StartBtn = 2, 
+        DeckContent = 5,
+        DeckSlotCountView = 8
     }
 
     private Transform[] _deckChildren;
     private StageCardPanel _deployBtn;
+    private TextMeshProUGUI _slotCountText;
 
     private int _startPlayerKey;
 
     private void Awake()
     {
         _deckChildren = GetComponentsInChildren<Transform>();
+        _slotCountText = _deckChildren[(int)DeckUI.DeckSlotCountView].GetComponent<TextMeshProUGUI>();
         gameObject.SetActive(false);
     }
 
@@ -27,6 +31,7 @@ public class DeckCardPanel : MonoBehaviour
         SetStageName();
         SetDeckCard();
         SetStartBtn();
+        UpdateSlotCount();
     }
 
     private void SetStageName()
@@ -64,6 +69,16 @@ public class DeckCardPanel : MonoBehaviour
     {
         Button startBtn = _deckChildren[(int)DeckUI.StartBtn].GetComponent<Button>();
         startBtn.onClick.AddListener(OnClickStart);
+    }
+
+    private void UpdateSlotCount()
+    {
+        _slotCountText.text = $"{GameManager.Instance.CurDeckUnitCount()} / {GameManager.Instance.MaxDeckUnitCount}";
+    }
+
+    public void SetSlotCount()
+    {
+        UpdateSlotCount();
     }
 
     private void OnClickStart()

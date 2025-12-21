@@ -26,6 +26,12 @@ public class GameManager : Singleton<GameManager>
         get { return _deckUnitDatas; }
     }
 
+    private const int _maxDeckUnitCount = 6;
+    public int MaxDeckUnitCount
+    {
+        get { return _maxDeckUnitCount; }
+    }
+
     private int _mapBGKey;
     public int MapBGKey
     {
@@ -65,11 +71,21 @@ public class GameManager : Singleton<GameManager>
         _waveCount = StageManager.Instance.GetWaveCount(_stageKey);
     }
 
+    public int CurDeckUnitCount()
+    {
+        return _deckUnitDatas.Count;
+    }
+
     public bool CanStartGame()
     {
         // 덱 편성을 통해 최소 1명이상의 캐릭터가 편성됬다면 true
         return _deckUnitDatas.Count > 0;
     }
+
+    public bool IsDeckFull()
+    {
+        return _deckUnitDatas.Count >= _maxDeckUnitCount;
+    }    
 
     public void AddUnit(PlayerData data, Vector3 spawnPos)
     {
