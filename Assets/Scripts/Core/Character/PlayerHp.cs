@@ -1,7 +1,15 @@
+using System;
 using UnityEngine;
 
-public class PlayerHpManager : MonoBehaviour
+public class PlayerHp : MonoBehaviour
 {
+    private event Action<float, float> _onHpchanged;
+    public event Action<float, float> OnHpChanged
+    {
+        add { _onHpchanged += value; }
+        remove { _onHpchanged -= value; }
+    }
+
     private DamageReceiver _player;
 
     private readonly float _waveEndHpRatio = 0.2f;

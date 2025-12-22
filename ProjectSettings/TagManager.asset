@@ -9,6 +9,7 @@ TagManager:
   - Sky
   - Ground
   - Monster
+  - IgnoreFlash
   layers:
   - Default
   - TransparentFX

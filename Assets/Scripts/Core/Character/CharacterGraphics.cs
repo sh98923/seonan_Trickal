@@ -81,7 +81,7 @@ public class CharacterGraphics : MonoBehaviour
 
         foreach (SpriteRenderer sprite in _spriteRenderers)
         {
-            if (sprite.name == "SkillEffect")
+            if (sprite.tag == "IgnoreFlash")
                 continue;
 
             result.Add(sprite);

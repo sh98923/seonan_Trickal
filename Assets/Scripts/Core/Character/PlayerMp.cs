@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -8,6 +9,13 @@ using UnityEngine;
 /// </summary>
 public class PlayerMp : MonoBehaviour
 {
+    private event Action<float, float> _onMpchanged;
+    public event Action<float, float> OnMpChanged
+    {
+        add { _onMpchanged += value; }
+        remove { _onMpchanged -= value; }
+    }
+
     private Coroutine _regenCoroutine;
 
     private float _mpPerTick = 10.0f;      // 1회 회복량
@@ -67,6 +75,7 @@ public class PlayerMp : MonoBehaviour
             if (_curMp < _maxMp)
             {
                 _curMp += _mpPerTick;
+                _onMpchanged.Invoke(_curMp, _maxMp);
 
                 if (_curMp > _maxMp)
                 { 

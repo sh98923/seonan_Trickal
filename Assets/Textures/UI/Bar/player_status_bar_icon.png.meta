@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: fb7585684b99cd24f8c72a71f656b353
+guid: 5b299b41c5a569841a708c3a56596719
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2460167491025471103
-    second: hp_bar_iconpng_0
+      213: -3709771304129780420
+    second: player_status_bar_iconpng_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,7 +100,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: hp_bar_iconpng_0
+      name: player_status_bar_iconpng_0
       rect:
         serializedVersion: 2
         x: 0
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f76898e6c45442220800000000000000
-      internalID: 2460167491025471103
+      spriteID: c35286377ae348cc0800000000000000
+      internalID: -3709771304129780420
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      hp_bar_iconpng_0: 2460167491025471103
+      player_status_bar_iconpng_0: -3709771304129780420
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
