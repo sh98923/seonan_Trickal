@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class PlayerHealth : MonoBehaviour
+public class PlayerHpManager : MonoBehaviour
 {
-    private DamageReceiver _damageReceiver;
+    private DamageReceiver _player;
 
     private readonly float _waveEndHpRatio = 0.2f;
     private readonly float _upgradeHpRatio = 0.3f;
@@ -10,7 +10,7 @@ public class PlayerHealth : MonoBehaviour
 
     private void Awake()
     {
-        _damageReceiver = GetComponent<DamageReceiver>();
+        _player = GetComponent<DamageReceiver>();
     }
 
     private void OnEnable()
@@ -34,13 +34,13 @@ public class PlayerHealth : MonoBehaviour
     private void RecoverWaveEndHp()
     {
         // 풀피라면 리턴
-        if (_damageReceiver.MaxHp == _damageReceiver.CurHp)
+        if (_player.MaxHp == _player.CurHp)
             return;
 
-        float newHp = _damageReceiver.CurHp + _damageReceiver.MaxHp * _waveEndHpRatio;
-        newHp = Mathf.Clamp(newHp, 0, _damageReceiver.MaxHp);
-        _damageReceiver.SetHp(newHp);
-        print($"{gameObject.name} 회복 : {newHp} / {_damageReceiver.MaxHp}");
+        float newHp = _player.CurHp + _player.MaxHp * _waveEndHpRatio;
+        newHp = Mathf.Clamp(newHp, 0, _player.MaxHp);
+        _player.SetHp(newHp);
+        print($"{gameObject.name} 회복 : {newHp} / {_player.MaxHp}");
     }
 
     public void UpgradeHp()
@@ -49,16 +49,17 @@ public class PlayerHealth : MonoBehaviour
         // 업그레이드 했을 때 풀피여야하는데
         // 지금은 그렇지 않음
         // 디아나로 해보셈 그럼 알거임
-        float newHp = _damageReceiver.CurHp + _damageReceiver.MaxHp * _upgradeHpRatio;
-        newHp = Mathf.Clamp(newHp, 0, _damageReceiver.MaxHp);
-        _damageReceiver.SetHp(newHp);
-        print($"{gameObject.name} 업그레이드 : {newHp} / {_damageReceiver.MaxHp}");
+
+        float newHp = _player.CurHp + _player.MaxHp * _upgradeHpRatio;
+        newHp = Mathf.Clamp(newHp, 0, _player.MaxHp);
+        _player.SetHp(newHp);
+        print($"{gameObject.name} 업그레이드 : {newHp} / {_player.MaxHp}");
     }
 
     public void ReviveHp()
     {
-        float newHp = _damageReceiver.MaxHp * _reviveHpRatio;
-        _damageReceiver.SetHp(newHp);
+        float newHp = _player.MaxHp * _reviveHpRatio;
+        _player.SetHp(newHp);
         print(gameObject.name + " 부활 newHp(curHp) : " + newHp);
     }
 }

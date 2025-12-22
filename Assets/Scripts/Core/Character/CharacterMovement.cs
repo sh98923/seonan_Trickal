@@ -16,7 +16,7 @@ public class CharacterMovement : MonoBehaviour
 
     private TargetSelector _targetSelector;
 
-    private Vector3 _dir = Vector3.zero;
+    protected Vector3 _dir = Vector3.zero;
 
     protected const float _moveSpeed = 4.0f;
 

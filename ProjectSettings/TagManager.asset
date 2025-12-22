@@ -8,6 +8,7 @@ TagManager:
   - BattleBtn
   - Sky
   - Ground
+  - Monster
   layers:
   - Default
   - TransparentFX
@@ -53,6 +54,9 @@ TagManager:
     locked: 0
   - name: SkillEffect
     uniqueID: 3393341585
+    locked: 0
+  - name: CharacterStatus
+    uniqueID: 2842562223
     locked: 0
   m_RenderingLayers:
   - Default

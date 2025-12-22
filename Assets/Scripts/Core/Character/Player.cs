@@ -10,8 +10,8 @@ public class Player : Character
         Multiple   // 다중 타겟
     }
 
-    private PlayerHealth _playerHealth;
-    public PlayerHealth Health
+    private PlayerHpManager _playerHealth;
+    public PlayerHpManager Health
     {
         get { return _playerHealth; }
     }
@@ -44,7 +44,7 @@ public class Player : Character
     {
         base.Awake();
 
-        _playerHealth = GetComponent<PlayerHealth>();
+        _playerHealth = GetComponent<PlayerHpManager>();
         _playerMp = GetComponent<PlayerMp>();
 
         _skillEffectController = GetComponent<SkillEffectController>();

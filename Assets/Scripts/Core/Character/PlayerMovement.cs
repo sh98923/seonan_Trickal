@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class PlayerMovement : CharacterMovement
 {
-    private Vector3 _dir;
-
     private Vector3 _playerPos = new Vector3();
     private Vector3 _nextWayPoint = new Vector3();
 
