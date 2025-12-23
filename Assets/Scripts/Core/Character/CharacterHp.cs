@@ -1,28 +1,79 @@
+using System;
 using UnityEngine;
 
-public class CharacterHp : MonoBehaviour
+public class CharacterHp : MonoBehaviour, IDamageableHealth
 {
-    private GameObject _hpBar;
-    private Transform _hpBarTransform;
-   
-    private void Awake()
+    protected event Action<float, float> _onHpchanged;
+    public event Action<float, float> OnHpChanged
     {
-        GameManager.Instance.EnableInScenes(this, SceneName.InGameScene);
+        add { _onHpchanged += value; }
+        remove { _onHpchanged -= value; }
     }
 
-    private void Start()
+    protected float _curHp = 0.0f;
+    public float CurHp
     {
-        GameObject hpBarPrefab = Resources.Load<GameObject>("Prefabs/UI/StatusBar/HpBar");
-        Transform hpBarUITransform = GameObject.Find("CharacterStatusPanel").transform;
-
-        _hpBarTransform = transform.Find("HpBarAnchor");
-        _hpBar = Instantiate(hpBarPrefab, hpBarUITransform);
-
-        _hpBar.transform.position = _hpBarTransform.position;
+        get { return _curHp; }
     }
 
-    private void Update()
+    protected float _maxHp = 0.0f;
+    public float MaxHp
     {
-        //_hpBar.transform.position = _hpBarTransform.position;
+        get { return _maxHp; }
+    }
+
+    private bool _isInitialized = false;
+
+    protected void OnEnable()
+    {
+        if (_isInitialized)
+        { 
+            UpdateHpState();
+        }
+    }
+
+    protected void UpdateHpState()
+    {
+        _onHpchanged?.Invoke(_curHp, _maxHp);
+    }
+
+    // 최초 1회만 호출
+    public void InitializeHp(float maxHp)
+    {
+        _isInitialized = true;
+        _maxHp = maxHp;
+        _curHp = maxHp;
+        UpdateHpState();
+    }
+
+    // 레벨업 / 스탯 변경용
+    public void UpdateMaxHp(float newMaxHp)
+    {
+        bool wasFullHp = _curHp >= _maxHp;
+
+        _maxHp = newMaxHp;
+
+        if (wasFullHp)
+        {
+            _curHp = _maxHp;
+        }
+        else if (_curHp > _maxHp)
+        {
+            _curHp = _maxHp;
+        }
+
+        UpdateHpState();
+    }
+
+    public void DecreaseHp(float amount)
+    {
+        _curHp -= amount;
+
+        if (_curHp <= 0.0f)
+        {
+            _curHp = 0.0f;
+        }
+
+        UpdateHpState();
     }
 }

@@ -2,11 +2,15 @@ using UnityEngine;
 
 public class Monster : Character
 {
+    private CharacterHp _monsterHp;
+
     private float _atk = 0.0f;
 
     private void Awake()
     {
         base.Awake();
+
+        _monsterHp = GetComponentInChildren<CharacterHp>();
 
         TargetSelector melee = GetComponent<MonsterTargetSelector>();
 
@@ -42,6 +46,11 @@ public class Monster : Character
         }
     }
 
+    public override void SetCharacterData(CharacterData data)
+    {
+        _data = data;
+    }
+
     public override void OnAttack()
     {
         _action[(int)ActionCategory.Attack].SetAttackInfo(_movement.Target, _actionType, _atk);
@@ -51,16 +60,17 @@ public class Monster : Character
 
     public void WaveUpgrade(int wave)
     {
+        float maxHp = 0.0f;
         float hpLinear = _data.Hp + _data.HpPerWave * wave;
         float hpExp = _data.Hp * Mathf.Pow(_data.HpGrowthRate, wave);
 
         // 두 가지의 공식을 평균 낸 값 (선형, 지수)
-        _maxHp = (hpLinear + hpExp) * 0.5f;
+        maxHp = (hpLinear + hpExp) * 0.5f;
         // Round가 정수로만 반올림 하기 떄문에
         // 소수점 첫째자리까지 나오게 하기위한 수식
-        _maxHp = Mathf.Round(_maxHp);
+        maxHp = Mathf.Round(maxHp);
 
-        _damageReceiver.Initialize(this, _maxHp);
+        _monsterHp.InitializeHp(maxHp);
 
         float atkLinear = _data.Atk + _data.AtkPerWave * wave;
         float atkExp = _data.Atk * Mathf.Pow(_data.AtkGrowthRate, wave);

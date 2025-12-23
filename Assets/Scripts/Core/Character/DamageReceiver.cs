@@ -8,17 +8,6 @@ public class DamageReceiver : MonoBehaviour
     private CharacterGraphics _graphics;
     private DamageTextManager _hitText;
 
-    private float _curHp = 0.0f;
-    public float CurHp
-    {
-        get { return _curHp; }
-    }
-    private float _maxHp = 0.0f;
-    public float MaxHp
-    {
-        get { return _maxHp; }
-        set {  _maxHp = value; }
-    }
     private float _damageReduction = 1.0f;
     public float DamageReduction
     {
@@ -28,7 +17,7 @@ public class DamageReceiver : MonoBehaviour
 
     private void Awake()
     {
-        GameManager.Instance.EnableInScenes(this, SceneName.InGameScene);
+        GameManager.Instance.EnableScriptInScenes(this, SceneName.InGameScene);
     }
 
     private void Start()
@@ -36,7 +25,7 @@ public class DamageReceiver : MonoBehaviour
         _hitText = GameObject.Find("DamageTextPanel").GetComponent<DamageTextManager>();
     }
 
-    public void Initialize(Character character, float initialHp)
+    public void Initialize(Character character)
     {
         _character = character;
         _targetCollider = character.GetComponent<Collider2D>();
@@ -46,19 +35,9 @@ public class DamageReceiver : MonoBehaviour
             // 안전장치
             _graphics = character.gameObject.AddComponent<CharacterGraphics>();
         } 
-
-        _curHp = initialHp;
-        _maxHp = initialHp;
     }
 
-    public void SetHp(float hp)
-    { 
-        _curHp = hp;
-        // 필요하면 시각적 표시 초기화
-        //_graphics?.ResetVisuals();
-    }
-
-    public void TakeDamage(float amount)
+    public void TakeDamage(IDamageableHealth health, float amount)
     {
         if (_character == null || !_targetCollider.enabled)
         { 
@@ -66,8 +45,7 @@ public class DamageReceiver : MonoBehaviour
         }
 
         float finalDamage = amount * _damageReduction;
-
-        _curHp -= finalDamage;
+        health.DecreaseHp(finalDamage);
 
         string textKey = _hitText.GetHitText();
 
@@ -75,9 +53,8 @@ public class DamageReceiver : MonoBehaviour
         _graphics.ShowDamageText(textKey, finalDamage);
         //print(name + " " + "체력: " + _curHp + "/" + _maxHp);
 
-        if (_curHp <= 0.0f)
+        if (health.CurHp <= 0.0f)
         {
-            _curHp = 0.0f;
             // 사망 처리 요청
             _character.CharacterDeath();
         }
@@ -88,13 +65,13 @@ public class DamageReceiver : MonoBehaviour
         _damageReduction = damageReduction;
     }
 
-    public void TakeDotDamage(HitType type, float damagePerTick, float duration, float tickInterval)
+    public void TakeDotDamage(IDamageableHealth health, HitType type, float damagePerTick, float duration, float tickInterval)
     {
         // 중첩 허용
-        StartCoroutine(DotCoroutine(type, damagePerTick, duration, tickInterval));
+        StartCoroutine(DotCoroutine(health, type, damagePerTick, duration, tickInterval));
     }
 
-    private IEnumerator DotCoroutine(HitType type, float damage, float duration, float tick)
+    private IEnumerator DotCoroutine(IDamageableHealth health, HitType type, float damage, float duration, float tick)
     {
         float elapsed = 0.0f;
         string textKey = _hitText.GetHitText(type);
@@ -108,13 +85,12 @@ public class DamageReceiver : MonoBehaviour
                 yield break;
             }
 
-            _curHp -= damage;
+            health.DecreaseHp(damage);
             _graphics.PlayFlashHit(type);
             _graphics?.ShowDotText(textKey, damage);
 
-            if (_curHp <= 0.0f)
+            if (health.CurHp <= 0.0f)
             {
-                _curHp = 0.0f;
                 _character.CharacterDeath();
                 yield break;
             }

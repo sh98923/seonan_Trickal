@@ -29,7 +29,7 @@ public class CharacterMovement : MonoBehaviour
 
     private void Awake()
     {
-        GameManager.Instance.EnableInScenes(this, SceneName.InGameScene);
+        GameManager.Instance.EnableScriptInScenes(this, SceneName.InGameScene);
 
         _self = GetComponent<Character>();
     }

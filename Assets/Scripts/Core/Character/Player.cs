@@ -10,14 +10,19 @@ public class Player : Character
         Multiple   // 다중 타겟
     }
 
-    private PlayerHp _playerHealth;
-    public PlayerHp Health
+    private PlayerHp _playerHp;
+    public PlayerHp PlayerHealth
     {
-        get { return _playerHealth; }
+        get { return _playerHp; }
     }
 
     // 이건 다시 private으로 ㄱ
     protected PlayerMp _playerMp;
+    public PlayerMp PlayerMana
+    {
+        get { return _playerMp; }
+    }
+
     protected Collider2D _attackTarget;
     protected SkillEffectController _skillEffectController;
     private PlayerMovement _playerMovement;
@@ -39,12 +44,13 @@ public class Player : Character
 
     private bool _isArrived = false;
     private bool _isInBattle = false;
+    private bool _isStatInitialized = false;
 
     protected void Awake()
     {
         base.Awake();
 
-        _playerHealth = GetComponentInChildren<PlayerHp>();
+        _playerHp = GetComponentInChildren<PlayerHp>();
         _playerMp = GetComponentInChildren<PlayerMp>();
 
         _skillEffectController = GetComponent<SkillEffectController>();
@@ -375,7 +381,19 @@ public class Player : Character
     public override void SetCharacterData(CharacterData data)
     { 
         _data = data;
-        _damageReceiver.MaxHp = data.Hp;
+
+        if (!_isStatInitialized)
+        {
+            // 최초 생성
+            _playerHp.InitializeHp(_data.Hp);
+            _isStatInitialized = true;
+        }
+        else
+        {
+            // 레벨업 / 강화
+            _playerHp.UpdateMaxHp(_data.Hp);
+        }
+
         _playerMp.SetMpData(_data.Mp, _data.MpTickRate);
     }
 

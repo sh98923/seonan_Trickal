@@ -117,8 +117,8 @@ public class PlayerUnit
         //Debug.Log(_unitObj.name + " " + _data.Hp + " " + _data.Mp + " " + _data.Atk);
 
         _unitObj.SetCharacterData(_data);
-        _unitObj.GetComponent<PlayerHp>().UpgradeHp();
-        _unitObj.GetComponent<PlayerMp>().SetMpData(_data.Mp, _data.MpTickRate);
+        _unitObj.PlayerHealth.UpgradeHp();
+        _unitObj.PlayerMana.SetMpData(_data.Mp, _data.MpTickRate);
         //curUnit.(_playerStat[levelUp]);
     }
 }

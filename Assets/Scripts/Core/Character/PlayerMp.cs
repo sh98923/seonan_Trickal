@@ -26,6 +26,9 @@ public class PlayerMp : MonoBehaviour
 
     private void OnEnable()
     {
+        /*_curMp = 0.0f;
+        _onMpchanged.Invoke(_curMp, _maxMp);*/
+
         BattleStateManager.Instance.OnBattle += StartMpRegen;
         BattleStateManager.Instance.OnEnteringReroll += StopMpRegen; // 웨이브 이동 시 중지
     }
@@ -75,12 +78,13 @@ public class PlayerMp : MonoBehaviour
             if (_curMp < _maxMp)
             {
                 _curMp += _mpPerTick;
-                _onMpchanged.Invoke(_curMp, _maxMp);
 
                 if (_curMp > _maxMp)
                 { 
                     _curMp = _maxMp;
                 }
+
+                _onMpchanged.Invoke(_curMp, _maxMp);
             }
         }
     }

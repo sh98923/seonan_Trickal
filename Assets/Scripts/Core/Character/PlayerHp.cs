@@ -1,28 +1,15 @@
 using System;
 using UnityEngine;
 
-public class PlayerHp : MonoBehaviour
+public class PlayerHp : CharacterHp, IHealableHealth
 {
-    private event Action<float, float> _onHpchanged;
-    public event Action<float, float> OnHpChanged
-    {
-        add { _onHpchanged += value; }
-        remove { _onHpchanged -= value; }
-    }
-
-    private DamageReceiver _player;
-
     private readonly float _waveEndHpRatio = 0.2f;
     private readonly float _upgradeHpRatio = 0.3f;
     private readonly float _reviveHpRatio = 0.4f;
 
-    private void Awake()
-    {
-        _player = GetComponent<DamageReceiver>();
-    }
-
     private void OnEnable()
     {
+        base.OnEnable();
         BattleStateManager.Instance.OnReroll += RecoverWaveEndHp;
     }
 
@@ -42,13 +29,13 @@ public class PlayerHp : MonoBehaviour
     private void RecoverWaveEndHp()
     {
         // 풀피라면 리턴
-        if (_player.MaxHp == _player.CurHp)
+        if (_curHp >= _maxHp)
             return;
 
-        float newHp = _player.CurHp + _player.MaxHp * _waveEndHpRatio;
-        newHp = Mathf.Clamp(newHp, 0, _player.MaxHp);
-        _player.SetHp(newHp);
-        print($"{gameObject.name} 회복 : {newHp} / {_player.MaxHp}");
+        float amount = _maxHp * _waveEndHpRatio;
+        IncreaseHp(amount);
+
+        print($"{gameObject.name} 회복 : {_curHp} / {_maxHp}");
     }
 
     public void UpgradeHp()
@@ -58,16 +45,29 @@ public class PlayerHp : MonoBehaviour
         // 지금은 그렇지 않음
         // 디아나로 해보셈 그럼 알거임
 
-        float newHp = _player.CurHp + _player.MaxHp * _upgradeHpRatio;
-        newHp = Mathf.Clamp(newHp, 0, _player.MaxHp);
-        _player.SetHp(newHp);
-        print($"{gameObject.name} 업그레이드 : {newHp} / {_player.MaxHp}");
+        float amount = _maxHp * _upgradeHpRatio;
+        IncreaseHp(amount);
+
+        print($"{gameObject.name} 업그레이드 : {_curHp} / {_maxHp}");
     }
 
     public void ReviveHp()
     {
-        float newHp = _player.MaxHp * _reviveHpRatio;
-        _player.SetHp(newHp);
-        print(gameObject.name + " 부활 newHp(curHp) : " + newHp);
+        float amount = _maxHp * _reviveHpRatio;
+        IncreaseHp(amount);
+
+        print(gameObject.name + " 부활 newHp(curHp) : " + _curHp);
+    }
+
+    public void IncreaseHp(float amount)
+    {
+        _curHp += amount;
+
+        if(_curHp >= _maxHp)
+        {
+            _curHp = _maxHp;
+        }
+
+        UpdateHpState();
     }
 }

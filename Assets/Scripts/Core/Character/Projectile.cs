@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class ProjectileData
@@ -87,17 +88,26 @@ public class Projectile : MonoBehaviour
 
     protected void ApplyDamage(Character target)
     {
-        target.TakeDamage(_data.Damage);
+        ApplyToHealth(target, targetHealth => target.TakeDamage(targetHealth, _data.Damage));
     }
 
     protected void ApplyDot(Character target)
     {
-        target.TakeDotDamage(_data.HitType, _data.DotDamage, _data.Duration, _data.EffectValue);
+        ApplyToHealth(target, targetHealth =>
+        target.TakeDotDamage(targetHealth, _data.HitType, _data.DotDamage, _data.Duration, _data.EffectValue));
     }
 
     protected void ApplySlow(Character target)
     {
         target.ApplyAttackSlow(_data.HitType, _data.Duration, _data.EffectValue);
+    }
+
+    protected void ApplyToHealth(Character target, Action<IDamageableHealth> action)
+    {
+        IDamageableHealth targetHealth = target.Health;
+        if (targetHealth == null) return;
+
+        action(targetHealth);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

@@ -10,7 +10,7 @@ public class StageCardPanel : CardPanel
     {
         base.Awake();
 
-        GameManager.Instance.EnableInScenes(this, SceneName.StageSelectScene);
+        GameManager.Instance.EnableScriptInScenes(this, SceneName.StageSelectScene);
     }
 
     private void Start()

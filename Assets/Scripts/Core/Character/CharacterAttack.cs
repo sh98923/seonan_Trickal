@@ -38,7 +38,6 @@ public class CharacterAttack : CharacterAction
     public override void SetAttackInfo(Character target, ActionSlot type, float damage)
     {
         _type = type;
-        _target = null;
         _damage = damage;
 
         if (target != null)
@@ -103,7 +102,13 @@ public class CharacterAttack : CharacterAction
 
     private void MeleeAttack(Character target, string atkEffectName, string hitEffectName)
     {
-        target.TakeDamage(_damage);
+        IDamageableHealth targetHealth = target.Health;
+        if (targetHealth == null)
+        {
+            return;
+        }
+
+        target.TakeDamage(targetHealth, _damage); ;
         
         if(target.tag == "Monster")
         {
@@ -118,7 +123,7 @@ public class CharacterAttack : CharacterAction
         switch(_effectType)
         {
             case AtkEffectType.Dot:
-                target.TakeDotDamage(_hitType, _dotDamage, _duration, _effectValue);
+                target.TakeDotDamage(targetHealth, _hitType, _dotDamage, _duration, _effectValue);
                 break;
             case AtkEffectType.Status:
                 target.ApplyAttackSlow(_hitType, _duration, _effectValue);
@@ -130,11 +135,6 @@ public class CharacterAttack : CharacterAction
     {
         _hitType = GetEffectType<HitType>(hitEffectName, out _isValid);
         _effectType = GetEffectType<AtkEffectType>(atkEffectName, out _isValid);
-
-        if (target.tag == "Monster")
-        {
-            //print("");
-        }
 
         if (!_isValid) return;
 

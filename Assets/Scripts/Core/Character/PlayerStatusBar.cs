@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class PlayerStatusBar : MonoBehaviour
+public class PlayerStatusBar : CharacterStatusBar
 {
-    private enum Status
+    private enum PlayerStatus
     {
         Hp = 1,
         Mp
@@ -11,7 +11,6 @@ public class PlayerStatusBar : MonoBehaviour
     private PlayerHp _playerHp;
     private PlayerMp _playerMp;
     
-    private Transform _hpBar;
     private Transform _mpBar;
 
     private void Awake()
@@ -21,10 +20,10 @@ public class PlayerStatusBar : MonoBehaviour
 
         Transform[] transforms = GetComponentsInChildren<Transform>();
 
-        _hpBar = transforms[(int)Status.Hp];
-        _mpBar = transforms[(int)Status.Mp];
+        _hpBar = transforms[(int)PlayerStatus.Hp];
+        _mpBar = transforms[(int)PlayerStatus.Mp];
 
-        SetBarScale(_hpBar, 1.0f);
+        base.Awake();
         SetBarScale(_mpBar, 0.0f);
     }
 
@@ -38,22 +37,6 @@ public class PlayerStatusBar : MonoBehaviour
     {
         _playerHp.OnHpChanged -= UpdateHpBar;
         _playerMp.OnMpChanged -= UpdateMpBar;
-    }
-
-    private void SetBarScale(Transform bar, float ratio)
-    {
-        Vector3 scale = bar.localScale;
-        scale.x = Mathf.Clamp01(ratio);
-        bar.localScale = scale;
-    }
-
-    private void UpdateHpBar(float cur, float max)
-    {
-        float ratio = cur / max;
-
-        Vector3 scale = _hpBar.localScale;
-        scale.x = ratio;
-        _hpBar.localScale = scale;
     }
 
     private void UpdateMpBar(float cur, float max)

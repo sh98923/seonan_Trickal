@@ -8,7 +8,7 @@ public class InGameCardPanel : CardPanel
     {
         base.Awake();
 
-        GameManager.Instance.EnableInScenes(this, SceneName.InGameScene);
+        GameManager.Instance.EnableScriptInScenes(this, SceneName.InGameScene);
     }
 
     protected override void InitUI()

@@ -28,7 +28,7 @@ public class StagePlayerSpawn : MonoBehaviour
 
     private void Awake()
     {
-        GameManager.Instance.EnableInScenes(this, SceneName.InGameScene, SceneName.StageSelectScene);
+        GameManager.Instance.EnableScriptInScenes(this, SceneName.InGameScene, SceneName.StageSelectScene);
     }
 
     private void Start()

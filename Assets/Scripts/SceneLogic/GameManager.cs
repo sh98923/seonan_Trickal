@@ -65,6 +65,19 @@ public class GameManager : Singleton<GameManager>
         return _spawnablePlayerDatas;
     }
 
+    private bool IsAllowedScene(params SceneName[] sceneNames)
+    {
+        string curSceneName = SceneManager.GetActiveScene().name;
+
+        for (int i = 0; i < sceneNames.Length; i++)
+        {
+            if (curSceneName == sceneNames[i].ToString())
+                return true;
+        }
+
+        return false;
+    }
+
     public void SetStageKey(int stageKey)
     {
         _stageKey = stageKey; 
@@ -106,16 +119,13 @@ public class GameManager : Singleton<GameManager>
         _deckUnitDatas.Remove(data.Key);
     }
 
-    public void EnableInScenes(MonoBehaviour target, params SceneName[] sceneNames)
+    public void SetActiveGameObjectInScenes(GameObject target, params SceneName[] sceneNames)
     {
-        string curScene = SceneManager.GetActiveScene().name;
+        target.SetActive(IsAllowedScene(sceneNames));
+    }
 
-        foreach (SceneName scene in sceneNames)
-        {
-            if (curScene == scene.ToString())
-                return; // 허용된 씬
-        }
-
-        target.enabled = false;
+    public void EnableScriptInScenes(MonoBehaviour target, params SceneName[] sceneNames)
+    {
+        target.enabled = IsAllowedScene(sceneNames);
     }
 }

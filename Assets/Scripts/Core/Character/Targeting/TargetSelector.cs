@@ -14,7 +14,7 @@ public abstract class TargetSelector : MonoBehaviour
 
     private void Awake()
     {
-        GameManager.Instance.EnableInScenes(this, SceneName.InGameScene);
+        GameManager.Instance.EnableScriptInScenes(this, SceneName.InGameScene);
     }
 
     private void Start()

@@ -36,6 +36,7 @@ public class Character : MonoBehaviour, ITrackable
     private Transform _atkPoint;
     private Transform _centerPoint;
     private Transform _rootPoint;
+    private IDamageableHealth _health;
     public Vector3 RootPos
     {
         get { return _rootPoint.transform.position; }
@@ -46,7 +47,8 @@ public class Character : MonoBehaviour, ITrackable
     public GameObject Object => gameObject;
     public Character Self => gameObject.GetComponent<Character>();
     public Transform AtkPoint => _atkPoint;
-    public Transform CenterPoint => _centerPoint;
+    public Transform CenterPoint => _centerPoint; 
+    public IDamageableHealth Health => _health;
 
     public int SortingIndex
     {
@@ -70,7 +72,7 @@ public class Character : MonoBehaviour, ITrackable
         get { return _curState; }
     }
     protected readonly float _findTargetRange = 5.0f;
-    protected float _maxHp = 0.0f;
+    //protected float _maxHp = 0.0f;
    // protected float _moveSpeed = 4.0f;
 
     protected bool _isAttacking = false;
@@ -96,13 +98,17 @@ public class Character : MonoBehaviour, ITrackable
         _characterVisual = GetComponent<CharacterGraphics>();
 
         _damageReceiver = GetComponent<DamageReceiver>();
+
+        _health = GetComponentInChildren<IDamageableHealth>();
+        if (_health == null)
+            Debug.LogError("IHealth 컴포넌트가 없음!");
     }
 
     protected void OnEnable()
     {
         if (_data == null) return;
 
-        _damageReceiver.Initialize(this, _data.Hp);
+        _damageReceiver.Initialize(this);
         //print(_data.EngName + " : " + _data.Hp);
 
         _curState = CharacterState.Idle;
@@ -113,7 +119,7 @@ public class Character : MonoBehaviour, ITrackable
 
     protected void Update()
     {
-        if(_movement.HasTarget || !_isDead)
+        if(_movement.HasTarget && !_isDead)
         {
             if (_movement.Target != null)
             {
@@ -258,9 +264,9 @@ public class Character : MonoBehaviour, ITrackable
     }*/
 
     // 공격 처리
-    public void TakeDamage(float damage)
+    public void TakeDamage(IDamageableHealth targetHealth, float damage)
     {
-        _damageReceiver.TakeDamage(damage);
+        _damageReceiver.TakeDamage(targetHealth, damage);
     }
 
     public void CharacterDeath()
@@ -268,9 +274,9 @@ public class Character : MonoBehaviour, ITrackable
         _curState = CharacterState.Dead;
     }
 
-    public void TakeDotDamage(HitType type, float damage, float duration, float tickInterval)
+    public void TakeDotDamage(IDamageableHealth targetHealth, HitType type, float damage, float duration, float tickInterval)
     {
-        _damageReceiver.TakeDotDamage(type, damage, duration, tickInterval);
+        _damageReceiver.TakeDotDamage(targetHealth, type, damage, duration, tickInterval);
     }
 
     // 버프, 디버프 관련
