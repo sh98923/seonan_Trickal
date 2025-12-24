@@ -10,6 +10,8 @@ public class CharacterHp : MonoBehaviour, IDamageableHealth
         remove { _onHpchanged -= value; }
     }
 
+    protected string _gameObjectName;
+
     protected float _curHp = 0.0f;
     public float CurHp
     {
@@ -23,6 +25,17 @@ public class CharacterHp : MonoBehaviour, IDamageableHealth
     }
 
     private bool _isInitialized = false;
+
+    private void Awake()
+    {
+        GameManager.Instance.EnableScriptInScenes(this, SceneName.InGameScene);
+    }
+
+    private void Start()
+    {
+        Character character = GetComponentInParent<Character>();
+        _gameObjectName = character.gameObject.name;
+    }
 
     protected void OnEnable()
     {

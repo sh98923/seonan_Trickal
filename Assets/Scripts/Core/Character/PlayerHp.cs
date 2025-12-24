@@ -35,7 +35,7 @@ public class PlayerHp : CharacterHp, IHealableHealth
         float amount = _maxHp * _waveEndHpRatio;
         IncreaseHp(amount);
 
-        print($"{gameObject.name} 회복 : {_curHp} / {_maxHp}");
+        print($"{_gameObjectName} 회복 : {_curHp} / {_maxHp}");
     }
 
     public void UpgradeHp()
@@ -48,7 +48,7 @@ public class PlayerHp : CharacterHp, IHealableHealth
         float amount = _maxHp * _upgradeHpRatio;
         IncreaseHp(amount);
 
-        print($"{gameObject.name} 업그레이드 : {_curHp} / {_maxHp}");
+        print($"{_gameObjectName} 업그레이드 : {_curHp} / {_maxHp}");
     }
 
     public void ReviveHp()
@@ -56,7 +56,7 @@ public class PlayerHp : CharacterHp, IHealableHealth
         float amount = _maxHp * _reviveHpRatio;
         IncreaseHp(amount);
 
-        print(gameObject.name + " 부활 newHp(curHp) : " + _curHp);
+        print(_gameObjectName + " 부활 newHp(curHp) : " + _curHp + " / " + _maxHp);
     }
 
     public void IncreaseHp(float amount)

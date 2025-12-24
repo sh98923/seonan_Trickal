@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -18,6 +19,7 @@ public class CharacterMovement : MonoBehaviour
 
     protected Vector3 _dir = Vector3.zero;
 
+    private const float _minDistanceThreshold = 0.001f;
     protected const float _moveSpeed = 4.0f;
 
     private bool _isMoving = false;
@@ -123,7 +125,9 @@ public class CharacterMovement : MonoBehaviour
 
     private void MoveToward(Vector3 targetPos)
     {
-        _dir = (targetPos - transform.position).normalized;
+        Vector2 dir = GetFakeDiagonalDir(transform.position, targetPos);
+        _dir = dir;
+
         transform.Translate(_dir * _moveSpeed * Time.deltaTime);
     }
 
@@ -139,6 +143,31 @@ public class CharacterMovement : MonoBehaviour
         }
 
         transform.Translate(_dir * _moveSpeed * Time.deltaTime);
+    }
+
+    protected Vector2 GetFakeDiagonalDir(Vector2 curPos, Vector2 targetPos)
+    {
+        Vector2 delta = targetPos - curPos;
+
+        float distanceX = Mathf.Abs(delta.x);
+        float distanceY = Mathf.Abs(delta.y);
+
+        if (distanceX < _minDistanceThreshold && distanceY < _minDistanceThreshold)
+            return Vector2.zero;
+
+        float directionX = Mathf.Sign(delta.x);
+        float directionY = Mathf.Sign(delta.y);
+
+        if (distanceX > distanceY)
+        {
+            float ratio = distanceY / distanceX;
+            return new Vector2(directionX, directionY * ratio);
+        }
+        else
+        {
+            float ratio = distanceX / distanceY;
+            return new Vector2(directionX * ratio, directionY);
+        }
     }
 
     public void SetMovementActive(bool active)

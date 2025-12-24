@@ -138,10 +138,10 @@ public class InGamePlayerSpawn : MonoBehaviour
         {
             if (!player.gameObject.activeSelf)
             {
+                player.gameObject.SetActive(true);
                 player.PlayerHealth.ReviveHp();
                 player.PlayEnterAnim();
                 player.RevivePlayer(camPosX);  // 상태 초기화
-                player.gameObject.SetActive(true);
 
                 /*// 콜라이더도 필요하면 켜주기
                 Collider2D collider = player.GetComponent<Collider2D>();
