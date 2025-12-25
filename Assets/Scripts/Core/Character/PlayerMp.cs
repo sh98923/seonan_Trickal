@@ -22,12 +22,20 @@ public class PlayerMp : MonoBehaviour
     private float _tickInterval = 0.0f;
 
     private float _curMp = 0.0f;
-    private float _maxMp = 0.0f;
+    public float CurMp
+    {
+        get { return _curMp; }
+    }
+    private float _maxMp = 1.0f;
+    public float MaxMp
+    {
+        get { return _maxMp; }
+    }
 
     private void OnEnable()
     {
-        /*_curMp = 0.0f;
-        _onMpchanged.Invoke(_curMp, _maxMp);*/
+        _curMp = 0.0f;
+        _onMpchanged?.Invoke(_curMp, _maxMp);
 
         BattleStateManager.Instance.OnBattle += StartMpRegen;
         BattleStateManager.Instance.OnEnteringReroll += StopMpRegen; // 웨이브 이동 시 중지
@@ -57,10 +65,12 @@ public class PlayerMp : MonoBehaviour
     private void StartMpRegen()
     {
         if (_regenCoroutine == null)
+        {
             _regenCoroutine = StartCoroutine(RegenerateMp());
+        }
     }
 
-    private void StopMpRegen()
+    public void StopMpRegen()
     {
         if (_regenCoroutine != null)
         {
@@ -92,10 +102,5 @@ public class PlayerMp : MonoBehaviour
     public void UseMp()
     {
         _curMp = 0.0f;
-    }
-
-    public float GetCurMp()
-    {
-        return _curMp;
     }
 }

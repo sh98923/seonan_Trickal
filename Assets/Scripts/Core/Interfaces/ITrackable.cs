@@ -1,9 +1,8 @@
 
 using UnityEngine;
 
-public interface ITrackable
+public interface ITrackable : ICharacterObject
 {
     GameObject Object { get; }
-    Character Self { get; }
     bool IsColliderEnable { get; }
 }

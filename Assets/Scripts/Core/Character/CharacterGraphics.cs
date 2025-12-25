@@ -299,7 +299,7 @@ public class CharacterGraphics : MonoBehaviour
         yield return new WaitForSeconds(2.0f);
 
         float timer = 0.0f;
-        Color shadowOriginal = _shadowSprite ? _shadowSprite.color : Color.white;
+        //Color shadowOriginal = _shadowSprite ? _shadowSprite.color : Color.white;
 
         while (timer < _fadeDuration)
         {

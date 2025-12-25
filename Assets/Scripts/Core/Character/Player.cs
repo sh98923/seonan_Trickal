@@ -69,12 +69,14 @@ public class Player : Character
     {
         base.OnEnable();
 
+        Self.OnDie += _playerMp.StopMpRegen;
         BattleStateManager.Instance.OnReroll += EnableCollider;
         BattleStateManager.Instance.OnEnteringReroll += DisableCollider;
     }
 
     protected void OnDisable()
     {
+        Self.OnDie -= _playerMp.StopMpRegen;
         BattleStateManager.Instance.OnReroll -= EnableCollider;
         BattleStateManager.Instance.OnEnteringReroll -= DisableCollider;
     }
@@ -217,7 +219,7 @@ public class Player : Character
 
         _isAttacking = true;
 
-        if (_playerMp.GetCurMp() >= _data.Mp)
+        if (_playerMp.CurMp >= _data.Mp)
         {
             _actionType = ActionSlot.Skill;
         }

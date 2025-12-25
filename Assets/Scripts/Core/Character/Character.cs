@@ -31,6 +31,7 @@ public class Character : MonoBehaviour, ITrackable
     protected DamageReceiver _damageReceiver;
     protected TargetSelector[] _targets = new TargetSelector[3];
 
+    private CharacterStatusBar _statusBar;
     private CharacterGraphics _characterVisual;
     private CircleCollider2D _myCollider;
     private Transform _atkPoint;
@@ -45,7 +46,7 @@ public class Character : MonoBehaviour, ITrackable
     // 속성
     public CharacterData Data => _data;
     public GameObject Object => gameObject;
-    public Character Self => gameObject.GetComponent<Character>();
+    public Character Self => this;
     public Transform AtkPoint => _atkPoint;
     public Transform CenterPoint => _centerPoint; 
     public IDamageableHealth Health => _health;
@@ -99,6 +100,8 @@ public class Character : MonoBehaviour, ITrackable
 
         _damageReceiver = GetComponent<DamageReceiver>();
 
+        _statusBar = GetComponentInChildren<CharacterStatusBar>();
+
         _health = GetComponentInChildren<IDamageableHealth>();
         if (_health == null)
             Debug.LogError("IHealth 컴포넌트가 없음!");
@@ -111,6 +114,7 @@ public class Character : MonoBehaviour, ITrackable
         _damageReceiver.Initialize(this);
         //print(_data.EngName + " : " + _data.Hp);
 
+        _statusBar.SetActiveBar(true);
         _curState = CharacterState.Idle;
         _isAttacking = false;
         _isDead = false;

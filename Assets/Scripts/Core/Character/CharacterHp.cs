@@ -10,6 +10,13 @@ public class CharacterHp : MonoBehaviour, IDamageableHealth
         remove { _onHpchanged -= value; }
     }
 
+    protected event Action<bool> _onHpZero;
+    public event Action<bool> OnHpZero
+    {
+        add { _onHpZero += value; }
+        remove { _onHpZero -= value; }
+    }
+
     protected string _gameObjectName;
 
     protected float _curHp = 0.0f;
@@ -80,11 +87,18 @@ public class CharacterHp : MonoBehaviour, IDamageableHealth
 
     public void DecreaseHp(float amount)
     {
+        // 이미 0이면 중복 방지
+        if (_curHp <= 0.0f)
+            return; 
+
         _curHp -= amount;
 
         if (_curHp <= 0.0f)
         {
             _curHp = 0.0f;
+            UpdateHpState();
+            _onHpZero?.Invoke(false); 
+            return;
         }
 
         UpdateHpState();

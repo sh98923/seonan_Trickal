@@ -8,34 +8,33 @@ public class PlayerStatusBar : CharacterStatusBar
         Mp
     }
 
-    private PlayerHp _playerHp;
     private PlayerMp _playerMp;
     
     private Transform _mpBar;
 
     private void Awake()
     {
-        _playerHp = GetComponent<PlayerHp>();
         _playerMp = GetComponent<PlayerMp>();
 
         Transform[] transforms = GetComponentsInChildren<Transform>();
-
         _hpBar = transforms[(int)PlayerStatus.Hp];
         _mpBar = transforms[(int)PlayerStatus.Mp];
 
         base.Awake();
+
         SetBarScale(_mpBar, 0.0f);
     }
 
     private void OnEnable()
     {
-        _playerHp.OnHpChanged += UpdateHpBar;
+        base.OnEnable();
         _playerMp.OnMpChanged += UpdateMpBar;
+        UpdateMpBar(_playerMp.CurMp, _playerMp.MaxMp);
     }
 
     private void OnDisable()
     {
-        _playerHp.OnHpChanged -= UpdateHpBar;
+        base.OnDisable();
         _playerMp.OnMpChanged -= UpdateMpBar;
     }
 
