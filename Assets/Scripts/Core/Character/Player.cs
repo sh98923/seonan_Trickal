@@ -450,6 +450,6 @@ public class Player : Character
 
     public void ApplyDamageReduction(float damageReduction)
     {
-        _damageReceiver.UpdateDamageReduction(damageReduction);
+        _damageReduction = damageReduction;
     }
 }

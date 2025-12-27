@@ -1,15 +1,9 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CharacterHp : MonoBehaviour, IDamageableHealth
 {
-    protected event Action<float, float> _onHpchanged;
-    public event Action<float, float> OnHpChanged
-    {
-        add { _onHpchanged += value; }
-        remove { _onHpchanged -= value; }
-    }
-
     protected event Action<bool> _onHpZero;
     public event Action<bool> OnHpZero
     {
@@ -17,25 +11,22 @@ public class CharacterHp : MonoBehaviour, IDamageableHealth
         remove { _onHpZero -= value; }
     }
 
+    private Slider _hpSlider;
+
     protected string _gameObjectName;
 
     protected float _curHp = 0.0f;
-    public float CurHp
-    {
-        get { return _curHp; }
-    }
+    public float CurHp => _curHp;
 
     protected float _maxHp = 0.0f;
-    public float MaxHp
-    {
-        get { return _maxHp; }
-    }
+    public float MaxHp => _maxHp;
 
     private bool _isInitialized = false;
 
     private void Awake()
     {
         GameManager.Instance.EnableScriptInScenes(this, SceneName.InGameScene);
+        _hpSlider = GetComponent<Slider>();
     }
 
     private void Start()
@@ -47,17 +38,20 @@ public class CharacterHp : MonoBehaviour, IDamageableHealth
     protected void OnEnable()
     {
         if (_isInitialized)
-        { 
+        {
             UpdateHpState();
         }
     }
 
     protected void UpdateHpState()
     {
-        _onHpchanged?.Invoke(_curHp, _maxHp);
+        if (_hpSlider != null)
+        {
+            _hpSlider.maxValue = _maxHp;
+            _hpSlider.value = _curHp;
+        }
     }
 
-    // 최초 1회만 호출
     public void InitializeHp(float maxHp)
     {
         _isInitialized = true;
@@ -66,11 +60,9 @@ public class CharacterHp : MonoBehaviour, IDamageableHealth
         UpdateHpState();
     }
 
-    // 레벨업 / 스탯 변경용
     public void UpdateMaxHp(float newMaxHp)
     {
         bool wasFullHp = _curHp >= _maxHp;
-
         _maxHp = newMaxHp;
 
         if (wasFullHp)
@@ -87,9 +79,7 @@ public class CharacterHp : MonoBehaviour, IDamageableHealth
 
     public void DecreaseHp(float amount)
     {
-        // 이미 0이면 중복 방지
-        if (_curHp <= 0.0f)
-            return; 
+        if (_curHp <= 0.0f) return;
 
         _curHp -= amount;
 
@@ -97,7 +87,7 @@ public class CharacterHp : MonoBehaviour, IDamageableHealth
         {
             _curHp = 0.0f;
             UpdateHpState();
-            _onHpZero?.Invoke(false); 
+            _onHpZero?.Invoke(false);
             return;
         }
 

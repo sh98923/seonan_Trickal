@@ -1,7 +1,6 @@
-using System;
 using UnityEngine;
 
-public class PlayerHp : CharacterHp, IHealableHealth
+public class PlayerHp : CharacterHp
 {
     private readonly float _waveEndHpRatio = 0.2f;
     private readonly float _upgradeHpRatio = 0.3f;
@@ -21,17 +20,12 @@ public class PlayerHp : CharacterHp, IHealableHealth
     private void OnDestroy()
     {
         if (BattleStateManager.Instance != null)
-        {
             BattleStateManager.Instance.OnReroll -= RecoverWaveEndHp;
-        }
     }
 
     private void RecoverWaveEndHp()
     {
-        // 풀피라면 리턴
-        if (_curHp >= _maxHp)
-            return;
-
+        if (_curHp >= _maxHp) return;
         float amount = _maxHp * _waveEndHpRatio;
         IncreaseHp(amount);
 
@@ -56,14 +50,14 @@ public class PlayerHp : CharacterHp, IHealableHealth
         float amount = _maxHp * _reviveHpRatio;
         IncreaseHp(amount);
 
-        print(_gameObjectName + " 부활 newHp(curHp) : " + _curHp + " / " + _maxHp);
+        print($"{_gameObjectName} 부활 newHp(curHp) : {_curHp} / {_maxHp}");
     }
 
-    public void IncreaseHp(float amount)
+    private void IncreaseHp(float amount)
     {
         _curHp += amount;
 
-        if(_curHp >= _maxHp)
+        if (_curHp >= _maxHp)
         {
             _curHp = _maxHp;
         }

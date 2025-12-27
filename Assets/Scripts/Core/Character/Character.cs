@@ -1,6 +1,8 @@
 using System;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.TextCore.Text;
+using UnityEngine.UI;
 
 public enum CharacterState
 {
@@ -28,7 +30,7 @@ public class Character : MonoBehaviour, ITrackable
     protected CharacterAnimator _animator;
     protected CharacterAction[] _action;
     protected SortingGroup _sortingGroup;
-    protected DamageReceiver _damageReceiver;
+    //protected DamageReceiver _damageReceiver;
     protected TargetSelector[] _targets = new TargetSelector[3];
 
     private CharacterStatusBar _statusBar;
@@ -74,7 +76,9 @@ public class Character : MonoBehaviour, ITrackable
     }
     protected readonly float _findTargetRange = 5.0f;
     //protected float _maxHp = 0.0f;
-   // protected float _moveSpeed = 4.0f;
+    // protected float _moveSpeed = 4.0f;
+
+    protected float _damageReduction = 1.0f;
 
     protected bool _isAttacking = false;
     private bool _isDead = false;
@@ -98,7 +102,7 @@ public class Character : MonoBehaviour, ITrackable
         _animator = GetComponent<CharacterAnimator>();
         _characterVisual = GetComponent<CharacterGraphics>();
 
-        _damageReceiver = GetComponent<DamageReceiver>();
+        //_damageReceiver = GetComponent<DamageReceiver>();
 
         _statusBar = GetComponentInChildren<CharacterStatusBar>();
 
@@ -111,7 +115,7 @@ public class Character : MonoBehaviour, ITrackable
     {
         if (_data == null) return;
 
-        _damageReceiver.Initialize(this);
+        //_damageReceiver.Initialize(this);
         //print(_data.EngName + " : " + _data.Hp);
 
         _statusBar.SetActiveBar(true);
@@ -270,7 +274,26 @@ public class Character : MonoBehaviour, ITrackable
     // 공격 처리
     public void TakeDamage(IDamageableHealth targetHealth, float damage)
     {
-        _damageReceiver.TakeDamage(targetHealth, damage);
+       /* if (this == null || !_movement.Target.enabled)
+        {
+            return;
+        }
+
+        float finalDamage = damage * _damageReduction;
+        health.DecreaseHp(finalDamage);
+
+        string textKey = _hitText.GetHitText();
+
+        _graphics.PlayFlashHit();
+        _graphics.ShowDamageText(textKey, finalDamage);
+        //print(name + " " + "체력: " + _curHp + "/" + _maxHp);
+
+        if (health.CurHp <= 0.0f)
+        {
+            // 사망 처리 요청
+            _character.CharacterDeath();
+        }
+        _damageReceiver.TakeDamage(targetHealth, damage);*/
     }
 
     public void CharacterDeath()
@@ -280,7 +303,7 @@ public class Character : MonoBehaviour, ITrackable
 
     public void TakeDotDamage(IDamageableHealth targetHealth, HitType type, float damage, float duration, float tickInterval)
     {
-        _damageReceiver.TakeDotDamage(targetHealth, type, damage, duration, tickInterval);
+        //_damageReceiver.TakeDotDamage(targetHealth, type, damage, duration, tickInterval);
     }
 
     // 버프, 디버프 관련

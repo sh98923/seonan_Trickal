@@ -44,6 +44,9 @@ public class InGameManager : MonoBehaviour
     {
         get
         {
+            if (_monsters.Count > 0)
+                return _monsters;
+
             _monsters.Clear();
 
             foreach (ITrackable trackable in Trackables)

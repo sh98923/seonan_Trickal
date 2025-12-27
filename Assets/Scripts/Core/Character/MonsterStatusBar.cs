@@ -12,6 +12,6 @@ public class MonsterStatusBar : CharacterStatusBar
         Transform[] transforms = GetComponentsInChildren<Transform>();
         _hpBar = transforms[(int)MonsterStatus.Hp];
 
-        base.Awake();
+       // base.Awake();
     }
 }

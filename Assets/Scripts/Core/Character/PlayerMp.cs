@@ -1,6 +1,6 @@
-using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
 /// 플레이어 MP 관리 컴포넌트
@@ -9,36 +9,29 @@ using UnityEngine;
 /// </summary>
 public class PlayerMp : MonoBehaviour
 {
-    private event Action<float, float> _onMpchanged;
-    public event Action<float, float> OnMpChanged
-    {
-        add { _onMpchanged += value; }
-        remove { _onMpchanged -= value; }
-    }
-
     private Coroutine _regenCoroutine;
+    private Slider _mpSlider;
 
     private float _mpPerTick = 10.0f;      // 1회 회복량
     private float _tickInterval = 0.0f;
 
     private float _curMp = 0.0f;
-    public float CurMp
-    {
-        get { return _curMp; }
-    }
+    public float CurMp => _curMp;
+
     private float _maxMp = 1.0f;
-    public float MaxMp
+    public float MaxMp => _maxMp;
+
+    private void Awake()
     {
-        get { return _maxMp; }
+        _mpSlider = GetComponent<Slider>();
     }
 
     private void OnEnable()
     {
         _curMp = 0.0f;
-        _onMpchanged?.Invoke(_curMp, _maxMp);
 
         BattleStateManager.Instance.OnBattle += StartMpRegen;
-        BattleStateManager.Instance.OnEnteringReroll += StopMpRegen; // 웨이브 이동 시 중지
+        BattleStateManager.Instance.OnEnteringReroll += StopMpRegen;
     }
 
     private void OnDisable()
@@ -60,6 +53,7 @@ public class PlayerMp : MonoBehaviour
     {
         _maxMp = maxMp;
         _tickInterval = tickRate;
+        UpdateMpSlider();
     }
 
     private void StartMpRegen()
@@ -90,11 +84,11 @@ public class PlayerMp : MonoBehaviour
                 _curMp += _mpPerTick;
 
                 if (_curMp > _maxMp)
-                { 
+                {
                     _curMp = _maxMp;
                 }
 
-                _onMpchanged.Invoke(_curMp, _maxMp);
+                UpdateMpSlider();
             }
         }
     }
@@ -102,5 +96,15 @@ public class PlayerMp : MonoBehaviour
     public void UseMp()
     {
         _curMp = 0.0f;
+        UpdateMpSlider();
+    }
+
+    private void UpdateMpSlider()
+    {
+        if (_mpSlider != null)
+        {
+            _mpSlider.maxValue = _maxMp;
+            _mpSlider.value = _curMp;
+        }
     }
 }
