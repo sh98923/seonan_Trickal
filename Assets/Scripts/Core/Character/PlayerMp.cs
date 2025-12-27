@@ -29,6 +29,7 @@ public class PlayerMp : MonoBehaviour
     private void OnEnable()
     {
         _curMp = 0.0f;
+        UpdateMpSlider();
 
         BattleStateManager.Instance.OnBattle += StartMpRegen;
         BattleStateManager.Instance.OnEnteringReroll += StopMpRegen;

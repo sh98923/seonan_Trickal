@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class ProjectileData
@@ -48,7 +47,7 @@ public class Projectile : MonoBehaviour
     {
         transform.Translate(_direction * _data.Speed * Time.deltaTime);
 
-        if(_data.IsRotation)
+        if (_data.IsRotation)
         {
             transform.Rotate(Vector3.back, _rotationSpeed * Time.deltaTime);
         }
@@ -88,26 +87,17 @@ public class Projectile : MonoBehaviour
 
     protected void ApplyDamage(Character target)
     {
-        ApplyToHealth(target, targetHealth => target.TakeDamage(targetHealth, _data.Damage));
+        target.TakeDamage(_data.Damage);
     }
 
     protected void ApplyDot(Character target)
     {
-        ApplyToHealth(target, targetHealth =>
-        target.TakeDotDamage(targetHealth, _data.HitType, _data.DotDamage, _data.Duration, _data.EffectValue));
+        target.TakeDotDamage(_data.HitType, _data.DotDamage, _data.Duration, _data.EffectValue);
     }
 
     protected void ApplySlow(Character target)
     {
         target.ApplyAttackSlow(_data.HitType, _data.Duration, _data.EffectValue);
-    }
-
-    protected void ApplyToHealth(Character target, Action<IDamageableHealth> action)
-    {
-        IDamageableHealth targetHealth = target.Health;
-        if (targetHealth == null) return;
-
-        action(targetHealth);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

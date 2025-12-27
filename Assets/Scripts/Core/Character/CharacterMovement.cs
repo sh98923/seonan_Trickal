@@ -19,8 +19,9 @@ public class CharacterMovement : MonoBehaviour
 
     protected Vector3 _dir = Vector3.zero;
 
-    private const float _minDistanceThreshold = 0.001f;
     protected const float _moveSpeed = 4.0f;
+    private const float _minDistanceThreshold = 0.015f;
+    private const float _diagonalToleranceRatio = 0.4f; // 오차 허용 비율
 
     private bool _isMoving = false;
     private bool _hasTarget = false;
@@ -158,16 +159,26 @@ public class CharacterMovement : MonoBehaviour
         float directionX = Mathf.Sign(delta.x);
         float directionY = Mathf.Sign(delta.y);
 
-        if (distanceX > distanceY)
+        // 긴 축 판단
+        Vector2 finalDirection = Vector2.zero;
+
+        bool isXLonger = distanceX > distanceY;
+
+        float longAxis = isXLonger ? distanceX : distanceY;
+        float shortAxis = isXLonger ? distanceY : distanceX;
+        float ratio = shortAxis / longAxis;
+
+        // 오차가 크면 → 긴 축 단독 이동
+        if (ratio < _diagonalToleranceRatio)
         {
-            float ratio = distanceY / distanceX;
-            return new Vector2(directionX, directionY * ratio);
+            finalDirection = isXLonger ? new Vector2(directionX, 0.0f) : new Vector2(0.0f, directionY);
+            return finalDirection;
         }
-        else
-        {
-            float ratio = distanceX / distanceY;
-            return new Vector2(directionX * ratio, directionY);
-        }
+
+        // 오차 범위 안일 때만 대각
+        finalDirection = isXLonger ? new Vector2(directionX, directionY * ratio) : new Vector2(directionX * ratio, directionY);
+        // 정규화로 속도 보정
+        return finalDirection.normalized;
     }
 
     public void SetMovementActive(bool active)

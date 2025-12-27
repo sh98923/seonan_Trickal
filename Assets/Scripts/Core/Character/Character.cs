@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.TextCore.Text;
@@ -26,20 +27,19 @@ public class Character : MonoBehaviour, ITrackable
     }
 
     // 컴포넌트
+    protected CharacterHp _hp;
     protected CharacterMovement _movement;
     protected CharacterAnimator _animator;
     protected CharacterAction[] _action;
     protected SortingGroup _sortingGroup;
-    //protected DamageReceiver _damageReceiver;
     protected TargetSelector[] _targets = new TargetSelector[3];
 
     private CharacterStatusBar _statusBar;
-    private CharacterGraphics _characterVisual;
+    private CharacterRenderEffect _renderEffect;
     private CircleCollider2D _myCollider;
     private Transform _atkPoint;
     private Transform _centerPoint;
     private Transform _rootPoint;
-    private IDamageableHealth _health;
     public Vector3 RootPos
     {
         get { return _rootPoint.transform.position; }
@@ -51,7 +51,6 @@ public class Character : MonoBehaviour, ITrackable
     public Character Self => this;
     public Transform AtkPoint => _atkPoint;
     public Transform CenterPoint => _centerPoint; 
-    public IDamageableHealth Health => _health;
 
     public int SortingIndex
     {
@@ -67,7 +66,6 @@ public class Character : MonoBehaviour, ITrackable
     // 스탯
     protected CharacterData _data;
     protected Vector3 _scale;
-    //protected Vector2 _moveDir;
     protected ActionSlot _actionType = ActionSlot.Attack;
     protected CharacterState _curState = CharacterState.Idle;
     public CharacterState CurState
@@ -75,8 +73,6 @@ public class Character : MonoBehaviour, ITrackable
         get { return _curState; }
     }
     protected readonly float _findTargetRange = 5.0f;
-    //protected float _maxHp = 0.0f;
-    // protected float _moveSpeed = 4.0f;
 
     protected float _damageReduction = 1.0f;
 
@@ -100,23 +96,15 @@ public class Character : MonoBehaviour, ITrackable
 
         _movement = GetComponent<CharacterMovement>();
         _animator = GetComponent<CharacterAnimator>();
-        _characterVisual = GetComponent<CharacterGraphics>();
+        _renderEffect = GetComponent<CharacterRenderEffect>();
 
-        //_damageReceiver = GetComponent<DamageReceiver>();
-
+        _hp = GetComponentInChildren<CharacterHp>();
         _statusBar = GetComponentInChildren<CharacterStatusBar>();
-
-        _health = GetComponentInChildren<IDamageableHealth>();
-        if (_health == null)
-            Debug.LogError("IHealth 컴포넌트가 없음!");
     }
 
     protected void OnEnable()
     {
         if (_data == null) return;
-
-        //_damageReceiver.Initialize(this);
-        //print(_data.EngName + " : " + _data.Hp);
 
         _statusBar.SetActiveBar(true);
         _curState = CharacterState.Idle;
@@ -131,7 +119,7 @@ public class Character : MonoBehaviour, ITrackable
         {
             if (_movement.Target != null)
             {
-                _characterVisual.FlipTo(transform, _movement.Target.transform);
+                _renderEffect.FlipTo(transform, _movement.Target.transform);
             }
         }
 
@@ -272,28 +260,27 @@ public class Character : MonoBehaviour, ITrackable
     }*/
 
     // 공격 처리
-    public void TakeDamage(IDamageableHealth targetHealth, float damage)
+    public void TakeDamage(float damage)
     {
-       /* if (this == null || !_movement.Target.enabled)
+        if (this == null || !_movement.Target.enabled)
         {
             return;
         }
 
         float finalDamage = damage * _damageReduction;
-        health.DecreaseHp(finalDamage);
+        _hp.DecreaseHp(finalDamage);
 
-        string textKey = _hitText.GetHitText();
+        string textKey = DamageTextManager.Instance.GetHitText();
 
-        _graphics.PlayFlashHit();
-        _graphics.ShowDamageText(textKey, finalDamage);
+        _renderEffect.PlayFlashHit();
+        _renderEffect.ShowDamageText(textKey, finalDamage);
         //print(name + " " + "체력: " + _curHp + "/" + _maxHp);
 
-        if (health.CurHp <= 0.0f)
+        if (_hp.CurHp <= 0.0f)
         {
-            // 사망 처리 요청
-            _character.CharacterDeath();
+            // 사망 처리
+            _curState = CharacterState.Dead;
         }
-        _damageReceiver.TakeDamage(targetHealth, damage);*/
     }
 
     public void CharacterDeath()
@@ -301,15 +288,44 @@ public class Character : MonoBehaviour, ITrackable
         _curState = CharacterState.Dead;
     }
 
-    public void TakeDotDamage(IDamageableHealth targetHealth, HitType type, float damage, float duration, float tickInterval)
+    public void TakeDotDamage(HitType type, float damage, float duration, float tickInterval)
     {
-        //_damageReceiver.TakeDotDamage(targetHealth, type, damage, duration, tickInterval);
+        // 중첩 허용
+        StartCoroutine(DotCoroutine(type, damage, duration, tickInterval));
+    }
+
+    private IEnumerator DotCoroutine(HitType type, float damage, float duration, float tick)
+    {
+        float elapsed = 0.0f;
+        string textKey = DamageTextManager.Instance.GetHitText(type);
+
+        while (elapsed < duration)
+        {
+            yield return new WaitForSeconds(tick);
+
+            if (!_myCollider.enabled)
+            {
+                yield break;
+            }
+
+            _hp.DecreaseHp(damage);
+            _renderEffect.PlayFlashHit(type);
+            _renderEffect.ShowDotText(textKey, damage);
+
+            if (_hp.CurHp <= 0.0f)
+            {
+                _curState = CharacterState.Dead;
+                yield break;
+            }
+
+            elapsed += tick;
+        }
     }
 
     // 버프, 디버프 관련
     public void ApplyAttackSlow(HitType type, float duration, float speed)
     {
-        _characterVisual.PlayStatusColor(type, duration, speed);
+        _renderEffect.PlayStatusColor(type, duration, speed);
     }
 
     public void SetAnimatorSpeed(float speed)
@@ -341,7 +357,7 @@ public class Character : MonoBehaviour, ITrackable
     // 죽었을 때 페이드 아웃
     private void Despawn()
     {
-        _characterVisual.StartFadeOutAndDisable();
+        _renderEffect.StartFadeOutAndDisable();
     }
 
     public TargetSelector GetSelector(ActionSlot slot)

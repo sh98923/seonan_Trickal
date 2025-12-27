@@ -50,7 +50,10 @@ public class Player : Character
     {
         base.Awake();
 
-        _playerHp = GetComponentInChildren<PlayerHp>();
+        if(_hp != null )
+        {
+            _playerHp = _hp as PlayerHp;
+        }
         _playerMp = GetComponentInChildren<PlayerMp>();
 
         _skillEffectController = GetComponent<SkillEffectController>();

@@ -102,15 +102,9 @@ public class CharacterAttack : CharacterAction
 
     private void MeleeAttack(Character target, string atkEffectName, string hitEffectName)
     {
-        IDamageableHealth targetHealth = target.Health;
-        if (targetHealth == null)
-        {
-            return;
-        }
+        target.TakeDamage(_damage);
 
-        target.TakeDamage(targetHealth, _damage); ;
-        
-        if(target.tag == "Monster")
+        if (target.tag == "Monster")
         {
             //print($"{target.name} 데미지 입음");
         }
@@ -120,10 +114,10 @@ public class CharacterAttack : CharacterAction
 
         if (!_isValid) return;
 
-        switch(_effectType)
+        switch (_effectType)
         {
             case AtkEffectType.Dot:
-                target.TakeDotDamage(targetHealth, _hitType, _dotDamage, _duration, _effectValue);
+                target.TakeDotDamage(_hitType, _dotDamage, _duration, _effectValue);
                 break;
             case AtkEffectType.Status:
                 target.ApplyAttackSlow(_hitType, _duration, _effectValue);

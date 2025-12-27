@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CharacterHp : MonoBehaviour, IDamageableHealth
+public class CharacterHp : MonoBehaviour
 {
     protected event Action<bool> _onHpZero;
     public event Action<bool> OnHpZero
@@ -16,10 +16,16 @@ public class CharacterHp : MonoBehaviour, IDamageableHealth
     protected string _gameObjectName;
 
     protected float _curHp = 0.0f;
-    public float CurHp => _curHp;
+    public float CurHp
+    {
+        get { return _curHp; }
+    }
 
     protected float _maxHp = 0.0f;
-    public float MaxHp => _maxHp;
+    public float MaxHp
+    {
+        get { return _maxHp; }
+    }
 
     private bool _isInitialized = false;
 

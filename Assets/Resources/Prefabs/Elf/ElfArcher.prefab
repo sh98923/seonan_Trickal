@@ -1046,7 +1046,7 @@ RectTransform:
   m_GameObject: {fileID: 2272452368488964729}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: -0.0065, y: 0.0065, z: 0.0065}
+  m_LocalScale: {x: -0.0048, y: 0.0048, z: 0.0048}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2157959950269910692}
@@ -1079,7 +1079,7 @@ Canvas:
   m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: -1452405073
+  m_SortingLayerID: 2107782463
   m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!114 &6961568476211483907
@@ -3979,7 +3979,6 @@ GameObject:
   - component: {fileID: 6269657033126248575}
   - component: {fileID: -1202790021143954151}
   - component: {fileID: -6011675698458806012}
-  - component: {fileID: -7217851334599696414}
   - component: {fileID: 7835846113546967524}
   - component: {fileID: -2992156858851499980}
   - component: {fileID: -4701186479726225996}
@@ -4129,18 +4128,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 83dc95816ca11784797797fa8d5bbe05, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &-7217851334599696414
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6915536252060765902}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e750a4276c1574d468bb8cfcc43809f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &7835846113546967524

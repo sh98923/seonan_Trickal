@@ -11,7 +11,7 @@ public enum HitType
     Stone       // 돌 처럼 딱딱하게 굳음 (멈춤)
 }
 
-public class CharacterGraphics : MonoBehaviour
+public class CharacterRenderEffect : MonoBehaviour
 {
     private struct StatusEffectData
     {

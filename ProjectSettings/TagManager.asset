@@ -56,8 +56,5 @@ TagManager:
   - name: SkillEffect
     uniqueID: 3393341585
     locked: 0
-  - name: CharacterStatus
-    uniqueID: 2842562223
-    locked: 0
   m_RenderingLayers:
   - Default
