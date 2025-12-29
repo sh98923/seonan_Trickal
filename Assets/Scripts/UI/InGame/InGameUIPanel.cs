@@ -4,8 +4,14 @@ using UnityEngine;
 public enum InGameUI
 {
     BattleSetUpPanel = 1,
-    LeftCardBtn = 4, CenterCardBtn = 11, RightCardBtn = 18,
-    RerollImage = 23, RerollBtn = 24, OptionPanel = 33, WaveTimerPanel = 36
+    LeftCardBtn = 6, 
+    CenterCardBtn = 14, 
+    RightCardBtn = 22,
+    RerollImage = 27, 
+    RerollBtn = 28, 
+    CoinText = 37, 
+    OptionPanel = 38, 
+    WaveTimerPanel = 41
 }
 
 public class InGameUIPanel : MonoBehaviour
@@ -95,7 +101,7 @@ public class InGameUIPanel : MonoBehaviour
         return _inGameUIs[(int)element].gameObject;
     }
 
-    public List<PlayerData> SetRerollCandidates()
+    public List<PlayerData> GetRerollCandidates()
     {
         // 배치 가능한 플레이어 데이터 가져오기
         InGamePlayerSpawn playerSpawn = _spawnParent.GetComponent<InGamePlayerSpawn>();

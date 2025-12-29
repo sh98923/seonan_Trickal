@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class InGameCardPanel : CardPanel
 {
-    private BattleSetupPanel _parentPanel;
+    private BattleSetUpUI _battleSetUpUI;
 
     private void Awake()
     {
@@ -15,7 +15,7 @@ public class InGameCardPanel : CardPanel
     {
         base.InitUI();
         _cardChildren[(int)CardUI.CostImage].gameObject.SetActive(true);
-        _parentPanel = GetComponentInParent<BattleSetupPanel>();
+        _battleSetUpUI = GetComponentInParent<BattleSetUpUI>();
     }
 
     protected override void SetCardInfo()
@@ -39,7 +39,7 @@ public class InGameCardPanel : CardPanel
 
     private bool IsBlocked()
     {
-        return _parentPanel.IsSelectedCardAnimating;
+        return _battleSetUpUI.IsSelectedCardAnimating;
     }
 
     private bool CanPayCost()
@@ -82,13 +82,13 @@ public class InGameCardPanel : CardPanel
     private void UpdateAfterAction()
     {
         UpdateCardCostUI();
-        _parentPanel.UpdateCoinUI(_playerData.UpgradeCost);
+        _battleSetUpUI.UpdateCoinUI(_playerData.UpgradeCost);
     }
 
     private void UpdateCardCostUI()
     {
         int curLevel = BattleUnitManager.Instance.CurLevel;
-        _parentPanel.CardCostUpdate(_playerData.Key, curLevel);
+        _battleSetUpUI.CardCostUpdate(_playerData.Key, curLevel);
     }
 
     private void UpdateDeployButtonState()
