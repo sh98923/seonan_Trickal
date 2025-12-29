@@ -1,0 +1,10 @@
+﻿Key,Name,SpritePath,Weight,Grade
+3100,길쭉검,Sprites/Item/sword_7,12.5,R
+3101,튼튼갑옷,Sprites/Item/armor_28,12.5,R
+3102,슈슉글러브,Sprites/Item/armor_43,12.5,R
+3103,뚝배기,Sprites/Item/armor_22,12.5,R
+3104,뚱뚱벨트,Sprites/Item/armor_53,12.5,R
+3105,치유지팡이,Sprites/Item/staff_7,10,SR
+3106,크리링,Sprites/Item/acc_2,10,SR
+3107,쭉쭉목걸이,Sprites/Item/acc_11,10,SR
+3108,마나젬,Sprites/Item/gem_4,10,UR
