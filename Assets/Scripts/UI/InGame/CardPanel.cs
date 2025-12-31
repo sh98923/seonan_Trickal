@@ -101,7 +101,7 @@ public class CardPanel : MonoBehaviour
 
     private void SetCardCost()
     {
-        Sprite costImage = Resources.Load<Sprite>("Sprites/CardInfo/CostBG");
+        Sprite costImage = Resources.Load<Sprite>("Sprites/UI/CoinBG");
 
         Image cardCostBG = _cardChildren[(int)CardUI.CostImage].GetComponent<Image>();
         cardCostBG.sprite = costImage;
