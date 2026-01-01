@@ -35,7 +35,7 @@ public class WaveTimerPanel : MonoBehaviour
         _timerText = _waveTimerChildren[(int)WaveTimerUI.TimerText].GetComponent<TextMeshProUGUI>();
     }
 
-    private void OnEnable()
+    private void Start()
     {
         BattleStateManager.Instance.OnReroll += UpdateWaveText;
     }

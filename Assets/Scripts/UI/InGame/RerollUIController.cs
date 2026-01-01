@@ -52,11 +52,13 @@ public class RerollUIController : MonoBehaviour
         _rerollStateButtons[(int)RerollUI.StartBattleBtn].onClick.AddListener(OnClickEnteringBattle);
 
         BattleStateManager.Instance.OnReroll += PlayCardRoll;
+        BattleStateManager.Instance.OnEnteringBattle += PlayCardHide;
     }
 
     private void OnDisable()
     {
         BattleStateManager.Instance.OnReroll -= PlayCardRoll;
+        BattleStateManager.Instance.OnEnteringBattle -= PlayCardHide;
     }
 
     private void OnClickCard(int index)
@@ -96,9 +98,14 @@ public class RerollUIController : MonoBehaviour
 
     private void OnClickEnteringBattle()
     {
-        _cardSelectAnimator.SetTrigger("BattleStart");
+        _cardSelectAnimator.SetTrigger("EnteringBattle");
         InGameManager.Instance.IsGameStart = true;
         BattleStateManager.Instance.SetState(BattleState.EnteringBattle);
+    }
+
+    private void PlayCardHide()
+    {
+        _cardSelectAnimator.SetTrigger("EnteringBattle");
     }
 
     private void OnCardDataRamdomSet()

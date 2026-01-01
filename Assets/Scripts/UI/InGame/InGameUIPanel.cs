@@ -3,15 +3,15 @@ using UnityEngine;
 
 public enum InGameUI
 {
-    BattleSetUpPanel = 1,
-    LeftCardBtn = 6, 
-    CenterCardBtn = 14, 
-    RightCardBtn = 22,
-    RerollImage = 27, 
-    RerollBtn = 28, 
-    CoinText = 37, 
-    OptionPanel = 38, 
-    WaveTimerPanel = 41
+    OptionPanel = 1, 
+    WaveTimerPanel = 4,
+    BattleSetUpPanel = 10,
+    CoinText = 12,
+    LeftCardBtn = 14,
+    CenterCardBtn = 22, 
+    RightCardBtn = 30,
+    RerollImage = 38, 
+    RerollBtn = 39
 }
 
 public class InGameUIPanel : MonoBehaviour
@@ -86,7 +86,7 @@ public class InGameUIPanel : MonoBehaviour
 
     private void ShowBattleUI()
     {
-        _setUpAnim.SetTrigger("BattleStart");
+        _setUpAnim.SetTrigger("EnteringBattle");
     }
 
     // 나중에 필요 없으면 아래 두개 함수 다 지워
