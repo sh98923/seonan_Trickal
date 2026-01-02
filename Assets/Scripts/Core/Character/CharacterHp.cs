@@ -4,11 +4,18 @@ using UnityEngine.UI;
 
 public class CharacterHp : MonoBehaviour
 {
-    protected event Action<bool> _onHpZero;
+    private event Action<bool> _onHpZero;
     public event Action<bool> OnHpZero
     {
         add { _onHpZero += value; }
         remove { _onHpZero -= value; }
+    }
+
+    private event Action<float> _onHpChanged;
+    public event Action<float> OnHpChanged
+    {
+        add { _onHpChanged += value; }
+        remove { _onHpChanged -= value; }
     }
 
     private Slider _hpSlider;
@@ -53,8 +60,8 @@ public class CharacterHp : MonoBehaviour
     {
         if (_hpSlider != null)
         {
-            _hpSlider.maxValue = _maxHp;
             _hpSlider.value = _curHp;
+            _onHpChanged?.Invoke(_curHp);
         }
     }
 
@@ -63,6 +70,8 @@ public class CharacterHp : MonoBehaviour
         _isInitialized = true;
         _maxHp = maxHp;
         _curHp = maxHp;
+
+        _hpSlider.maxValue = _maxHp;
         UpdateHpState();
     }
 

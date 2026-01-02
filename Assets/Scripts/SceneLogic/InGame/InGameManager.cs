@@ -23,42 +23,13 @@ public class InGameManager : MonoBehaviour
     private List<ITrackable> _players = new List<ITrackable>();
     public List<ITrackable> Players
     {
-        get
-        {
-            _players.Clear();
-
-            foreach (ITrackable trackable in Trackables)
-            {
-                if (trackable.Object.tag == "Player")
-                {
-                    _players.Add(trackable);
-                }
-            }
-
-            return _players;
-        }
+        get { return _players; }
     }
 
     private List<ITrackable> _monsters = new List<ITrackable>();
     public List<ITrackable> Monsters
     {
-        get
-        {
-            if (_monsters.Count > 0)
-                return _monsters;
-
-            _monsters.Clear();
-
-            foreach (ITrackable trackable in Trackables)
-            {
-                if (trackable.Object.tag == "Monster")
-                {
-                    _monsters.Add(trackable);
-                }
-            }
-
-            return _monsters;
-        }
+        get { return _monsters; }
     }
 
     private int _maxWave = 0;
@@ -125,6 +96,18 @@ public class InGameManager : MonoBehaviour
         BattleStateManager.Instance.SetState(BattleState.Reroll);
     }
 
+    private void RegisterPlayer(ITrackable trackable)
+    {
+        _players.Add(trackable); 
+        _trackables.Add(trackable);
+    }
+
+    private void RegisterMonster(ITrackable trackable)
+    {
+        _monsters.Add(trackable);
+        _trackables.Add(trackable);
+    }
+
     public bool TrySpendCoin(int amount)
     {
         return _canPayCoin = (_inGameCoin >= amount);
@@ -169,7 +152,7 @@ public class InGameManager : MonoBehaviour
             player.SetActive(false);
 
             ITrackable trackable = player.GetComponent<ITrackable>();
-            _trackables.Add(trackable);
+            RegisterPlayer(trackable);
 
             CharacterData characterData = new CharacterData(playerData);
             BattleUnitManager.Instance.RegisterUnit(characterData, player);
@@ -180,7 +163,7 @@ public class InGameManager : MonoBehaviour
     {
         foreach (ITrackable trackable in trackables)
         {
-            _trackables.Add(trackable);
+            RegisterMonster(trackable);
         }
     }
 }

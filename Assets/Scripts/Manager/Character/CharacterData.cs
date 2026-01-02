@@ -123,7 +123,7 @@ public class CharacterData
 
         _playerActionData = PlayerActionManager.Instance.GetPlayerActionData(playerData.AtkKey);
 
-        UpdatePlayerStats(); // 스탯 먼저 갱신
+        UpdatePlayerStats(1); // 스탯 먼저 갱신
 
         _constant = new ConstantInfo
         {
@@ -197,10 +197,10 @@ public class CharacterData
     /* ───────────────────────────
      *     레벨업 / 스탯 재계산
      * ─────────────────────────── */
-    public void UpdatePlayerStats(int level = 0)
+    public void UpdatePlayerStats(int level)
     {
-        int statKey = _playerInfo.StatUpgradeKey + level;
-        int skillKey = _playerInfo.SkillUpgradeKey + level;
+        int statKey = _playerInfo.StatUpgradeKey + level - 1;
+        int skillKey = _playerInfo.SkillUpgradeKey + level - 1;
 
         _playerStatData = PlayerStatManager.Instance.GetPlayerStatData(statKey);
         _playerSkillData = PlayerSkillUpgradeManager.Instance.GetPlayerSkillUpgradeData(skillKey);

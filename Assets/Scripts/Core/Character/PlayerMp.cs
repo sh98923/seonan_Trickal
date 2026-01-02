@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,6 +10,13 @@ using UnityEngine.UI;
 /// </summary>
 public class PlayerMp : MonoBehaviour
 {
+    private event Action<float> _onMpChanged;
+    public event Action<float> OnMpChanged
+    {
+        add { _onMpChanged += value; }
+        remove { _onMpChanged -= value; }
+    }
+
     private Coroutine _regenCoroutine;
     private Slider _mpSlider;
 
@@ -90,6 +98,7 @@ public class PlayerMp : MonoBehaviour
                 }
 
                 UpdateMpSlider();
+                _onMpChanged?.Invoke(_curMp);
             }
         }
     }

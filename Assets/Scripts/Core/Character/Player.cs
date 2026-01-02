@@ -28,7 +28,6 @@ public class Player : Character
     private PlayerMovement _playerMovement;
 
     protected float _atkBuff = 1.0f;
-    private float _damageReduction = 1.0f;
 
     public float AtkBuff
     {

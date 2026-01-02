@@ -130,6 +130,11 @@ public class InGamePlayerSpawn : MonoBehaviour
         return _activePlayers;
     }
 
+    public int GetActivePlayerCount()
+    {
+        return _activePlayers.Count;
+    }
+
     private void RespawnActiveDeckPlayers()
     {
         float camPosX = InGameCam.Instance.transform.position.x;

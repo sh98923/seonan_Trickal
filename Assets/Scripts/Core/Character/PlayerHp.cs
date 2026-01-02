@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class PlayerHp : CharacterHp
 {
     private readonly float _waveEndHpRatio = 0.2f;

@@ -5,13 +5,10 @@ public class BattleUnitManager : Singleton<BattleUnitManager>
 {
     private Dictionary<string, Vector3> _unitsPos = new Dictionary<string, Vector3>();
     private Dictionary<int, PlayerUnit> _activeUnits = new Dictionary<int, PlayerUnit>();
+    private Dictionary<int, int> _unitLevels = new Dictionary<int, int>();
 
+    private const int _ultUnlockLevel = 3;
     private int _deadPlayerCount = 0;
-    private int _curLevel;
-    public int CurLevel
-    {
-        get { return _curLevel; }
-    }
 
     private void OnPlayerDie()
     {
@@ -52,11 +49,11 @@ public class BattleUnitManager : Singleton<BattleUnitManager>
         Player player = instance.GetComponent<Player>();
         player.OnDie += OnPlayerDie;
 
-        _unitsPos[data.EngName] = instance.transform.position;
+        _unitLevels[data.PlayerKey] = 1;
         _activeUnits[data.PlayerKey] = new PlayerUnit(data, player);
+        _unitsPos[data.EngName] = instance.transform.position;
 
-        CharacterData a = _activeUnits[data.PlayerKey].CharacterInfo;
-
+        //CharacterData a = _activeUnits[data.PlayerKey].CharacterInfo;
         //Debug.Log(a.EngName + " " + a.Hp + " " + a.Mp + " " + a.Atk);
     }
 
@@ -65,8 +62,18 @@ public class BattleUnitManager : Singleton<BattleUnitManager>
         if (_activeUnits.TryGetValue(key, out PlayerUnit unit))
         {
             unit.LevelUp();
-            _curLevel = unit.Level;
+            _unitLevels[key] = unit.Level;
         }
+    }
+
+    public int GetUnitLevel(int key)
+    {
+        return _unitLevels.TryGetValue(key, out int level) ? level : 0;
+    }
+
+    public bool IsUltimateUnlocked(int key)
+    {
+        return GetUnitLevel(key) >= _ultUnlockLevel;
     }
 }
 
@@ -86,7 +93,7 @@ public class PlayerUnit
 
     private PlayerStatData _upgradeData;
 
-    private int _level = 0;
+    private int _level = 1;
     public int Level
     {
         get { return _level; }
@@ -110,7 +117,7 @@ public class PlayerUnit
         int maxLevel = _data.MaxLevel;
 
         // 이 조건문이 달성되면 그 카드는 제외시켜야함
-        if (_level >= maxLevel) return;
+        if (_level > maxLevel) return;
 
         _data.UpdatePlayerStats(_level);
 

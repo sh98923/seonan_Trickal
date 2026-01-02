@@ -87,7 +87,7 @@ public class InGameCardPanel : CardPanel
 
     private void UpdateCardCostUI()
     {
-        int curLevel = BattleUnitManager.Instance.CurLevel;
+        int curLevel = BattleUnitManager.Instance.GetUnitLevel(_playerData.Key);
         _battleSetUpUI.CardCostUpdate(_playerData.Key, curLevel);
     }
 
