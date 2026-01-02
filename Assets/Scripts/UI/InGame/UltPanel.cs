@@ -25,9 +25,17 @@ public class UltPanel : MonoBehaviour
     private Image _cooldownImage;
     private TextMeshProUGUI _cooltimeText;
 
+    private const float _ultButtonOffsetYLocked = 25.0f;  
+    private const float _ultButtonOffsetYUnlocked = -25.0f;   
+        
+    private const float _statusBarOffsetYLocked = 75.0f;  
+    private const float _statusBarOffsetYUnlocked = -100.0f;
+
     private float _remainCooldown = 0.0f;
     private bool _isCooldown = false;
-    private bool _isPaused = false;
+    private bool _isPaused = false; 
+    private bool _isUltIconSet = false;
+    private bool _isUltUnlock = false;
 
     private void Awake()
     {
@@ -115,22 +123,75 @@ public class UltPanel : MonoBehaviour
 
     public void BindPlayer(Player player)
     {
-        if(_player != null)
+        if (_player != null)
         {
             _player.PlayerHealth.OnHpChanged -= UpdateHpBar;
             _player.PlayerMana.OnMpChanged -= UpdateMpBar;
         }
 
         _player = player;
+
         _player.PlayerHealth.OnHpChanged += UpdateHpBar;
         _player.PlayerMana.OnMpChanged += UpdateMpBar;
 
-        _hpBar.maxValue = player.PlayerHealth.MaxHp;
-        _mpBar.maxValue = player.PlayerMana.MaxMp;
+        // 초기값 갱신
+        InitStatusBar();
+        // 처음 한번 아이콘 로드
+        SetUltIcon();
 
         if (BattleUnitManager.Instance.IsUltimateUnlocked(_player.Data.PlayerKey))
         {
             _cooldownImage.fillAmount = 0.0f;
+            
+            if(!_isUltUnlock)
+            {
+                SetUIForUltUnlocked();
+                _isUltUnlock = true;
+            }
         }
+    }
+
+    private void SetUltIcon()
+    {
+        if (_isUltIconSet || _player == null)
+            return;
+
+        Sprite ultSprite = Resources.Load<Sprite>(_player.Data.UltIcon);
+        if (ultSprite != null)
+            _ultButton.image.sprite = ultSprite;
+
+        _isUltIconSet = true;
+
+        SetUIForUltLocked();
+    }
+
+    private void InitStatusBar()
+    {
+        _hpBar.maxValue = _player.PlayerHealth.MaxHp;
+        _mpBar.maxValue = _player.PlayerMana.MaxMp;
+
+        UpdateHpBar(_player.PlayerHealth.CurHp);
+        UpdateMpBar(_player.PlayerMana.CurMp);
+    }
+
+    private void SetUIForUltUnlocked()
+    {
+        SetUIOffsets(_ultButtonOffsetYUnlocked, _statusBarOffsetYUnlocked);
+    }
+
+    private void SetUIForUltLocked()
+    {
+        SetUIOffsets(_ultButtonOffsetYLocked, _statusBarOffsetYLocked);
+    }
+
+    private void SetUIOffsets(float buttonOffsetY, float statusOffsetY)
+    {
+        RectTransform btn = _ultButton.GetComponent<RectTransform>();
+        RectTransform hp = _hpBar.GetComponent<RectTransform>();
+        RectTransform mp = _mpBar.GetComponent<RectTransform>();
+
+        btn.anchoredPosition += new Vector2(0, buttonOffsetY);
+        hp.anchoredPosition += new Vector2(0, statusOffsetY);
+        mp.anchoredPosition += new Vector2(0, statusOffsetY);
     }
 }

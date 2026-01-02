@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 669b18e9419fe03429a990ef788a209d
+guid: 4b5af7433166c1b409249b9adc17a9ab
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 3863330082998021189
-    second: UltElfArcher_0
+      213: -4974509299822789621
+    second: Gwin_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,7 +100,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: UltElfArcher_0
+      name: Gwin_0
       rect:
         serializedVersion: 2
         x: 0
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 54c6d2fdd3e4d9530800000000000000
-      internalID: 3863330082998021189
+      spriteID: b0c7f2cd52ef6fab0800000000000000
+      internalID: -4974509299822789621
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      UltElfArcher_0: 3863330082998021189
+      Gwin_0: -4974509299822789621
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

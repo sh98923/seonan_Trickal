@@ -96,6 +96,8 @@ public class CharacterData
         set => _playerStatData.CanUseUlt = value;
     }
 
+    public string UltIcon => _playerInfo.CharacterUltIconPath;
+
     public string[] BuffEffect => _playerActionData.BuffEffect;
     public string[] ClipName => _playerActionData.ClipName;
 

@@ -14,6 +14,7 @@ public struct PlayerData
     public string KrName;
     public string CharacterSpritePath;
     public string CharacterPrefabPath;
+    public string CharacterUltIconPath;
     public string Layer;
     public string AtkType;
     public string Target;
@@ -71,12 +72,13 @@ public class PlayerManager : Singleton<PlayerManager>
             data.KrName = colData[5];
             data.CharacterSpritePath = colData[6];
             data.CharacterPrefabPath = colData[7];
-            data.Layer = colData[8];
-            data.AtkType = colData[9];
-            data.Target = colData[10];
-            data.SpawnLine = int.Parse(colData[11]);
-            data.UpgradeCost = int.Parse(colData[12]);
-            data.MaxLevel = int.Parse(colData[13]);
+            data.CharacterUltIconPath = colData[8];
+            data.Layer = colData[9];
+            data.AtkType = colData[10];
+            data.Target = colData[11];
+            data.SpawnLine = int.Parse(colData[12]);
+            data.UpgradeCost = int.Parse(colData[13]);
+            data.MaxLevel = int.Parse(colData[14]);
             data.IsDeployed = false;
 
             if (!_isPlayerFirstkey)
