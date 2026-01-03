@@ -48,7 +48,6 @@ public class Destroyer : Player
             case ActionSlot.Attack:
                 return _data.Atk * _atkBuff;
             case ActionSlot.Ult:
-                _playerMp.UseMp();
                 return _data.Atk * _data.Ultimate * _ultPhasePower * _atkBuff;
         }
 

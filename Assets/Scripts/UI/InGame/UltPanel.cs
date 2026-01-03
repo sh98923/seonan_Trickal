@@ -23,6 +23,7 @@ public class UltPanel : MonoBehaviour
     private Slider _mpBar;
     private Button _ultButton;
     private Image _cooldownImage;
+    private Coroutine _cooldownRoutine = null;
     private TextMeshProUGUI _cooltimeText;
 
     private const float _ultButtonOffsetYLocked = 25.0f;  
@@ -32,10 +33,10 @@ public class UltPanel : MonoBehaviour
     private const float _statusBarOffsetYUnlocked = -100.0f;
 
     private float _remainCooldown = 0.0f;
-    private bool _isCooldown = false;
     private bool _isPaused = false; 
-    private bool _isUltIconSet = false;
+    private bool _isCooldown = false;
     private bool _isUltUnlock = false;
+    private bool _isUltIconSet = false;
 
     private void Awake()
     {
@@ -60,15 +61,24 @@ public class UltPanel : MonoBehaviour
 
     private void OnClickUltimate()
     {
+        if (_player.CurState() == CharacterState.Dead)
+            return;
+
         if (!BattleUnitManager.Instance.IsUltimateUnlocked(_player.Data.PlayerKey))
             return;
 
         if (_isCooldown)
             return;
 
+        // Player에게 궁극기 사용 요청
+        _player.RequestUseUltimate(_isCooldown);
+    }
+
+    private void OnUltimateUsed(float cooldown)
+    {
         //궁극기 발동
-        _remainCooldown = _player.Data.UltCoolTime;
-        StartCoroutine(StartCooldown(_player.Data.UltCoolTime));
+        _remainCooldown = cooldown;
+        _cooldownRoutine = StartCoroutine(StartCooldown(cooldown));
     }
 
     private IEnumerator StartCooldown(float cooldownTime)
@@ -84,7 +94,7 @@ public class UltPanel : MonoBehaviour
             if (!_isPaused)
             {
                 _remainCooldown -= Time.deltaTime;
-                _cooldownImage.fillAmount = _remainCooldown / _player.Data.UltCoolTime;
+                _cooldownImage.fillAmount = _remainCooldown / cooldownTime;
                 _cooltimeText.text = Mathf.CeilToInt(_remainCooldown).ToString();
             }
 
@@ -125,12 +135,18 @@ public class UltPanel : MonoBehaviour
     {
         if (_player != null)
         {
+            _player.OnDie -= SetButtonOnDead;
+            _player.OnUltUsed -= OnUltimateUsed;
             _player.PlayerHealth.OnHpChanged -= UpdateHpBar;
             _player.PlayerMana.OnMpChanged -= UpdateMpBar;
         }
+        else
+        {
+            _player = player;
+        }
 
-        _player = player;
-
+        _player.OnDie += SetButtonOnDead;
+        _player.OnUltUsed += OnUltimateUsed;
         _player.PlayerHealth.OnHpChanged += UpdateHpBar;
         _player.PlayerMana.OnMpChanged += UpdateMpBar;
 
@@ -149,6 +165,16 @@ public class UltPanel : MonoBehaviour
                 _isUltUnlock = true;
             }
         }
+    }
+
+    private void SetButtonOnDead()
+    {
+        StopCoroutine(_cooldownRoutine);
+        _ultButton.interactable = false;
+        _cooldownImage.fillAmount = 1.0f;
+        _cooltimeText.text = string.Empty;
+        _hpBar.gameObject.SetActive(false);
+        _mpBar.gameObject.SetActive(false);
     }
 
     private void SetUltIcon()

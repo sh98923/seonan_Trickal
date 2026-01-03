@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -8,6 +9,13 @@ public class Player : Character
         None,      // 타겟 없음
         Single,    // 단일 타겟
         Multiple   // 다중 타겟
+    }
+
+    private event Action<float> _onUltUsed;
+    public event Action<float> OnUltUsed
+    {
+        add { _onUltUsed += value; }
+        remove { _onUltUsed -= value; }
     }
 
     private PlayerHp _playerHp;
@@ -43,6 +51,7 @@ public class Player : Character
 
     private bool _isArrived = false;
     private bool _isInBattle = false;
+    private bool _wantsUltimate = false; 
     private bool _isStatInitialized = false;
 
     protected void Awake()
@@ -73,6 +82,7 @@ public class Player : Character
 
         Self.OnDie += _playerMp.StopMpRegen;
         BattleStateManager.Instance.OnReroll += EnableCollider;
+        BattleStateManager.Instance.OnEnteringReroll += ResetUltFlag;
         BattleStateManager.Instance.OnEnteringReroll += DisableCollider;
     }
 
@@ -80,6 +90,7 @@ public class Player : Character
     {
         Self.OnDie -= _playerMp.StopMpRegen;
         BattleStateManager.Instance.OnReroll -= EnableCollider;
+        BattleStateManager.Instance.OnEnteringReroll -= ResetUltFlag;
         BattleStateManager.Instance.OnEnteringReroll -= DisableCollider;
     }
 
@@ -88,6 +99,7 @@ public class Player : Character
         if (BattleStateManager.Instance != null)
         {
             BattleStateManager.Instance.OnReroll -= EnableCollider;
+            BattleStateManager.Instance.OnEnteringReroll -= ResetUltFlag;
             BattleStateManager.Instance.OnEnteringReroll -= DisableCollider;
         }
     }
@@ -221,13 +233,15 @@ public class Player : Character
 
         _isAttacking = true;
 
-        if (_playerMp.CurMp >= _data.Mp)
+        if (_wantsUltimate)
+        {
+            _wantsUltimate = false;
+            _actionType = ActionSlot.Ult;
+            _onUltUsed?.Invoke(_data.UltCoolTime);
+        }
+        else if (_playerMp.CurMp >= _data.Mp)
         {
             _actionType = ActionSlot.Skill;
-        }
-        else if (Input.GetKeyDown(KeyCode.S))
-        {
-            _actionType = ActionSlot.Ult;
         }
         else
         {
@@ -240,12 +254,34 @@ public class Player : Character
         _animator.SetTrigger(_actionType.ToString());
     }
 
+    public void RequestUseUltimate(bool isUltCooldown)
+    {
+        if (!isUltCooldown)
+        {
+            _wantsUltimate = true;
+        }
+        else
+        {
+            _wantsUltimate = false;
+        }
+    }
+
+    private void ResetUltFlag()
+    {
+        _wantsUltimate = false;
+    }
+
+    private void OnUseMp()
+    {
+        _playerMp.UseMp();
+    }
+
     public void OnBuff()
     {
-        if (_actionType == ActionSlot.Skill)
+        /*if (_actionType == ActionSlot.Skill)
         {
             _playerMp.UseMp();
-        }
+        }*/
 
         _clipName = _data.ClipName[(int)_actionType];
         _duration = _data.Duration[(int)_actionType];
@@ -330,7 +366,6 @@ public class Player : Character
                 finalDamage = _data.Atk * _atkBuff;
                 break;
             case ActionSlot.Skill:
-                _playerMp.UseMp();
                 finalDamage = _data.Atk * _data.SkillRate * _atkBuff;
                 break;
             case ActionSlot.Ult:
