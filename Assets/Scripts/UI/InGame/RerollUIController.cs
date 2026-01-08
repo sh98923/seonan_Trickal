@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
@@ -16,6 +17,8 @@ public class RerollUIController : MonoBehaviour
         CenterCard = 9,
         RightCard = 17,
     }
+
+    public static event Action OnCardAction;
 
     private BattleSetUpUI _battleSetUpUI;
     private Animator _cardSelectAnimator;
@@ -69,6 +72,8 @@ public class RerollUIController : MonoBehaviour
         if (!InGameManager.Instance.CanPayCoin)
             return;
 
+        OnCardAction?.Invoke();
+
         _battleSetUpUI.OnSelectedCardAnimationStart();
         _cardSelectAnimator.SetTrigger("SelectedCard" + index);
     }
@@ -112,7 +117,7 @@ public class RerollUIController : MonoBehaviour
     {
         foreach (CardUI cardPos in _cardPositions)
         {
-            int randomIndex = Random.Range(0, _rerollCandidates.Count);
+            int randomIndex = UnityEngine.Random.Range(0, _rerollCandidates.Count);
             _rerollChildren[(int)cardPos].GetComponent<InGameCardPanel>()
                 .SetPlayerUnit(_rerollCandidates[randomIndex]);
         }

@@ -6,6 +6,20 @@ using UnityEngine.UI;
 
 public class UltPanel : MonoBehaviour
 {
+    private struct UIBasePos
+    {
+        public Vector2 button;
+        public Vector2 hpBar;
+        public Vector2 mpBar;
+
+        public UIBasePos(Vector2 btn, Vector2 hp, Vector2 mp)
+        {
+            button = btn;
+            hpBar = hp;
+            mpBar = mp;
+        }
+    }
+
     private enum UltUI
     {
         UltBtn = 2,
@@ -26,21 +40,29 @@ public class UltPanel : MonoBehaviour
     private Coroutine _cooldownRoutine = null;
     private TextMeshProUGUI _cooltimeText;
 
+    private UIBasePos _basePos;
+
     private const float _ultButtonOffsetYLocked = 25.0f;  
-    private const float _ultButtonOffsetYUnlocked = -25.0f;   
+    private const float _ultButtonOffsetYUnlocked = 0.0f;   
         
     private const float _statusBarOffsetYLocked = 75.0f;  
-    private const float _statusBarOffsetYUnlocked = -100.0f;
+    private const float _statusBarOffsetYUnlocked = -25.0f;
 
     private float _remainCooldown = 0.0f;
     private bool _isPaused = false; 
     private bool _isCooldown = false;
-    private bool _isUltUnlock = false;
     private bool _isUltIconSet = false;
 
     private void Awake()
     {
         CacheUI();
+
+        _basePos = new UIBasePos()
+        {
+            button = _ultButton.GetComponent<RectTransform>().anchoredPosition,
+            hpBar = _hpBar.GetComponent<RectTransform>().anchoredPosition,
+            mpBar = _mpBar.GetComponent<RectTransform>().anchoredPosition
+        };
     }
 
     private void Start()
@@ -135,46 +157,84 @@ public class UltPanel : MonoBehaviour
     {
         if (_player != null)
         {
-            _player.OnDie -= SetButtonOnDead;
-            _player.OnUltUsed -= OnUltimateUsed;
-            _player.PlayerHealth.OnHpChanged -= UpdateHpBar;
-            _player.PlayerMana.OnMpChanged -= UpdateMpBar;
+            UnbindPlayer(_player);
         }
-        else
-        {
-            _player = player;
-        }
+        
+        _player = player;
 
-        _player.OnDie += SetButtonOnDead;
-        _player.OnUltUsed += OnUltimateUsed;
-        _player.PlayerHealth.OnHpChanged += UpdateHpBar;
-        _player.PlayerMana.OnMpChanged += UpdateMpBar;
+        BindPlayerInternal(_player);
+    }
+
+    private void BindPlayerInternal(Player player)
+    {
+        BattleUnitManager.Instance.OnUltUnlocked += OnUltimateUnlocked;
+
+        player.OnUltUsed += OnUltimateUsed;
+        player.OnDie += ApplyUltUIOnPlayerDead;
+        player.OnRevive += ApplyUltUIOnPlayerRevive;
+        player.PlayerHealth.OnHpChanged += UpdateHpBar;
+        player.PlayerMana.OnMpChanged += UpdateMpBar;
 
         // 초기값 갱신
         InitStatusBar();
         // 처음 한번 아이콘 로드
         SetUltIcon();
 
-        if (BattleUnitManager.Instance.IsUltimateUnlocked(_player.Data.PlayerKey))
+        // 이미 언락된 경우 동기화
+        if (BattleUnitManager.Instance.IsUltimateUnlocked(player.Data.PlayerKey))
         {
             _cooldownImage.fillAmount = 0.0f;
-            
-            if(!_isUltUnlock)
-            {
-                SetUIForUltUnlocked();
-                _isUltUnlock = true;
-            }
+            //SetUIForUltUnlocked();
         }
     }
 
-    private void SetButtonOnDead()
+    private void UnbindPlayer(Player player)
     {
-        StopCoroutine(_cooldownRoutine);
+        BattleUnitManager.Instance.OnUltUnlocked -= OnUltimateUnlocked;
+
+        player.OnUltUsed -= OnUltimateUsed;
+        player.OnDie -= ApplyUltUIOnPlayerDead;
+        player.OnRevive -= ApplyUltUIOnPlayerRevive;
+        player.PlayerHealth.OnHpChanged -= UpdateHpBar;
+        player.PlayerMana.OnMpChanged -= UpdateMpBar;
+    }
+
+    private void OnUltimateUnlocked(int key)
+    {
+        if (_player.Data.PlayerKey != key)
+            return;
+
+        SetUIForUltUnlocked();
+    }
+
+    private void ApplyUltUIOnPlayerDead()
+    {
+        if(_cooldownRoutine != null) 
+        {
+            StopCoroutine(_cooldownRoutine);
+            _cooldownRoutine = null;
+        }
+
         _ultButton.interactable = false;
         _cooldownImage.fillAmount = 1.0f;
-        _cooltimeText.text = string.Empty;
+
+        _cooltimeText.gameObject.SetActive(false);
+
         _hpBar.gameObject.SetActive(false);
         _mpBar.gameObject.SetActive(false);
+    }
+
+    private void ApplyUltUIOnPlayerRevive()
+    {
+        _isPaused = false;
+        _isCooldown = false;
+        _remainCooldown = 0.0f;
+
+        _cooldownImage.fillAmount = 0.0f;
+        _ultButton.interactable = true;
+
+        _hpBar.gameObject.SetActive(true);
+        _mpBar.gameObject.SetActive(true);
     }
 
     private void SetUltIcon()
@@ -184,7 +244,13 @@ public class UltPanel : MonoBehaviour
 
         Sprite ultSprite = Resources.Load<Sprite>(_player.Data.UltIcon);
         if (ultSprite != null)
+        {
             _ultButton.image.sprite = ultSprite;
+        }
+        else
+        {
+            Debug.LogWarning("궁극기 UI 아이콘이 없음");
+        }
 
         _isUltIconSet = true;
 
@@ -216,8 +282,8 @@ public class UltPanel : MonoBehaviour
         RectTransform hp = _hpBar.GetComponent<RectTransform>();
         RectTransform mp = _mpBar.GetComponent<RectTransform>();
 
-        btn.anchoredPosition += new Vector2(0, buttonOffsetY);
-        hp.anchoredPosition += new Vector2(0, statusOffsetY);
-        mp.anchoredPosition += new Vector2(0, statusOffsetY);
+        btn.anchoredPosition = _basePos.button + new Vector2(0, buttonOffsetY);
+        hp.anchoredPosition = _basePos.hpBar + new Vector2(0, statusOffsetY);
+        mp.anchoredPosition = _basePos.mpBar + new Vector2(0, statusOffsetY);
     }
 }

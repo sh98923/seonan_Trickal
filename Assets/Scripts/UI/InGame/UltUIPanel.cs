@@ -33,15 +33,17 @@ public class UltUIPanel : MonoBehaviour
             _ultPanels.Add(panel);
         }
 
+        RerollUIController.OnCardAction += SetUltUIPos;
         BattleStateManager.Instance.OnBattle += ResumeAllUltCooldowns;
-        BattleStateManager.Instance.OnEnteringBattle += SetUltUIPos; 
+        //BattleStateManager.Instance.OnEnteringBattle += SetUltUIPos; 
         BattleStateManager.Instance.OnEnteringReroll += PauseAllUltCooldowns;
     }
 
     private void OnDisable()
     {
+        RerollUIController.OnCardAction -= SetUltUIPos;
         BattleStateManager.Instance.OnBattle -= ResumeAllUltCooldowns;
-        BattleStateManager.Instance.OnEnteringBattle -= SetUltUIPos;
+        //BattleStateManager.Instance.OnEnteringBattle -= SetUltUIPos;
         BattleStateManager.Instance.OnEnteringReroll -= PauseAllUltCooldowns;
     }
 

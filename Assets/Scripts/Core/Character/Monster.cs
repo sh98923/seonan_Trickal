@@ -70,13 +70,13 @@ public class Monster : Character
         // 소수점 첫째자리까지 나오게 하기위한 수식
         maxHp = Mathf.Round(maxHp);
 
-        _monsterHp.InitializeHp(maxHp);
+        _monsterHp.InitHp(maxHp);
 
         float atkLinear = _data.Atk + _data.AtkPerWave * wave;
         float atkExp = _data.Atk * Mathf.Pow(_data.AtkGrowthRate, wave);
         _atk = (atkLinear + atkExp) * 0.5f;
         _atk = Mathf.Round(_atk);
 
-        //print("몬스터 : " + _data.EngName + " : " + _maxHp.ToString("F1") + ", " + _atk.ToString("F1"));
+        print("몬스터 : " + _data.EngName + " : " + maxHp.ToString("F1") + ", " + _atk.ToString("F1"));
     }
 }

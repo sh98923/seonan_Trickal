@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
@@ -19,10 +20,16 @@ public enum BuffValueType
 
 public class CharacterBuff : CharacterAction
 {
-    private List<Player> _activePlayers = new List<Player>();
-    private Dictionary<Player, Coroutine> _runningBuffs = new Dictionary<Player, Coroutine>();
+    private class BuffRuntimeData
+    {
+        public Coroutine Coroutine;
+        public BuffValueType ValueType;
+        public float OriginalValue;
+    }
 
-    private BuffValueType _valueType;
+    private List<Player> _activePlayers = new List<Player>();
+    private Dictionary<Player, List<BuffRuntimeData>> _runningBuffs = new Dictionary<Player, List<BuffRuntimeData>>();
+
     private BuffEffectType _effectType;
 
     private float _effectValue = 0.0f;
@@ -51,17 +58,17 @@ public class CharacterBuff : CharacterAction
     private void ApplyBuff(Player player)
     {
         string effectName = _character.Data.BuffEffect[(int)_type];
-        _valueType = GetEffectType<BuffValueType>(effectName, out _isValid);
+        BuffValueType valueType = GetEffectType<BuffValueType>(effectName, out _isValid);
 
         if (!_isValid) return;
 
         float originalValue = 0.0f;
 
-        switch (_valueType)
+        switch (valueType)
         {
             case BuffValueType.AttackPower:
                 originalValue = player.AtkBuff;
-                player.AtkBuff = _effectValue;
+                player.SetAttackBuff(_effectValue);
                 break;
 
             case BuffValueType.DamageReduction:
@@ -74,16 +81,30 @@ public class CharacterBuff : CharacterAction
                 return; // Heal은 즉시 적용 후 종료
         }
 
-        // 이미 적용 중인 버프가 있다면 Coroutine 정리
-        if (_runningBuffs.ContainsKey(player))
+        if (!_runningBuffs.TryGetValue(player, out List<BuffRuntimeData> list))
         {
-            Coroutine routine = _runningBuffs[player];
-            if (routine != null)
-                StopCoroutine(routine);
+            list = new List<BuffRuntimeData>();
+            _runningBuffs[player] = list;
         }
 
-        Coroutine coroutine = StartCoroutine(RemoveBuffAfterTime(player, _valueType, originalValue, _timer));
-        _runningBuffs[player] = coroutine;
+        BuffRuntimeData exist = list.Find(buff => buff.ValueType == valueType);
+        if (exist != null)
+        {
+            // 갱신시키기
+            StopCoroutine(exist.Coroutine);
+            RestoreBuff(player, exist);
+            list.Remove(exist);
+        }
+
+        BuffRuntimeData runtime = new BuffRuntimeData
+        {
+            ValueType = valueType,
+            OriginalValue = originalValue
+        };
+
+        runtime.Coroutine = StartCoroutine(RemoveBuffAfterTime(player, runtime, _timer));
+
+        list.Add(runtime);
 
         PlayEffect(player.transform);
 
@@ -139,7 +160,34 @@ public class CharacterBuff : CharacterAction
         }*/
     }
 
-    private IEnumerator RemoveBuffAfterTime(Player player, BuffValueType type, float originalValue, float duration)
+    private IEnumerator RemoveBuffAfterTime(Player player, BuffRuntimeData runtime, float duration)
+    {
+        float timer = 0.0f;
+
+        while (timer < duration)
+        {
+            if (BattleStateManager.Instance.CurrentState == BattleState.EnteringReroll)
+                break;
+
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        RestoreBuff(player, runtime);
+
+        if (_runningBuffs.TryGetValue(player, out List<BuffRuntimeData> list))
+        {
+            list.Remove(runtime);
+
+            // 버프가 다 사라지면 키도 삭제
+            if (list.Count == 0)
+            {
+                _runningBuffs.Remove(player);
+            }
+        }
+    }
+
+    /*private IEnumerator RemoveBuffAfterTime(Player player, BuffValueType type, float originalValue, float duration)
     {
         float timer = 0.0f;
 
@@ -167,7 +215,7 @@ public class CharacterBuff : CharacterAction
         {
             _runningBuffs.Remove(player);
         }
-    }
+    }*/
 
     private void Buff()
     {
@@ -208,29 +256,50 @@ public class CharacterBuff : CharacterAction
 
     private void ResetAllBuffs()
     {
-        foreach (KeyValuePair<Player, Coroutine> runningBuff in _runningBuffs)
+        foreach (KeyValuePair<Player, List<BuffRuntimeData>> runningBuff in _runningBuffs)
         {
             Player player = runningBuff.Key;
-            Coroutine coroutine = runningBuff.Value;
+            List<BuffRuntimeData> buffs = runningBuff.Value;
 
-            if (coroutine != null)
+            foreach (BuffRuntimeData buff in buffs)
             {
-                StopCoroutine(coroutine);
-            }
+                if (buff.Coroutine != null)
+                {
+                    StopCoroutine(buff.Coroutine);
+                }
 
-            // 즉시 원래 값 복구
-            switch (_valueType)
-            {
-                case BuffValueType.AttackPower:
-                    player.AtkBuff = 1.0f;
-                    break;
-                case BuffValueType.DamageReduction:
-                    player.ApplyDamageReduction(1.0f);
-                    break;
+                RestoreBuff(player, buff);
+                // 즉시 원래 값 복구
+                /*switch (_valueType)
+                {
+                    case BuffValueType.AttackPower:
+                        player.AtkBuff = 1.0f;
+                        break;
+                    case BuffValueType.DamageReduction:
+                        player.ApplyDamageReduction(1.0f);
+                        break;
+                }*/
+
             }
         }
 
         _runningBuffs.Clear();
+    }
+
+    private void RestoreBuff(Player player, BuffRuntimeData runtime)
+    {
+        switch (runtime.ValueType)
+        {
+            case BuffValueType.AttackPower:
+                player.SetAttackBuff(runtime.OriginalValue);
+                print(player.name + "의 오리지널 데미지 버프 수치 : " + runtime.OriginalValue);
+                break;
+
+            case BuffValueType.DamageReduction:
+                player.ApplyDamageReduction(runtime.OriginalValue);
+                print(player.name + "의 오리지널 데미지 감소 버프 수치 : " + runtime.OriginalValue);
+                break;
+        }
     }
 
     public override void Excute()

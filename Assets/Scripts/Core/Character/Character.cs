@@ -2,8 +2,6 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
-using UnityEngine.TextCore.Text;
-using UnityEngine.UI;
 
 public enum CharacterState
 {
@@ -265,6 +263,11 @@ public class Character : MonoBehaviour, ITrackable
         if (this == null || !_movement.Target.enabled)
         {
             return;
+        }
+
+        if(gameObject.tag == "Player")
+        {
+            int a = 09;
         }
 
         float finalDamage = damage * _damageReduction;

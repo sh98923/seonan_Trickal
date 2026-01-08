@@ -145,6 +145,7 @@ public class InGamePlayerSpawn : MonoBehaviour
             {
                 player.gameObject.SetActive(true);
                 player.PlayerHealth.ReviveHp();
+                player.InvokeOnRevive();
                 player.PlayEnterAnim();
                 player.RevivePlayer(camPosX);  // 상태 초기화
 

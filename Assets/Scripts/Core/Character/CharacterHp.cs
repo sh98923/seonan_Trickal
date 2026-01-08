@@ -18,7 +18,7 @@ public class CharacterHp : MonoBehaviour
         remove { _onHpChanged -= value; }
     }
 
-    private Slider _hpSlider;
+    protected Slider _hpSlider;
 
     protected string _gameObjectName;
 
@@ -65,30 +65,13 @@ public class CharacterHp : MonoBehaviour
         }
     }
 
-    public void InitializeHp(float maxHp)
+    public void InitHp(float maxHp)
     {
         _isInitialized = true;
         _maxHp = maxHp;
         _curHp = maxHp;
 
         _hpSlider.maxValue = _maxHp;
-        UpdateHpState();
-    }
-
-    public void UpdateMaxHp(float newMaxHp)
-    {
-        bool wasFullHp = _curHp >= _maxHp;
-        _maxHp = newMaxHp;
-
-        if (wasFullHp)
-        {
-            _curHp = _maxHp;
-        }
-        else if (_curHp > _maxHp)
-        {
-            _curHp = _maxHp;
-        }
-
         UpdateHpState();
     }
 

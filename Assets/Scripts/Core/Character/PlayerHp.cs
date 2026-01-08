@@ -23,22 +23,32 @@ public class PlayerHp : CharacterHp
 
     private void RecoverWaveEndHp()
     {
-        if (_curHp >= _maxHp) return;
+        if (_curHp >= _maxHp) 
+            return;
+
         float amount = _maxHp * _waveEndHpRatio;
         IncreaseHp(amount);
 
         print($"{_gameObjectName} 회복 : {_curHp} / {_maxHp}");
     }
 
-    public void UpgradeHp()
+    public void ApplyLevelUpHp(float newMaxHp)
     {
-        // 이것도 다시 해야함 풀피인 경우
-        // 업그레이드 했을 때 풀피여야하는데
-        // 지금은 그렇지 않음
-        // 디아나로 해보셈 그럼 알거임
+        bool wasFullHp = IsFullHp();
 
-        float amount = _maxHp * _upgradeHpRatio;
-        IncreaseHp(amount);
+        _maxHp = newMaxHp;
+        _hpSlider.maxValue = _maxHp;
+
+        if (wasFullHp)
+        {
+            _curHp = _maxHp; // 풀피 유지
+            UpdateHpState();
+        }
+        else
+        {
+            float amount = _maxHp * _upgradeHpRatio; // ✅ 새 maxHp 기준
+            IncreaseHp(amount);
+        }
 
         print($"{_gameObjectName} 업그레이드 : {_curHp} / {_maxHp}");
     }
@@ -61,5 +71,10 @@ public class PlayerHp : CharacterHp
         }
 
         UpdateHpState();
+    }
+
+    private bool IsFullHp()
+    {
+        return _curHp == _maxHp;
     }
 }

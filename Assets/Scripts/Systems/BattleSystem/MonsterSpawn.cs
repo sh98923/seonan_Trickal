@@ -36,12 +36,14 @@ public class MonsterSpawn : MonoBehaviour
 
     private void OnEnable()
     {
+        //BattleStateManager.Instance.OnEnteringBattle += SpawnMonsters;
         //BattleStateManager.Instance.OnReroll += SpawnMonstersOnReroll;
         InGameCam.Instance.OnCameraMoveEnd += SpawnMonsters;
     }
 
     private void OnDisable()
     {
+        //BattleStateManager.Instance.OnEnteringBattle -= SpawnMonsters;
         //BattleStateManager.Instance.OnReroll -= SpawnMonstersOnReroll;
         InGameCam.Instance.OnCameraMoveEnd -= SpawnMonsters;
     }

@@ -1,13 +1,20 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class BattleUnitManager : Singleton<BattleUnitManager>
 {
+    private event Action<int> _onUltUnlocked;
+    public event Action<int> OnUltUnlocked
+    {
+        add { _onUltUnlocked += value;}
+        remove { _onUltUnlocked -= value;}
+    }
+
     private Dictionary<string, Vector3> _unitsPos = new Dictionary<string, Vector3>();
     private Dictionary<int, PlayerUnit> _activeUnits = new Dictionary<int, PlayerUnit>();
     private Dictionary<int, int> _unitLevels = new Dictionary<int, int>();
 
-    private const int _ultUnlockLevel = 3;
     private int _deadPlayerCount = 0;
 
     private void OnPlayerDie()
@@ -73,7 +80,12 @@ public class BattleUnitManager : Singleton<BattleUnitManager>
 
     public bool IsUltimateUnlocked(int key)
     {
-        return GetUnitLevel(key) >= _ultUnlockLevel;
+        return _activeUnits[key].CharacterInfo.CanUseUlt;
+    }
+
+    public void NotifyUltimateUnlocked(int key)
+    {
+        _onUltUnlocked?.Invoke(key);
     }
 }
 
@@ -101,7 +113,7 @@ public class PlayerUnit
 
     public PlayerUnit(CharacterData data, Player unit)
     {
-        _data = data; 
+        _data = data;
         //PlayerManager.Instance.GetPlayerFullData(data.Key);
 
         // 여기서 이제 캐릭터 스크립트에 스탯 설정하는 함수 있으면 스탯 세팅 해주면 댐
@@ -119,12 +131,19 @@ public class PlayerUnit
         // 이 조건문이 달성되면 그 카드는 제외시켜야함
         if (_level > maxLevel) return;
 
+        // 레벨업 전 상태를 저장
+        bool wasUnlocked = _data.CanUseUlt;
+        // 레벨업 후 스탯과 CanUseUlt가 갱신됨
         _data.UpdatePlayerStats(_level);
+        // 전 후 비교
+        if (!wasUnlocked && _data.CanUseUlt)
+        {
+            BattleUnitManager.Instance.NotifyUltimateUnlocked(_data.PlayerKey);
+        }
 
         //Debug.Log(_unitObj.name + " " + _data.Hp + " " + _data.Mp + " " + _data.Atk);
 
         _unitObj.SetCharacterData(_data);
-        _unitObj.PlayerHealth.UpgradeHp();
         _unitObj.PlayerMana.SetMpData(_data.Mp, _data.MpTickRate);
         //curUnit.(_playerStat[levelUp]);
     }

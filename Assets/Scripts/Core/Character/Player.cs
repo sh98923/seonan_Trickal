@@ -18,6 +18,13 @@ public class Player : Character
         remove { _onUltUsed -= value; }
     }
 
+    private event Action _onRevive;
+    public event Action OnRevive
+    {
+        add { _onRevive += value; }
+        remove { _onRevive -= value; }
+    }
+
     private PlayerHp _playerHp;
     public PlayerHp PlayerHealth
     {
@@ -40,13 +47,11 @@ public class Player : Character
     public float AtkBuff
     {
         get { return _atkBuff; }
-        set { _atkBuff = value; }
     }
 
     public float DamageReduction
     {
         get { return _damageReduction; }
-        set { _damageReduction = value; }
     }
 
     private bool _isArrived = false;
@@ -254,6 +259,11 @@ public class Player : Character
         _animator.SetTrigger(_actionType.ToString());
     }
 
+    public void InvokeOnRevive()
+    {
+        _onRevive?.Invoke();
+    }
+
     public void RequestUseUltimate(bool isUltCooldown)
     {
         if (!isUltCooldown)
@@ -424,13 +434,13 @@ public class Player : Character
         if (!_isStatInitialized)
         {
             // 최초 생성
-            _playerHp.InitializeHp(_data.Hp);
+            _playerHp.InitHp(_data.Hp);
             _isStatInitialized = true;
         }
         else
         {
             // 레벨업 / 강화
-            _playerHp.UpdateMaxHp(_data.Hp);
+            _playerHp.ApplyLevelUpHp(_data.Hp);
         }
 
         _playerMp.SetMpData(_data.Mp, _data.MpTickRate);
@@ -488,5 +498,10 @@ public class Player : Character
     public void ApplyDamageReduction(float damageReduction)
     {
         _damageReduction = damageReduction;
+    }
+
+    public void SetAttackBuff(float atkBuff)
+    {
+        _atkBuff = atkBuff;
     }
 }

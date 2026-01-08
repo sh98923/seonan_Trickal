@@ -7,6 +7,7 @@ public enum InGameUI
     WaveTimerPanel = 4,
     BattleSetUpPanel = 10,
     CoinText = 12,
+    RerollUIRoot = 13,
     LeftCardBtn = 14,
     CenterCardBtn = 22, 
     RightCardBtn = 30,
