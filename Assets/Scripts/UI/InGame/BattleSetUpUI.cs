@@ -6,7 +6,7 @@ using System.Collections;
 public class BattleSetUpUI : MonoBehaviour
 {
     private TextMeshProUGUI _coinText;
-    private Coroutine _coinSpendCoroutine;
+    private Coroutine _coinCoroutine;
     private InGameUIPanel _inGameUIPanel;
 
     private List<PlayerData> _rerollCandidates = new List<PlayerData>();
@@ -33,6 +33,12 @@ public class BattleSetUpUI : MonoBehaviour
     private void Start()
     {
         InitRerollUI();
+        InGameManager.OnCoinChanged += OnCoinChanged;
+    }
+
+    private void OnDisable()
+    {
+        InGameManager.OnCoinChanged -= OnCoinChanged;
     }
 
     private void InitRerollUI()
@@ -47,16 +53,24 @@ public class BattleSetUpUI : MonoBehaviour
         _coinText.text = _curCoin.ToString();
     }
 
-    private IEnumerator PlayCoinSpend(int targetCoin)
+    private void OnCoinChanged(int targetCoin)
     {
-        while (_curCoin > targetCoin)
+        if (_coinCoroutine != null)
+            StopCoroutine(_coinCoroutine);
+
+        _coinCoroutine = StartCoroutine(PlayCoinChange(targetCoin));
+    }
+
+    private IEnumerator PlayCoinChange(int targetCoin)
+    {
+        while (_curCoin != targetCoin)
         {
-            _curCoin--;
-            yield return new WaitForSeconds(0.05f);
+            _curCoin += (_curCoin < targetCoin) ? 1 : -1;
             _coinText.text = _curCoin.ToString();
+            yield return new WaitForSeconds(0.05f);
         }
 
-        _coinSpendCoroutine = null;
+        _coinCoroutine = null;
     }
 
     public void CardCostUpdate(int key, int curLevel)
@@ -73,21 +87,6 @@ public class BattleSetUpUI : MonoBehaviour
                 _rerollCandidates[i] = data;
             }
         }
-    }
-
-    public void UpdateCoinUI(int cost)
-    {
-        int targetCoin = InGameManager.Instance.SpendCoin(cost);
-
-        if (_curCoin == targetCoin)
-            return;
-
-        if (_coinSpendCoroutine != null)
-        {
-            StopCoroutine(_coinSpendCoroutine);
-        }
-
-        _coinSpendCoroutine = StartCoroutine(PlayCoinSpend(targetCoin));
     }
 
     public List<PlayerData> GetRerollCandidatesFromUI()

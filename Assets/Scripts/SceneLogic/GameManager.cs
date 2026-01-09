@@ -57,6 +57,11 @@ public class GameManager : Singleton<GameManager>
 
     private List<PlayerData> SetSpawnablePlayerData()
     {
+        if(_spawnablePlayerDatas.Count > 0)
+        {
+            return _spawnablePlayerDatas;
+        }
+
         foreach (KeyValuePair<int, PlayerUnitData> deckUnitData in _deckUnitDatas)
         {
             _spawnablePlayerDatas.Add(deckUnitData.Value.playerData);

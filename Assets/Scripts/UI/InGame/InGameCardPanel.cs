@@ -25,16 +25,19 @@ public class InGameCardPanel : CardPanel
         base.SetCardInfo();
     }
 
-    protected override void HandleClick()
+    // 코스트를 지불 할 수 있는지 또는 애니메이션이 실행 중인지 검사하고
+    // 만약 가능하다면 아래의 두 함수를 실행함 ( UI갱신, 캐릭터 배치 등 )
+    public bool TryCardClick()
     {
         if (IsBlocked())
-            return;
+            return false;
 
-        if (!CanPayCost())
-            return;
+        if (!TryPayCost())
+            return false;
 
         ExecuteCardAction();
         UpdateAfterAction();
+        return true;
     }
 
     private bool IsBlocked()
@@ -42,7 +45,7 @@ public class InGameCardPanel : CardPanel
         return _battleSetUpUI.IsSelectedCardAnimating;
     }
 
-    private bool CanPayCost()
+    public bool TryPayCost()
     {
         int cost = _playerData.UpgradeCost;
 
@@ -82,7 +85,6 @@ public class InGameCardPanel : CardPanel
     private void UpdateAfterAction()
     {
         UpdateCardCostUI();
-        _battleSetUpUI.UpdateCoinUI(_playerData.UpgradeCost);
     }
 
     private void UpdateCardCostUI()

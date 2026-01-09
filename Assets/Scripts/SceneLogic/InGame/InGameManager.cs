@@ -1,5 +1,7 @@
-using System.Collections.Generic;
+using System;
 using UnityEngine;
+using System.Collections.Generic;
+
 public struct PlayerUnitData
 {
     public Vector3 spawnPos;
@@ -13,6 +15,8 @@ public class InGameManager : MonoBehaviour
     {
         get { return _instance; }
     }
+
+    public static event Action<int> OnCoinChanged;
 
     private List<ITrackable> _trackables = new List<ITrackable>();
     public List<ITrackable> Trackables
@@ -44,11 +48,13 @@ public class InGameManager : MonoBehaviour
         get { return _waveStep; }
     }
 
+    private int _baseWaveReward;
+    private int _nextWaveReward = 12;
+
     private int _inGameCoin;
     public int InGameCoin
     {
         get { return _inGameCoin; }
-        set { _inGameCoin = value; }
     }
 
     private bool _canPayCoin = false;
@@ -81,19 +87,24 @@ public class InGameManager : MonoBehaviour
 
         _instance = this;
 
-        _inGameCoin = 106;
+        //_inGameCoin = 999;
+        _baseWaveReward = 23;
+        _nextWaveReward = 12;
+        _inGameCoin = 30;
     }
 
     private void Start()
     {
-        BattleStart();
+        BattleStateManager.Instance.OnInGameEnter();
         WeaponManager.Instance.CreateWeapon();
         EffectManager.Instance.CreateEffect();
+
+        BattleStateManager.Instance.OnReroll += OnWaveEnd;
     }
 
-    private void BattleStart()
+    private void OnDisable()
     {
-        BattleStateManager.Instance.SetState(BattleState.Reroll);
+        BattleStateManager.Instance.OnReroll -= OnWaveEnd;
     }
 
     private void RegisterPlayer(ITrackable trackable)
@@ -108,20 +119,28 @@ public class InGameManager : MonoBehaviour
         _trackables.Add(trackable);
     }
 
-    public bool TrySpendCoin(int amount)
+    private void OnWaveEnd()
     {
-        return _canPayCoin = (_inGameCoin >= amount);
+        AddCoin(_baseWaveReward);
+        CalculateNextWaveReward();
     }
 
-    public int SpendCoin(int amount)
+    private void CalculateNextWaveReward()
     {
-        if (!_canPayCoin)
+        _baseWaveReward += _nextWaveReward;
+        _nextWaveReward--;
+    }
+
+    public bool TrySpendCoin(int amount)
+    {
+        if (_inGameCoin < amount)
         {
-            return _inGameCoin;
+            return false;
         }
 
         _inGameCoin -= amount;
-        return _inGameCoin;
+        OnCoinChanged?.Invoke(_inGameCoin);
+        return true;
     }
 
     public void SetWaveText(int waveStep, int maxWave)
@@ -133,6 +152,7 @@ public class InGameManager : MonoBehaviour
     public void AddCoin(int amount)
     {
         _inGameCoin += amount;
+        OnCoinChanged?.Invoke(_inGameCoin);
     }
 
     public void RegisterDeckUnits(Transform inGameSpawnPoint)

@@ -25,6 +25,7 @@ public class RerollUIController : MonoBehaviour
 
     private Transform[] _rerollChildren;
     private Button[] _rerollStateButtons;
+    private InGameCardPanel[] _cardPanels;
 
     private List<PlayerData> _rerollCandidates = new List<PlayerData>();
 
@@ -39,6 +40,13 @@ public class RerollUIController : MonoBehaviour
         _rerollChildren = GetComponentsInChildren<Transform>();
         _battleSetUpUI = GetComponentInParent<BattleSetUpUI>();
         _rerollStateButtons = GetComponentsInChildren<Button>();
+
+        _cardPanels = new InGameCardPanel[_cardPositions.Length];
+
+        for (int i = 0; i < _cardPositions.Length; i++)
+        {
+            _cardPanels[i] = _rerollChildren[(int)_cardPositions[i]].GetComponent<InGameCardPanel>();
+        }
     }
 
     private void Start()
@@ -69,7 +77,8 @@ public class RerollUIController : MonoBehaviour
         if (_battleSetUpUI.IsSelectedCardAnimating)
             return;
 
-        if (!InGameManager.Instance.CanPayCoin)
+        bool canPlayAnimation = _cardPanels[index].TryCardClick();
+        if (!canPlayAnimation)
             return;
 
         OnCardAction?.Invoke();
@@ -85,8 +94,6 @@ public class RerollUIController : MonoBehaviour
 
         if (!InGameManager.Instance.TrySpendCoin(_rerollCost))
             return;
-
-        _battleSetUpUI.UpdateCoinUI(_rerollCost);
 
         _battleSetUpUI.OnRerollAnimationStart();
         _cardSelectAnimator.Play("CardRoll", 0, 0.0f);
@@ -115,11 +122,10 @@ public class RerollUIController : MonoBehaviour
 
     private void OnCardDataRamdomSet()
     {
-        foreach (CardUI cardPos in _cardPositions)
+        for (int i = 0; i < _cardPanels.Length; i++)
         {
             int randomIndex = UnityEngine.Random.Range(0, _rerollCandidates.Count);
-            _rerollChildren[(int)cardPos].GetComponent<InGameCardPanel>()
-                .SetPlayerUnit(_rerollCandidates[randomIndex]);
+            _cardPanels[i].SetPlayerUnit(_rerollCandidates[randomIndex]);
         }
     }
 

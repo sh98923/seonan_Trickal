@@ -62,6 +62,11 @@ public class BattleStateManager : MonoBehaviour
         }
     }
 
+    public void OnInGameEnter()
+    {
+        SetState(BattleState.Reroll);
+    }
+
     public BattleState CurrentState
     {
         get { return _currentState; }
