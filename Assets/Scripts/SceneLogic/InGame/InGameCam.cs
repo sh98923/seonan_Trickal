@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class InGameCam : MonoBehaviour
 {
@@ -41,20 +40,16 @@ public class InGameCam : MonoBehaviour
         remove { _onCameraMoveEnd -= value; }
     }
 
-    private readonly float _zoomInSize = 4.5f;
-    private readonly float _zoomOutSize = 5.0f;
+    private const float _zoomInSize = 4.5f;
+    private const float _zoomOutSize = 5.0f;
 
-    private readonly float _moveDuration = 2.0f;
-    private readonly float _zoomDuration = 1.0f;
+    private const float _moveDuration = 2.0f;
+    private const float _zoomDuration = 1.0f;
 
-    private readonly float _rerollToBattleMoveX = 13.0f;
-    private readonly float _battleToRerollMoveX = 9.0f;
+    private const float _rerollToBattleMoveX = 13.0f;
+    private const float _battleToRerollMoveX = 9.0f;
 
-    private readonly float _camMoveSecond = 0.6f;
-
-    //private readonly float _rightDuration = 2.3f;
-
-    //private bool _isFirstInit = true;
+    private const float _camMoveSecond = 0.6f;
 
     // =========================
     // Tracking 모드 관련
@@ -154,12 +149,6 @@ public class InGameCam : MonoBehaviour
 
     private void ZoomBattleToReroll()
     {
-        /*if (_isFirstInit)
-        {
-            _isFirstInit = false;  // 첫 진입 이후에는 이벤트 허용
-            return;
-        }*/
-
         DisableTracking(); // Tracking 중단
 
         if (_zoomCoroutine != null)
@@ -258,24 +247,6 @@ public class InGameCam : MonoBehaviour
             yield return null;
         }
     }
-
-    // X축만 이동하는 보간
-    /*private IEnumerator MoveXCoroutine(float moveX, float duration)
-    {
-        float elapsed = 0.0f;
-        Vector3 startPos = transform.position;
-        Vector3 targetPos = new Vector3(startPos.x + moveX, startPos.y, startPos.z);
-
-        while (elapsed < duration)
-        {
-            elapsed += Time.deltaTime;
-            float t = elapsed / duration;
-            transform.position = Vector3.Lerp(startPos, targetPos, t);
-            yield return null;
-        }
-
-        transform.position = targetPos;
-    }*/
 
     // =======================
     // Tracking 구간

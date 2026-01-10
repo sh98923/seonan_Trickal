@@ -10,7 +10,7 @@ public class StageInfoPanel : MonoBehaviour
         DeckSetUpBtn = 12, CancelBtn = 14
     }
 
-    private StageMapBG _mapBG;
+    private MapBG _mapBG;
     private GameObject _deckPanel;
     private GameObject _stageBtn;
     private Transform[] _stageChildren; 
@@ -20,7 +20,7 @@ public class StageInfoPanel : MonoBehaviour
     {
         _stageChildren = GetComponentsInChildren<Transform>();
 
-        _mapBG = GameObject.Find("BG").GetComponent<StageMapBG>();
+        _mapBG = GameObject.Find("BG").GetComponent<MapBG>();
         _monsterPreviewRoot = GameObject.Find("MonsterPreivew").transform;
         
         _deckPanel = transform.parent.Find("DeckPanel").gameObject;
@@ -32,15 +32,11 @@ public class StageInfoPanel : MonoBehaviour
     private void OnEnable()
     {
         ShowMonsterInfo();
-
-        _mapBG.OnSetMapBG += HandleMapBGSetting;
     }
 
     private void OnDisable()
     {
         RemovePreview();
-
-        _mapBG.OnSetMapBG -= HandleMapBGSetting;
     }
 
     private void Start()
@@ -53,7 +49,6 @@ public class StageInfoPanel : MonoBehaviour
     {
         _mapBG.gameObject.SetActive(true);
         _mapBG.SetMapBG();
-        _mapBG.SetMapBGEvent();
 
         _deckPanel.SetActive(true);
         _stageBtn.SetActive(false);
@@ -109,10 +104,5 @@ public class StageInfoPanel : MonoBehaviour
     {
         Button btn = _stageChildren[(int)element].GetComponent<Button>();
         btn.onClick.AddListener(() => func());
-    }
-
-    private void HandleMapBGSetting(MapBG bg)
-    {
-        bg.SetMapBG();
     }
 }

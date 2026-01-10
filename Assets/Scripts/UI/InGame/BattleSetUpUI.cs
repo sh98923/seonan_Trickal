@@ -11,7 +11,9 @@ public class BattleSetUpUI : MonoBehaviour
 
     private List<PlayerData> _rerollCandidates = new List<PlayerData>();
 
-    private const int _unitCost = 5;
+    private const float _coinChangeDuration = 0.5f;
+
+    private const int _increaseCost = 5;
     private int _curCoin = 0;
 
     private bool _isRerollAnimating = false;
@@ -63,12 +65,46 @@ public class BattleSetUpUI : MonoBehaviour
 
     private IEnumerator PlayCoinChange(int targetCoin)
     {
+        float accumulated = 0.0f;
+        int startCoin = _curCoin;
+        int coinDiff = targetCoin - startCoin;
+
+        if (coinDiff == 0)
+            yield break;
+
+        // 초당 증가량: 차이에 따라 속도 자동 조절
+        float incrementPerSecond = Mathf.Abs(coinDiff) / _coinChangeDuration;
+
         while (_curCoin != targetCoin)
         {
-            _curCoin += (_curCoin < targetCoin) ? 1 : -1;
-            _coinText.text = _curCoin.ToString();
-            yield return new WaitForSeconds(0.05f);
+            // 1프레임에서 증가할 값 계산
+            float frameDelta = incrementPerSecond * Time.deltaTime;
+            accumulated += frameDelta;
+
+            // 누적 float >= 1이면 실제 int로 증가/감소
+            if (accumulated >= 1.0f)
+            {
+                int change = Mathf.FloorToInt(accumulated);
+                if (coinDiff < 0)
+                {
+                    change *= -1;
+                }
+
+                // startCoin, targetCoin 중 min, max를 구하고 clamp로 _curCoin값을 구함
+                _curCoin = Mathf.Clamp(_curCoin + change,
+                                       Mathf.Min(startCoin, targetCoin),
+                                       Mathf.Max(startCoin, targetCoin));
+                _coinText.text = _curCoin.ToString();
+
+                accumulated -= Mathf.Abs(change);
+            }
+
+            yield return null;
         }
+
+        // 마지막으로 정확하게 target 맞춤
+        _curCoin = targetCoin;
+        _coinText.text = _curCoin.ToString();
 
         _coinCoroutine = null;
     }
@@ -83,7 +119,7 @@ public class BattleSetUpUI : MonoBehaviour
             if (curKey == key && curLevel < maxLevel)
             {
                 PlayerData data = _rerollCandidates[i];
-                data.UpgradeCost += _unitCost;
+                data.UpgradeCost += _increaseCost;
                 _rerollCandidates[i] = data;
             }
         }
