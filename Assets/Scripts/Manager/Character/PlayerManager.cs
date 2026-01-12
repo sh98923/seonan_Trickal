@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,6 +16,7 @@ public struct PlayerData
     public string CharacterSpritePath;
     public string CharacterPrefabPath;
     public string CharacterUltIconPath;
+    public string CharacterSlotMachinePath;
     public string Layer;
     public string AtkType;
     public string Target;
@@ -24,6 +26,8 @@ public struct PlayerData
 public class PlayerManager : Singleton<PlayerManager>
 {
     private Dictionary<int, PlayerData> _playerDatas = new Dictionary<int, PlayerData>();
+
+    private Dictionary<int, Sprite> _playerSprites = new Dictionary<int, Sprite>();
 
     private int _playerStartKey;
     public int PlayerStartKey
@@ -42,6 +46,21 @@ public class PlayerManager : Singleton<PlayerManager>
     private void Awake()
     {
         LoadPlayerDatas();
+        LoadPlayerSprite();
+    }
+
+    private void LoadPlayerSprite()
+    {
+        foreach(KeyValuePair<int, PlayerData> playerData in _playerDatas)
+        {
+            _playerSprites[playerData.Key] =
+                Resources.Load<Sprite>(playerData.Value.CharacterSlotMachinePath);
+        }
+    }
+
+    public Sprite GetPlayerSlotMachineSprite(int key)
+    {
+        return _playerSprites[key];
     }
 
     public PlayerData GetPlayerData(int key)
@@ -73,12 +92,13 @@ public class PlayerManager : Singleton<PlayerManager>
             data.CharacterSpritePath = colData[6];
             data.CharacterPrefabPath = colData[7];
             data.CharacterUltIconPath = colData[8];
-            data.Layer = colData[9];
-            data.AtkType = colData[10];
-            data.Target = colData[11];
-            data.SpawnLine = int.Parse(colData[12]);
-            data.UpgradeCost = int.Parse(colData[13]);
-            data.MaxLevel = int.Parse(colData[14]);
+            data.CharacterSlotMachinePath = colData[9];
+            data.Layer = colData[10];
+            data.AtkType = colData[11];
+            data.Target = colData[12];
+            data.SpawnLine = int.Parse(colData[13]);
+            data.UpgradeCost = int.Parse(colData[14]);
+            data.MaxLevel = int.Parse(colData[15]);
             data.IsDeployed = false;
 
             if (!_isPlayerFirstkey)

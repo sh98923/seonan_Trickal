@@ -72,16 +72,16 @@ public class BattleSetUpUI : MonoBehaviour
         if (coinDiff == 0)
             yield break;
 
-        // ÃÊ´ç Áõ°¡·®: Â÷ÀÌ¿¡ µû¶ó ¼Óµµ ÀÚµ¿ Á¶Àý
+        // ï¿½Ê´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: ï¿½ï¿½ï¿½Ì¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Óµï¿½ ï¿½Úµï¿½ ï¿½ï¿½ï¿½ï¿½
         float incrementPerSecond = Mathf.Abs(coinDiff) / _coinChangeDuration;
 
         while (_curCoin != targetCoin)
         {
-            // 1ÇÁ·¹ÀÓ¿¡¼­ Áõ°¡ÇÒ °ª °è»ê
+            // 1ï¿½ï¿½ï¿½ï¿½ï¿½Ó¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½
             float frameDelta = incrementPerSecond * Time.deltaTime;
             accumulated += frameDelta;
 
-            // ´©Àû float >= 1ÀÌ¸é ½ÇÁ¦ int·Î Áõ°¡/°¨¼Ò
+            // ï¿½ï¿½ï¿½ï¿½ float >= 1ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½ intï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½/ï¿½ï¿½ï¿½ï¿½
             if (accumulated >= 1.0f)
             {
                 int change = Mathf.FloorToInt(accumulated);
@@ -90,7 +90,7 @@ public class BattleSetUpUI : MonoBehaviour
                     change *= -1;
                 }
 
-                // startCoin, targetCoin Áß min, max¸¦ ±¸ÇÏ°í clamp·Î _curCoin°ªÀ» ±¸ÇÔ
+                // startCoin, targetCoin ï¿½ï¿½ min, maxï¿½ï¿½ ï¿½ï¿½ï¿½Ï°ï¿½ clampï¿½ï¿½ _curCoinï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                 _curCoin = Mathf.Clamp(_curCoin + change,
                                        Mathf.Min(startCoin, targetCoin),
                                        Mathf.Max(startCoin, targetCoin));
@@ -102,7 +102,7 @@ public class BattleSetUpUI : MonoBehaviour
             yield return null;
         }
 
-        // ¸¶Áö¸·À¸·Î Á¤È®ÇÏ°Ô target ¸ÂÃã
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È®ï¿½Ï°ï¿½ target ï¿½ï¿½ï¿½ï¿½
         _curCoin = targetCoin;
         _coinText.text = _curCoin.ToString();
 

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -109,7 +108,6 @@ public class GameManager : Singleton<GameManager>
     {
         spawnPos.x += 3.33f;
 
-        // 신규라면 추가
         PlayerUnitData unitData = new PlayerUnitData
         {
             spawnPos = spawnPos,
