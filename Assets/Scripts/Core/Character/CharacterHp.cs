@@ -38,8 +38,8 @@ public class CharacterHp : MonoBehaviour
 
     private void Awake()
     {
-        GameManager.Instance.EnableScriptInScenes(this, SceneName.InGameScene);
         _hpSlider = GetComponent<Slider>();
+        GameManager.Instance.EnableScriptInScenes(this, SceneName.InGameScene);
     }
 
     private void Start()
@@ -65,6 +65,7 @@ public class CharacterHp : MonoBehaviour
         }
     }
 
+    // 이쪽에서 터지는 이유는 완성이 안된 캐릭터를 덱에 등록했기 때문에 _hpSlider가 Null일거야
     public void InitHp(float maxHp)
     {
         _isInitialized = true;

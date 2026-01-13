@@ -38,7 +38,7 @@ public class InGamePlayerSpawn : MonoBehaviour
         // 룰렛 만들게되면 룰렛에 나온 애들만 스폰
         InGameManager.Instance.RegisterDeckUnits(transform);
 
-        for(int i = 0; i < transform.childCount; i++)
+        for (int i = 0; i < transform.childCount; i++)
         {
             Player player = transform.GetChild(i).GetComponent<Player>();
             _registeredPlayers.Add(player);

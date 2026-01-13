@@ -95,16 +95,35 @@ public class InGameManager : MonoBehaviour
 
     private void Start()
     {
+        SlotMachineController.Instance.OnSlotMachineFinished += OnSlotFinished;
+    }
+
+    private void OnDisable()
+    {
+        SlotMachineController.Instance.OnSlotMachineFinished -= OnSlotFinished;
+        BattleStateManager.Instance.OnReroll -= OnWaveEnd;
+    }
+
+    private void OnSlotFinished()
+    {
         BattleStateManager.Instance.OnInGameEnter();
         WeaponManager.Instance.CreateWeapon();
         EffectManager.Instance.CreateEffect();
 
         BattleStateManager.Instance.OnReroll += OnWaveEnd;
+
+        ApplySlotResult();
     }
 
-    private void OnDisable()
+    private void ApplySlotResult()
     {
-        BattleStateManager.Instance.OnReroll -= OnWaveEnd;
+        int[] resultKeys = SlotMachineController.Instance.SlotMachineResultPlayerKeys;
+
+        foreach (int key in resultKeys)
+        {
+            PlayerData data = PlayerManager.Instance.GetPlayerData(key);
+            InGamePlayerSpawn.Instance.SetActivePlayer(data.EngName);
+        }
     }
 
     private void RegisterPlayer(ITrackable trackable)
@@ -169,13 +188,14 @@ public class InGameManager : MonoBehaviour
             player.name = playerData.EngName;
             player.layer = LayerMask.NameToLayer(playerData.Layer);
             player.transform.position = data.spawnPos;
-            player.SetActive(false);
 
             ITrackable trackable = player.GetComponent<ITrackable>();
             RegisterPlayer(trackable);
 
             CharacterData characterData = new CharacterData(playerData);
-            BattleUnitManager.Instance.RegisterUnit(characterData, player);
+            BattleUnitManager.Instance.RegisterUnit(characterData, player); 
+
+            player.SetActive(false);
         }
     }
 

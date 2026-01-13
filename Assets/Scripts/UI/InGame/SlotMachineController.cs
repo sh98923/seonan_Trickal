@@ -1,14 +1,39 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
+using System;
 
 public class SlotMachineController : MonoBehaviour
 {
+    private static SlotMachineController _instance;
+    public static SlotMachineController Instance
+    {
+        get { return _instance; }
+    }
+
+    private event Action _onSlotMachineFinished;
+    public event Action OnSlotMachineFinished
+    {
+        add { _onSlotMachineFinished += value; }
+        remove { _onSlotMachineFinished -= value;}
+    }
+
     private SlotReel[] _slots;
 
     private List<PlayerData> _playerDatas;
 
+    private const float _rollStartDuartion = 0.95f;   // 전체 릴이 도는 시간
+    private const float _rollStopInterval = 0.25f;   // 릴 간 정지 간격
+    
+    private int[] _resultPlayerKeys = new int[3];
+    public int[] SlotMachineResultPlayerKeys
+    {
+        get { return _resultPlayerKeys; }
+    }
+
     private void Awake()
     {
+        _instance = this;
         _slots = GetComponentsInChildren<SlotReel>();
 
         _playerDatas = GameManager.Instance.SpawnablePlayerDatas;
@@ -22,24 +47,45 @@ public class SlotMachineController : MonoBehaviour
 
     private void AssignResults()
     {
-        List<PlayerData> pool = new List<PlayerData>(_playerDatas);
+        List<PlayerData> playerList = new List<PlayerData>(_playerDatas);
 
         for (int i = 0; i < _slots.Length; i++)
         {
-            int rand = Random.Range(0, pool.Count);
-            Sprite sprite = PlayerManager.Instance.GetPlayerSlotMachineSprite(pool[rand].Key);
+            int rand = UnityEngine.Random.Range(0, playerList.Count);
+            int playerKey = playerList[rand].Key;
+            
+            _resultPlayerKeys[i] = playerKey;
+            
+            Sprite sprite = PlayerManager.Instance.GetPlayerSlotMachineSprite(playerKey);
 
-            pool.RemoveAt(rand); // 중복 방지
+            playerList.RemoveAt(rand); // 중복 방지
 
-            _slots[i].SetResultPlayer(sprite, pool);
+            _slots[i].SetResultPlayer(i, sprite, playerList);
         }
     }
 
     public void StartSlot()
     {
-        foreach (SlotReel slot in _slots)
+        StartCoroutine(SlotSequence());
+    }
+
+    private IEnumerator SlotSequence()
+    {
+        // 시작
+        foreach (SlotReel reel in _slots)
         {
-            slot.StartRoll();
+            reel.StartRoll();
         }
+
+        yield return new WaitForSeconds(_rollStartDuartion);
+
+        // 정지
+        foreach (SlotReel reel in _slots)
+        {
+            reel.StopRoll();
+            yield return new WaitForSeconds(_rollStopInterval);
+        }
+
+        _onSlotMachineFinished?.Invoke();
     }
 }
