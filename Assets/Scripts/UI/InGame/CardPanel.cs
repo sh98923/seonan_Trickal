@@ -20,8 +20,6 @@ public class CardPanel : MonoBehaviour
     protected PlayerData _playerData;
     protected Color _color = Color.white;
 
-    private bool _wasRerollActive = false;
-
     protected void Awake()
     {
         _cardChildren = GetComponentsInChildren<Transform>();
@@ -31,23 +29,6 @@ public class CardPanel : MonoBehaviour
     {
         InitUI();
         RegisterButtonEvents();
-    }
-
-    protected void Update()
-    {
-        // 여기 부분 이벤트로 리팩토링 해보자
-        UpdateCostImageVisibility();
-    }
-
-    private void UpdateCostImageVisibility()
-    {
-        bool isRerollActive = BattleStateManager.Instance.IsReroll;
-
-        if (_wasRerollActive != isRerollActive)
-        {
-            _cardChildren[(int)CardUI.CostImage].gameObject.SetActive(isRerollActive);
-            _wasRerollActive = isRerollActive;
-        }
     }
 
     private void RegisterButtonEvents()

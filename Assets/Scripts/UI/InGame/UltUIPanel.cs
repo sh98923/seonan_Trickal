@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class UltUIPanel : MonoBehaviour
 {
-    private Transform _spawnPlayerTransform;
-    private InGamePlayerSpawn _spawnParent; 
     private List<UltPanel> _ultPanels = new List<UltPanel>();
 
     private const float _activeY = 0.0f;
@@ -15,9 +13,6 @@ public class UltUIPanel : MonoBehaviour
 
     private void Start()
     {
-        _spawnPlayerTransform = GetComponentInParent<InGameUIPanel>().SpawnParent;
-        _spawnParent = _spawnPlayerTransform.GetComponent<InGamePlayerSpawn>();
-
         GameObject ultPrefab = Resources.Load<GameObject>("Prefabs/UI/UltPanel");
 
         int maxPlayerCount = InGameManager.Instance.Players.Count;
@@ -33,61 +28,57 @@ public class UltUIPanel : MonoBehaviour
             _ultPanels.Add(panel);
         }
 
-        RerollUIController.OnCardAction += SetUltUIPos;
+        InGameEventManager.OnUnitActivated += HandleUnitActivated; 
+        InGameEventManager.OnUnitUpdated += HandleUnitUpdated;
+
         BattleStateManager.Instance.OnBattle += ResumeAllUltCooldowns;
-        //BattleStateManager.Instance.OnEnteringBattle += SetUltUIPos; 
         BattleStateManager.Instance.OnEnteringReroll += PauseAllUltCooldowns;
     }
 
     private void OnDisable()
     {
-        RerollUIController.OnCardAction -= SetUltUIPos;
+        InGameEventManager.OnUnitActivated -= HandleUnitActivated;
+        InGameEventManager.OnUnitUpdated -= HandleUnitUpdated;
+
         BattleStateManager.Instance.OnBattle -= ResumeAllUltCooldowns;
-        //BattleStateManager.Instance.OnEnteringBattle -= SetUltUIPos;
         BattleStateManager.Instance.OnEnteringReroll -= PauseAllUltCooldowns;
     }
 
-    private void SetUltUIPos()
+    private void HandleUnitActivated(Player player)
     {
-        int activeCount = _spawnParent.GetActivePlayerCount();
+        int index = _lastActivePlayerCount;
 
-        ActivateNewUltObjects(activeCount);
-        ApplyUltUnlockStates(activeCount);
+        UltPanel panel = _ultPanels[index];
+        panel.gameObject.SetActive(true);
+        panel.BindPlayer(player);
 
-        _lastActivePlayerCount = activeCount;
+        ApplyUltUnlock(panel);
+
+        _lastActivePlayerCount++;
     }
 
-    private void ActivateNewUltObjects(int activeCount)
+    private void HandleUnitUpdated(int playerKey)
     {
-        for (int i = _lastActivePlayerCount; i < activeCount; i++)
+        foreach (UltPanel panel in _ultPanels)
         {
-            _ultPanels[i].gameObject.SetActive(true);
+            // 아직 플레이어 바인딩 안 된 패널 스킵
+            if (panel == null)
+                continue;
+
+            // 여기서 바로 비교 가능
+            if (panel.BoundPlayerKey != playerKey)
+                continue;
+
+            // 이 패널만 갱신
+            ApplyUltUnlock(panel);
+            break;
         }
     }
 
-    private void ApplyUltUnlockStates(int activeCount)
+    private void ApplyUltUnlock(UltPanel panel)
     {
-        List<Player> activePlayers = _spawnParent.GetActivePlayers();
-
-        for (int i = 0; i < activeCount; i++)
-        {
-            Player player = activePlayers[i];
-            GameObject ultObj = _ultPanels[i].gameObject;
-
-            UltPanel ultPanel = ultObj.GetComponent<UltPanel>();
-            ultPanel.BindPlayer(player);
-
-            int key = player.Data.PlayerKey;
-
-            if (BattleUnitManager.Instance.IsUltimateUnlocked(key))
-            {
-                SetUltContentY(ultObj.transform, _activeY);
-            }
-            else
-            {
-                SetUltContentY(ultObj.transform, _inactiveY);
-            }
-        }
+        bool unlocked = BattleUnitManager.Instance.IsUltimateUnlocked(panel.BoundPlayerKey);
+        SetUltContentY(panel.transform, unlocked ? _activeY : _inactiveY);
     }
 
     private void SetUltContentY(Transform ult, float y)

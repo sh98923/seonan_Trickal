@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,6 +15,13 @@ public class InGamePlayerSpawn : MonoBehaviour
             }
             return _instance;
         }
+    }
+
+    private event Action<int> _onPlayerDeployed;
+    public event Action<int> OnPlayerDeployed
+    {
+        add { _onPlayerDeployed += value; }
+        remove { _onPlayerDeployed -= value;}
     }
 
     private List<PlayerData> _deployableDatas = new List<PlayerData>();
@@ -112,17 +120,24 @@ public class InGamePlayerSpawn : MonoBehaviour
     {
         Player player = FindPlayer(characterName);
 
-        if (player != null)
-        {
-            player.gameObject.SetActive(true);
-            player.Data.IsDeployed = true;
-            player.PlayEnterAnim();
-            _activePlayers.Add(player);
-        }
-        else
+        if (player == null)
         {
             Debug.LogError("활성화된 플레이어 등록 실패");
+            return;
         }
+
+        if (player.gameObject.activeSelf)
+            return;
+
+        player.gameObject.SetActive(true);
+        player.Data.IsDeployed = true;
+        player.PlayEnterAnim();
+
+        _activePlayers.Add(player);
+            
+        // 배치 이벤트
+        InGameEventManager.OnUnitActivated?.Invoke(player);
+        InGameEventManager.OnUnitUpdated?.Invoke(player.Data.PlayerKey);
     }
 
     public List<Player> GetActivePlayers()

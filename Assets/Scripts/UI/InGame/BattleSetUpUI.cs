@@ -34,13 +34,15 @@ public class BattleSetUpUI : MonoBehaviour
 
     private void Start()
     {
-        InitRerollUI();
+        InitRerollUI(); 
         InGameManager.OnCoinChanged += OnCoinChanged;
+        InGameEventManager.OnUnitUpdated += UpdateCardCostOnUnitChange;
     }
 
     private void OnDisable()
     {
         InGameManager.OnCoinChanged -= OnCoinChanged;
+        InGameEventManager.OnUnitUpdated -= UpdateCardCostOnUnitChange;
     }
 
     private void InitRerollUI()
@@ -61,6 +63,12 @@ public class BattleSetUpUI : MonoBehaviour
             StopCoroutine(_coinCoroutine);
 
         _coinCoroutine = StartCoroutine(PlayCoinChange(targetCoin));
+    }
+
+    private void UpdateCardCostOnUnitChange(int key)
+    {
+        int curLevel = BattleUnitManager.Instance.GetUnitLevel(key);
+        CardCostUpdate(key, curLevel);
     }
 
     private IEnumerator PlayCoinChange(int targetCoin)
@@ -121,6 +129,7 @@ public class BattleSetUpUI : MonoBehaviour
                 PlayerData data = _rerollCandidates[i];
                 data.UpgradeCost += _increaseCost;
                 _rerollCandidates[i] = data;
+                break;
             }
         }
     }

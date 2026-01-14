@@ -87,10 +87,10 @@ public class InGameManager : MonoBehaviour
 
         _instance = this;
 
-        //_inGameCoin = 999;
+        _inGameCoin = 999;
         _baseWaveReward = 23;
         _nextWaveReward = 12;
-        _inGameCoin = 30;
+        //_inGameCoin = 30;
     }
 
     private void Start()

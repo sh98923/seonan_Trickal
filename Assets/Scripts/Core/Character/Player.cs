@@ -437,11 +437,13 @@ public class Player : Character
             // 최초 생성
             _playerHp.InitHp(_data.Hp);
             _isStatInitialized = true;
+            print(data.EngName + " : " + _data.Hp + " : " + _data.Atk);
         }
         else
         {
             // 레벨업 / 강화
             _playerHp.ApplyLevelUpHp(_data.Hp);
+            print(data.EngName + " : " + _data.Hp + " : " + _data.Atk);
         }
 
         _playerMp.SetMpData(_data.Mp, _data.MpTickRate);

@@ -11,6 +11,37 @@ public class InGameCardPanel : CardPanel
         GameManager.Instance.EnableScriptInScenes(this, SceneName.InGameScene);
     }
 
+    private void OnEnable()
+    {
+        BattleStateManager.Instance.OnReroll += ShowCostImage;
+        BattleStateManager.Instance.OnEnteringBattle += HideCostImage;
+    }
+
+    private void OnDisable()
+    {
+        BattleStateManager.Instance.OnReroll -= ShowCostImage;
+        BattleStateManager.Instance.OnEnteringBattle -= HideCostImage;
+    }
+
+    private void OnDestroy()
+    {
+        if (BattleStateManager.Instance != null)
+        {
+            BattleStateManager.Instance.OnReroll -= ShowCostImage;
+            BattleStateManager.Instance.OnEnteringBattle -= HideCostImage;
+        }
+    }
+
+    private void ShowCostImage()
+    {
+        _cardChildren[(int)CardUI.CostImage].gameObject.SetActive(true);
+    }
+
+    private void HideCostImage()
+    {
+        _cardChildren[(int)CardUI.CostImage].gameObject.SetActive(false);
+    }
+
     protected override void InitUI()
     {
         base.InitUI();
@@ -36,7 +67,7 @@ public class InGameCardPanel : CardPanel
             return false;
 
         ExecuteCardAction();
-        UpdateAfterAction();
+
         return true;
     }
 
@@ -64,11 +95,13 @@ public class InGameCardPanel : CardPanel
 
         if (InGamePlayerSpawn.Instance.IsPlayerInactive(characterName))
         {
-            DeployPlayer(characterName);
+            DeployPlayer(characterName); 
+            print(_playerData.EngName + " : 카드 클릭 함\n 코스트 : " + _playerData.UpgradeCost);
         }
         else
         {
             UpgradePlayer();
+            print(_playerData.EngName + " : 카드 클릭 함\n 코스트 : " + _playerData.UpgradeCost);
         }
     }
 
@@ -79,18 +112,8 @@ public class InGameCardPanel : CardPanel
 
     private void UpgradePlayer()
     {
-        BattleUnitManager.Instance.UpgradeUnit(_playerData.Key);
-    }
-
-    private void UpdateAfterAction()
-    {
-        UpdateCardCostUI();
-    }
-
-    private void UpdateCardCostUI()
-    {
-        int curLevel = BattleUnitManager.Instance.GetUnitLevel(_playerData.Key);
-        _battleSetUpUI.CardCostUpdate(_playerData.Key, curLevel);
+        BattleUnitManager.Instance.UpgradeUnit(_playerData.Key); 
+        InGameEventManager.OnUnitUpdated?.Invoke(_playerData.Key);
     }
 
     private void UpdateDeployButtonState()

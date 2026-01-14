@@ -18,13 +18,15 @@ public class SlotMachineController : MonoBehaviour
         remove { _onSlotMachineFinished -= value;}
     }
 
+    private InGameUIPanel _rootPanel;
+    private Animator _slotMahcineAnim;
     private SlotReel[] _slots;
-
     private List<PlayerData> _playerDatas;
 
     private const float _rollStartDuartion = 0.95f;   // 전체 릴이 도는 시간
     private const float _rollStopInterval = 0.25f;   // 릴 간 정지 간격
-    
+    private const float _resultHoldDuration = 0.55f;  // 결과 보여주는 시간
+
     private int[] _resultPlayerKeys = new int[3];
     public int[] SlotMachineResultPlayerKeys
     {
@@ -34,6 +36,9 @@ public class SlotMachineController : MonoBehaviour
     private void Awake()
     {
         _instance = this;
+
+        _rootPanel = GetComponentInParent<InGameUIPanel>();
+        _slotMahcineAnim = GetComponent<Animator>();
         _slots = GetComponentsInChildren<SlotReel>();
 
         _playerDatas = GameManager.Instance.SpawnablePlayerDatas;
@@ -42,7 +47,6 @@ public class SlotMachineController : MonoBehaviour
     private void Start()
     {
         AssignResults();
-        StartSlot();
     }
 
     private void AssignResults()
@@ -87,5 +91,14 @@ public class SlotMachineController : MonoBehaviour
         }
 
         _onSlotMachineFinished?.Invoke();
+
+        yield return new WaitForSeconds(_resultHoldDuration);
+
+        _slotMahcineAnim.Play("SlotMachineOutro");
+    }
+
+    public void OnOutroEnd()
+    {
+        _rootPanel.HideSlotMachine();
     }
 }

@@ -18,8 +18,6 @@ public class RerollUIController : MonoBehaviour
         RightCard = 17,
     }
 
-    public static event Action OnCardAction;
-
     private BattleSetUpUI _battleSetUpUI;
     private Animator _cardSelectAnimator;
 
@@ -81,7 +79,7 @@ public class RerollUIController : MonoBehaviour
         if (!canPlayAnimation)
             return;
 
-        OnCardAction?.Invoke();
+        InGameEventManager.OnUltUIRefreshRequested?.Invoke();
 
         _battleSetUpUI.OnSelectedCardAnimationStart();
         _cardSelectAnimator.SetTrigger("SelectedCard" + index);

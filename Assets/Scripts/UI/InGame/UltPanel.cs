@@ -47,7 +47,16 @@ public class UltPanel : MonoBehaviour
         
     private const float _statusBarOffsetYLocked = 75.0f;  
     private const float _statusBarOffsetYUnlocked = -25.0f;
+    public int BoundPlayerKey
+    {
+        get
+        {
+            if (_player != null)
+                return _player.Data.PlayerKey;
 
+            return -1;
+        }
+    }
     private float _remainCooldown = 0.0f;
     private bool _isPaused = false; 
     private bool _isCooldown = false;
@@ -65,9 +74,19 @@ public class UltPanel : MonoBehaviour
         };
     }
 
+    private void OnEnable()
+    {
+        BattleUnitManager.Instance.OnUltUnlocked += RefreshUltUI;
+    }
+
     private void Start()
     {
         _ultButton.onClick.AddListener(OnClickUltimate);
+    }
+
+    private void OnDisable()
+    {
+        BattleUnitManager.Instance.OnUltUnlocked -= RefreshUltUI;
     }
 
     private void CacheUI()
@@ -179,13 +198,6 @@ public class UltPanel : MonoBehaviour
         InitStatusBar();
         // 처음 한번 아이콘 로드
         SetUltIcon();
-
-        // 이미 언락된 경우 동기화
-        if (BattleUnitManager.Instance.IsUltimateUnlocked(player.Data.PlayerKey))
-        {
-            _cooldownImage.fillAmount = 0.0f;
-            //SetUIForUltUnlocked();
-        }
     }
 
     private void UnbindPlayer(Player player)
@@ -285,5 +297,21 @@ public class UltPanel : MonoBehaviour
         btn.anchoredPosition = _basePos.button + new Vector2(0, buttonOffsetY);
         hp.anchoredPosition = _basePos.hpBar + new Vector2(0, statusOffsetY);
         mp.anchoredPosition = _basePos.mpBar + new Vector2(0, statusOffsetY);
+    }
+
+    // 이 부분 수정해야함 궁극기 UI 패널 인게임에서 보면 알거야
+    public void RefreshUltUI(int key)
+    {
+        if (_player == null) return;
+
+        if (_player.Data.PlayerKey == key && BattleUnitManager.Instance.IsUltimateUnlocked(_player.Data.PlayerKey))
+        {
+            SetUIForUltUnlocked();
+            _cooldownImage.fillAmount = 0.0f;
+        }
+        else
+        {
+            SetUIForUltLocked();
+        }
     }
 }

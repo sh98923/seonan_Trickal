@@ -125,7 +125,7 @@ public class PlayerUnit
     public void LevelUp()
     {
         _level++;
-
+        
         int maxLevel = _data.MaxLevel;
 
         // 이 조건문이 달성되면 그 카드는 제외시켜야함

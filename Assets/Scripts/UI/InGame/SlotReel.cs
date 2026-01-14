@@ -19,7 +19,7 @@ public class SlotReel : MonoBehaviour
     private Sprite _playerSprite;
     private List<Sprite> _rollingSprites = new List<Sprite>();
 
-    private float _speed = 1000.0f;
+    private float _speed = 1500.0f;
     private float _slotHeight = 0.0f;
     private float _totalHeight = 0.0f;
 

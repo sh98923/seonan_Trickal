@@ -12,17 +12,13 @@ public enum InGameUI
     CenterCardBtn = 22, 
     RightCardBtn = 30,
     RerollImage = 38, 
-    RerollBtn = 39
+    RerollBtn = 39,
+    SlotMachinePanel = 48
 }
 
 public class InGameUIPanel : MonoBehaviour
 {
     private Transform[] _inGameUIs;
-    private Transform _spawnParent;
-    public Transform SpawnParent
-    {
-        get { return _spawnParent; }
-    }
     private Animator _setUpAnim;
     private BattleState _prevState = BattleState.None;
 
@@ -35,7 +31,6 @@ public class InGameUIPanel : MonoBehaviour
 
     private void Awake()
     {
-        _spawnParent = GameObject.Find("SpawnPlayer").transform;
         _inGameUIs = GetComponentsInChildren<Transform>();
 
         Transform setUpPanel = _inGameUIs[(int)InGameUI.BattleSetUpPanel];
@@ -90,6 +85,11 @@ public class InGameUIPanel : MonoBehaviour
         _setUpAnim.SetTrigger("EnteringBattle");
     }
 
+    public void HideSlotMachine()
+    {
+        _inGameUIs[(int)InGameUI.SlotMachinePanel].gameObject.SetActive(false);
+    }
+
     // 나중에 필요 없으면 아래 두개 함수 다 지워
     // 이 함수는 인게임 UI에서 필요한 컴포넌트를 자식 오브젝트에서 접근하는 것
     public T GetUIElement<T>(InGameUI element) where T : Component
@@ -105,8 +105,7 @@ public class InGameUIPanel : MonoBehaviour
     public List<PlayerData> GetRerollCandidates()
     {
         // 배치 가능한 플레이어 데이터 가져오기
-        InGamePlayerSpawn playerSpawn = _spawnParent.GetComponent<InGamePlayerSpawn>();
-        List<PlayerData> deployedPlayers = playerSpawn.DeployableData;
+        List<PlayerData> deployedPlayers = InGamePlayerSpawn.Instance.DeployableData;
 
         return deployedPlayers;
     }
