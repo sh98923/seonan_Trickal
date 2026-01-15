@@ -11,6 +11,13 @@ public class BattleUnitManager : Singleton<BattleUnitManager>
         remove { _onUltUnlocked -= value;}
     }
 
+    private event Action<int> _onUpdateStatusBar;
+    public event Action<int> OnUpdateStatusBar
+    {
+        add { _onUpdateStatusBar += value; }
+        remove { _onUpdateStatusBar -= value; }
+    }
+
     private Dictionary<string, Vector3> _unitsPos = new Dictionary<string, Vector3>();
     private Dictionary<int, PlayerUnit> _activeUnits = new Dictionary<int, PlayerUnit>();
     private Dictionary<int, int> _unitLevels = new Dictionary<int, int>();
@@ -83,9 +90,16 @@ public class BattleUnitManager : Singleton<BattleUnitManager>
         return _activeUnits[key].CharacterInfo.CanUseUlt;
     }
 
-    public void NotifyUltimateUnlocked(int key)
+    public void UltimateUnlocked(int key)
     {
         _onUltUnlocked?.Invoke(key);
+    }
+
+    public void UpdateStatusBar(int key)
+    {
+        int count = _onUpdateStatusBar?.GetInvocationList().Length ?? 0;
+        Debug.Log("_onUpdateStatusBar 등록된 구독자 수: " + count);
+        _onUpdateStatusBar?.Invoke(key);
     }
 }
 
@@ -135,16 +149,19 @@ public class PlayerUnit
         bool wasUnlocked = _data.CanUseUlt;
         // 레벨업 후 스탯과 CanUseUlt가 갱신됨
         _data.UpdatePlayerStats(_level);
+
         // 전 후 비교
         if (!wasUnlocked && _data.CanUseUlt)
         {
-            BattleUnitManager.Instance.NotifyUltimateUnlocked(_data.PlayerKey);
+            BattleUnitManager.Instance.UltimateUnlocked(_data.PlayerKey);
         }
 
         //Debug.Log(_unitObj.name + " " + _data.Hp + " " + _data.Mp + " " + _data.Atk);
 
         _unitObj.SetCharacterData(_data);
         _unitObj.PlayerMana.SetMpData(_data.Mp, _data.MpTickRate);
+        BattleUnitManager.Instance.UpdateStatusBar(_data.PlayerKey);
+
         //curUnit.(_playerStat[levelUp]);
     }
 }

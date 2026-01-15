@@ -18,65 +18,38 @@ public enum InGameUI
 
 public class InGameUIPanel : MonoBehaviour
 {
-    private Transform[] _inGameUIs;
+    private RerollUIController _rerollUI;
     private Animator _setUpAnim;
-    private BattleState _prevState = BattleState.None;
-
-    private bool _isDeckMode = false;
-    public bool IsDeckMode
-    {
-        get { return _isDeckMode; }
-        set { _isDeckMode = value; }    
-    }
+    private Transform[] _inGameUIs;
 
     private void Awake()
     {
         _inGameUIs = GetComponentsInChildren<Transform>();
 
+        _rerollUI = _inGameUIs[(int)InGameUI.RerollUIRoot].GetComponent<RerollUIController>();
+
         Transform setUpPanel = _inGameUIs[(int)InGameUI.BattleSetUpPanel];
         _setUpAnim = setUpPanel.GetComponent<Animator>();
+        _setUpAnim.Play("BtnsIntro");
     }
 
-    private void Update()
+    private void OnEnable()
     {
-        SetUIState();
-
-        if (_isDeckMode && Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            _inGameUIs[(int)InGameUI.BattleSetUpPanel].gameObject.SetActive(false);
-
-            _isDeckMode = false;
-            BattleStateManager.Instance.SetState(BattleState.None);
-        }
+        BattleStateManager.Instance.OnReroll += ShowRerollUI;
+        BattleStateManager.Instance.OnEnteringBattle += ShowBattleUI;
     }
 
-    private void SetUIState()
+    private void OnDisable()
     {
-        BattleState currentState = BattleStateManager.Instance.CurrentState;
-
-        // 상태가 변경되었을 때만 처리
-        if (currentState != _prevState)
-        {
-            switch (currentState)
-            {
-                case BattleState.Reroll:
-                    ShowRerollUI(); // 리롤 상태일 때의 UI
-                    break;
-
-                case BattleState.EnteringBattle:
-                    ShowBattleUI(); // 배틀 상태일 때의 UI
-                    break;
-            }
-
-            _prevState = currentState; // 상태 갱신
-        }
+        BattleStateManager.Instance.OnReroll -= ShowRerollUI;
+        BattleStateManager.Instance.OnEnteringBattle -= ShowBattleUI;
     }
 
     private void ShowRerollUI()
     {
-        _inGameUIs[(int)InGameUI.WaveTimerPanel].gameObject.SetActive(true);
-        _inGameUIs[(int)InGameUI.OptionPanel].gameObject.SetActive(true);
-        _inGameUIs[(int)InGameUI.BattleSetUpPanel].gameObject.SetActive(true);
+        //_inGameUIs[(int)InGameUI.WaveTimerPanel].gameObject.SetActive(true);
+        //_inGameUIs[(int)InGameUI.OptionPanel].gameObject.SetActive(true);
+        //_inGameUIs[(int)InGameUI.BattleSetUpPanel].gameObject.SetActive(true);
         _setUpAnim.SetTrigger("RerollStart");
     }
 
@@ -87,6 +60,7 @@ public class InGameUIPanel : MonoBehaviour
 
     public void HideSlotMachine()
     {
+        BattleStateManager.Instance.OnInGameEnter();
         _inGameUIs[(int)InGameUI.SlotMachinePanel].gameObject.SetActive(false);
     }
 

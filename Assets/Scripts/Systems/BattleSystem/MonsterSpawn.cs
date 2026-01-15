@@ -182,9 +182,10 @@ public class MonsterSpawn : MonoBehaviour
         {
             Debug.Log("Wave cleared.");
             //BattleStateManager.Instance.SetState(BattleState.MonstersDefeated);
-
             _waveStep++;
             _spawned = false;
+
+            BattleStateManager.Instance.MarkWaveCleared();
             BattleStateManager.Instance.SetState(BattleState.EnteringReroll);
 
             //StartCoroutine(MonsterSpawnDelay());

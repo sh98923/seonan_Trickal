@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
@@ -79,8 +78,6 @@ public class RerollUIController : MonoBehaviour
         if (!canPlayAnimation)
             return;
 
-        InGameEventManager.OnUltUIRefreshRequested?.Invoke();
-
         _battleSetUpUI.OnSelectedCardAnimationStart();
         _cardSelectAnimator.SetTrigger("SelectedCard" + index);
     }
@@ -122,7 +119,7 @@ public class RerollUIController : MonoBehaviour
     {
         for (int i = 0; i < _cardPanels.Length; i++)
         {
-            int randomIndex = UnityEngine.Random.Range(0, _rerollCandidates.Count);
+            int randomIndex = Random.Range(0, _rerollCandidates.Count);
             _cardPanels[i].SetPlayerUnit(_rerollCandidates[randomIndex]);
         }
     }

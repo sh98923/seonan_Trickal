@@ -136,8 +136,8 @@ public class InGamePlayerSpawn : MonoBehaviour
         _activePlayers.Add(player);
             
         // 배치 이벤트
-        InGameEventManager.OnUnitActivated?.Invoke(player);
-        InGameEventManager.OnUnitUpdated?.Invoke(player.Data.PlayerKey);
+        InGameEventManager.TriggerUnitActivated(player);
+        InGameEventManager.TriggerUnitUpdated(player.Data.PlayerKey);
     }
 
     public List<Player> GetActivePlayers()

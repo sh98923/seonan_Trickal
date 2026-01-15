@@ -74,19 +74,9 @@ public class UltPanel : MonoBehaviour
         };
     }
 
-    private void OnEnable()
-    {
-        BattleUnitManager.Instance.OnUltUnlocked += RefreshUltUI;
-    }
-
     private void Start()
     {
         _ultButton.onClick.AddListener(OnClickUltimate);
-    }
-
-    private void OnDisable()
-    {
-        BattleUnitManager.Instance.OnUltUnlocked -= RefreshUltUI;
     }
 
     private void CacheUI()
@@ -186,7 +176,9 @@ public class UltPanel : MonoBehaviour
 
     private void BindPlayerInternal(Player player)
     {
+        BattleUnitManager.Instance.OnUltUnlocked += RefreshUltUI;
         BattleUnitManager.Instance.OnUltUnlocked += OnUltimateUnlocked;
+        BattleUnitManager.Instance.OnUpdateStatusBar += RefreshStatusBar;
 
         player.OnUltUsed += OnUltimateUsed;
         player.OnDie += ApplyUltUIOnPlayerDead;
@@ -195,14 +187,16 @@ public class UltPanel : MonoBehaviour
         player.PlayerMana.OnMpChanged += UpdateMpBar;
 
         // 초기값 갱신
-        InitStatusBar();
+        RefreshStatusBar(player.Data.PlayerKey);
         // 처음 한번 아이콘 로드
         SetUltIcon();
     }
 
     private void UnbindPlayer(Player player)
     {
+        BattleUnitManager.Instance.OnUltUnlocked -= RefreshUltUI;
         BattleUnitManager.Instance.OnUltUnlocked -= OnUltimateUnlocked;
+        BattleUnitManager.Instance.OnUpdateStatusBar -= RefreshStatusBar;
 
         player.OnUltUsed -= OnUltimateUsed;
         player.OnDie -= ApplyUltUIOnPlayerDead;
@@ -269,8 +263,10 @@ public class UltPanel : MonoBehaviour
         SetUIForUltLocked();
     }
 
-    private void InitStatusBar()
+    private void RefreshStatusBar(int key)
     {
+        if (_player.Data.PlayerKey != key) return;
+
         _hpBar.maxValue = _player.PlayerHealth.MaxHp;
         _mpBar.maxValue = _player.PlayerMana.MaxMp;
 
@@ -299,19 +295,14 @@ public class UltPanel : MonoBehaviour
         mp.anchoredPosition = _basePos.mpBar + new Vector2(0, statusOffsetY);
     }
 
-    // 이 부분 수정해야함 궁극기 UI 패널 인게임에서 보면 알거야
-    public void RefreshUltUI(int key)
+    private void RefreshUltUI(int key)
     {
         if (_player == null) return;
+        if (_player.Data.PlayerKey != key) return;
 
-        if (_player.Data.PlayerKey == key && BattleUnitManager.Instance.IsUltimateUnlocked(_player.Data.PlayerKey))
+        if (_player.Data.CanUseUlt)
         {
-            SetUIForUltUnlocked();
             _cooldownImage.fillAmount = 0.0f;
-        }
-        else
-        {
-            SetUIForUltLocked();
         }
     }
 }

@@ -90,10 +90,9 @@ public class SlotMachineController : MonoBehaviour
             yield return new WaitForSeconds(_rollStopInterval);
         }
 
-        _onSlotMachineFinished?.Invoke();
-
         yield return new WaitForSeconds(_resultHoldDuration);
 
+        _onSlotMachineFinished?.Invoke();
         _slotMahcineAnim.Play("SlotMachineOutro");
     }
 

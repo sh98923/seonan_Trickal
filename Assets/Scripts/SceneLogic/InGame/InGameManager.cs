@@ -106,7 +106,6 @@ public class InGameManager : MonoBehaviour
 
     private void OnSlotFinished()
     {
-        BattleStateManager.Instance.OnInGameEnter();
         WeaponManager.Instance.CreateWeapon();
         EffectManager.Instance.CreateEffect();
 
@@ -140,6 +139,9 @@ public class InGameManager : MonoBehaviour
 
     private void OnWaveEnd()
     {
+        if (!BattleStateManager.Instance.IsWaveCleared)
+            return;
+
         AddCoin(_baseWaveReward);
         CalculateNextWaveReward();
     }

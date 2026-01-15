@@ -113,7 +113,7 @@ public class InGameCardPanel : CardPanel
     private void UpgradePlayer()
     {
         BattleUnitManager.Instance.UpgradeUnit(_playerData.Key); 
-        InGameEventManager.OnUnitUpdated?.Invoke(_playerData.Key);
+        InGameEventManager.TriggerUnitUpdated(_playerData.Key);
     }
 
     private void UpdateDeployButtonState()

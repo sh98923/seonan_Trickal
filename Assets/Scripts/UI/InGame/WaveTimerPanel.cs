@@ -17,13 +17,16 @@ public class WaveTimerPanel : MonoBehaviour
 
     private BattleState _prevState = BattleState.None;
 
-    private readonly float _rerollDuration = 60.0f;
-    private readonly float _battleDuration = 70.0f; // 1분 10초
-    private readonly float _minute = 60.0f;
-    private float _curDuration;
-    private float _timer;
+    private const float _minute = 60.0f;
+    private const float _rerollDuration = 60.0f;
+    private const float _battleDuration = 70.0f; // 1분 10초
+
+    private float _duration = 0.0f;
+    private float _timer = _rerollDuration;
+
     private int _waveStep = 0;
     private int _maxWave = 0;
+
     private bool IsTimerRunning => _timer > 0.0f;
 
     private void Awake()
@@ -35,14 +38,18 @@ public class WaveTimerPanel : MonoBehaviour
         _timerText = _waveTimerChildren[(int)WaveTimerUI.TimerText].GetComponent<TextMeshProUGUI>();
     }
 
-    private void Start()
+    private void OnEnable()
     {
         BattleStateManager.Instance.OnReroll += UpdateWaveText;
-    }
+        BattleStateManager.Instance.OnReroll += RerollBuration;
+        BattleStateManager.Instance.OnBattle += BattleBuration;
+    }   
 
     private void OnDisable()
     {
         BattleStateManager.Instance.OnReroll -= UpdateWaveText;
+        BattleStateManager.Instance.OnReroll -= RerollBuration;
+        BattleStateManager.Instance.OnBattle -= BattleBuration;
     }
 
     private void OnDestroy()
@@ -50,6 +57,8 @@ public class WaveTimerPanel : MonoBehaviour
         if(BattleStateManager.Instance != null)
         {
             BattleStateManager.Instance.OnReroll -= UpdateWaveText;
+            BattleStateManager.Instance.OnReroll -= RerollBuration;
+            BattleStateManager.Instance.OnBattle -= BattleBuration;
         }
     }
 
@@ -57,18 +66,18 @@ public class WaveTimerPanel : MonoBehaviour
     {
         BattleState currentState = BattleStateManager.Instance.CurrentState;
 
-        if (_prevState != currentState)
+        /*if (_prevState != currentState)
         {
             HandleStateChange(currentState);
-        }
+        }*/
 
-        if (currentState != BattleState.Victory)
+        if (currentState != BattleState.None)
         { 
-            UpdateTimer(currentState); 
+            UpdateTimer(currentState, _duration); 
         }
     }
 
-    private void HandleStateChange(BattleState currentState)
+    /*private void HandleStateChange(BattleState currentState)
     {
         _prevState = currentState;
 
@@ -86,16 +95,28 @@ public class WaveTimerPanel : MonoBehaviour
         }
 
         _timer = _curDuration;
+    }*/
+
+    private void RerollBuration()
+    {
+        _duration = _rerollDuration;
+        _timer = _rerollDuration;
     }
 
-    private void UpdateTimer(BattleState currentState)
+    private void BattleBuration()
+    {
+        _duration = _battleDuration;
+        _timer = _battleDuration;
+    }
+
+    private void UpdateTimer(BattleState currentState, float duration)
     {
         if (IsTimerRunning)
         {
             _timer -= Time.deltaTime; 
             _timer = Mathf.Max(_timer, 0f);
 
-            float normalizedTime = Mathf.Clamp01(_timer / _curDuration);
+            float normalizedTime = Mathf.Clamp01(_timer / duration);
             _timerImage.fillAmount = normalizedTime;
 
             int minutes = Mathf.FloorToInt(_timer / _minute);

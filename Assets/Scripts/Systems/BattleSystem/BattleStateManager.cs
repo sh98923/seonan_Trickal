@@ -22,6 +22,12 @@ public class BattleStateManager : MonoBehaviour
         get { return _instance;}
     }
 
+    private bool _isWaveCleared = false;
+    public bool IsWaveCleared
+    {
+        get { return _isWaveCleared; }
+    } 
+
     private event Action _onReroll;
     public event Action OnReroll
     {
@@ -62,9 +68,19 @@ public class BattleStateManager : MonoBehaviour
         }
     }
 
+    private void InitWaveMark()
+    {
+        _isWaveCleared = false;
+    }
+
     public void OnInGameEnter()
     {
         SetState(BattleState.Reroll);
+    }
+
+    public void MarkWaveCleared()
+    {
+        _isWaveCleared = true;
     }
 
     public BattleState CurrentState
@@ -102,6 +118,7 @@ public class BattleStateManager : MonoBehaviour
         {
             case BattleState.Reroll:
                 _onReroll?.Invoke();
+                InitWaveMark();
                 break;
             case BattleState.Battle:
                 _onBattle?.Invoke();
