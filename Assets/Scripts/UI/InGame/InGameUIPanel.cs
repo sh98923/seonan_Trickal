@@ -8,12 +8,12 @@ public enum InGameUI
     BattleSetUpPanel = 10,
     CoinText = 12,
     RerollUIRoot = 13,
-    LeftCardBtn = 14,
-    CenterCardBtn = 22, 
-    RightCardBtn = 30,
-    RerollImage = 38, 
-    RerollBtn = 39,
-    SlotMachinePanel = 48
+    LeftCardBtn = 18,
+    CenterCardBtn = 26, 
+    RightCardBtn = 34,
+    RerollImage = 39, 
+    RerollBtn = 40,
+    SlotMachinePanel = 49
 }
 
 public class InGameUIPanel : MonoBehaviour
@@ -60,7 +60,6 @@ public class InGameUIPanel : MonoBehaviour
 
     public void HideSlotMachine()
     {
-        BattleStateManager.Instance.OnInGameEnter();
         _inGameUIs[(int)InGameUI.SlotMachinePanel].gameObject.SetActive(false);
     }
 

@@ -41,15 +41,15 @@ public class WaveTimerPanel : MonoBehaviour
     private void OnEnable()
     {
         BattleStateManager.Instance.OnReroll += UpdateWaveText;
-        BattleStateManager.Instance.OnReroll += RerollBuration;
-        BattleStateManager.Instance.OnBattle += BattleBuration;
+        BattleStateManager.Instance.OnReroll += RerollDuration;
+        BattleStateManager.Instance.OnBattle += BattleDuration;
     }   
 
     private void OnDisable()
     {
         BattleStateManager.Instance.OnReroll -= UpdateWaveText;
-        BattleStateManager.Instance.OnReroll -= RerollBuration;
-        BattleStateManager.Instance.OnBattle -= BattleBuration;
+        BattleStateManager.Instance.OnReroll -= RerollDuration;
+        BattleStateManager.Instance.OnBattle -= BattleDuration;
     }
 
     private void OnDestroy()
@@ -57,8 +57,8 @@ public class WaveTimerPanel : MonoBehaviour
         if(BattleStateManager.Instance != null)
         {
             BattleStateManager.Instance.OnReroll -= UpdateWaveText;
-            BattleStateManager.Instance.OnReroll -= RerollBuration;
-            BattleStateManager.Instance.OnBattle -= BattleBuration;
+            BattleStateManager.Instance.OnReroll -= RerollDuration;
+            BattleStateManager.Instance.OnBattle -= BattleDuration;
         }
     }
 
@@ -97,13 +97,13 @@ public class WaveTimerPanel : MonoBehaviour
         _timer = _curDuration;
     }*/
 
-    private void RerollBuration()
+    private void RerollDuration()
     {
         _duration = _rerollDuration;
         _timer = _rerollDuration;
     }
 
-    private void BattleBuration()
+    private void BattleDuration()
     {
         _duration = _battleDuration;
         _timer = _battleDuration;

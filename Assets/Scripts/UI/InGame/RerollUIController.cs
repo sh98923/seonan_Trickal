@@ -12,11 +12,12 @@ public class RerollUIController : MonoBehaviour
 
     private enum CardUI
     {
-        LeftCard = 1,
-        CenterCard = 9,
-        RightCard = 17,
+        LeftCard = 2,
+        CenterCard = 10,
+        RightCard = 18,
     }
 
+    private CardPanelParent _cardPanelRoot;
     private BattleSetUpUI _battleSetUpUI;
     private Animator _cardSelectAnimator;
 
@@ -34,9 +35,10 @@ public class RerollUIController : MonoBehaviour
     private void Awake()
     {
         _cardSelectAnimator = GetComponent<Animator>();
-        _rerollChildren = GetComponentsInChildren<Transform>();
         _battleSetUpUI = GetComponentInParent<BattleSetUpUI>();
+        _rerollChildren = GetComponentsInChildren<Transform>();
         _rerollStateButtons = GetComponentsInChildren<Button>();
+        _cardPanelRoot = GetComponentInChildren<CardPanelParent>();
 
         _cardPanels = new InGameCardPanel[_cardPositions.Length];
 
@@ -100,19 +102,20 @@ public class RerollUIController : MonoBehaviour
             return;
 
         _battleSetUpUI.OnRerollAnimationStart();
+        _cardPanelRoot.ShowCardPanel();
         _cardSelectAnimator.Play("CardRoll", 0, 0.0f);
     }
 
     private void OnClickEnteringBattle()
     {
-        _cardSelectAnimator.SetTrigger("EnteringBattle");
+        _cardPanelRoot.HideCardPanel();
         InGameManager.Instance.IsGameStart = true;
         BattleStateManager.Instance.SetState(BattleState.EnteringBattle);
     }
 
     private void PlayCardHide()
     {
-        _cardSelectAnimator.SetTrigger("EnteringBattle");
+        _cardPanelRoot.HideCardPanel();
     }
 
     private void OnCardDataRamdomSet()
