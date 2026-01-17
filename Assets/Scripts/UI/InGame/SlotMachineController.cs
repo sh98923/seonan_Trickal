@@ -64,7 +64,7 @@ public class SlotMachineController : MonoBehaviour
 
             playerList.RemoveAt(rand); // 중복 방지
 
-            _slots[i].SetResultPlayer(i, sprite, playerList);
+            _slots[i].SetResultPlayer(i, sprite, _playerDatas);
         }
     }
 

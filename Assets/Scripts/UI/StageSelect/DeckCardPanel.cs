@@ -89,7 +89,7 @@ public class DeckCardPanel : MonoBehaviour
         }
         else
         {
-            print("덱을 편성해 주세요");
+            print("용사들이 모두 편성되지 않았습니다.");
         }
     }
 }

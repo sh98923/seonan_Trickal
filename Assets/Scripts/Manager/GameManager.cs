@@ -49,6 +49,8 @@ public class GameManager : Singleton<GameManager>
         get { return _stageKey; }
     }
 
+    private const int _deckCharacterCount = 6;
+
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
@@ -95,8 +97,11 @@ public class GameManager : Singleton<GameManager>
 
     public bool CanStartGame()
     {
-        // 덱 편성을 통해 최소 1명이상의 캐릭터가 편성됬다면 true
-        return _deckUnitDatas.Count > 0;
+        // 덱 편성을 통해 6명의 캐릭터가 편성됬다면 true
+        bool canGameStart = (_deckUnitDatas.Count == _deckCharacterCount);
+
+        return true;
+       // return canGameStart;
     }
 
     public bool IsDeckFull()

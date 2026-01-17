@@ -10,11 +10,6 @@ public class InGameCam : MonoBehaviour
     {
         get
         {
-            if (_instance == null && Application.isPlaying)
-            {
-                Debug.LogError("InGameCam 스크립트가 null임");
-            }
-
             return _instance;
         }
     }

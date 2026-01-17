@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -110,7 +111,16 @@ public class SlotReel : MonoBehaviour
 
     private Sprite GetRandomPlayer()
     {
-        int index = Random.Range(0, _rollingSprites.Count);
+        int index = -1;
+
+        while (true)
+        {
+            index = Random.Range(0, _rollingSprites.Count);
+
+            if (_rollingSprites[index] != _playerSprite)
+                break;
+        }
+
         Sprite rollingSprite = _rollingSprites[index];
 
         _rollingSprites.RemoveAt(index);

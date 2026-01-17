@@ -6,15 +6,15 @@ public class RerollUIController : MonoBehaviour
 {
     private enum RerollUI
     {
-        cardRerollBtn = 3, 
+        cardRerollBtn = 4, 
         StartBattleBtn
     }
 
     private enum CardUI
     {
-        LeftCard = 2,
-        CenterCard = 10,
-        RightCard = 18,
+        LeftCard = 5,
+        CenterCard = 13,
+        RightCard = 21,
     }
 
     private CardPanelParent _cardPanelRoot;
@@ -30,7 +30,7 @@ public class RerollUIController : MonoBehaviour
     private readonly CardUI[] _cardPositions = { CardUI.LeftCard, CardUI.CenterCard, CardUI.RightCard };
 
     private const int _rerollCost = 5;
-    private const int _unitCardCount = 3;
+    private const int _unitCardCount = 4;
 
     private void Awake()
     {
@@ -52,10 +52,11 @@ public class RerollUIController : MonoBehaviour
     {
         _rerollCandidates = _battleSetUpUI.GetRerollCandidatesFromUI();
 
-        for (int i = 0; i < _unitCardCount; i++)
+        // 지금은 잠금이 없기떄문에 i = 1부터 시작
+        for (int i = 1; i < _unitCardCount; i++)
         {
             int index = i;
-            _rerollStateButtons[i].onClick.AddListener(() => OnClickCard(index));
+            _rerollStateButtons[i].onClick.AddListener(() => OnClickCard(index - 1));
         }
 
         _rerollStateButtons[(int)RerollUI.cardRerollBtn].onClick.AddListener(OnClickCardReroll);

@@ -8,12 +8,12 @@ public enum InGameUI
     BattleSetUpPanel = 10,
     CoinText = 12,
     RerollUIRoot = 13,
-    LeftCardBtn = 18,
-    CenterCardBtn = 26, 
-    RightCardBtn = 34,
-    RerollImage = 39, 
-    RerollBtn = 40,
-    SlotMachinePanel = 49
+    LeftCardBtn = 21,
+    CenterCardBtn = 29, 
+    RightCardBtn = 37,
+    RerollImage = 42, 
+    RerollBtn = 43,
+    SlotMachinePanel = 52
 }
 
 public class InGameUIPanel : MonoBehaviour
