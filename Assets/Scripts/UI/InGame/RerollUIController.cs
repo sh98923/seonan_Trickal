@@ -1,20 +1,22 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using TMPro;
 
 public class RerollUIController : MonoBehaviour
 {
     private enum RerollUI
     {
-        cardRerollBtn = 4, 
-        StartBattleBtn
+        CardLockBtn = 3,
+        CardRerollBtn = 4, 
+        StartBattleBtn = 5
     }
 
     private enum CardUI
     {
-        LeftCard = 5,
-        CenterCard = 13,
-        RightCard = 21,
+        LeftCard = 2,
+        CenterCard = 10,
+        RightCard = 18
     }
 
     private CardPanelParent _cardPanelRoot;
@@ -30,7 +32,9 @@ public class RerollUIController : MonoBehaviour
     private readonly CardUI[] _cardPositions = { CardUI.LeftCard, CardUI.CenterCard, CardUI.RightCard };
 
     private const int _rerollCost = 5;
-    private const int _unitCardCount = 4;
+    private const int _unitCardCount = 3;
+
+    private bool _isCardLocked = false;
 
     private void Awake()
     {
@@ -52,14 +56,14 @@ public class RerollUIController : MonoBehaviour
     {
         _rerollCandidates = _battleSetUpUI.GetRerollCandidatesFromUI();
 
-        // ¡ˆ±›¿∫ ¿·±›¿Ã æ¯±‚ãöπÆø° i = 1∫Œ≈Õ Ω√¿€
-        for (int i = 1; i < _unitCardCount; i++)
+        for (int i = 0; i < _unitCardCount; i++)
         {
             int index = i;
-            _rerollStateButtons[i].onClick.AddListener(() => OnClickCard(index - 1));
+            _rerollStateButtons[i].onClick.AddListener(() => OnClickCard(index));
         }
 
-        _rerollStateButtons[(int)RerollUI.cardRerollBtn].onClick.AddListener(OnClickCardReroll);
+        _rerollStateButtons[(int)RerollUI.CardLockBtn].onClick.AddListener(OnClickCardLock);
+        _rerollStateButtons[(int)RerollUI.CardRerollBtn].onClick.AddListener(OnClickCardReroll);
         _rerollStateButtons[(int)RerollUI.StartBattleBtn].onClick.AddListener(OnClickEnteringBattle);
 
         BattleStateManager.Instance.OnReroll += PlayCardRoll;
@@ -81,6 +85,8 @@ public class RerollUIController : MonoBehaviour
         if (!canPlayAnimation)
             return;
 
+        _isCardLocked = false;
+        CardLockTextTest();
         _battleSetUpUI.OnSelectedCardAnimationStart();
         _cardSelectAnimator.SetTrigger("SelectedCard" + index);
     }
@@ -93,8 +99,23 @@ public class RerollUIController : MonoBehaviour
         if (!InGameManager.Instance.TrySpendCoin(_rerollCost))
             return;
 
+        _isCardLocked = false;
+        CardLockTextTest();
         _battleSetUpUI.OnRerollAnimationStart();
         _cardSelectAnimator.Play("CardRoll", 0, 0.0f);
+    }
+
+    private void OnClickCardLock()
+    {
+        _isCardLocked = !_isCardLocked;
+        CardLockTextTest();
+    }
+
+    // test Ïö©ÎèÑ ÎÇòÏ§ëÏóê ÏßÄÏõåÎèÑ Îåê
+    private void CardLockTextTest()
+    {
+        TextMeshProUGUI a = _rerollStateButtons[(int)RerollUI.CardLockBtn].GetComponentInChildren<TextMeshProUGUI>();
+        a.text = _isCardLocked.ToString();
     }
 
     private void PlayCardRoll()
@@ -104,6 +125,7 @@ public class RerollUIController : MonoBehaviour
 
         _battleSetUpUI.OnRerollAnimationStart();
         _cardPanelRoot.ShowCardPanel();
+        CardLockTextTest();
         _cardSelectAnimator.Play("CardRoll", 0, 0.0f);
     }
 
@@ -121,11 +143,20 @@ public class RerollUIController : MonoBehaviour
 
     private void OnCardDataRamdomSet()
     {
+        if (_isCardLocked)
+            return;
+
         for (int i = 0; i < _cardPanels.Length; i++)
         {
             int randomIndex = Random.Range(0, _rerollCandidates.Count);
             _cardPanels[i].SetPlayerUnit(_rerollCandidates[randomIndex]);
         }
+    }
+
+    public void ResetCardLock()
+    {
+        _isCardLocked = false;
+        CardLockTextTest();
     }
 
     public void OnRerollAnimationEndEvent()
