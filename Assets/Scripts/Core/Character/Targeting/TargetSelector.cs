@@ -58,7 +58,7 @@ public abstract class TargetSelector : MonoBehaviour
     {
         if (_currentTarget != null)
         {
-            if (_currentTarget.GetComponent<Collider2D>().enabled &&
+            if (_currentTarget.IsColliderEnable &&
                 _currentTarget.gameObject.activeSelf)
             {
                 return _currentTarget;

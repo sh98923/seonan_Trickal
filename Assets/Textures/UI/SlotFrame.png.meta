@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: b10592b06c5c5ec4eb7ce25b7957920b
+guid: 2fd69aaec942a8e489221911a702b642
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 6461737851004142933
-    second: SlotMachineSideImage_0
+      213: -2813119029548609608
+    second: SlotFrame_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: SlotMachineSideImage_0
+      name: SlotFrame_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 500
-        height: 500
+        width: 294
+        height: 294
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5554cc8f654bca950800000000000000
-      internalID: 6461737851004142933
+      spriteID: 8bf0ddca52bc5f8d0800000000000000
+      internalID: -2813119029548609608
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      SlotMachineSideImage_0: 6461737851004142933
+      SlotFrame_0: -2813119029548609608
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

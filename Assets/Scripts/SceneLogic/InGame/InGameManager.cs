@@ -16,6 +16,8 @@ public class InGameManager : MonoBehaviour
         get { return _instance; }
     }
 
+    public static event Action OnGameVictory;
+    public static event Action OnGameDefeat;
     public static event Action<int> OnCoinChanged;
 
     private List<ITrackable> _trackables = new List<ITrackable>();
@@ -102,6 +104,91 @@ public class InGameManager : MonoBehaviour
     {
         SlotMachineController.Instance.OnSlotMachineFinished -= OnSlotFinished;
         BattleStateManager.Instance.OnReroll -= OnWaveEnd;
+        UnsubscribeUnits();
+    }
+
+    // 인게임이 승리 또는 패배 시 InGameManager에서 등록한 이벤트 해제
+    private void UnsubscribeUnits()
+    {
+        foreach (ITrackable player in _players)
+        {
+            if (player?.Self != null)
+            {
+                player.Self.OnDie -= OnPlayerDie;
+            }
+        }
+
+        foreach (ITrackable monster in _monsters)
+        {
+            if (monster?.Self != null)
+            { 
+                monster.Self.OnDie -= OnMonsterDie; 
+            }
+        }
+    }
+
+    private void OnPlayerDie()
+    {
+        bool anyAlive = HasAnyAlive(_players);
+
+        if (!anyAlive)
+        {
+            GameDefeat();
+        }
+    }
+
+    private void GameDefeat()
+    {
+        OnGameDefeat?.Invoke();
+
+        BattleStateManager.Instance.SetState(BattleState.Defeat);
+        SetAllCharactersIdle();
+    }
+
+    private void OnMonsterDie()
+    {
+        bool anyAlive = HasAnyAlive(_monsters);
+
+        if (!anyAlive && _waveStep >= _maxWave)
+        {
+            GameVictory();
+        }
+    }
+
+    private void GameVictory()
+    {
+        OnGameVictory?.Invoke();
+
+        BattleStateManager.Instance.SetState(BattleState.Victory); 
+        SetAllCharactersIdle();
+    }
+
+    private bool HasAnyAlive(List<ITrackable> list)
+    {
+        foreach (ITrackable character in list)
+        {
+            if (!character.Object.activeSelf)
+                continue;
+
+            if (character.IsColliderEnable)
+                return true;
+        }
+
+        return false;
+    }
+
+    private void SetAllCharactersIdle()
+    {
+        foreach (ITrackable tarckable in _trackables)
+        {
+            if (tarckable.Self == null)
+            { 
+                continue; 
+            }
+
+            tarckable.Self.SetIdle();
+        }
+        print("끝 : " + BattleStateManager.Instance.CurrentState);
     }
 
     private void OnSlotFinished()
@@ -127,14 +214,23 @@ public class InGameManager : MonoBehaviour
 
     private void RegisterPlayer(ITrackable trackable)
     {
-        _players.Add(trackable); 
+        _players.Add(trackable);
         _trackables.Add(trackable);
+
+        trackable.Self.OnDie += OnPlayerDie;
     }
 
     private void RegisterMonster(ITrackable trackable)
     {
         _monsters.Add(trackable);
         _trackables.Add(trackable);
+
+        trackable.Self.OnDie += OnMonsterDie;
+    }
+
+    private void OnMonsterDied(Character self)
+    {
+
     }
 
     private void OnWaveEnd()

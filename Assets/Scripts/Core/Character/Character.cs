@@ -89,7 +89,7 @@ public class Character : MonoBehaviour, ITrackable
         _rootPoint = transform.Find("Root");
         _action = GetComponents<CharacterAction>();
         _myCollider = GetComponent<CircleCollider2D>();
-        _myCollider.radius = 0.35f;
+        _myCollider.radius = 0.3f;
         _sortingGroup = GetComponent<SortingGroup>();
 
         _movement = GetComponent<CharacterMovement>();
@@ -157,9 +157,12 @@ public class Character : MonoBehaviour, ITrackable
     // FSM 상태 관련 함수
     protected virtual void IdleStateAction()
     {
-        _animator.SetIdle(true);
+        SetIdle();
+
         if (BattleStateManager.Instance.IsEnteringBattle)
+        {
             _curState = CharacterState.Move;
+        }
     }
 
     protected virtual void MoveStateAction()
@@ -225,9 +228,9 @@ public class Character : MonoBehaviour, ITrackable
         _isDead = true; 
         _curState = CharacterState.Dead;
 
-        _onDie?.Invoke();
         _animator.SetTrigger("Dead");
         _myCollider.enabled = false;
+        _onDie?.Invoke();
         //_sortingGroup.sortingOrder = -10000;
 
         Despawn();
@@ -284,6 +287,12 @@ public class Character : MonoBehaviour, ITrackable
             // 사망 처리
             _curState = CharacterState.Dead;
         }
+    }
+
+    public void SetIdle()
+    {
+        _curState = CharacterState.Idle;
+        _animator.SetIdle(true);
     }
 
     public void CharacterDeath()
@@ -366,5 +375,16 @@ public class Character : MonoBehaviour, ITrackable
     public TargetSelector GetSelector(ActionSlot slot)
     {
         return _targets[(int)slot];
+    }
+
+    public void OnMatchFinished()
+    {
+        if (_isDead)
+            return;
+
+        _isAttacking = false;
+        _movement.ClearTarget();   // 있다면
+        _curState = CharacterState.Idle;
+        _animator.SetIdle(true);
     }
 }

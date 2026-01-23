@@ -140,14 +140,14 @@ public class WaveTimerPanel : MonoBehaviour
             case BattleState.Battle:
                 CheckBattleResultState();
                 break;
-           /* case BattleState.EnteringReroll:
-                break;
-            case BattleState.EnteringBattle:
-                break;
-            case BattleState.Victory:
-                break;*/
-            case BattleState.GameOver:
-                break;
+                /* case BattleState.EnteringReroll:
+                     break;
+                 case BattleState.EnteringBattle:
+                     break;
+                 case BattleState.Victory:
+                     break;
+                 case BattleState.Defeat:
+                     break;*/
         }
     }
 
@@ -168,7 +168,7 @@ public class WaveTimerPanel : MonoBehaviour
                 continue;
             }
 
-            BattleStateManager.Instance.SetState(BattleState.GameOver);
+            BattleStateManager.Instance.SetState(BattleState.Defeat);
             print("게임 오버");
             return; // 몬스터가 하나라도 있으면 바로 종료
         }

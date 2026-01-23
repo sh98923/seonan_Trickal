@@ -41,7 +41,7 @@ public class BattleUnitManager : Singleton<BattleUnitManager>
         if (_deadPlayerCount == _activeUnits.Count)
         {
             Debug.Log("All players defeated. Game Over.");
-            BattleStateManager.Instance.SetState(BattleState.GameOver);
+            BattleStateManager.Instance.SetState(BattleState.Defeat);
         }
     }
 
@@ -61,7 +61,7 @@ public class BattleUnitManager : Singleton<BattleUnitManager>
     public void RegisterUnit(CharacterData data, GameObject instance)
     {
         Player player = instance.GetComponent<Player>();
-        player.OnDie += OnPlayerDie;
+        //player.OnDie += OnPlayerDie;
 
         _unitLevels[data.PlayerKey] = 1;
         _activeUnits[data.PlayerKey] = new PlayerUnit(data, player);

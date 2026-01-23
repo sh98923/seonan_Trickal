@@ -1,6 +1,4 @@
-using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class CharacterMovement : MonoBehaviour
 {
@@ -12,7 +10,7 @@ public class CharacterMovement : MonoBehaviour
     }
     public bool TargetColliderEnable
     {
-        get { return _target.GetComponent<Collider2D>().enabled; }
+        get { return _target.IsColliderEnable; }
     }
 
     private TargetSelector _targetSelector;
@@ -23,8 +21,8 @@ public class CharacterMovement : MonoBehaviour
     private const float _minDistanceThreshold = 0.015f;
     private const float _diagonalToleranceRatio = 0.4f; // 오차 허용 비율
 
-    private bool _isMoving = false;
-    private bool _hasTarget = false;
+    private bool _canMoveForward = false;
+
     public bool HasTarget
     {
         get { return _target != null; }
@@ -79,69 +77,52 @@ public class CharacterMovement : MonoBehaviour
         {
             case CharacterState.Idle:
             case CharacterState.Dead:
-                _isMoving = false;
+                _canMoveForward = false;
                 break;
 
             case CharacterState.Move:
-                _isMoving = true;
+                _canMoveForward = true;
                 break;
 
             case CharacterState.Attack:
-                _isMoving = false;
+                _canMoveForward = false;
 
                 // 공격 중 타겟이 죽었으면 타겟 초기화 후 이동 가능하게 설정
                 if (_target != null && _target.CurState == CharacterState.Dead)
                 {
                     _target = null;
-                    _isMoving = true; // 다시 이동 상태로 전환 가능
+                    _canMoveForward = true; // 다시 이동 상태로 전환 가능
                 }
                 break;
         }
 
         // 전투 상태가 아니거나 이동 불가면 처리 종료
-        if (!_isMoving || BattleStateManager.Instance.CurrentState == BattleState.Reroll)
+        if (!_canMoveForward || BattleStateManager.Instance.CurrentState == BattleState.Reroll)
             return;
 
         // 타겟 갱신
         _target = _targetSelector.GetTarget(_self);
 
         // 타겟이 존재하면 타겟 방향으로 이동, 없으면 앞으로 이동
-        if (_target != null && _isMoving)
+        if (_target != null)
         {
-            _isMoving = false; // 타겟이 생기면 이동 멈춤
-            MoveToward(_target.transform.position);
-        }
-        else
-        {
-            _isMoving = true;
-            MoveForward();
+            MoveToTarget(_target.transform.position);
         }
     }
 
     private void ResetForReroll()
     {
-        _target = null;
-        _isMoving = true;
+        ClearTarget();
+        _canMoveForward = true;
     }
 
-    private void MoveToward(Vector3 targetPos)
+    private void MoveToTarget(Vector3 targetPos)
     {
+        if (_self.CurState == CharacterState.Attack)
+            return;
+
         Vector2 dir = GetFakeDiagonalDir(transform.position, targetPos);
         _dir = dir;
-
-        transform.Translate(_dir * _moveSpeed * Time.deltaTime);
-    }
-
-    private void MoveForward()
-    {
-        if (_self.CompareTag("Player"))
-        {
-            _dir = Vector3.right;
-        }
-        else if (_self.CompareTag("Monster"))
-        {
-            _dir = Vector3.left;
-        }
 
         transform.Translate(_dir * _moveSpeed * Time.deltaTime);
     }
@@ -183,6 +164,11 @@ public class CharacterMovement : MonoBehaviour
 
     public void SetMovementActive(bool active)
     {
-        _isMoving = active;
+        _canMoveForward = active;
+    }
+
+    public void ClearTarget()
+    {
+        _target = null;
     }
 }
