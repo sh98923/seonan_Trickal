@@ -1,10 +1,15 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
-using TMPro;
+using System.Collections;
 
 public class RerollUIController : MonoBehaviour
 {
+    enum PadLockImage 
+    {
+        PadLock = 26
+    }
+
     private enum RerollUI
     {
         CardLockBtn = 3,
@@ -19,9 +24,10 @@ public class RerollUIController : MonoBehaviour
         RightCard = 18
     }
 
-    private CardPanelParent _cardPanelRoot;
-    private BattleSetUpUI _battleSetUpUI;
+    private CardPadLock _padLock;
     private Animator _cardSelectAnimator;
+    private BattleSetUpUI _battleSetUpUI;
+    private CardPanelParent _cardPanelRoot;
 
     private Transform[] _rerollChildren;
     private Button[] _rerollStateButtons;
@@ -31,6 +37,7 @@ public class RerollUIController : MonoBehaviour
 
     private readonly CardUI[] _cardPositions = { CardUI.LeftCard, CardUI.CenterCard, CardUI.RightCard };
 
+    private const float _unlockDelay = 0.6f;
     private const int _rerollCost = 5;
     private const int _unitCardCount = 3;
 
@@ -45,6 +52,8 @@ public class RerollUIController : MonoBehaviour
         _cardPanelRoot = GetComponentInChildren<CardPanelParent>();
 
         _cardPanels = new InGameCardPanel[_cardPositions.Length];
+
+        _padLock = _rerollChildren[(int)PadLockImage.PadLock].GetComponent<CardPadLock>();
 
         for (int i = 0; i < _cardPositions.Length; i++)
         {
@@ -78,6 +87,8 @@ public class RerollUIController : MonoBehaviour
 
     private void OnClickCard(int index)
     {
+        // 카드 클릭이 안되는건 이 조건문이 true인 상태에서 애니메이션이 끝 프레임까지 못가서
+        // 이벤트 호출을 못했고 그래서 _isSelectedCardAnimating이 false가 되지 못한 이유임
         if (_battleSetUpUI.IsSelectedCardAnimating)
             return;
 
@@ -86,7 +97,7 @@ public class RerollUIController : MonoBehaviour
             return;
 
         _isCardLocked = false;
-        CardLockTextTest();
+        SetLockSprite(_isCardLocked);
         _battleSetUpUI.OnSelectedCardAnimationStart();
         _cardSelectAnimator.SetTrigger("SelectedCard" + index);
     }
@@ -100,7 +111,7 @@ public class RerollUIController : MonoBehaviour
             return;
 
         _isCardLocked = false;
-        CardLockTextTest();
+        SetLockSprite(_isCardLocked);
         _battleSetUpUI.OnRerollAnimationStart();
         _cardSelectAnimator.Play("CardRoll", 0, 0.0f);
     }
@@ -108,14 +119,12 @@ public class RerollUIController : MonoBehaviour
     private void OnClickCardLock()
     {
         _isCardLocked = !_isCardLocked;
-        CardLockTextTest();
+        SetLockSprite(_isCardLocked);
     }
 
-    // test 용도 나중에 지워도 댐
-    private void CardLockTextTest()
+    private void SetLockSprite(bool locked)
     {
-        TextMeshProUGUI a = _rerollStateButtons[(int)RerollUI.CardLockBtn].GetComponentInChildren<TextMeshProUGUI>();
-        a.text = _isCardLocked.ToString();
+        _padLock.SetLockState(locked);
     }
 
     private void PlayCardRoll()
@@ -125,7 +134,7 @@ public class RerollUIController : MonoBehaviour
 
         _battleSetUpUI.OnRerollAnimationStart();
         _cardPanelRoot.ShowCardPanel();
-        CardLockTextTest();
+        ResetCardLock();    
         _cardSelectAnimator.Play("CardRoll", 0, 0.0f);
     }
 
@@ -153,10 +162,12 @@ public class RerollUIController : MonoBehaviour
         }
     }
 
-    public void ResetCardLock()
+    private IEnumerator ResetCardLock()
     {
+        yield return new WaitForSeconds(_unlockDelay);
+
         _isCardLocked = false;
-        CardLockTextTest();
+        SetLockSprite(_isCardLocked);
     }
 
     public void OnRerollAnimationEndEvent()

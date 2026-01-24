@@ -187,13 +187,19 @@ public class InGameCam : MonoBehaviour
 
         while (elapsed < _moveDuration)
         {
+            BattleState state = BattleStateManager.Instance.CurrentState;
+            if (!IsCameraAnimationAllowed(state))
+            {
+                yield break;
+            }
+
             elapsed += Time.deltaTime;
 
             float moveT = Mathf.Clamp01(elapsed / _moveDuration);
             float zoomT = Mathf.Clamp01(elapsed / _zoomDuration);
 
             // Battle 상태이면 줌만 목표값으로 즉시 변경
-            if (BattleStateManager.Instance.CurrentState == BattleState.Battle)
+            if (state == BattleState.Battle)
             {
                 _cam.orthographicSize = targetSize;
 
@@ -241,6 +247,13 @@ public class InGameCam : MonoBehaviour
             transform.position = Vector3.Lerp(startPos, endPos, t);
             yield return null;
         }
+    }
+
+    private bool IsCameraAnimationAllowed(BattleState state)
+    {
+        bool canCamAnimation = (state != BattleState.Victory && state != BattleState.Defeat);
+
+        return canCamAnimation;
     }
 
     // =======================

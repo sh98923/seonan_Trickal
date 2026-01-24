@@ -1,4 +1,4 @@
-using TMPro;
+/*using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -66,10 +66,10 @@ public class WaveTimerPanel : MonoBehaviour
     {
         BattleState currentState = BattleStateManager.Instance.CurrentState;
 
-        /*if (_prevState != currentState)
+        if (_prevState != currentState)
         {
             HandleStateChange(currentState);
-        }*/
+        }
 
         if (currentState != BattleState.None)
         { 
@@ -77,7 +77,7 @@ public class WaveTimerPanel : MonoBehaviour
         }
     }
 
-    /*private void HandleStateChange(BattleState currentState)
+    private void HandleStateChange(BattleState currentState)
     {
         _prevState = currentState;
 
@@ -95,7 +95,7 @@ public class WaveTimerPanel : MonoBehaviour
         }
 
         _timer = _curDuration;
-    }*/
+    }
 
     private void RerollDuration()
     {
@@ -140,14 +140,14 @@ public class WaveTimerPanel : MonoBehaviour
             case BattleState.Battle:
                 CheckBattleResultState();
                 break;
-                /* case BattleState.EnteringReroll:
-                     break;
-                 case BattleState.EnteringBattle:
-                     break;
-                 case BattleState.Victory:
-                     break;
-                 case BattleState.Defeat:
-                     break;*/
+            case BattleState.EnteringReroll:
+                break;
+            case BattleState.EnteringBattle:
+                break;
+            case BattleState.Victory:
+                break;
+            case BattleState.Defeat:
+                break;
         }
     }
 
@@ -174,6 +174,191 @@ public class WaveTimerPanel : MonoBehaviour
         }
 
         // 몬스터가 없음 → 리롤
+        BattleStateManager.Instance.SetState(BattleState.Reroll);
+    }
+}*/
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+using System.Collections;
+
+public class WaveTimerPanel : MonoBehaviour
+{
+    private enum WaveTimerUI
+    {
+        TimerImage = 2,
+        TimerText = 3,
+        WaveText = 5
+    }
+
+    private Image _timerImage;
+    private Transform[] _waveTimerChildren;
+    private TextMeshProUGUI _timerText;
+    private TextMeshProUGUI _waveText;
+    private InGameUIPanel _inGameUIPanel;
+
+    private const float _minute = 60.0f;
+    private const float _rerollDuration = 60.0f;
+    private const float _battleDuration = 70.0f;
+
+    private float _duration;
+    private float _timer;
+
+    private int _waveStep;
+    private int _maxWave;
+
+    private Coroutine _timerCoroutine;
+
+    private void Awake()
+    {
+        _inGameUIPanel = GetComponentInParent<InGameUIPanel>();
+        _waveTimerChildren = GetComponentsInChildren<Transform>();
+
+        _timerImage = _waveTimerChildren[(int)WaveTimerUI.TimerImage].GetComponent<Image>();
+
+        _waveText = _waveTimerChildren[(int)WaveTimerUI.WaveText].GetComponent<TextMeshProUGUI>();
+        _timerText = _waveTimerChildren[(int)WaveTimerUI.TimerText].GetComponent<TextMeshProUGUI>();
+    }
+
+    private void OnEnable()
+    {
+        BattleStateManager.Instance.OnReroll += OnRerollStart;
+        BattleStateManager.Instance.OnBattle += OnBattleStart;
+    }
+
+    private void OnDisable()
+    {
+        if (BattleStateManager.Instance == null)
+            return;
+
+        BattleStateManager.Instance.OnReroll -= OnRerollStart;
+        BattleStateManager.Instance.OnBattle -= OnBattleStart;
+
+        StopTimer();
+    }
+
+    // ===============================
+    // BattleState 진입 지점
+    // ===============================
+
+    private void OnRerollStart()
+    {
+        UpdateWaveText();
+        StartTimer(_rerollDuration);
+    }
+
+    private void OnBattleStart()
+    {
+        StartTimer(_battleDuration);
+    }
+
+    // ===============================
+    // Timer Control
+    // ===============================
+
+    private void StartTimer(float duration)
+    {
+        StopTimer();
+        _timerCoroutine = StartCoroutine(TimerCoroutine(duration));
+    }
+
+    private void StopTimer()
+    {
+        if (_timerCoroutine != null)
+        {
+            StopCoroutine(_timerCoroutine);
+            _timerCoroutine = null;
+        }
+    }
+
+    private IEnumerator TimerCoroutine(float duration)
+    {
+        _duration = duration;
+        _timer = duration;
+
+        while (_timer > 0.0f)
+        {
+            BattleState state = BattleStateManager.Instance.CurrentState;
+
+            // 타이머가 돌아야 하는 상태만 허용
+            if (state != BattleState.Reroll &&
+                state != BattleState.Battle)
+            {
+                yield break;
+            }
+
+            _timer -= Time.deltaTime;
+            _timer = Mathf.Max(_timer, 0f);
+
+            UpdateTimerUI();
+
+            yield return null;
+        }
+
+        HandleTimerEnd(BattleStateManager.Instance.CurrentState);
+    }
+
+    // ===============================
+    // Timer UI
+    // ===============================
+
+    private void UpdateTimerUI()
+    {
+        float normalizedTime = Mathf.Clamp01(_timer / _duration);
+        _timerImage.fillAmount = normalizedTime;
+
+        int minutes = Mathf.FloorToInt(_timer / _minute);
+        int seconds = Mathf.FloorToInt(_timer % _minute);
+        _timerText.text = $"{minutes:D2}:{seconds:D2}";
+    }
+
+    // ===============================
+    // Timer End
+    // ===============================
+
+    private void HandleTimerEnd(BattleState currentState)
+    {
+        if (currentState == BattleState.Victory ||
+            currentState == BattleState.Defeat)
+            return;
+
+        switch (currentState)
+        {
+            case BattleState.Reroll:
+                InGameManager.Instance.IsGameStart = true;
+                BattleStateManager.Instance.SetState(BattleState.EnteringBattle);
+                break;
+
+            case BattleState.Battle:
+                CheckBattleResultState();
+                break;
+        }
+    }
+
+    // ===============================
+    // Wave / Battle Result
+    // ===============================
+
+    private void UpdateWaveText()
+    {
+        _waveStep = InGameManager.Instance.WaveStep;
+        _maxWave = InGameManager.Instance.MaxWave;
+
+        _waveText.text = $"{_waveStep}/{_maxWave}";
+    }
+
+    private void CheckBattleResultState()
+    {
+        foreach (ITrackable unit in InGameManager.Instance.Monsters)
+        {
+            if (!unit.IsColliderEnable)
+                continue;
+
+            BattleStateManager.Instance.SetState(BattleState.Defeat);
+            Debug.Log("게임 오버");
+            return;
+        }
+
         BattleStateManager.Instance.SetState(BattleState.Reroll);
     }
 }

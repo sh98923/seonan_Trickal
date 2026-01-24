@@ -50,7 +50,11 @@ public class BattleSetUpUI : MonoBehaviour
         _rerollCandidates = _inGameUIPanel.GetRerollCandidates();
 
         GameObject inGameCoin = _inGameUIPanel.GetUIElement(InGameUI.CoinText);
+        GameObject inGameCoinBGUI = _inGameUIPanel.GetUIElement(InGameUI.CoinUI);
+
         TextMeshProUGUI coinText = inGameCoin.GetComponent<TextMeshProUGUI>();
+
+        inGameCoin.transform.position = inGameCoinBGUI.transform.position;
 
         _curCoin = InGameManager.Instance.InGameCoin;
         _coinText = coinText;
