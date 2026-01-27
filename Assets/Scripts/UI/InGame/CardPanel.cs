@@ -12,7 +12,8 @@ public class CardPanel : MonoBehaviour
         CharacterImage, 
         CharacterName, 
         CostImage, 
-        CostText
+        CostText,
+        PadLockImage
     }
 
     protected Transform[] _cardChildren;
@@ -44,6 +45,7 @@ public class CardPanel : MonoBehaviour
 
     protected virtual void InitUI()
     {
+        _cardChildren[(int)CardUI.PadLockImage].gameObject.SetActive(false);
         _cardChildren[(int)CardUI.OutLineColorImage].gameObject.SetActive(false);
     }
 

@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using UnityEngine;
 
 public class InGameCardPanel : CardPanel
@@ -14,13 +15,13 @@ public class InGameCardPanel : CardPanel
     private void OnEnable()
     {
         BattleStateManager.Instance.OnReroll += ShowCostImage;
-        BattleStateManager.Instance.OnEnteringBattle += HideCostImage;
+        BattleStateManager.Instance.OnReroll += AutoUnlockCardPadLock;
     }
 
     private void OnDisable()
     {
         BattleStateManager.Instance.OnReroll -= ShowCostImage;
-        BattleStateManager.Instance.OnEnteringBattle -= HideCostImage;
+        BattleStateManager.Instance.OnReroll -= AutoUnlockCardPadLock;
     }
 
     private void OnDestroy()
@@ -28,7 +29,7 @@ public class InGameCardPanel : CardPanel
         if (BattleStateManager.Instance != null)
         {
             BattleStateManager.Instance.OnReroll -= ShowCostImage;
-            BattleStateManager.Instance.OnEnteringBattle -= HideCostImage;
+            BattleStateManager.Instance.OnReroll -= AutoUnlockCardPadLock;
         }
     }
 
@@ -37,15 +38,17 @@ public class InGameCardPanel : CardPanel
         _cardChildren[(int)CardUI.CostImage].gameObject.SetActive(true);
     }
 
-    private void HideCostImage()
+    private void AutoUnlockCardPadLock()
     {
-        _cardChildren[(int)CardUI.CostImage].gameObject.SetActive(false);
+        if (_cardChildren[(int)CardUI.PadLockImage].gameObject.activeSelf)
+        {
+            _cardChildren[(int)CardUI.PadLockImage].gameObject.SetActive(false);
+        }
     }
 
     protected override void InitUI()
     {
         base.InitUI();
-        _cardChildren[(int)CardUI.CostImage].gameObject.SetActive(true);
         _battleSetUpUI = GetComponentInParent<BattleSetUpUI>();
     }
 
@@ -129,5 +132,10 @@ public class InGameCardPanel : CardPanel
         {
             _color = Color.white;
         }
+    }
+
+    public void CardPadLock(bool isLock)
+    {
+        _cardChildren[(int)CardUI.PadLockImage].gameObject.SetActive(isLock);
     }
 }

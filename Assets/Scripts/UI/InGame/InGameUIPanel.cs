@@ -10,11 +10,11 @@ public enum InGameUI
     CoinText = 13,
     RerollUIRoot = 14,
     LeftCardBtn = 19,
-    CenterCardBtn = 27, 
-    RightCardBtn = 35,
-    RerollImage = 42, 
-    RerollBtn = 43,
-    SlotMachinePanel = 52
+    CenterCardBtn = 28, 
+    RightCardBtn = 37,
+    RerollImage = 45, 
+    RerollBtn = 46,
+    SlotMachinePanel = 55
 }
 
 public class InGameUIPanel : MonoBehaviour
@@ -26,8 +26,6 @@ public class InGameUIPanel : MonoBehaviour
     private void Awake()
     {
         _inGameUIs = GetComponentsInChildren<Transform>();
-
-        _rerollUI = _inGameUIs[(int)InGameUI.RerollUIRoot].GetComponent<RerollUIController>();
 
         Transform setUpPanel = _inGameUIs[(int)InGameUI.BattleSetUpPanel];
         _setUpAnim = setUpPanel.GetComponent<Animator>();

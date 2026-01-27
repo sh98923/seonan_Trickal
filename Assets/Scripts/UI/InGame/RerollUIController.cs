@@ -7,7 +7,7 @@ public class RerollUIController : MonoBehaviour
 {
     enum PadLockImage 
     {
-        PadLock = 26
+        PadLock = 29
     }
 
     private enum RerollUI
@@ -20,8 +20,8 @@ public class RerollUIController : MonoBehaviour
     private enum CardUI
     {
         LeftCard = 2,
-        CenterCard = 10,
-        RightCard = 18
+        CenterCard = 11,
+        RightCard = 20
     }
 
     private CardPadLock _padLock;
@@ -125,6 +125,7 @@ public class RerollUIController : MonoBehaviour
     private void SetLockSprite(bool locked)
     {
         _padLock.SetLockState(locked);
+        _cardPanelRoot.SetCardLockState(locked);
     }
 
     private void PlayCardRoll()
