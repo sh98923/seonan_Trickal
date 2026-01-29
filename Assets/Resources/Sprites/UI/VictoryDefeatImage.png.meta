@@ -1,10 +1,25 @@
 fileFormatVersion: 2
-guid: de0a4cc359f6e2749b9b91c80f3b9c19
+guid: 50b9095fd08d50542af23b6efeb264e4
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4494190479123327025
-    second: StagePanel2_0
+      213: 3586466286631333210
+    second: VictoryDefeatImage_0
+  - first:
+      213: 5367654448926762621
+    second: VictoryDefeatImage_1
+  - first:
+      213: 6651428230725964976
+    second: VictoryDefeatImage_2
+  - first:
+      213: 6022510406284253215
+    second: VictoryDefeatImage_3
+  - first:
+      213: 6106236164128012688
+    second: VictoryDefeatImage_4
+  - first:
+      213: 6002237321814011961
+    second: VictoryDefeatImage_5
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,13 +61,13 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
-  spriteBorder: {x: 32, y: 32, z: 32, w: 32}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
@@ -96,43 +111,17 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: Android
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: iOS
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: StagePanel2_0
+      name: VictoryDefeatImage_0
       rect:
         serializedVersion: 2
-        x: 15
-        y: 15
-        width: 402
-        height: 402
+        x: 0
+        y: 264
+        width: 474
+        height: 232
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +130,30 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 138a615fd629e5e30800000000000000
-      internalID: 4494190479123327025
+      spriteID: a5d2395f510b5c130800000000000000
+      internalID: 3586466286631333210
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VictoryDefeatImage_1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 17
+        width: 474
+        height: 247
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d762351484dbd7a40800000000000000
+      internalID: 5367654448926762621
       vertices: []
       indices: 
       edges: []
@@ -151,17 +162,20 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
-    internalID: 1537655665
+    spriteID: 242bef6335326504190952874506495b
+    internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":2.0},"gridSpriteSize":{"x":474.0,"y":263.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      StagePanel2_0: 4494190479123327025
+      VictoryDefeatImage_0: 3586466286631333210
+      VictoryDefeatImage_1: 5367654448926762621
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

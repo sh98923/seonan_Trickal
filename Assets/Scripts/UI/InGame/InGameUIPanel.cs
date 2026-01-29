@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,7 +15,8 @@ public enum InGameUI
     RightCardBtn = 37,
     RerollImage = 45, 
     RerollBtn = 46,
-    SlotMachinePanel = 55
+    SlotMachinePanel = 55,
+    ResultPanel = 80
 }
 
 public class InGameUIPanel : MonoBehaviour
@@ -30,6 +32,8 @@ public class InGameUIPanel : MonoBehaviour
         Transform setUpPanel = _inGameUIs[(int)InGameUI.BattleSetUpPanel];
         _setUpAnim = setUpPanel.GetComponent<Animator>();
         _setUpAnim.Play("BtnsIntro");
+
+        PanelInit();
     }
 
     private void OnEnable()
@@ -46,10 +50,12 @@ public class InGameUIPanel : MonoBehaviour
 
     private void ShowRerollUI()
     {
-        //_inGameUIs[(int)InGameUI.WaveTimerPanel].gameObject.SetActive(true);
-        //_inGameUIs[(int)InGameUI.OptionPanel].gameObject.SetActive(true);
-        //_inGameUIs[(int)InGameUI.BattleSetUpPanel].gameObject.SetActive(true);
         _setUpAnim.SetTrigger("RerollStart");
+    }
+
+    private void PanelInit()
+    {
+        _inGameUIs[(int)InGameUI.ResultPanel].gameObject.SetActive(false);
     }
 
     private void ShowBattleUI()
