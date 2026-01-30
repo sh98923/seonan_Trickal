@@ -293,7 +293,7 @@ GameObject:
   m_Component:
   - component: {fileID: 331510620990836504}
   - component: {fileID: 5674129613912416398}
-  - component: {fileID: 7245269850748491852}
+  - component: {fileID: 2962662599947545902}
   m_Layer: 5
   m_Name: MonsterHp
   m_TagString: IgnoreFlash
@@ -373,7 +373,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &7245269850748491852
+--- !u!114 &2962662599947545902
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -382,9 +382,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 279742081036259236}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9962bd99247696f469d841d0c416862e, type: 3}
+  m_Script: {fileID: 11500000, guid: 77199257e5125da4787cd9d4fb967bd2, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerHp
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterHp
 --- !u!1 &603456668706908265
 GameObject:
   m_ObjectHideFlags: 0

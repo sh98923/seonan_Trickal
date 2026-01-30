@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,23 +11,16 @@ public class StageInfoPanel : MonoBehaviour
         DeckSetUpBtn = 12, CancelBtn = 14
     }
 
-    private MapBG _mapBG;
-    private GameObject _deckPanel;
-    private GameObject _stageBtn;
+    private StageUIRoot _stageUI;
     private Transform[] _stageChildren; 
     private Transform _monsterPreviewRoot;
 
     private void Awake()
     {
+        _stageUI = transform.parent.GetComponent<StageUIRoot>();
         _stageChildren = GetComponentsInChildren<Transform>();
-
-        _mapBG = GameObject.Find("BG").GetComponent<MapBG>();
-        _monsterPreviewRoot = GameObject.Find("MonsterPreivew").transform;
         
-        _deckPanel = transform.parent.Find("DeckPanel").gameObject;
-        _stageBtn = transform.parent.Find("StageBtnPanel").gameObject;
-
-        gameObject.SetActive(false);
+        _monsterPreviewRoot = GameObject.Find("MonsterPreivew").transform;
     }
 
     private void OnEnable()
@@ -36,7 +30,7 @@ public class StageInfoPanel : MonoBehaviour
 
     private void OnDisable()
     {
-        RemovePreview();
+        RemovePreview(); 
     }
 
     private void Start()
@@ -47,12 +41,11 @@ public class StageInfoPanel : MonoBehaviour
 
     private void OnClickDeckSetup()
     {
-        _mapBG.gameObject.SetActive(true);
-        _mapBG.SetMapBG();
+        _stageUI.SetMapBG();
 
-        _deckPanel.SetActive(true);
-        _stageBtn.SetActive(false);
-        gameObject.SetActive(false);
+        _stageUI.SetDeckPanelActive(true);
+        _stageUI.SetStageBtnPanelActive(false);
+        _stageUI.SetStageInfoPanelActive(false);
     }
 
     private void OnClickCancel()

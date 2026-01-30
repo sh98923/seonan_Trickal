@@ -318,8 +318,7 @@ public class WaveTimerPanel : MonoBehaviour
 
     private void HandleTimerEnd(BattleState currentState)
     {
-        if (currentState == BattleState.Victory ||
-            currentState == BattleState.Defeat)
+        if (currentState == BattleState.BattleEnd)
             return;
 
         switch (currentState)
@@ -354,7 +353,7 @@ public class WaveTimerPanel : MonoBehaviour
             if (!unit.IsColliderEnable)
                 continue;
 
-            BattleStateManager.Instance.SetState(BattleState.Defeat);
+            BattleStateManager.Instance.SetState(BattleState.BattleEnd);
             Debug.Log("게임 오버");
             return;
         }

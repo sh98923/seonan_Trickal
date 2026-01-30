@@ -32,18 +32,23 @@ public class InGameUIPanel : MonoBehaviour
         Transform setUpPanel = _inGameUIs[(int)InGameUI.BattleSetUpPanel];
         _setUpAnim = setUpPanel.GetComponent<Animator>();
         _setUpAnim.Play("BtnsIntro");
+    }
 
+    private void Start()
+    {
         PanelInit();
     }
 
     private void OnEnable()
     {
+        BattleStateManager.Instance.OnBattleEnd += ShowResult;
         BattleStateManager.Instance.OnReroll += ShowRerollUI;
         BattleStateManager.Instance.OnEnteringBattle += ShowBattleUI;
     }
 
     private void OnDisable()
     {
+        BattleStateManager.Instance.OnBattleEnd -= ShowResult;
         BattleStateManager.Instance.OnReroll -= ShowRerollUI;
         BattleStateManager.Instance.OnEnteringBattle -= ShowBattleUI;
     }
@@ -56,6 +61,11 @@ public class InGameUIPanel : MonoBehaviour
     private void PanelInit()
     {
         _inGameUIs[(int)InGameUI.ResultPanel].gameObject.SetActive(false);
+    }
+
+    private void ShowResult()
+    {
+        _inGameUIs[(int)InGameUI.ResultPanel].gameObject.SetActive(true);
     }
 
     private void ShowBattleUI()

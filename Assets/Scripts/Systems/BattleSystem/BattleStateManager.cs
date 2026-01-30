@@ -8,10 +8,9 @@ public enum BattleState
     Battle,
     EnteringReroll,
     EnteringBattle,
+    BattleEnd
     // GameStatemanager를 따로 스크립트 만들어서
     // battleStatemanager처럼 클래스를 만들자
-    Victory,
-    Defeat
 }
 
 public class BattleStateManager : MonoBehaviour
@@ -52,17 +51,11 @@ public class BattleStateManager : MonoBehaviour
         add { _onEnteringBattle += value; } //print("구독 : " + value.Method.Name); }
         remove { _onEnteringBattle -= value; } //print("해제 : " + value.Method.Name); }
     }
-    private event Action _onGameVictory;
-    public event Action OnGameVictory
+    private event Action _onBattleEnd;
+    public event Action OnBattleEnd
     {
-        add { _onGameVictory += value; }
-        remove { _onGameVictory -= value; }
-    }
-    private event Action _onGameDefeat;
-    public event Action OnGameDefeat
-    {
-        add { _onGameDefeat += value; }
-        remove { _onGameDefeat -= value; }
+        add { _onBattleEnd += value; }
+        remove { _onBattleEnd -= value; }
     }
 
     private BattleState _currentState = BattleState.None;
@@ -117,7 +110,7 @@ public class BattleStateManager : MonoBehaviour
 
     public bool IsGameOver
     {
-        get { return _currentState == BattleState.Defeat; }
+        get { return _currentState == BattleState.BattleEnd; }
     }
 
     public void SetState(BattleState newState)
@@ -141,11 +134,8 @@ public class BattleStateManager : MonoBehaviour
             case BattleState.EnteringBattle:
                 _onEnteringBattle?.Invoke();
                 break;
-            case BattleState.Victory:
-                _onGameVictory?.Invoke();
-                break;
-            case BattleState.Defeat:
-                _onGameDefeat?.Invoke();
+            case BattleState.BattleEnd:
+                _onBattleEnd?.Invoke();
                 break;
         }
     }

@@ -43,6 +43,21 @@ public class OptionPanel : MonoBehaviour
         UpdateSpeedSprite();
     }
 
+    private void OnEnable()
+    {
+        BattleStateManager.Instance.OnBattleEnd += GameSpeedInit;
+    }
+
+    private void OnDisable()
+    {
+        BattleStateManager.Instance.OnBattleEnd -= GameSpeedInit;
+    }
+
+    private void GameSpeedInit()
+    {
+        Time.timeScale = 1.0f;
+    }
+
     private void OnClickPause()
     {
         if (_isPaused)

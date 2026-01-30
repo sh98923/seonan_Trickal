@@ -65,7 +65,7 @@ public class StageBtn : MonoBehaviour
     private Image[] _images;
     private TextMeshProUGUI _stageText;
 
-    private const int OUTLINE_IMAGE_INDEX = 0;
+    private const int outLineImageIndex = 0;
 
     private void Awake()
     {
@@ -87,7 +87,7 @@ public class StageBtn : MonoBehaviour
         _stageText.text = $"Stage {stageNumber}";
 
         // 외곽선 초기화
-        Transform outlineTransform = transform.GetChild(OUTLINE_IMAGE_INDEX);
+        Transform outlineTransform = transform.GetChild(outLineImageIndex);
         _outline.InitImage(outlineTransform);
         _outline.OutLineActive(false);
 

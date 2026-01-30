@@ -23,7 +23,6 @@ public class DeckCardPanel : MonoBehaviour
     {
         _deckChildren = GetComponentsInChildren<Transform>();
         _slotCountText = _deckChildren[(int)DeckUI.DeckSlotCountView].GetComponent<TextMeshProUGUI>();
-        gameObject.SetActive(false);
     }
 
     private void Start()

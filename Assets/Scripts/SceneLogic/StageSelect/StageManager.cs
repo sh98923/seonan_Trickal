@@ -144,13 +144,17 @@ public class StageManager : Singleton<StageManager>
     }
 
     // 스테이지 클리어 시 다음 스테이지 언락 처리
-    public void UnlockNextStage(int clearedStage)
+    public bool UnlockNextStage(int nextStageKey)
     {
-        int nextStage = clearedStage + 1;
+        int nextStage = _stageDatas[nextStageKey].Stage;
+
         if (_stageUnlockStatus.ContainsKey(nextStage))
         {
             _stageUnlockStatus[nextStage] = true;
+            return true;
         }
+
+        return false;
     }
 
     public int HighestStageOutLineOn()

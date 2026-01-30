@@ -83,8 +83,7 @@ public class UltUIPanel : MonoBehaviour
 
     private void SetUltContentY(Transform ult, float y)
     {
-        Transform content = ult.GetChild(_contentRootIndex);
-        RectTransform rt = content.GetComponent<RectTransform>();
+        RectTransform rt = ult.FindDirectChildComponent<RectTransform>("Conent");
 
         Vector2 pos = rt.anchoredPosition;
         pos.y = y;

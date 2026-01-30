@@ -41,7 +41,7 @@ public class BattleUnitManager : Singleton<BattleUnitManager>
         if (_deadPlayerCount == _activeUnits.Count)
         {
             Debug.Log("All players defeated. Game Over.");
-            BattleStateManager.Instance.SetState(BattleState.Defeat);
+            BattleStateManager.Instance.SetState(BattleState.BattleEnd);
         }
     }
 

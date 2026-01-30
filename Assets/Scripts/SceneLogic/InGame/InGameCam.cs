@@ -251,7 +251,7 @@ public class InGameCam : MonoBehaviour
 
     private bool IsCameraAnimationAllowed(BattleState state)
     {
-        bool canCamAnimation = (state != BattleState.Victory && state != BattleState.Defeat);
+        bool canCamAnimation = (state != BattleState.BattleEnd);
 
         return canCamAnimation;
     }

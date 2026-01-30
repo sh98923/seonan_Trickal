@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -51,9 +52,40 @@ public class GameManager : Singleton<GameManager>
 
     private const int _deckCharacterCount = 6;
 
+    private bool _openDeckPanel;
+    public bool OpenDeckPanel 
+    {
+        get {  return _openDeckPanel; }
+        set { _openDeckPanel = value; }
+    }
+
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
+    }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += DeckInit;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= DeckInit;
+    }
+
+    private bool IsScene(Scene scene, SceneName targetScene)
+    {
+        return scene.name == targetScene.ToString();
+    }
+
+    private void DeckInit(Scene scene, LoadSceneMode mode)
+    {
+        if (IsScene(scene, SceneName.StageSelectScene))
+        {
+            _deckUnitDatas.Clear();
+            _spawnablePlayerDatas.Clear();
+        }
     }
 
     private List<PlayerData> SetSpawnablePlayerData()
@@ -84,9 +116,28 @@ public class GameManager : Singleton<GameManager>
         return false;
     }
 
+    public void NextStageClicked()
+    {
+        SetNextStage();
+        _openDeckPanel = StageManager.Instance.UnlockNextStage(_stageKey);
+
+        SceneManager.LoadScene("StageSelectScene");
+    }
+
+    public void OnStageSelectSceneLoaded()
+    {
+        _openDeckPanel = false; // 열고 나면 다시 false
+    }
+
     public void SetStageKey(int stageKey)
     {
         _stageKey = stageKey; 
+        _waveCount = StageManager.Instance.GetWaveCount(_stageKey);
+    }
+
+    public void SetNextStage()
+    {
+        _stageKey += _waveCount;
         _waveCount = StageManager.Instance.GetWaveCount(_stageKey);
     }
 
@@ -101,7 +152,7 @@ public class GameManager : Singleton<GameManager>
         bool canGameStart = (_deckUnitDatas.Count == _deckCharacterCount);
 
         return true;
-       // return canGameStart;
+        // return canGameStart;
     }
 
     public bool IsDeckFull()

@@ -140,9 +140,7 @@ public class InGameManager : MonoBehaviour
     private void GameDefeat()
     {
         OnGameDefeat?.Invoke();
-
-        BattleStateManager.Instance.SetState(BattleState.Defeat);
-        SetAllCharactersIdle();
+        GameEnd();
     }
 
     private void OnMonsterDie()
@@ -158,8 +156,12 @@ public class InGameManager : MonoBehaviour
     private void GameVictory()
     {
         OnGameVictory?.Invoke();
+        GameEnd();
+    }
 
-        BattleStateManager.Instance.SetState(BattleState.Victory); 
+    private void GameEnd()
+    {
+        BattleStateManager.Instance.SetState(BattleState.BattleEnd);
         SetAllCharactersIdle();
     }
 
