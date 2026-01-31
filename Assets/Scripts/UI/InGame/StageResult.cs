@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -25,25 +26,43 @@ public class StageResult : MonoBehaviour
 
     private void OnEnable()
     {
-        InGameManager.OnGameVictory += ShowVictory;
-        InGameManager.OnGameDefeat += ShowDefeat;
+        InGameManager.OnGameVictory += OnVictory;
+        InGameManager.OnGameDefeat += OnDefeat;
     }
 
     private void OnDestroy()
     {
-        InGameManager.OnGameVictory -= ShowVictory;
-        InGameManager.OnGameDefeat -= ShowDefeat;
+        InGameManager.OnGameVictory -= OnVictory;
+        InGameManager.OnGameDefeat -= OnDefeat;
     }
 
-    private void ShowVictory()
+    private void OnVictory()
     {
-        _resultImage.sprite = _victorySprite;
-        _resultBtn.ShowVictory();
+        gameObject.SetActive(true);
+        StartCoroutine(ShowResultAfterDelay(Result.Victory));
     }
 
-    private void ShowDefeat()
+    private void OnDefeat()
     {
-        _resultImage.sprite = _defeatSprite;
-        _resultBtn.ShowDefeat();
+        gameObject.SetActive(true);
+        StartCoroutine(ShowResultAfterDelay(Result.Defeat));
+    }
+
+    private IEnumerator ShowResultAfterDelay(Result result)
+    {
+        yield return new WaitForSeconds(4.0f);
+
+        switch (result)
+        {
+            case Result.Victory:
+                _resultImage.sprite = _victorySprite;
+                _resultBtn.ShowVictory();
+                break;
+
+            case Result.Defeat:
+                _resultImage.sprite = _defeatSprite;
+                _resultBtn.ShowDefeat();
+                break;
+        }
     }
 }
