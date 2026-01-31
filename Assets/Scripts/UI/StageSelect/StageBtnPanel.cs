@@ -103,7 +103,7 @@ public class StageBtnPanel : MonoBehaviour
 {
     private GameObject _stageInfo;
 
-    private int _stageCount;
+    private int _stageMaxCount;
     private int _stageBtnStartKey;
 
     private readonly List<StageBtn> _stageButtons = new List<StageBtn>();
@@ -115,7 +115,7 @@ public class StageBtnPanel : MonoBehaviour
 
     private void Start()
     {
-        _stageCount = StageManager.Instance.StageCount;
+        _stageMaxCount = StageManager.Instance.StageMaxCount;
         _stageBtnStartKey = StageBtnPosManager.Instance.StageBtnStartKey;
 
         GameObject stagePrefab = Resources.Load<GameObject>("Prefabs/UI/StageBtn");
@@ -126,7 +126,7 @@ public class StageBtnPanel : MonoBehaviour
 
     private void CreateStageButtons(GameObject stagePrefab)
     {
-        for (int i = 0; i < _stageCount; i++)
+        for (int i = 0; i < _stageMaxCount; i++)
         {
             int stageKey = _stageBtnStartKey + i;
             Vector3 pos = StageBtnPosManager.Instance.GetStageBtnPos(stageKey);

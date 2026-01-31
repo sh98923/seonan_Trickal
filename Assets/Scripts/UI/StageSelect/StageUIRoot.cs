@@ -27,7 +27,7 @@ public class StageUIRoot : MonoBehaviour
         {
             SetMapBG();
             OpenDeckPanel();
-            GameManager.Instance.OnStageSelectSceneLoaded(); // 플래그 초기화
+            GameManager.Instance.ResetDeckPanelState(); // 플래그 초기화
         }
     }
 

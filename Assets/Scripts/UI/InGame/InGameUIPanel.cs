@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -41,14 +42,12 @@ public class InGameUIPanel : MonoBehaviour
 
     private void OnEnable()
     {
-        BattleStateManager.Instance.OnBattleEnd += ShowResult;
         BattleStateManager.Instance.OnReroll += ShowRerollUI;
         BattleStateManager.Instance.OnEnteringBattle += ShowBattleUI;
     }
 
     private void OnDisable()
     {
-        BattleStateManager.Instance.OnBattleEnd -= ShowResult;
         BattleStateManager.Instance.OnReroll -= ShowRerollUI;
         BattleStateManager.Instance.OnEnteringBattle -= ShowBattleUI;
     }
@@ -61,11 +60,6 @@ public class InGameUIPanel : MonoBehaviour
     private void PanelInit()
     {
         _inGameUIs[(int)InGameUI.ResultPanel].gameObject.SetActive(false);
-    }
-
-    private void ShowResult()
-    {
-        _inGameUIs[(int)InGameUI.ResultPanel].gameObject.SetActive(true);
     }
 
     private void ShowBattleUI()

@@ -14,6 +14,8 @@ public enum SceneName
 
 public class GameManager : Singleton<GameManager>
 {
+    public Dictionary<int, bool> StageUnlockStatus = new Dictionary<int, bool>();
+
     private List<PlayerData> _spawnablePlayerDatas = new List<PlayerData>();
     public List<PlayerData> SpawnablePlayerDatas
     {
@@ -116,15 +118,29 @@ public class GameManager : Singleton<GameManager>
         return false;
     }
 
-    public void NextStageClicked()
+    public void UnlockNextStage()
     {
-        SetNextStage();
-        _openDeckPanel = StageManager.Instance.UnlockNextStage(_stageKey);
+        if (InGameManager.Instance.GameResultType == StageResult.ResultType.Victory)
+        {
+            StageManager.Instance.UnlockNextStage(_stageKey);
+        }
 
         SceneManager.LoadScene("StageSelectScene");
     }
 
-    public void OnStageSelectSceneLoaded()
+    public void ProceedToNextStage()
+    {
+        OnStageCleared();
+        UnlockNextStage();
+    }
+
+    public void ProceedToNextStageAndOpenDeck()
+    {
+        _openDeckPanel = true;
+        ProceedToNextStage();
+    }
+
+    public void ResetDeckPanelState()
     {
         _openDeckPanel = false; // 열고 나면 다시 false
     }
@@ -135,10 +151,15 @@ public class GameManager : Singleton<GameManager>
         _waveCount = StageManager.Instance.GetWaveCount(_stageKey);
     }
 
-    public void SetNextStage()
+    public void OnStageCleared()
     {
-        _stageKey += _waveCount;
+        int stageKey = _stageKey + _waveCount;
         _waveCount = StageManager.Instance.GetWaveCount(_stageKey);
+
+        if (_waveCount <= 0)
+            return;
+
+        _stageKey = stageKey;
     }
 
     public int CurDeckUnitCount()

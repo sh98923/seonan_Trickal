@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
 
 public struct PlayerUnitData
 {
@@ -16,8 +17,6 @@ public class InGameManager : MonoBehaviour
         get { return _instance; }
     }
 
-    public static event Action OnGameVictory;
-    public static event Action OnGameDefeat;
     public static event Action<int> OnCoinChanged;
 
     private List<ITrackable> _trackables = new List<ITrackable>();
@@ -36,6 +35,14 @@ public class InGameManager : MonoBehaviour
     public List<ITrackable> Monsters
     {
         get { return _monsters; }
+    }
+
+    [SerializeField] private StageResult _gameResult;
+
+    private StageResult.ResultType _resultType;
+    public StageResult.ResultType GameResultType
+    {
+        get { return _resultType; }
     }
 
     private int _maxWave = 0;
@@ -133,14 +140,8 @@ public class InGameManager : MonoBehaviour
 
         if (!anyAlive)
         {
-            GameDefeat();
+            GameEnd(StageResult.ResultType.Defeat);
         }
-    }
-
-    private void GameDefeat()
-    {
-        OnGameDefeat?.Invoke();
-        GameEnd();
     }
 
     private void OnMonsterDie()
@@ -149,20 +150,26 @@ public class InGameManager : MonoBehaviour
 
         if (!anyAlive && _waveStep >= _maxWave)
         {
-            GameVictory();
+            GameEnd(StageResult.ResultType.Victory);
         }
     }
 
-    private void GameVictory()
-    {
-        OnGameVictory?.Invoke();
-        GameEnd();
-    }
-
-    private void GameEnd()
+    private void GameEnd(StageResult.ResultType resultType)
     {
         BattleStateManager.Instance.SetState(BattleState.BattleEnd);
         SetAllCharactersIdle();
+
+        StartCoroutine( OpenResultPanel(resultType));
+    }
+
+    private IEnumerator OpenResultPanel(StageResult.ResultType resultType)
+    {
+        _resultType = resultType;
+
+        yield return new WaitForSeconds(1.5f);
+
+        _gameResult.gameObject.SetActive(true);
+        _gameResult.ShowResult(resultType);
     }
 
     private bool HasAnyAlive(List<ITrackable> list)

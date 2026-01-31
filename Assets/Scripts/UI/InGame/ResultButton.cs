@@ -1,7 +1,5 @@
-using System.Collections;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class ResultButton : MonoBehaviour
@@ -17,6 +15,10 @@ public class ResultButton : MonoBehaviour
     private Button[] _resultBtns;
     private TextMeshProUGUI[] _resultTexts;
     private LayoutElement _nextBtnLayout;
+    private HorizontalLayoutGroup _horizontalLayout;
+
+    private const int _paddingWithNextButton = -335;
+    private const int _paddingWithoutNextButton = -230;
 
     private void Awake()
     {
@@ -25,6 +27,8 @@ public class ResultButton : MonoBehaviour
 
         _resultBtns = GetComponentsInChildren<Button>();
         _resultTexts = GetComponentsInChildren<TextMeshProUGUI>();
+
+        _horizontalLayout = GetComponent<HorizontalLayoutGroup>();
 
         BtnTextInit();
         BtnEventInit();
@@ -50,7 +54,7 @@ public class ResultButton : MonoBehaviour
 
     private void OnClickExit()
     {
-        SceneManager.LoadScene("StageSelectScene");
+        GameManager.Instance.ProceedToNextStage();
     }
 
     private void OnClickRetry()
@@ -60,37 +64,31 @@ public class ResultButton : MonoBehaviour
 
     private void OnClickNext()
     {
-        // 다음 스테이지 클릭
-        GameManager.Instance.NextStageClicked();
-    }
-
-    private void SetNextButton(bool isShow)
-    {
-        _nextBtnLayout.ignoreLayout = !isShow;
-
-        // 시각 + 입력 제어
-        Button nextBtn = _resultBtns[(int)ResultBtn.Next];
-        TextMeshProUGUI nextBtnText = _resultTexts[(int)ResultBtn.Next];
-
-        _nextBtnImage.enabled = isShow;
-        nextBtnText.enabled = isShow;
-        nextBtn.interactable = isShow;
-    }
-
-    private IEnumerator RebuildLayoutNextFrame()
-    {
-        yield return null; // 한 프레임 기다림
-        LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)transform);
+        // 다음 스테이지
+        GameManager.Instance.ProceedToNextStageAndOpenDeck();
     }
 
     public void ShowVictory()
     {
-        SetNextButton(true);
+        // 현재 열린 스테이지 수와 총 스테이지 수를 비교
+        if (StageManager.Instance.StageMaxCount > StageManager.Instance.UnlockedStageCount)
+        {
+            _horizontalLayout.padding.left = _paddingWithNextButton;
+        }
+        else
+        {
+            ApplyLayoutWithoutNextButton();
+        }
     }
 
     public void ShowDefeat()
     {
-        SetNextButton(false); 
-        StartCoroutine(RebuildLayoutNextFrame());
+        ApplyLayoutWithoutNextButton();
+    }
+
+    private void ApplyLayoutWithoutNextButton()
+    {
+        _horizontalLayout.padding.left = _paddingWithoutNextButton;
+        _resultBtns[(int)ResultBtn.Next].gameObject.SetActive(false);
     }
 }

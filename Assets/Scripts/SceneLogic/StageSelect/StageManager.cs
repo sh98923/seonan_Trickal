@@ -17,12 +17,32 @@ public class StageManager : Singleton<StageManager>
     private Dictionary<int, StageData> _stageDatas = new Dictionary<int, StageData>();
 
     // 스테이지 번호 단위로 언락 여부 관리 (Stage → unlocked)
-    private Dictionary<int, bool> _stageUnlockStatus = new Dictionary<int, bool>();
-
-    private int _stageCount = 0;
-    public int StageCount
+    private Dictionary<int, bool> _unlockStatus
     {
-        get { return _stageCount = _stageUnlockStatus.Count; }
+        get { return GameManager.Instance.StageUnlockStatus; }
+    }
+
+    private int _stageMaxCount = 0;
+    public int StageMaxCount
+    {
+        get { return _stageMaxCount = _unlockStatus.Count; }
+    }
+
+    private int _unlockedStageCount = 0;
+    public int UnlockedStageCount
+    {
+        get
+        {
+            int count = 0;
+            foreach (var unlocked in _unlockStatus.Values)
+            {
+                if (unlocked)
+                {
+                    count++;
+                }
+            }
+            return count;
+        }
     }
 
     private readonly int _firstStageKey = 1;
@@ -119,6 +139,8 @@ public class StageManager : Singleton<StageManager>
 
     private void InitStageUnlocks()
     {
+        if (_unlockStatus.Count > 0) return;
+
         // 스테이지별 최초 언락 상태 세팅 (1 스테이지만 해금)
         HashSet<int> registeredStages = new HashSet<int>();
         foreach (StageData data in _stageDatas.Values)
@@ -127,7 +149,7 @@ public class StageManager : Singleton<StageManager>
             {
                 // 1 스테이지만 true, 나머지는 false
                 bool unlocked = (data.Stage == _firstStage);
-                _stageUnlockStatus[data.Stage] = unlocked;
+                _unlockStatus[data.Stage] = unlocked;
                 registeredStages.Add(data.Stage);
             }
         }
@@ -136,7 +158,7 @@ public class StageManager : Singleton<StageManager>
     // 언락 상태 조회
     public bool IsStageUnlocked(int stageNumber)
     { 
-        if (_stageUnlockStatus.TryGetValue(stageNumber, out bool unlocked))
+        if (_unlockStatus.TryGetValue(stageNumber, out bool unlocked))
         {
             return unlocked;
         }
@@ -148,9 +170,9 @@ public class StageManager : Singleton<StageManager>
     {
         int nextStage = _stageDatas[nextStageKey].Stage;
 
-        if (_stageUnlockStatus.ContainsKey(nextStage))
+        if (_unlockStatus.ContainsKey(nextStage))
         {
-            _stageUnlockStatus[nextStage] = true;
+            _unlockStatus[nextStage] = true;
             return true;
         }
 
@@ -161,7 +183,7 @@ public class StageManager : Singleton<StageManager>
     {
         int highestStageKey = 0;
 
-        foreach(KeyValuePair<int, bool> stageUnlock in _stageUnlockStatus)
+        foreach(KeyValuePair<int, bool> stageUnlock in _unlockStatus)
         {
             if(stageUnlock.Value)
             {
