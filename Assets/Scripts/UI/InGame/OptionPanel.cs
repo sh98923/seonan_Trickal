@@ -10,7 +10,7 @@ public class OptionPanel : MonoBehaviour
 
     private enum GameSpeed
     {
-        x1 = 1, x2 = 2 
+        x1 = 1, x2 = 10 
     }
 
     private Transform[] _optionChildren;

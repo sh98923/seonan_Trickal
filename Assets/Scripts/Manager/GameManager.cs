@@ -68,12 +68,12 @@ public class GameManager : Singleton<GameManager>
 
     private void OnEnable()
     {
-        SceneManager.sceneLoaded += DeckInit;
+        //SceneManager.sceneLoaded += DeckInit;
     }
 
     private void OnDisable()
     {
-        SceneManager.sceneLoaded -= DeckInit;
+        //SceneManager.sceneLoaded -= DeckInit;
     }
 
     private bool IsScene(Scene scene, SceneName targetScene)
@@ -92,10 +92,7 @@ public class GameManager : Singleton<GameManager>
 
     private List<PlayerData> SetSpawnablePlayerData()
     {
-        if(_spawnablePlayerDatas.Count > 0)
-        {
-            return _spawnablePlayerDatas;
-        }
+        _spawnablePlayerDatas.Clear();
 
         foreach (KeyValuePair<int, PlayerUnitData> deckUnitData in _deckUnitDatas)
         {
@@ -113,6 +110,19 @@ public class GameManager : Singleton<GameManager>
         {
             if (curSceneName == sceneNames[i].ToString())
                 return true;
+        }
+
+        return false;
+    }
+
+    public bool IsInDeck(PlayerData data)
+    {
+        for (int i = 0; i < _spawnablePlayerDatas.Count; i++)
+        {
+            if (_spawnablePlayerDatas[i].Key == data.Key)
+            {
+                return true;
+            }
         }
 
         return false;

@@ -21,6 +21,8 @@ public class StageCardPanel : CardPanel
         _spawnParent = GameObject.Find("SpawnPlayer").GetComponent<StagePlayerSpawn>();
         _outline = GetComponent<OutLineLight>();
         _outline.InitImage(_cardChildren[(int)CardUI.OutLineColorImage]);
+        
+        DeployUnitIfInDeck();
     }
 
     protected override void InitUI()
@@ -31,20 +33,35 @@ public class StageCardPanel : CardPanel
 
     protected override void HandleClick()
     {
-        if (CanDeploy(out Vector3 spawnPos))
+        if (TrySpawnUnit(out Vector3 spawnPos))
         {
-            _outline.OutLineActive(true);
-
-            _spawnParent.SpawnPlayerAtPosition(_playerData, spawnPos);
-
             GameManager.Instance.AddUnit(_playerData, spawnPos);
-        }
-        else
-        {
-            _outline.OutLineActive(false);
         }
 
         _deckCardPanel.SetSlotCount();
+    }
+
+    private void DeployUnitIfInDeck()
+    {
+        if (!GameManager.Instance.IsInDeck(_playerData))
+            return;
+
+        TrySpawnUnit(out _); // out _ == 무시하는 것
+    }
+
+    private bool TrySpawnUnit(out Vector3 spawnPos)
+    {
+        spawnPos = Vector3.zero;
+
+        if (!CanDeploy(out spawnPos))
+        {
+            _outline.OutLineActive(false);
+            return false;
+        }
+
+        _outline.OutLineActive(true);
+        _spawnParent.SpawnPlayerAtPosition(_playerData, spawnPos);
+        return true;
     }
 
     private bool CanDeploy(out Vector3 spawnPos)
