@@ -27,6 +27,7 @@ public class Character : MonoBehaviour, ITrackable
     // 컴포넌트
     protected CharacterHp _hp;
     protected CharacterMovement _movement;
+
     protected CharacterAnimator _animator;
     protected CharacterAction[] _action;
     protected SortingGroup _sortingGroup;
@@ -170,6 +171,15 @@ public class Character : MonoBehaviour, ITrackable
         _animator.SetIdle(false);
     }
 
+    private bool TryChangeToMoveState()
+    {
+        if (_movement.Target != null && _movement.TargetColliderEnable)
+            return false;
+
+        _curState = CharacterState.Move;
+        return true;
+    }
+
     protected virtual void AttackStateAction()
     {
         // 공격 중이면 애니메이션 끝났는지 체크
@@ -177,6 +187,11 @@ public class Character : MonoBehaviour, ITrackable
         {
             return;
         }
+
+        /*if (TryChangeToMoveState())
+        {
+            return;
+        }*/
 
         // 공격 시작
         StartAttack();
@@ -192,9 +207,8 @@ public class Character : MonoBehaviour, ITrackable
         {
             _isAttacking = false;
 
-            if(_movement.Target == null)
+            if(TryChangeToMoveState())
             {
-                _curState = CharacterState.Move;
                 return true;
             }
 
@@ -211,12 +225,6 @@ public class Character : MonoBehaviour, ITrackable
 
     protected virtual void StartAttack()
     {
-        if (!_movement.TargetColliderEnable)
-        {
-            _curState = CharacterState.Move;
-            return;
-        }
-
         _isAttacking = true;
         _animator.SetTrigger("Attack");
     }
@@ -263,7 +271,7 @@ public class Character : MonoBehaviour, ITrackable
     // 공격 처리
     public void TakeDamage(float damage)
     {
-        if (this == null || !_movement.Target.enabled)
+        if (_movement.Target == null || !_movement.Target.enabled)
         {
             return;
         }

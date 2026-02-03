@@ -14,6 +14,18 @@ public class InGameCam : MonoBehaviour
         }
     }
 
+    private struct WaveMoveTarget
+    {
+        public ITrackable Trackable;
+        public IWaveMoveable Movable;
+
+        public WaveMoveTarget(ITrackable trackable, IWaveMoveable movable)
+        {
+            Trackable = trackable;
+            Movable = movable;
+        }
+    }
+
     private Vector3 _camOriginalPos = new Vector3();
     public float CamOriginalPosX
     {
@@ -51,6 +63,7 @@ public class InGameCam : MonoBehaviour
     // =========================
     private List<ITrackable> _players = new List<ITrackable>();
     private List<ITrackable> _trackedCharacters = new List<ITrackable>();
+    private readonly List<WaveMoveTarget> _waveMoveTargets = new();
 
     private bool _isTrackingMode = false;
 
@@ -60,7 +73,10 @@ public class InGameCam : MonoBehaviour
 
         _cam = GetComponent<Camera>();
         _cam.orthographicSize = _zoomInSize;
+    }
 
+    private void OnEnable()
+    {
         BattleStateManager.Instance.OnBattle += EnableTracking;
         BattleStateManager.Instance.OnEnteringBattle += ZoomRerollToBattle;
         BattleStateManager.Instance.OnEnteringReroll += ZoomBattleToReroll;
@@ -72,6 +88,14 @@ public class InGameCam : MonoBehaviour
         _camOriginalPos = transform.position;
         _players = InGameManager.Instance.Players;
         _trackedCharacters = InGameManager.Instance.Trackables;
+
+        foreach (ITrackable character in _players)
+        {
+            if (character.Object.TryGetComponent(out IWaveMoveable movable))
+            {
+                _waveMoveTargets.Add(new WaveMoveTarget(character, movable));
+            }
+        }
     }
 
     private void OnDisable()
@@ -82,7 +106,7 @@ public class InGameCam : MonoBehaviour
         BattleStateManager.Instance.OnEnteringReroll -= PlayerMoveNextWave;
     }
 
-    private void OnDestroy()
+    /*private void OnDestroy()
     {
         if(BattleStateManager.Instance != null)
         {
@@ -91,7 +115,7 @@ public class InGameCam : MonoBehaviour
             BattleStateManager.Instance.OnEnteringReroll -= ZoomBattleToReroll;
             BattleStateManager.Instance.OnEnteringReroll -= PlayerMoveNextWave;
         }
-    }
+    }*/
 
     private void Update()
     {
@@ -117,17 +141,15 @@ public class InGameCam : MonoBehaviour
         // WaveAdvance 목표 위치 미리 계산 후 플레이어에 전달
         _nextWaveX = transform.position.x + _battleToRerollMoveX;
 
-        foreach (ITrackable character in _players)
+        foreach (WaveMoveTarget target in _waveMoveTargets)
         {
-            PlayerMovement player = character.Object.GetComponent<PlayerMovement>();
-
-            if(player.gameObject.activeSelf)
+            if (target.Trackable.IsColliderEnable)
             {
-                player.UpdateNextDestX(_nextWaveX);
+                target.Movable.UpdateNextDestX(_nextWaveX);
             }
             else
             {
-                player.UpdateSpawnX(_nextWaveX);
+                target.Movable.UpdateSpawnX(_nextWaveX);
             }
         }
     }
@@ -290,7 +312,9 @@ public class InGameCam : MonoBehaviour
         }
 
         if (!found)
+        {
             return transform.position.x;
+        }
 
         return (left + right) * 0.5f;
     }

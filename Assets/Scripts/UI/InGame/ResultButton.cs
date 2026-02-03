@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static GameManager;
 
 public class ResultButton : MonoBehaviour
 {
@@ -54,18 +55,17 @@ public class ResultButton : MonoBehaviour
 
     private void OnClickExit()
     {
-        GameManager.Instance.ProceedToNextStage();
+        GameManager.Instance.ExitStage(StageExitType.Exit);
     }
 
     private void OnClickRetry()
     {
-        // 다시 시작
+        GameManager.Instance.ExitStage(StageExitType.Retry);
     }
 
     private void OnClickNext()
     {
-        // 다음 스테이지
-        GameManager.Instance.ProceedToNextStageAndOpenDeck();
+        GameManager.Instance.ExitStage(StageExitType.Next);
     }
 
     public void ShowVictory()

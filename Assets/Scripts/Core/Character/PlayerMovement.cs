@@ -1,9 +1,10 @@
 using UnityEngine;
 
-public class PlayerMovement : CharacterMovement
+public class PlayerMovement : CharacterMovement , IWaveMoveable
 {
     private Vector3 _playerPos = new Vector3();
     private Vector3 _nextWayPoint = new Vector3();
+    private Vector2 _updatePos = new Vector2();
 
     private float _camPosX = 0.0f;
     private float _nextWaveOffsetPosX = 0.0f;
@@ -60,10 +61,14 @@ public class PlayerMovement : CharacterMovement
             _nextDestX = destX;
         }
 
-        Vector2 updatePos = transform.position;
-        updatePos.x = _nextWaveOffsetPosX + destX;
-        updatePos.y = _playerPos.y;
-        transform.position = updatePos;
+        _updatePos = transform.position;
+        _updatePos.x = _nextWaveOffsetPosX + destX;
+        _updatePos.y = _playerPos.y;
+    }
+
+    public void SetRevivePos()
+    {
+        transform.position = _updatePos;
     }
 
     public void EnteringRerollMovement()

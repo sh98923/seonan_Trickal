@@ -14,6 +14,13 @@ public enum SceneName
 
 public class GameManager : Singleton<GameManager>
 {
+    public enum StageExitType
+    {
+        Exit,
+        Retry,
+        Next
+    }
+
     public Dictionary<int, bool> StageUnlockStatus = new Dictionary<int, bool>();
 
     private List<PlayerData> _spawnablePlayerDatas = new List<PlayerData>();
@@ -66,30 +73,6 @@ public class GameManager : Singleton<GameManager>
         DontDestroyOnLoad(gameObject);
     }
 
-    private void OnEnable()
-    {
-        //SceneManager.sceneLoaded += DeckInit;
-    }
-
-    private void OnDisable()
-    {
-        //SceneManager.sceneLoaded -= DeckInit;
-    }
-
-    private bool IsScene(Scene scene, SceneName targetScene)
-    {
-        return scene.name == targetScene.ToString();
-    }
-
-    private void DeckInit(Scene scene, LoadSceneMode mode)
-    {
-        if (IsScene(scene, SceneName.StageSelectScene))
-        {
-            _deckUnitDatas.Clear();
-            _spawnablePlayerDatas.Clear();
-        }
-    }
-
     private List<PlayerData> SetSpawnablePlayerData()
     {
         _spawnablePlayerDatas.Clear();
@@ -128,26 +111,43 @@ public class GameManager : Singleton<GameManager>
         return false;
     }
 
-    public void UnlockNextStage()
+    public void ExitStage(StageExitType exitType)
     {
-        if (InGameManager.Instance.GameResultType == StageResult.ResultType.Victory)
+        switch (exitType)
         {
-            StageManager.Instance.UnlockNextStage(_stageKey);
+            case StageExitType.Retry:
+                SceneManager.LoadScene("InGameScene");
+                break;
+            case StageExitType.Next:
+                ProceedToNextStage();
+                break;
         }
 
         SceneManager.LoadScene("StageSelectScene");
+
+        if(exitType == StageExitType.Retry)
+        {
+            SceneManager.LoadScene("InGameScene");
+        }
+    }
+
+    public void OnStageEnd(StageResult.ResultType resultType)
+    {
+        if (resultType != StageResult.ResultType.Victory)
+            return;
+
+        if (StageManager.Instance.UnlockNextStage(_stageKey, out int nextStageKey))
+        {
+            _stageKey = nextStageKey; // 여기서 변경
+            _waveCount = StageManager.Instance.GetWaveCount(_stageKey);
+
+            Debug.Log($"다음 스테이지 해제 및 이동: {_stageKey}");
+        }
     }
 
     public void ProceedToNextStage()
     {
-        OnStageCleared();
-        UnlockNextStage();
-    }
-
-    public void ProceedToNextStageAndOpenDeck()
-    {
         _openDeckPanel = true;
-        ProceedToNextStage();
     }
 
     public void ResetDeckPanelState()
@@ -157,19 +157,11 @@ public class GameManager : Singleton<GameManager>
 
     public void SetStageKey(int stageKey)
     {
-        _stageKey = stageKey; 
-        _waveCount = StageManager.Instance.GetWaveCount(_stageKey);
-    }
-
-    public void OnStageCleared()
-    {
-        int stageKey = _stageKey + _waveCount;
-        _waveCount = StageManager.Instance.GetWaveCount(_stageKey);
-
-        if (_waveCount <= 0)
-            return;
-
+        // _stagekey = 1000 
         _stageKey = stageKey;
+        // wavecount 이거 stagemanager에서 모두 구해서 여기서 말고 다른곳에서 호출하기
+        // monsterspawn스크립트에서 써야함
+        _waveCount = StageManager.Instance.GetWaveCount(_stageKey);
     }
 
     public int CurDeckUnitCount()

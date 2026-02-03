@@ -52,10 +52,10 @@ public class MonsterSpawn : MonoBehaviour
     {
         if (_spawned) return;
 
-        LoadMonsterPos();
-
         int waveKey = GameManager.Instance.StageKey + _waveStep;
         StageData wave = StageManager.Instance.GetStageData(waveKey);
+
+        LoadMonsterPos(); 
 
         InGameManager.Instance.SetWaveText(_waveStep, wave.MaxWave);
 

@@ -39,12 +39,6 @@ public class InGameManager : MonoBehaviour
 
     [SerializeField] private StageResult _gameResult;
 
-    private StageResult.ResultType _resultType;
-    public StageResult.ResultType GameResultType
-    {
-        get { return _resultType; }
-    }
-
     private int _maxWave = 0;
     public int MaxWave
     {
@@ -159,13 +153,11 @@ public class InGameManager : MonoBehaviour
         BattleStateManager.Instance.SetState(BattleState.BattleEnd);
         SetAllCharactersIdle();
 
-        StartCoroutine( OpenResultPanel(resultType));
+        StartCoroutine(OpenResultPanel(resultType));
     }
 
     private IEnumerator OpenResultPanel(StageResult.ResultType resultType)
     {
-        _resultType = resultType;
-
         yield return new WaitForSeconds(1.5f);
 
         _gameResult.gameObject.SetActive(true);
@@ -235,11 +227,6 @@ public class InGameManager : MonoBehaviour
         _trackables.Add(trackable);
 
         trackable.Self.OnDie += OnMonsterDie;
-    }
-
-    private void OnMonsterDied(Character self)
-    {
-
     }
 
     private void OnWaveEnd()

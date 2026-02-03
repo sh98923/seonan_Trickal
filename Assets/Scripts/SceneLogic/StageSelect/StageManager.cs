@@ -22,6 +22,14 @@ public class StageManager : Singleton<StageManager>
         get { return GameManager.Instance.StageUnlockStatus; }
     }
 
+    private Dictionary<int, int> _stageKeys = new Dictionary<int, int>();
+    public Dictionary<int, int> StageKeys
+    { 
+        get { return _stageKeys; }
+    }
+
+    private List<int> _stageKeyOrder = new List<int>();
+
     private int _stageMaxCount = 0;
     public int StageMaxCount
     {
@@ -34,7 +42,7 @@ public class StageManager : Singleton<StageManager>
         get
         {
             int count = 0;
-            foreach (var unlocked in _unlockStatus.Values)
+            foreach (bool unlocked in _unlockStatus.Values)
             {
                 if (unlocked)
                 {
@@ -45,14 +53,14 @@ public class StageManager : Singleton<StageManager>
         }
     }
 
-    private readonly int _firstStageKey = 1;
+    private const int _firstIndex = 1;
     private int _stageStartKey;
     public int StageStartKey
     {
         get { return _stageStartKey; }
     }
 
-    private readonly int _firstStage = 9000;
+    private int _firstStage = 0;
 
     private void Awake()
     {
@@ -83,23 +91,23 @@ public class StageManager : Singleton<StageManager>
 
     public int GetStageStartKey(int stageNumber)
     {
-        int minKey = int.MaxValue;
+        int startKey = 0;
 
-        foreach (StageData data in _stageDatas.Values)
+        foreach (KeyValuePair<int, int> stagekey in _stageKeys)
         {
-            if (data.Stage == stageNumber && data.Key < minKey)
+            if (stagekey.Value == stageNumber)
             {
-                minKey = data.Key;
+                startKey = stagekey.Key;
             }
         }
 
-        if (minKey == int.MaxValue)
+        if (startKey == 0)
         {
             Debug.LogError($"Stage {stageNumber}에 해당하는 데이터가 없습니다.");
             return -1;
         }
 
-        return minKey;
+        return startKey;
     }
 
     public int GetMapBGKey(int key)
@@ -128,9 +136,16 @@ public class StageManager : Singleton<StageManager>
             data.WaveCoin = int.Parse(colData[4]);
             data.MaxWave = int.Parse(colData[5]);
 
-            if (_firstStageKey == i)
+            if (_firstIndex == i)
             {
                 _stageStartKey = data.Key;
+                _firstStage = data.Stage;
+            }
+
+            if(data.Wave == 1)
+            {
+                _stageKeyOrder.Add(data.Key);
+                _stageKeys.Add(data.Key, data.Stage);
             }
 
             _stageDatas.Add(data.Key, data);
@@ -140,6 +155,12 @@ public class StageManager : Singleton<StageManager>
     private void InitStageUnlocks()
     {
         if (_unlockStatus.Count > 0) return;
+
+        foreach(KeyValuePair<int, int> stageKey in _stageKeys)
+        {
+            bool unlocked = (stageKey.Value == _firstStage);
+            _unlockStatus[stageKey.Value] = unlocked;
+        }
 
         // 스테이지별 최초 언락 상태 세팅 (1 스테이지만 해금)
         HashSet<int> registeredStages = new HashSet<int>();
@@ -166,18 +187,41 @@ public class StageManager : Singleton<StageManager>
     }
 
     // 스테이지 클리어 시 다음 스테이지 언락 처리
-    public bool UnlockNextStage(int nextStageKey)
+    public bool UnlockNextStage(int currentStageKey, out int nextStageStartKey)
     {
-        int nextStage = _stageDatas[nextStageKey].Stage;
+        nextStageStartKey = -1;
 
-        if (_unlockStatus.ContainsKey(nextStage))
+        // 1. 현재 stageKey가 속한 Stage 번호
+        int currentStage = _stageDatas[currentStageKey].Stage;
+
+        // 2. 해당 Stage의 시작 key 찾기
+        int currentStageStartKey = GetStageStartKey(currentStage);
+
+        int index = _stageKeyOrder.IndexOf(currentStageStartKey);
+        if (index < 0 || index + 1 >= _stageKeyOrder.Count)
+            return false;
+
+        // 3. 다음 스테이지 시작 key
+        nextStageStartKey = _stageKeyOrder[index + 1];
+        int nextStageNumber = _stageKeys[nextStageStartKey];
+
+        // 4. 언락 처리
+        _unlockStatus[nextStageNumber] = true;
+        return true;
+    }
+    /*public bool UnlockNextStage(int stageKey)
+    {
+        int index = _stageKeyOrder.IndexOf(stageKey);
+        int nextStageKey = _stageKeyOrder[index + 1];
+        
+        if (_unlockStatus.ContainsKey(_stageKeys[nextStageKey]))
         {
-            _unlockStatus[nextStage] = true;
+            _unlockStatus[_stageKeys[nextStageKey]] = true;
             return true;
         }
 
         return false;
-    }
+    }*/
 
     public int HighestStageOutLineOn()
     {

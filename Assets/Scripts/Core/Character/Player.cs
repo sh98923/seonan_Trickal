@@ -69,7 +69,6 @@ public class Player : Character
         }
 
         _playerMp = GetComponentInChildren<PlayerMp>();
-
         _skillEffectController = GetComponent<SkillEffectController>();
 
         _scale.x *= -1;
@@ -232,11 +231,6 @@ public class Player : Character
 
     protected override void StartAttack()
     {
-        if(_movement.Target == null)
-        {
-            return;
-        }
-
         _isAttacking = true;
 
         if (_wantsUltimate)
@@ -489,7 +483,8 @@ public class Player : Character
         // 1. 도착 상태 초기화
         ResetArrivalState();
 
-       /* // 2. 원래 위치 + 카메라 X 좌표 조정
+        _playerMovement.SetRevivePos();
+        /*// 2. 원래 위치 + 카메라 X 좌표 조정
         Vector3 spawnPos = transform.position;//_originalWayPoint;
         spawnPos.x += camPosX; // 카메라 X 위치 만큼 더함
         transform.position = spawnPos;*/

@@ -53,5 +53,7 @@ public class StageResult : MonoBehaviour
                 _resultBtn.ShowDefeat();
                 break;
         }
+
+        GameManager.Instance.OnStageEnd(result);
     }
 }
