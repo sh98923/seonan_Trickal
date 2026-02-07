@@ -3,3 +3,5 @@ Key,Name,PrefabPath,PoolSize
 5001,Shuriken,Prefabs/Projectile/Shuriken,10
 5002,WindCut,Prefabs/Projectile/WindCut,10
 5003,WindBlade,Prefabs/Projectile/WindBlade,10
+5004,MageAttack,Prefabs/Projectile/MageAttack,10
+5005,MageSkill,Prefabs/Projectile/MageSkill,10

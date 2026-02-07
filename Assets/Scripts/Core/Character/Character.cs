@@ -116,10 +116,11 @@ public class Character : MonoBehaviour, ITrackable
     {
         if(_movement.HasTarget && !_isDead)
         {
-            if (_movement.Target != null)
-            {
-                _renderEffect.FlipTo(transform, _movement.Target.transform);
-            }
+            _renderEffect.FlipTo(transform, _movement.Target.transform);
+        }
+        else
+        {
+            _renderEffect.FaceDefaultDirection(transform);
         }
 
         switch (_curState)

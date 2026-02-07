@@ -286,6 +286,28 @@ public class CharacterRenderEffect : MonoBehaviour
         self.localScale = scale;
     }
 
+    public void FaceDefaultDirection(Transform self)
+    {
+        Vector3 scale = self.localScale;
+
+        switch (self.tag)
+        {
+            case "Player":
+                scale.x = -Mathf.Abs(scale.x); // Player 기본 방향
+                break;
+
+            case "Monster":
+                scale.x = Mathf.Abs(scale.x); // Monster 기본 방향
+                break;
+
+            default:
+                scale.x = -Mathf.Abs(scale.x); // 안전한 기본값
+                break;
+        }
+
+        self.localScale = scale;
+    }
+
     /* ───────────────────────────
      *         페이드 아웃
      * ─────────────────────────── */

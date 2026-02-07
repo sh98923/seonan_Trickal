@@ -526,15 +526,13 @@ GameObject:
   - component: {fileID: 1740337162017668257}
   - component: {fileID: 6082137139593730756}
   - component: {fileID: 1657846532609195736}
-  - component: {fileID: 1708682418443222120}
   - component: {fileID: 7784859329901352821}
   - component: {fileID: -4141055218825130867}
   - component: {fileID: 7739703251017290700}
-  - component: {fileID: 3324289161856298912}
-  - component: {fileID: -8848487352831073601}
   - component: {fileID: 1659629537237169111}
   - component: {fileID: 3363226084564369875}
   - component: {fileID: -8964828892504913514}
+  - component: {fileID: 4110295539359148973}
   m_Layer: 6
   m_Name: ElfBishop
   m_TagString: Player
@@ -634,18 +632,6 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0.35}
   m_Radius: 0.5
---- !u!114 &1708682418443222120
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1432887398413912192}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ece163732101c1f4aa0b0562c6c13ad9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &7784859329901352821
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -680,30 +666,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 60c6951522361ec469d332a85fadca1e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &3324289161856298912
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1432887398413912192}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9962bd99247696f469d841d0c416862e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &-8848487352831073601
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1432887398413912192}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f261416a9d0f4cb44b29179ec8ba336c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &1659629537237169111
@@ -742,6 +704,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd0fe78b3186e06489a13f0419a3a629, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4110295539359148973
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1432887398413912192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29b1ec1a91132644da1df4b5f8239004, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Ed
 --- !u!1 &1933119268406751913
 GameObject:
   m_ObjectHideFlags: 0

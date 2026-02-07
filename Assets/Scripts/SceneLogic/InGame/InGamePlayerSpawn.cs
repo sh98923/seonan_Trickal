@@ -37,6 +37,8 @@ public class InGamePlayerSpawn : MonoBehaviour
     private int _nextWaveReadyCount = 0;
     private int _totalCharacters = 0;
 
+    private bool _isRegisteredPlayersInitialized = false;
+
     private void Awake()
     {
         _instance = this;
@@ -46,11 +48,11 @@ public class InGamePlayerSpawn : MonoBehaviour
         // 룰렛 만들게되면 룰렛에 나온 애들만 스폰
         InGameManager.Instance.RegisterDeckUnits(transform);
 
-        for (int i = 0; i < transform.childCount; i++)
+        /*for (int i = 0; i < transform.childCount; i++)
         {
             Player player = transform.GetChild(i).GetComponent<Player>();
             _registeredPlayers.Add(player);
-        }
+        }*/
     }
 
     private void Start()
@@ -86,6 +88,21 @@ public class InGamePlayerSpawn : MonoBehaviour
         }
     }
 
+    private void RegisterPlayers()
+    {
+        if (_isRegisteredPlayersInitialized) return;
+       
+        _registeredPlayers.Clear();
+        
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            Player player = transform.GetChild(i).GetComponent<Player>();
+            _registeredPlayers.Add(player);
+        }
+
+        _isRegisteredPlayersInitialized = true;
+    }
+
     private void LoadPlayerPos()
     {
         List<PlayerData> datas = GameManager.Instance.SpawnablePlayerDatas;
@@ -118,6 +135,8 @@ public class InGamePlayerSpawn : MonoBehaviour
 
     public void SetActivePlayer(string characterName)
     {
+        RegisterPlayers();
+
         Player player = FindPlayer(characterName);
 
         if (player == null)
