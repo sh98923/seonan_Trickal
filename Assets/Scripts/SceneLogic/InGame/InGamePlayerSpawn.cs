@@ -48,23 +48,7 @@ public class InGamePlayerSpawn : MonoBehaviour
         // 룰렛 만들게되면 룰렛에 나온 애들만 스폰
         InGameManager.Instance.RegisterDeckUnits(transform);
 
-        /*for (int i = 0; i < transform.childCount; i++)
-        {
-            Player player = transform.GetChild(i).GetComponent<Player>();
-            _registeredPlayers.Add(player);
-        }*/
-    }
-
-    private void Start()
-    {
-        foreach (Player player in _registeredPlayers)
-        {
-            PlayerMovement movement = player.GetComponent<PlayerMovement>();
-            if (movement != null)
-            {
-                movement.InitWavePosition();
-            }
-        }
+        RegisterPlayers();
     }
 
     private void OnEnable()
@@ -88,26 +72,11 @@ public class InGamePlayerSpawn : MonoBehaviour
         }
     }
 
-    private void RegisterPlayers()
-    {
-        if (_isRegisteredPlayersInitialized) return;
-       
-        _registeredPlayers.Clear();
-        
-        for (int i = 0; i < transform.childCount; i++)
-        {
-            Player player = transform.GetChild(i).GetComponent<Player>();
-            _registeredPlayers.Add(player);
-        }
-
-        _isRegisteredPlayersInitialized = true;
-    }
-
     private void LoadPlayerPos()
     {
         List<PlayerData> datas = GameManager.Instance.SpawnablePlayerDatas;
 
-        for(int i = 0; i < datas.Count; i++)
+        for (int i = 0; i < datas.Count; i++)
         {
             _deployableDatas.Add(datas[i]);
         }
@@ -133,10 +102,40 @@ public class InGamePlayerSpawn : MonoBehaviour
         return player == null || !player.gameObject.activeSelf;
     }
 
+    private void RegisterPlayers()
+    {
+        if (_isRegisteredPlayersInitialized) return;
+       
+        _registeredPlayers.Clear();
+        
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            Player player = transform.GetChild(i).GetComponent<Player>();
+            _registeredPlayers.Add(player);
+        }
+
+        _isRegisteredPlayersInitialized = true;
+    }
+
+    private void InitWavePositions()
+    {
+        foreach (Player player in _registeredPlayers)
+        {
+            PlayerMovement movement = player.GetComponent<PlayerMovement>();
+            if (movement != null)
+            {
+                movement.InitWavePosition();
+            }
+        }
+    }
+
+    public void OnDeployComplete()
+    {
+        InitWavePositions();
+    }
+
     public void SetActivePlayer(string characterName)
     {
-        RegisterPlayers();
-
         Player player = FindPlayer(characterName);
 
         if (player == null)

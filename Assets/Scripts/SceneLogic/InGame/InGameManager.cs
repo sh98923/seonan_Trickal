@@ -211,6 +211,8 @@ public class InGameManager : MonoBehaviour
             PlayerData data = PlayerManager.Instance.GetPlayerData(key);
             InGamePlayerSpawn.Instance.SetActivePlayer(data.EngName);
         }
+
+        InGamePlayerSpawn.Instance.OnDeployComplete();
     }
 
     private void RegisterPlayer(ITrackable trackable)
