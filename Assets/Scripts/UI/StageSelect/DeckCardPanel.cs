@@ -84,7 +84,7 @@ public class DeckCardPanel : MonoBehaviour
     {
         if (GameManager.Instance.CanStartGame())
         {
-            SceneManager.LoadScene("InGameScene");
+            SceneChange.Instance.TransitionToScene(SceneName.InGameScene);
         }
         else
         {

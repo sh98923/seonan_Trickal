@@ -26,9 +26,9 @@ public class SceneChange : MonoBehaviour
         }
     }
 
-    public void TransitionToScene(string sceneName)
+    public void TransitionToScene(SceneName scene)
     {
-        if (_isTransitioning) return; // Áßº¹ Å¬¸¯ ¹æÁö
+        if (_isTransitioning) return; // ï¿½ßºï¿½ Å¬ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         _isTransitioning = true;
 
         if (!gameObject.activeSelf)
@@ -40,7 +40,7 @@ public class SceneChange : MonoBehaviour
         StopAllCoroutines();
         _circleMask.fillAmount = 0f;
 
-        StartCoroutine(Transition(sceneName));
+        StartCoroutine(Transition(scene.ToString()));
     }
 
     private IEnumerator Transition(string sceneName)
@@ -67,7 +67,7 @@ public class SceneChange : MonoBehaviour
 
         _circleMask.fillAmount = 0f;
 
-        _isTransitioning = false; //  ´ÙÀ½ Å¬¸¯ Çã¿ë
+        _isTransitioning = false; //  ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ ï¿½ï¿½ï¿½
     }
 
 }
