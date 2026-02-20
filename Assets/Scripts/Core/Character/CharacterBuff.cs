@@ -26,13 +26,19 @@ public class CharacterBuff : CharacterAction
         public BuffValueType ValueType;
         public float OriginalValue;
     }
-
+    
+    private Player _player;
     private List<Player> _activePlayers = new List<Player>();
     private Dictionary<Player, List<BuffRuntimeData>> _runningBuffs = new Dictionary<Player, List<BuffRuntimeData>>();
 
     private BuffEffectType _effectType;
 
     private float _effectValue = 0.0f;
+
+    private void Awake()
+    {
+        _player = GetComponent<Player>();
+    }
 
     private void OnEnable()
     {
@@ -62,6 +68,13 @@ public class CharacterBuff : CharacterAction
 
         if (!_isValid) return;
 
+        if (valueType == BuffValueType.Heal)
+        {
+            player.PlayerHealth.IncreaseHp(_effectValue);
+            PlayEffect(player.transform);
+            return;
+        }
+
         float originalValue = 0.0f;
 
         switch (valueType)
@@ -75,10 +88,6 @@ public class CharacterBuff : CharacterAction
                 originalValue = player.DamageReduction;
                 player.ApplyDamageReduction(_effectValue);
                 break;
-
-            case BuffValueType.Heal:
-                // player.PlayerHealth.CurHp = Mathf.Min(player.PlayerHealth.MaxHp, player.PlayerHealth.CurHp + _effectValue);
-                return; // Heal은 즉시 적용 후 종료
         }
 
         if (!_runningBuffs.TryGetValue(player, out List<BuffRuntimeData> list))
@@ -230,6 +239,7 @@ public class CharacterBuff : CharacterAction
                 SoloBuff();
                 break;
             case BuffEffectType.PartialBuff:
+                PartialBuff();
                 break;
             case BuffEffectType.AllBuff:
                 ApplyBuffToAll();
@@ -239,9 +249,38 @@ public class CharacterBuff : CharacterAction
 
     private void SoloBuff()
     {
-        Player player = GetComponent<Player>();
+        ApplyBuff(_player);
+    }
 
-        ApplyBuff(player);
+    private void PartialBuff()
+    {
+        // 자기 자신은 무조건 적용
+        ApplyBuff(_player);
+
+        // 자기 자신 제외한 후보 리스트 생성
+        List<Player> candidates = new List<Player>();
+        _activePlayers = InGamePlayerSpawn.Instance.GetActivePlayers();
+
+        foreach (Player player in _activePlayers)
+        {
+            if (player != _player)
+            {
+                candidates.Add(player);
+            }
+        }
+
+        // 랜덤으로 최대 2명 선택
+        int count = Mathf.Min(2, candidates.Count);
+
+        for (int i = 0; i < count; i++)
+        {
+            int randomIndex = Random.Range(0, candidates.Count);
+
+            ApplyBuff(candidates[randomIndex]);
+
+            // 중복 방지 위해 제거
+            candidates.RemoveAt(randomIndex);
+        }
     }
 
     private void ApplyBuffToAll()

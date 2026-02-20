@@ -186,7 +186,7 @@ public class CharacterAttack : CharacterAction
             string hitEffectName = _character.Data.FlashHit[(int)_type];
             string atkEffectName = _character.Data.ActionImpact[(int)_type];
 
-            PlayEffect(target.transform);
+            //PlayEffect(target.transform);
 
             if (_isRange)
             {

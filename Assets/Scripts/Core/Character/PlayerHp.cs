@@ -61,7 +61,7 @@ public class PlayerHp : CharacterHp
         print($"{_gameObjectName} 부활 newHp(curHp) : {_curHp} / {_maxHp}");
     }
 
-    private void IncreaseHp(float amount)
+    public void IncreaseHp(float amount)
     {
         _curHp += amount;
 

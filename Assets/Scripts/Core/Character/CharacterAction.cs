@@ -21,7 +21,7 @@ public abstract class CharacterAction : MonoBehaviour
 
     protected void PlayEffect(Transform transform)
     {
-        if (_timer <= 0.0f || _clipName == "None") return;
+        if (_clipName == "None") return;
 
         // 이펙트 재생
         EffectManager.Instance.PlayEffect(transform, _clipName, _timer);

@@ -2,7 +2,7 @@ AttackKey,EngName,BaseProjectile,SkillProjectile,UltProjectile,BaseSpritePath,Sk
 4000,Diana,None,None,None,None,None,None,Damage,Damage,AllBuff,Normal,Normal,None,None,None,AttackPower,None,None,AllPowerUp,0,0,0,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE
 4001,Gwin,None,None,None,None,None,None,Damage,Status,Status,Normal,Stone,Stone,None,None,None,None,None,None,0,0,0,FALSE,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE
 4002,Alette,None,None,None,None,None,None,Damage,SoloBuff,Damage,Normal,None,Normal,None,DamageReduction,None,None,DamageReduction,None,0,0,0,FALSE,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE
-4003,Ed,MageAttack,MageSkill,None,None,None,None,Damage,Dot,Status,Normal,Fire,Cold,None,None,None,None,None,None,5,10,0,TRUE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE
+4003,Ed,MageAttack,None,None,None,None,None,Damage,PartialBuff,AllBuff,Normal,None,None,None,Heal,Heal,None,RandomTeamHeal,None,5,0,0,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE
 4004,Lonan,WindCut,WindBlade,None,Sprites/Attack/Projectile/RuneBladeBase,Sprites/Attack/Projectile/RuneBladeSkill,None,Damage,Damage,Damage,Normal,Normal,Normal,None,None,None,None,None,None,5,10,0,TRUE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE
 4005,Jade,None,None,None,None,None,None,Damage,Damage,Damage,Normal,Normal,Normal,None,None,None,None,None,None,0,0,0,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE
 4006,Levi,None,Shuriken,None,None,Sprites/Attack/Projectile/AssassinSkill,None,Damage,Damage,Dot,Normal,Normal,Posion,None,None,None,None,None,AssassinUlt,0,12,0,FALSE,TRUE,FALSE,FALSE,FALSE,TRUE,TRUE

@@ -33,6 +33,10 @@ public class Effect : MonoBehaviour
                 gameObject.SetActive(false);
             }
         }
+        else
+        {
+            print("이펙트 종료");
+        }
 
         _sprite.sortingOrder = Mathf.RoundToInt(-transform.position.y * _sortingScale + _sortingOffset);
     }
@@ -43,12 +47,13 @@ public class Effect : MonoBehaviour
 
         _animator.Play(clipName);
 
-        // time이 0이면 재생 중인 클립 길이 가져오기
+        // time이 0이면 한번만 재생하는 클립
         if (time <= 0.0f)
         {
             // 현재 레이어 0의 스테이트 정보
             AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
             _timer = stateInfo.length;
+            print(_timer);
         }
         else
         {

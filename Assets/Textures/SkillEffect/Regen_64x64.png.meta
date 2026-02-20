@@ -1,67 +1,67 @@
 fileFormatVersion: 2
-guid: e9ba2662a49e5e642ac32cc18ce815d8
+guid: dce3c8af0bd30d2419ad9ae10406b045
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 811347052310813615
-    second: Regen_0
+      213: -8679995492528162615
+    second: Regen_64x64_0
   - first:
-      213: -7381742433597249931
-    second: Regen_1
+      213: 3904202653473195915
+    second: Regen_64x64_1
   - first:
-      213: -2213251716885577517
-    second: Regen_2
+      213: 9095878134156060009
+    second: Regen_64x64_2
   - first:
-      213: -6858592841175458186
-    second: Regen_3
+      213: -1609070568389232572
+    second: Regen_64x64_3
   - first:
-      213: 1989297006627275161
-    second: Regen_4
+      213: -3037978620124615996
+    second: Regen_64x64_4
   - first:
-      213: 8116206656836447375
-    second: Regen_5
+      213: 7895764355703282625
+    second: Regen_64x64_5
   - first:
-      213: 3898613890118606039
-    second: Regen_6
+      213: -4622070105940455830
+    second: Regen_64x64_6
   - first:
-      213: -6557091236594477124
-    second: Regen_7
+      213: 2175861491014057959
+    second: Regen_64x64_7
   - first:
-      213: -83484421127220141
-    second: Regen_8
+      213: -9186751386747065504
+    second: Regen_64x64_8
   - first:
-      213: 7713268320234168779
-    second: Regen_9
+      213: -7704923269011360636
+    second: Regen_64x64_9
   - first:
-      213: 7877993851178052294
-    second: Regen_10
+      213: 5405458404161196486
+    second: Regen_64x64_10
   - first:
-      213: -8117722262356311797
-    second: Regen_11
+      213: -2120167096127922615
+    second: Regen_64x64_11
   - first:
-      213: 5432472434452737656
-    second: Regen_12
+      213: -158822128191511430
+    second: Regen_64x64_12
   - first:
-      213: 1352241817186129505
-    second: Regen_13
+      213: -6927102848042683388
+    second: Regen_64x64_13
   - first:
-      213: -7790136809123587346
-    second: Regen_14
+      213: -4589478841618975700
+    second: Regen_64x64_14
   - first:
-      213: 461050686565319777
-    second: Regen_15
+      213: -6521026852156033878
+    second: Regen_64x64_15
   - first:
-      213: 6012176357111639572
-    second: Regen_16
+      213: 5420114797438842245
+    second: Regen_64x64_16
   - first:
-      213: -2320006263624837145
-    second: Regen_17
+      213: -5427334796847921881
+    second: Regen_64x64_17
   - first:
-      213: 5774267093322428112
-    second: Regen_18
+      213: -2234709971652500466
+    second: Regen_64x64_18
   - first:
-      213: 8634530642206419286
-    second: Regen_19
+      213: 2735968851924475631
+    second: Regen_64x64_19
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -153,43 +153,17 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: Android
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: iOS
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Regen_0
+      name: Regen_64x64_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 96
-        width: 96
-        height: 96
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -198,162 +172,162 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: fabdb8a68db724b00800000000000000
-      internalID: 811347052310813615
+      spriteID: 9c8fddf86167a8780800000000000000
+      internalID: -8679995492528162615
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Regen_1
+      name: Regen_64x64_1
       rect:
         serializedVersion: 2
-        x: 96
-        y: 96
-        width: 96
-        height: 96
+        x: 64
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 9bd58b97dfc2ca7459e9c4c4f1e0b16f
-      internalID: -7381742433597249931
+      spriteID: b874863c0a38e2630800000000000000
+      internalID: 3904202653473195915
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Regen_2
+      name: Regen_64x64_2
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 64
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9656d9298fc0b3e70800000000000000
+      internalID: 9095878134156060009
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Regen_64x64_3
       rect:
         serializedVersion: 2
         x: 192
-        y: 96
-        width: 96
-        height: 96
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 6243352b4e4fdc44d82b40f897751be0
-      internalID: -2213251716885577517
+      spriteID: 448bf90e7de6ba9e0800000000000000
+      internalID: -1609070568389232572
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Regen_3
+      name: Regen_64x64_4
       rect:
         serializedVersion: 2
-        x: 288
-        y: 96
-        width: 96
-        height: 96
+        x: 256
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: dfae73e51ca42be44b7f9560b7aefa28
-      internalID: -6858592841175458186
+      spriteID: 4caad387a8ee6d5d0800000000000000
+      internalID: -3037978620124615996
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Regen_4
-      rect:
-        serializedVersion: 2
-        x: 384
-        y: 96
-        width: 96
-        height: 96
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 3c1af85beb6dcdd47b6dd958dbb72e6a
-      internalID: 1989297006627275161
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Regen_5
+      name: Regen_64x64_5
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 96
-        height: 96
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 3813b8893f94b7742be9ee3cb0d7bf7a
-      internalID: 8116206656836447375
+      spriteID: 1cb92e319d3639d60800000000000000
+      internalID: 7895764355703282625
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Regen_6
+      name: Regen_64x64_6
       rect:
         serializedVersion: 2
-        x: 96
+        x: 64
         y: 0
-        width: 96
-        height: 96
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 710b1a71ce7049a409710a076e48c425
-      internalID: 3898613890118606039
+      spriteID: a6e87783abb1bdfb0800000000000000
+      internalID: -4622070105940455830
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Regen_7
+      name: Regen_64x64_7
       rect:
         serializedVersion: 2
-        x: 192
+        x: 128
         y: 0
-        width: 96
-        height: 96
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 3f55ad6d2fdddbd4a91716ae2e7ccbdb
-      internalID: -6557091236594477124
+      spriteID: 7ef38547f76323e10800000000000000
+      internalID: 2175861491014057959
       vertices: []
       indices: 
       edges: []
@@ -362,7 +336,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: dcd345d8908ca93449e6c2a37be4ad39
+    spriteID: a24f9b6c7fa881a46a74263f4b4f99a7
     internalID: 0
     vertices: []
     indices: 
@@ -371,19 +345,17 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries:
-      - key: SpriteEditor.SliceOnImport
-        value: False
       - key: SpriteEditor.SliceSettings
-        value: '{"sliceOnImport":false,"gridCellCount":{"x":5.0,"y":2.0},"gridSpriteSize":{"x":96.0,"y":96.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":5.0,"y":2.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      Regen_0: 811347052310813615
-      Regen_1: -7381742433597249931
-      Regen_2: -2213251716885577517
-      Regen_3: -6858592841175458186
-      Regen_4: 1989297006627275161
-      Regen_5: 8116206656836447375
-      Regen_6: 3898613890118606039
-      Regen_7: -6557091236594477124
+      Regen_64x64_0: -8679995492528162615
+      Regen_64x64_1: 3904202653473195915
+      Regen_64x64_2: 9095878134156060009
+      Regen_64x64_3: -1609070568389232572
+      Regen_64x64_4: -3037978620124615996
+      Regen_64x64_5: 7895764355703282625
+      Regen_64x64_6: -4622070105940455830
+      Regen_64x64_7: 2175861491014057959
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
